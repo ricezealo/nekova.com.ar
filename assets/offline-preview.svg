@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 1200">
+  <rect width="1200" height="1200" fill="#f3f3f3"/>
+  <path d="M0 820 1200 380v820H0z" fill="#e5e5e5"/>
+  <circle cx="600" cy="470" r="190" fill="#d4d4d4"/>
+  <path d="M310 850c35-180 140-270 290-270s255 90 290 270v150H310z" fill="#b8b8b8"/>
+  <text x="600" y="1080" fill="#666" font-family="sans-serif" font-size="36" text-anchor="middle">Imagen local de muestra</text>
+</svg>

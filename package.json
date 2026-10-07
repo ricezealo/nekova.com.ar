@@ -1,0 +1,9 @@
+{
+  "private": true,
+  "scripts": {
+    "preview:offline": "node scripts/offline-preview.mjs"
+  },
+  "devDependencies": {
+    "liquidjs": "^10.30.0"
+  }
+}

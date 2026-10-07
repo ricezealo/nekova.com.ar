@@ -56,6 +56,21 @@ There are a number of really useful tools that the Shopify Themes team uses duri
 
 You can follow this [quick start guide for theme developers](https://shopify.dev/docs/themes/tools/cli) to get started.
 
+### Offline preview (without Shopify CLI)
+
+For a local, approximate preview using sample catalog and customer data, install the development dependency once and start the server:
+
+```bash
+npm install
+npm run preview:offline
+```
+
+Open `http://localhost:4173`. The preview renders the theme's JSON templates and sections locally, uses the AVIF product photos, and supports adding the sample product to a local cart. Refresh the browser to see Liquid, CSS, JavaScript, and template changes. It does not connect to Shopify or publish anything.
+
+This is a development aid, not a Shopify emulator: the sample product can be added to a local cookie-backed cart, but checkout, customer authentication, inventory, search results, and Shopify-managed account pages are simulated or non-functional. The preview uses sample content, and Shopify-specific Liquid features may not render identically to a real store.
+
+For the Nekova product landing page, select the real product in the homepage section settings in the Shopify theme editor. Set its price to ARS 120,000 and compare-at price to ARS 150,000 for the 20% launch discount. Product content and inventory are managed in Shopify, not in this theme repository.
+
 ### Theme Check
 
 We recommend using [Theme Check](https://github.com/shopify/theme-check) as a way to validate and lint your Shopify themes.

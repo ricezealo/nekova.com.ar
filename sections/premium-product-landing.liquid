@@ -1,0 +1,357 @@
+{%- liquid
+  assign featured_product = section.settings.product
+  assign current_price = featured_product.price | default: 12000000
+  assign original_price = featured_product.compare_at_price | default: 15000000
+  assign selected_variant = featured_product.selected_or_first_available_variant
+  assign discount_amount = original_price | minus: current_price
+-%}
+
+{{ 'premium-product-landing.js' | asset_url | script_tag }}
+
+<section class="premium-landing section-{{ section.id }}" aria-labelledby="PremiumTitle-{{ section.id }}">
+  <div class="premium-shell">
+    <div class="premium-hero">
+      <div class="premium-copy">
+        <p class="premium-eyebrow"><span></span> NEKOVA · HOGAR Y OFICINA</p>
+        <p class="premium-edition">OBJETOS PARA UNA VIDA MEJOR &nbsp; / &nbsp; 01</p>
+        <h1 id="PremiumTitle-{{ section.id }}">{{ section.settings.heading | escape }}</h1>
+        <p class="premium-product-name">Soporte de madera giratorio 360°</p>
+        <p class="premium-intro">{{ section.settings.description | escape }}</p>
+
+        <div class="premium-price" aria-label="Precio de lanzamiento">
+          <span class="premium-price-current">{{ current_price | money_without_trailing_zeros }} <small>ARS</small></span>
+          <span class="premium-price-was">{{ original_price | money_without_trailing_zeros }} ARS</span>
+          <span class="premium-discount">20% OFF</span>
+        </div>
+        <p class="premium-launch-note">Precio especial de lanzamiento · Ahorrás {{ discount_amount | money_without_trailing_zeros }} ARS</p>
+
+        {%- if featured_product != blank -%}
+          {% form 'product', featured_product, class: 'premium-buy-form' %}
+            <input type="hidden" name="id" value="{{ selected_variant.id }}">
+            <input type="hidden" name="quantity" value="1">
+            <button class="premium-buy-button" type="submit" name="add" {% unless featured_product.available %}disabled{% endunless %}>
+              <span>{% if featured_product.available %}Agregar al carrito{% else %}Producto agotado{% endif %}</span>
+              <span aria-hidden="true">↗</span>
+            </button>
+          {% endform %}
+        {%- else -%}
+          <a class="premium-buy-button" href="/products/atril-madera-giratorio-360">
+            <span>Ver producto</span>
+            <span aria-hidden="true">↗</span>
+          </a>
+          <p class="premium-select-note">Para activar la compra, seleccioná el producto en el editor del tema.</p>
+        {%- endif -%}
+        <div class="premium-assurances">
+          <span>Diseño funcional</span><span>Madera MDF</span><span>Uso diario</span>
+        </div>
+      </div>
+
+      <div class="premium-gallery" data-premium-gallery>
+        <div class="premium-gallery-main">
+          <img
+            src="{{ 'Hfa9cf59005624810920467ea450cbfb5o.avif' | asset_url }}"
+            alt="Atril de madera ajustable con un libro abierto sobre un escritorio"
+            width="1280"
+            height="1857"
+            fetchpriority="high"
+            data-premium-main-image
+          >
+          <span class="premium-image-index">NEKOVA OBJECTS &nbsp; — &nbsp; 01 / 05</span>
+        </div>
+        <div class="premium-gallery-thumbs" aria-label="Galería del producto">
+          <button class="is-active" type="button" aria-label="Ver atril con libro abierto" aria-pressed="true" data-premium-image="{{ 'Hfa9cf59005624810920467ea450cbfb5o.avif' | asset_url }}" data-premium-alt="Atril de madera con libro abierto">
+            <img src="{{ 'Hfa9cf59005624810920467ea450cbfb5o.avif' | asset_url }}" alt="" width="1280" height="1857" loading="lazy">
+          </button>
+          <button type="button" aria-label="Ver soporte y ranura de almacenamiento" aria-pressed="false" data-premium-image="{{ 'H028aa62769ca4ad9b54aca33682d19ec0.avif' | asset_url }}" data-premium-alt="Soporte de madera ajustable">
+            <img src="{{ 'H028aa62769ca4ad9b54aca33682d19ec0.avif' | asset_url }}" alt="" width="1280" height="1857" loading="lazy">
+          </button>
+          <button type="button" aria-label="Ver el soporte desde otro ángulo" aria-pressed="false" data-premium-image="{{ 'H2b4cc26ef0d8449ba2492fe241016991o.avif' | asset_url }}" data-premium-alt="Vista alternativa del atril">
+            <img src="{{ 'H2b4cc26ef0d8449ba2492fe241016991o.avif' | asset_url }}" alt="" width="1280" height="1857" loading="lazy">
+          </button>
+          <button type="button" aria-label="Ver detalles del producto" aria-pressed="false" data-premium-image="{{ 'H43efb61d5f9348f1b53da0d6bc37cba9y.avif' | asset_url }}" data-premium-alt="Detalle del soporte portátil de madera">
+            <img src="{{ 'H43efb61d5f9348f1b53da0d6bc37cba9y.avif' | asset_url }}" alt="" width="1280" height="1857" loading="lazy">
+          </button>
+          <button type="button" aria-label="Ver clip elevable para libros" aria-pressed="false" data-premium-image="{{ 'H5ba6a17b211f44a7aa2103ffaa26e290v.avif' | asset_url }}" data-premium-alt="Detalle del soporte para libros">
+            <img src="{{ 'H5ba6a17b211f44a7aa2103ffaa26e290v.avif' | asset_url }}" alt="" width="1280" height="1857" loading="lazy">
+          </button>
+          <button type="button" aria-label="Ver otra vista del soporte" aria-pressed="false" data-premium-image="{{ 'Hb24d8690081143bdac982e5102f33c18C.avif' | asset_url }}" data-premium-alt="Vista adicional del atril de madera">
+            <img src="{{ 'Hb24d8690081143bdac982e5102f33c18C.avif' | asset_url }}" alt="" width="1280" height="1857" loading="lazy">
+          </button>
+          <button type="button" aria-label="Ver el soporte en un escritorio" aria-pressed="false" data-premium-image="{{ 'Hb5f1ee0a42944e8da27b90df6e3ed1877.avif' | asset_url }}" data-premium-alt="Soporte de lectura portátil en un espacio de trabajo">
+            <img src="{{ 'Hb5f1ee0a42944e8da27b90df6e3ed1877.avif' | asset_url }}" alt="" width="1024" height="1024" loading="lazy">
+          </button>
+          <button type="button" aria-label="Ver detalle del soporte para tabletas" aria-pressed="false" data-premium-image="{{ 'He1c69a86185942a6b7db4bcdd258049el.avif' | asset_url }}" data-premium-alt="Detalle del atril ajustable">
+            <img src="{{ 'He1c69a86185942a6b7db4bcdd258049el.avif' | asset_url }}" alt="" width="1280" height="1857" loading="lazy">
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <div class="premium-marquee" aria-label="Nekova: objetos para una vida mejor">
+      <span>MENOS ESFUERZO</span><i></i><span>MÁS COMODIDAD</span><i></i><span>MEJOR ENFOQUE</span><i></i><span>NEKOVA OBJECTS</span>
+    </div>
+
+    <div class="premium-story">
+      <div class="premium-story-image">
+        <img src="{{ 'Hb5f1ee0a42944e8da27b90df6e3ed1877.avif' | asset_url }}" alt="Soporte de lectura portátil para libros y tablet" width="1024" height="1024" loading="lazy">
+      </div>
+      <div class="premium-story-copy">
+        <p class="premium-eyebrow"><span></span> UNA MEJOR FORMA DE LEER</p>
+        <h2>Tu espacio.<br>Tu ritmo.<br><em>Tu ángulo.</em></h2>
+        <p>Un buen objeto hace más simple lo cotidiano. Este atril sostiene tus libros o tablet, libera tus manos y se adapta a tu forma de leer, estudiar o trabajar.</p>
+        <a href="#detalles-producto">Descubrí sus detalles <span aria-hidden="true">↓</span></a>
+      </div>
+    </div>
+
+    <div class="premium-benefits" id="detalles-producto">
+      <div class="premium-section-heading">
+        <p class="premium-eyebrow"><span></span> DISEÑADO PARA ACOMPAÑARTE</p>
+        <h2>Pequeños detalles.<br><em>Una gran diferencia.</em></h2>
+      </div>
+      <div class="premium-benefit-grid">
+        <article><span class="premium-benefit-number">01</span><h3>Giratorio 360°</h3><p>Encontrá el ángulo justo para leer, estudiar o seguir una receta con comodidad.</p></article>
+        <article><span class="premium-benefit-number">02</span><h3>Todo en su lugar</h3><p>La ranura de almacenamiento mantiene lápices y accesorios siempre a mano.</p></article>
+        <article><span class="premium-benefit-number">03</span><h3>Listo para llevar</h3><p>Diseño plegable y portátil: armá tu espacio de lectura donde estés.</p></article>
+        <article><span class="premium-benefit-number">04</span><h3>Madera MDF</h3><p>Una estructura firme, duradera y de estética cálida para tu hogar u oficina.</p></article>
+      </div>
+    </div>
+
+    <div class="premium-specs">
+      <div class="premium-specs-intro">
+        <p class="premium-eyebrow"><span></span> FICHA TÉCNICA</p>
+        <h2>Hecho para<br><em>el día a día.</em></h2>
+        <p>Funcionalidad pensada para acompañar tus momentos de lectura y trabajo.</p>
+      </div>
+      <dl class="premium-spec-list">
+        <div><dt>Material</dt><dd>MDF</dd></div>
+        <div><dt>Rotación</dt><dd>360 grados</dd></div>
+        <div><dt>Dimensiones</dt><dd>340 × 235 × 76 mm</dd></div>
+        <div><dt>Peso neto</dt><dd>1,22 kg</dd></div>
+        <div><dt>Modelo</dt><dd>R51C</dd></div>
+        <div><dt>Soporte</dt><dd>Libros y tabletas</dd></div>
+        <div><dt>Clip para libros</dt><dd>Elevable</dd></div>
+        <div><dt>Almacenamiento</dt><dd>Ranura integrada</dd></div>
+        <div><dt>Origen</dt><dd>Guangdong, China</dd></div>
+        <div><dt>Empaque individual</dt><dd>38 × 27 × 10 cm</dd></div>
+        <div><dt>Peso bruto</dt><dd>2 kg</dd></div>
+      </dl>
+    </div>
+
+    <div class="premium-packaging">
+      <div><span class="premium-packaging-mark">N.</span></div>
+      <div>
+        <p class="premium-eyebrow"><span></span> UN OBJETO, MUCHAS POSIBILIDADES</p>
+        <h2>De la biblioteca<br>al escritorio.</h2>
+        <p>Para leer una novela, estudiar, consultar una receta o trabajar desde casa. Un solo soporte que se adapta a tus espacios y a tu rutina.</p>
+      </div>
+      <ul>
+        <li>Lectura manos libres</li>
+        <li>Ángulo ajustable</li>
+        <li>Se pliega para guardar</li>
+        <li>340 × 235 × 76 mm</li>
+      </ul>
+    </div>
+
+    <div class="premium-faq">
+      <div class="premium-section-heading">
+        <p class="premium-eyebrow"><span></span> ANTES DE ELEGIR</p>
+        <h2>Preguntas <em>frecuentes.</em></h2>
+      </div>
+      <div class="premium-faq-list">
+        <details><summary>¿Puedo usarlo con una tablet?</summary><p>Sí. El atril está pensado para sostener libros y tabletas, y su rotación de 360° permite ajustar la orientación.</p></details>
+        <details><summary>¿Se puede plegar y guardar?</summary><p>Sí. Su diseño portátil se pliega para facilitar el guardado y el traslado.</p></details>
+        <details><summary>¿Qué espacio ocupa?</summary><p>Sus dimensiones son 340 × 235 × 76 mm. Incluye una ranura para tener pequeños accesorios a mano.</p></details>
+        <details><summary>¿De qué material está hecho?</summary><p>La estructura está fabricada en MDF.</p></details>
+      </div>
+    </div>
+
+    <div class="premium-final-cta">
+      <p class="premium-eyebrow"><span></span> COLECCIÓN 01 · NEKOVA</p>
+      <h2>Hacé lugar<br>para <em>una mejor rutina.</em></h2>
+      <p>Precio de lanzamiento por tiempo limitado.</p>
+      <div class="premium-price premium-price-centered">
+        <span class="premium-price-current">{{ current_price | money_without_trailing_zeros }} <small>ARS</small></span>
+        <span class="premium-price-was">{{ original_price | money_without_trailing_zeros }} ARS</span>
+        <span class="premium-discount">20% OFF</span>
+      </div>
+      {%- if featured_product != blank -%}
+        {% form 'product', featured_product, class: 'premium-buy-form' %}
+          <input type="hidden" name="id" value="{{ selected_variant.id }}">
+          <input type="hidden" name="quantity" value="1">
+          <button class="premium-buy-button" type="submit" name="add" {% unless featured_product.available %}disabled{% endunless %}>
+            <span>{% if featured_product.available %}Quiero mi soporte{% else %}Producto agotado{% endif %}</span><span aria-hidden="true">↗</span>
+          </button>
+        {% endform %}
+      {%- endif -%}
+      <p class="premium-small-note">MDF · Giratorio 360° · Ajustable y portátil</p>
+    </div>
+  </div>
+</section>
+
+{% style %}
+  .premium-landing {
+    --premium-bg: #111310;
+    --premium-panel: #191b17;
+    --premium-panel-soft: #20221d;
+    --premium-ink: #f1eee6;
+    --premium-muted: #aaa99f;
+    --premium-accent: #c9a878;
+    --premium-line: rgba(241, 238, 230, .15);
+    background: var(--premium-bg);
+    color: var(--premium-ink);
+    font-family: Arial, Helvetica, sans-serif;
+    padding: 0 0 8rem;
+  }
+  .premium-landing * { box-sizing: border-box; }
+  .premium-shell { max-width: 1440px; margin: 0 auto; padding: 0 5.5%; }
+  .premium-hero { min-height: 78vh; display: grid; grid-template-columns: .88fr 1.12fr; align-items: center; gap: 8%; padding: 7rem 0 6rem; }
+  .premium-copy { max-width: 490px; padding: 2rem 0; }
+  .premium-eyebrow, .premium-edition { margin: 0; color: var(--premium-accent); font-size: 1.05rem; font-weight: 600; letter-spacing: .18em; line-height: 1.6; }
+  .premium-eyebrow { display: flex; align-items: center; gap: 1rem; }
+  .premium-eyebrow span { width: 2.6rem; height: 1px; background: var(--premium-accent); display: inline-block; }
+  .premium-edition { color: var(--premium-muted); font-size: .9rem; letter-spacing: .16em; margin-top: 4.2rem; }
+  .premium-copy h1, .premium-story h2, .premium-section-heading h2, .premium-specs h2, .premium-packaging h2, .premium-final-cta h2 {
+    color: var(--premium-ink); font-family: Georgia, 'Times New Roman', serif; font-size: clamp(4rem, 6vw, 7.4rem);
+    font-weight: 400; letter-spacing: -.045em; line-height: .99; margin: 1.8rem 0 1.2rem;
+  }
+  .premium-copy h1 { font-size: clamp(4.2rem, 6.5vw, 7.8rem); }
+  .premium-copy h1 em, .premium-story h2 em, .premium-section-heading h2 em, .premium-specs h2 em, .premium-final-cta h2 em { color: var(--premium-accent); font-weight: 400; }
+  .premium-product-name { color: var(--premium-ink); font-size: 1.35rem; letter-spacing: .025em; margin: 2.2rem 0 .8rem; }
+  .premium-intro, .premium-story-copy > p:not(.premium-eyebrow), .premium-specs-intro > p:not(.premium-eyebrow), .premium-packaging > div:nth-child(2) > p:not(.premium-eyebrow) {
+    color: var(--premium-muted); font-size: 1.45rem; line-height: 1.8; max-width: 48rem;
+  }
+  .premium-price { display: flex; flex-wrap: wrap; align-items: center; gap: .8rem 1.2rem; margin: 2.4rem 0 .7rem; }
+  .premium-price-current { color: var(--premium-ink); font-family: Georgia, 'Times New Roman', serif; font-size: 2.8rem; }
+  .premium-price-current small { color: var(--premium-muted); font: 500 .95rem Arial, sans-serif; letter-spacing: .1em; }
+  .premium-price-was { color: #8c8d84; font-size: 1.2rem; text-decoration: line-through; }
+  .premium-discount { border: 1px solid var(--premium-accent); color: var(--premium-accent); font-size: 1rem; letter-spacing: .08em; padding: .65rem .8rem; }
+  .premium-launch-note, .premium-select-note { color: var(--premium-muted); font-size: 1.1rem; margin: 0 0 2rem; }
+  .premium-buy-form { margin: 2.2rem 0 0; }
+  .premium-buy-button { align-items: center; background: var(--premium-accent); border: 1px solid var(--premium-accent); color: #151510; cursor: pointer; display: flex; font: 600 1.2rem Arial, sans-serif; justify-content: space-between; letter-spacing: .04em; max-width: 44rem; min-height: 5.8rem; padding: 0 2rem; text-decoration: none; transition: background .2s, color .2s; width: 100%; }
+  .premium-buy-button:hover { background: transparent; color: var(--premium-accent); }
+  .premium-buy-button:disabled { cursor: not-allowed; opacity: .55; }
+  .premium-assurances { color: var(--premium-muted); display: flex; flex-wrap: wrap; font-size: .95rem; gap: .6rem 1.8rem; letter-spacing: .05em; margin-top: 1.8rem; }
+  .premium-assurances span::before { color: var(--premium-accent); content: '✓'; margin-right: .7rem; }
+  .premium-gallery { min-width: 0; }
+  .premium-gallery-main { background: #292823; height: min(70vh, 760px); min-height: 440px; overflow: hidden; position: relative; }
+  .premium-gallery-main img { height: 100%; object-fit: cover; object-position: center 55%; width: 100%; }
+  .premium-image-index { background: rgba(17, 19, 16, .75); bottom: 1.5rem; color: var(--premium-ink); font-size: .9rem; letter-spacing: .17em; padding: .9rem 1.2rem; position: absolute; right: 1.5rem; }
+  .premium-gallery-thumbs { display: grid; gap: .8rem; grid-template-columns: repeat(8, minmax(0, 1fr)); margin-top: .8rem; }
+  .premium-gallery-thumbs button { aspect-ratio: 1; background: var(--premium-panel); border: 1px solid transparent; cursor: pointer; opacity: .65; overflow: hidden; padding: 0; }
+  .premium-gallery-thumbs button.is-active, .premium-gallery-thumbs button:hover { border-color: var(--premium-accent); opacity: 1; }
+  .premium-gallery-thumbs img { height: 100%; object-fit: cover; width: 100%; }
+  .premium-marquee { align-items: center; border-bottom: 1px solid var(--premium-line); border-top: 1px solid var(--premium-line); color: var(--premium-muted); display: flex; flex-wrap: wrap; font-size: .95rem; gap: 1.4rem; justify-content: space-around; letter-spacing: .2em; padding: 2.1rem 0; }
+  .premium-marquee i { background: var(--premium-accent); border-radius: 50%; height: .45rem; width: .45rem; }
+  .premium-story { align-items: center; display: grid; gap: 10%; grid-template-columns: 1.05fr .8fr; padding: 13rem 7%; }
+  .premium-story-image { background: var(--premium-panel); height: 56rem; overflow: hidden; }
+  .premium-story-image img { height: 100%; object-fit: cover; width: 100%; }
+  .premium-story-copy h2, .premium-specs h2, .premium-packaging h2 { font-size: clamp(4rem, 6vw, 6.8rem); }
+  .premium-story-copy a { color: var(--premium-accent); display: inline-block; font-size: 1.15rem; margin-top: 1.6rem; text-decoration: none; }
+  .premium-section-heading { margin-bottom: 4.8rem; }
+  .premium-section-heading h2 { font-size: clamp(4rem, 5.5vw, 6.2rem); margin-bottom: 0; }
+  .premium-benefits { border-top: 1px solid var(--premium-line); padding: 8rem 7%; }
+  .premium-benefit-grid { display: grid; gap: 1px; grid-template-columns: repeat(4, 1fr); background: var(--premium-line); }
+  .premium-benefit-grid article { background: var(--premium-bg); min-height: 21rem; padding: 2.4rem; }
+  .premium-benefit-number { color: var(--premium-accent); font-size: .95rem; letter-spacing: .15em; }
+  .premium-benefit-grid h3 { color: var(--premium-ink); font-family: Georgia, 'Times New Roman', serif; font-size: 2.15rem; font-weight: 400; margin: 4.3rem 0 1rem; }
+  .premium-benefit-grid p { color: var(--premium-muted); font-size: 1.15rem; line-height: 1.75; margin: 0; }
+  .premium-specs { background: var(--premium-panel); display: grid; gap: 12%; grid-template-columns: .7fr 1fr; padding: 8rem 7%; }
+  .premium-specs-intro > p:not(.premium-eyebrow) { max-width: 34rem; }
+  .premium-spec-list { margin: 0; }
+  .premium-spec-list div { align-items: baseline; border-bottom: 1px solid var(--premium-line); display: flex; justify-content: space-between; gap: 2rem; padding: 1.35rem 0; }
+  .premium-spec-list dt { color: var(--premium-muted); font-size: 1.15rem; }
+  .premium-spec-list dd { color: var(--premium-ink); font-size: 1.15rem; margin: 0; text-align: right; }
+  .premium-packaging { align-items: center; display: grid; gap: 8%; grid-template-columns: .35fr 1fr .65fr; padding: 10rem 7%; }
+  .premium-packaging-mark { align-items: center; border: 1px solid var(--premium-accent); border-radius: 50%; color: var(--premium-accent); display: flex; font: 3.5rem Georgia, serif; height: 10rem; justify-content: center; width: 10rem; }
+  .premium-packaging ul { border-left: 1px solid var(--premium-line); color: var(--premium-muted); font-size: 1.05rem; line-height: 2.8; list-style: none; margin: 0; padding-left: 2.5rem; }
+  .premium-faq { border-top: 1px solid var(--premium-line); display: grid; gap: 10%; grid-template-columns: .75fr 1fr; padding: 8rem 7%; }
+  .premium-faq .premium-section-heading { margin: 0; }
+  .premium-faq .premium-section-heading h2 { font-size: clamp(3.5rem, 5vw, 5.6rem); }
+  .premium-faq-list details { border-bottom: 1px solid var(--premium-line); padding: 1.7rem 0; }
+  .premium-faq-list summary { color: var(--premium-ink); cursor: pointer; font-family: Georgia, 'Times New Roman', serif; font-size: 1.65rem; list-style: none; }
+  .premium-faq-list summary::-webkit-details-marker { display: none; }
+  .premium-faq-list summary::after { color: var(--premium-accent); content: '+'; float: right; font-family: Arial, sans-serif; }
+  .premium-faq-list details[open] summary::after { content: '−'; }
+  .premium-faq-list details p { color: var(--premium-muted); font-size: 1.15rem; line-height: 1.8; max-width: 55rem; }
+  .premium-final-cta { background: var(--premium-panel); margin: 0 7%; padding: 7rem 2rem; text-align: center; }
+  .premium-final-cta .premium-eyebrow { justify-content: center; }
+  .premium-final-cta h2 { font-size: clamp(4.5rem, 7vw, 8rem); }
+  .premium-final-cta > p:not(.premium-eyebrow) { color: var(--premium-muted); font-size: 1.25rem; }
+  .premium-price-centered { justify-content: center; }
+  .premium-final-cta .premium-buy-button { margin: 2rem auto 0; text-align: left; }
+  .premium-small-note { color: var(--premium-muted); font-size: .95rem; letter-spacing: .08em; margin-top: 1.6rem; }
+  @media screen and (max-width: 900px) {
+    .premium-shell { padding: 0 2.2rem; }
+    .premium-hero { gap: 4rem; grid-template-columns: 1fr; padding: 5rem 0; }
+    .premium-copy { max-width: 70rem; }
+    .premium-edition { margin-top: 2.8rem; }
+    .premium-gallery-main { height: min(105vw, 720px); }
+    .premium-gallery-thumbs { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+    .premium-story { gap: 5rem; grid-template-columns: 1fr 1fr; padding: 8rem 0; }
+    .premium-story-image { height: 44rem; }
+    .premium-benefit-grid { grid-template-columns: repeat(2, 1fr); }
+    .premium-specs { gap: 4rem; grid-template-columns: 1fr; }
+    .premium-packaging { gap: 3rem; grid-template-columns: .3fr 1fr; }
+    .premium-packaging ul { grid-column: 2; }
+    .premium-faq { gap: 4rem; grid-template-columns: 1fr; }
+  }
+  @media screen and (max-width: 600px) {
+    .premium-shell { padding: 0 1.8rem; }
+    .premium-landing { padding-bottom: 4rem; }
+    .premium-hero { min-height: auto; padding: 4rem 0 3rem; }
+    .premium-copy h1 { font-size: clamp(4.4rem, 15vw, 6.5rem); }
+    .premium-product-name { font-size: 1.2rem; }
+    .premium-intro { font-size: 1.25rem; }
+    .premium-gallery-main { height: 118vw; min-height: 36rem; }
+    .premium-story { gap: 3.5rem; grid-template-columns: 1fr; padding: 7rem 0; }
+    .premium-story-image { height: 110vw; max-height: 48rem; }
+    .premium-story h2, .premium-section-heading h2, .premium-specs h2 { font-size: 4.6rem; }
+    .premium-benefits, .premium-specs, .premium-faq { padding: 5.5rem 0; }
+    .premium-section-heading { margin-bottom: 3rem; }
+    .premium-benefit-grid { grid-template-columns: 1fr 1fr; }
+    .premium-benefit-grid article { min-height: 19rem; padding: 1.5rem; }
+    .premium-benefit-grid h3 { font-size: 1.75rem; margin-top: 3rem; }
+    .premium-benefit-grid p { font-size: 1.05rem; }
+    .premium-spec-list div { gap: 1rem; }
+    .premium-spec-list dt, .premium-spec-list dd { font-size: 1rem; }
+    .premium-packaging { gap: 2.5rem; grid-template-columns: 1fr; padding: 6rem 0; }
+    .premium-packaging-mark { height: 7rem; width: 7rem; }
+    .premium-packaging ul { grid-column: 1; }
+    .premium-faq .premium-section-heading h2 { font-size: 4rem; }
+    .premium-faq-list summary { font-size: 1.45rem; }
+    .premium-final-cta { margin: 0; padding: 5rem 1.5rem; }
+    .premium-final-cta h2 { font-size: 5rem; }
+  }
+{% endstyle %}
+
+{% schema %}
+{
+  "name": "Nekova · producto destacado",
+  "tag": "div",
+  "class": "premium-product-landing-section",
+  "settings": [
+    {
+      "type": "product",
+      "id": "product",
+      "label": "Producto para agregar al carrito"
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Título principal",
+      "default": "Leé, trabajá y creá desde otro ángulo."
+    },
+    {
+      "type": "textarea",
+      "id": "description",
+      "label": "Descripción breve",
+      "default": "Un soporte de madera versátil, ajustable y giratorio para disfrutar tus libros y dispositivos con las manos libres."
+    }
+  ],
+  "presets": [
+    {
+      "name": "Nekova · producto destacado"
+    }
+  ]
+}
+{% endschema %}
