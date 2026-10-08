@@ -1,0 +1,29 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 1125" fill="none">
+  <defs>
+    <linearGradient id="bg" x1="80" y1="60" x2="820" y2="1060" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#252820"/>
+      <stop offset="1" stop-color="#111310"/>
+    </linearGradient>
+    <linearGradient id="shade" x1="270" y1="255" x2="630" y2="505" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#D7B77F"/>
+      <stop offset="1" stop-color="#8D704B"/>
+    </linearGradient>
+    <radialGradient id="glow" cx="0" cy="0" r="1" gradientTransform="matrix(0 490 -350 0 450 474)" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#C9A878" stop-opacity=".24"/>
+      <stop offset="1" stop-color="#C9A878" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+  <rect width="900" height="1125" fill="url(#bg)"/>
+  <rect width="900" height="1125" fill="url(#glow)"/>
+  <path d="M158 833h584" stroke="#C9A878" stroke-opacity=".55" stroke-width="2"/>
+  <path d="M242 834h416l-45 18H287l-45-18Z" fill="#776044"/>
+  <path d="m405 566-87 267h27l121-267h-61Z" fill="#A7895C"/>
+  <path d="M437 584 548 831h30L480 571l-43 13Z" fill="#C9A878"/>
+  <path d="m293 367 151-145 164 151-44 129-230-4-41-131Z" fill="url(#shade)" stroke="#E4C99A" stroke-width="3"/>
+  <path d="m317 374 125-120 139 126-31 93-201-4-32-95Z" fill="#F1DDB5" fill-opacity=".16"/>
+  <path d="M402 548h92v28h-92z" fill="#A7895C"/>
+  <circle cx="449" cy="553" r="16" fill="#C9A878"/>
+  <rect x="350" y="926" width="200" height="2" fill="#C9A878" fill-opacity=".48"/>
+  <text x="450" y="1005" fill="#C9A878" font-family="Georgia, serif" font-size="26" letter-spacing="9" text-anchor="middle">NEKOVA</text>
+  <text x="450" y="1051" fill="#F1EEE6" fill-opacity=".68" font-family="Arial, sans-serif" font-size="14" letter-spacing="5" text-anchor="middle">NUEVOS OBJETOS · PRÓXIMAMENTE</text>
+</svg>

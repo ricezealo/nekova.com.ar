@@ -1,9 +1,23 @@
 {%- liquid
-  assign featured_product = section.settings.product
-  assign current_price = featured_product.price | default: 12000000
-  assign original_price = featured_product.compare_at_price | default: 15000000
+  assign featured_product = product | default: section.settings.product
+  assign current_price = featured_product.price
   assign selected_variant = featured_product.selected_or_first_available_variant
-  assign discount_amount = original_price | minus: current_price
+  assign original_price = selected_variant.compare_at_price | default: featured_product.compare_at_price
+  assign has_discount = false
+  if original_price > current_price
+    assign has_discount = true
+    assign discount_amount = original_price | minus: current_price
+    assign discount_percent = discount_amount | times: 100.0 | divided_by: original_price | round
+  endif
+  assign is_reading_stand = false
+  if featured_product.handle == 'atril-madera-giratorio-360'
+    assign is_reading_stand = true
+  endif
+  assign is_k25_light = false
+  if featured_product.handle == 'lampara-video-portatil-k25-rgb'
+    assign is_k25_light = true
+  endif
+  assign stock_form_id = 'BackInStockForm-' | append: section.id
 -%}
 
 {{ 'premium-product-landing.js' | asset_url | script_tag }}
@@ -13,19 +27,23 @@
     <div class="premium-hero">
       <div class="premium-copy">
         <p class="premium-eyebrow"><span></span> NEKOVA · HOGAR Y OFICINA</p>
-        <p class="premium-edition">OBJETOS PARA UNA VIDA MEJOR &nbsp; / &nbsp; 01</p>
-        <h1 id="PremiumTitle-{{ section.id }}">{{ section.settings.heading | escape }}</h1>
-        <p class="premium-product-name">Soporte de madera giratorio 360°</p>
-        <p class="premium-intro">{{ section.settings.description | escape }}</p>
+        <p class="premium-edition">OBJETOS PARA UNA VIDA MEJOR &nbsp; / &nbsp; {{ featured_product.type | default: 'COLECCIÓN NEKOVA' }}</p>
+        <h1 id="PremiumTitle-{{ section.id }}">{{ featured_product.title | default: section.settings.heading | escape }}</h1>
+        <p class="premium-product-name">{% if is_reading_stand %}Diseño funcional para leer, estudiar y crear.{% elsif is_k25_light %}Luz creativa, lista para llevar.{% else %}Diseño pensado para acompañar tu día.{% endif %}</p>
+        <div class="premium-intro">{% if is_reading_stand %}Soporte plegable de madera MDF, ajustable y giratorio 360°, para laptop, libros y tabletas. Incluye una ranura de almacenamiento y un clip elevable para páginas.{% elsif is_k25_light %}Una luz RGB compacta de 25 W para fotografía, video, streaming y creación de contenido. Ajustá el color, la temperatura y el brillo para darle forma a cada escena.{% else %}{{ featured_product.description | strip_html | truncatewords: 34 }}{% endif %}</div>
 
-        <div class="premium-price" aria-label="Precio de lanzamiento">
+        <div class="premium-price" aria-label="Precio del producto">
           <span class="premium-price-current">{{ current_price | money_without_trailing_zeros }} <small>ARS</small></span>
-          <span class="premium-price-was">{{ original_price | money_without_trailing_zeros }} ARS</span>
-          <span class="premium-discount">20% OFF</span>
+          {% if has_discount %}
+            <span class="premium-price-was">{{ original_price | money_without_trailing_zeros }} ARS</span>
+            <span class="premium-discount">{{ discount_percent }}% OFF</span>
+          {% endif %}
         </div>
-        <p class="premium-launch-note">Precio especial de lanzamiento · Ahorrás {{ discount_amount | money_without_trailing_zeros }} ARS</p>
+        {% if has_discount %}
+          <p class="premium-launch-note">Precio especial · Ahorrás {{ discount_amount | money_without_trailing_zeros }} ARS</p>
+        {% endif %}
 
-        {%- if featured_product != blank -%}
+        {%- if featured_product != blank and featured_product.available -%}
           {% form 'product', featured_product, class: 'premium-buy-form' %}
             <input type="hidden" name="id" value="{{ selected_variant.id }}">
             <input type="hidden" name="quantity" value="1">
@@ -34,88 +52,242 @@
               <span aria-hidden="true">↗</span>
             </button>
           {% endform %}
+        {%- elsif featured_product != blank -%}
+          <div class="premium-stock-notice">
+            <span class="premium-stock-status">PRÓXIMAMENTE</span>
+            <p>Dejanos tu email y te avisaremos cuando este producto esté disponible.</p>
+            {% form 'customer', id: stock_form_id, class: 'premium-stock-form' %}
+              {% if form.posted_successfully? or stock_notification_registered %}
+                <p class="premium-stock-success" role="status">¡Listo! Registramos tu email para avisarte sobre la disponibilidad de este producto.</p>
+              {% else %}
+                {% if form.errors %}
+                  <p class="premium-stock-error" role="alert">No pudimos registrar tu email. Revisá el dato e intentá nuevamente.</p>
+                {% endif %}
+                <input type="hidden" name="contact[tags]" value="back-in-stock, back-in-stock-{{ featured_product.handle }}">
+                <label for="BackInStockEmail-{{ section.id }}">Tu correo electrónico</label>
+                <div class="premium-stock-input-row">
+                  <input id="BackInStockEmail-{{ section.id }}" type="email" name="contact[email]" autocomplete="email" placeholder="nombre@correo.com" required>
+                  <button type="submit" class="premium-stock-submit">Avisarme</button>
+                </div>
+                <label class="premium-stock-consent" for="BackInStockConsent-{{ section.id }}">
+                  <input id="BackInStockConsent-{{ section.id }}" type="checkbox" name="contact[accepts_marketing]" value="true" required>
+                  <span>Acepto recibir por email un aviso cuando este producto esté disponible.</span>
+                </label>
+              {% endif %}
+            {% endform %}
+          </div>
         {%- else -%}
-          <a class="premium-buy-button" href="/products/atril-madera-giratorio-360">
+          <a class="premium-buy-button" href="{{ featured_product.url }}">
             <span>Ver producto</span>
             <span aria-hidden="true">↗</span>
           </a>
-          <p class="premium-select-note">Para activar la compra, seleccioná el producto en el editor del tema.</p>
+          <p class="premium-select-note">Elegí este objeto para descubrir todos sus detalles.</p>
         {%- endif -%}
         <div class="premium-assurances">
-          <span>Diseño funcional</span><span>Madera MDF</span><span>Uso diario</span>
+          {% if is_k25_light %}
+            <span>25 W RGB</span><span>Batería 3300 mAh</span><span>Diseño portátil</span>
+          {% else %}
+            <span>Diseño funcional</span><span>Madera MDF</span><span>Uso diario</span>
+          {% endif %}
         </div>
       </div>
 
       <div class="premium-gallery" data-premium-gallery>
         <div class="premium-gallery-main">
-          <img
-            src="{{ 'Hfa9cf59005624810920467ea450cbfb5o.avif' | asset_url }}"
-            alt="Atril de madera ajustable con un libro abierto sobre un escritorio"
-            width="1280"
-            height="1857"
-            fetchpriority="high"
-            data-premium-main-image
-          >
-          <span class="premium-image-index">NEKOVA OBJECTS &nbsp; — &nbsp; 01 / 05</span>
+          <button class="premium-gallery-open" type="button" aria-label="Ampliar imagen del producto" data-gallery-open>
+          {% if is_reading_stand %}
+            <img
+              src="{{ 'product-media-Hb5f1ee0a42944e8da27b90df6e3ed1877.jpg' | asset_url }}"
+              alt="Atril de madera ajustable para laptop, libros y tabletas"
+              width="1200"
+              height="1500"
+              fetchpriority="high"
+              data-premium-main-image
+            >
+          {% elsif is_k25_light %}
+            <img
+              src="{{ 'product-media-k25-video-light-02.jpg' | asset_url }}"
+              alt="Mini lámpara de video K25 RGB portátil de 25 W"
+              width="1200"
+              height="1500"
+              fetchpriority="high"
+              data-premium-main-image
+            >
+          {% elsif featured_product.featured_image %}
+            <img src="{{ featured_product.featured_image | image_url: width: 1600 }}" alt="{{ featured_product.featured_image.alt | default: featured_product.title | escape }}" fetchpriority="high" data-premium-main-image            >
+          {% endif %}
+          </button>
+          <button class="premium-gallery-control premium-gallery-previous" type="button" aria-label="Ver imagen anterior" data-gallery-previous>
+            <span aria-hidden="true">←</span>
+          </button>
+          <button class="premium-gallery-control premium-gallery-next" type="button" aria-label="Ver imagen siguiente" data-gallery-next>
+            <span aria-hidden="true">→</span>
+          </button>
+          <span class="premium-image-index">NEKOVA OBJECTS &nbsp; — &nbsp; {% if is_reading_stand %}8{% elsif is_k25_light %}15{% else %}{{ featured_product.media.size }}{% endif %} IMÁGENES</span>
         </div>
         <div class="premium-gallery-thumbs" aria-label="Galería del producto">
-          <button class="is-active" type="button" aria-label="Ver atril con libro abierto" aria-pressed="true" data-premium-image="{{ 'Hfa9cf59005624810920467ea450cbfb5o.avif' | asset_url }}" data-premium-alt="Atril de madera con libro abierto">
-            <img src="{{ 'Hfa9cf59005624810920467ea450cbfb5o.avif' | asset_url }}" alt="" width="1280" height="1857" loading="lazy">
+          {% if is_reading_stand %}
+          <button class="is-active" type="button" aria-label="Ver atril de madera" aria-pressed="true" data-premium-image="{{ 'product-media-Hb5f1ee0a42944e8da27b90df6e3ed1877.jpg' | asset_url }}" data-premium-alt="Atril de madera ajustable para laptop, libros y tabletas">
+            <img src="{{ 'product-media-Hb5f1ee0a42944e8da27b90df6e3ed1877.jpg' | asset_url }}" alt="" width="1200" height="1500" loading="lazy">
           </button>
-          <button type="button" aria-label="Ver soporte y ranura de almacenamiento" aria-pressed="false" data-premium-image="{{ 'H028aa62769ca4ad9b54aca33682d19ec0.avif' | asset_url }}" data-premium-alt="Soporte de madera ajustable">
-            <img src="{{ 'H028aa62769ca4ad9b54aca33682d19ec0.avif' | asset_url }}" alt="" width="1280" height="1857" loading="lazy">
+          <button type="button" aria-label="Ver atril con libro abierto" aria-pressed="false" data-premium-image="{{ 'product-media-Hfa9cf59005624810920467ea450cbfb5o.jpg' | asset_url }}" data-premium-alt="Atril de madera con libro abierto">
+            <img src="{{ 'product-media-Hfa9cf59005624810920467ea450cbfb5o.jpg' | asset_url }}" alt="" width="1200" height="1500" loading="lazy">
           </button>
-          <button type="button" aria-label="Ver el soporte desde otro ángulo" aria-pressed="false" data-premium-image="{{ 'H2b4cc26ef0d8449ba2492fe241016991o.avif' | asset_url }}" data-premium-alt="Vista alternativa del atril">
-            <img src="{{ 'H2b4cc26ef0d8449ba2492fe241016991o.avif' | asset_url }}" alt="" width="1280" height="1857" loading="lazy">
+          <button type="button" aria-label="Ver soporte y ranura de almacenamiento" aria-pressed="false" data-premium-image="{{ 'product-media-H028aa62769ca4ad9b54aca33682d19ec0.jpg' | asset_url }}" data-premium-alt="Soporte de madera ajustable">
+            <img src="{{ 'product-media-H028aa62769ca4ad9b54aca33682d19ec0.jpg' | asset_url }}" alt="" width="1200" height="1500" loading="lazy">
           </button>
-          <button type="button" aria-label="Ver detalles del producto" aria-pressed="false" data-premium-image="{{ 'H43efb61d5f9348f1b53da0d6bc37cba9y.avif' | asset_url }}" data-premium-alt="Detalle del soporte portátil de madera">
-            <img src="{{ 'H43efb61d5f9348f1b53da0d6bc37cba9y.avif' | asset_url }}" alt="" width="1280" height="1857" loading="lazy">
+          <button type="button" aria-label="Ver el soporte desde otro ángulo" aria-pressed="false" data-premium-image="{{ 'product-media-H2b4cc26ef0d8449ba2492fe241016991o.jpg' | asset_url }}" data-premium-alt="Vista alternativa del atril">
+            <img src="{{ 'product-media-H2b4cc26ef0d8449ba2492fe241016991o.jpg' | asset_url }}" alt="" width="1200" height="1500" loading="lazy">
           </button>
-          <button type="button" aria-label="Ver clip elevable para libros" aria-pressed="false" data-premium-image="{{ 'H5ba6a17b211f44a7aa2103ffaa26e290v.avif' | asset_url }}" data-premium-alt="Detalle del soporte para libros">
-            <img src="{{ 'H5ba6a17b211f44a7aa2103ffaa26e290v.avif' | asset_url }}" alt="" width="1280" height="1857" loading="lazy">
+          <button type="button" aria-label="Ver detalles del producto" aria-pressed="false" data-premium-image="{{ 'product-media-H43efb61d5f9348f1b53da0d6bc37cba9y.jpg' | asset_url }}" data-premium-alt="Detalle del soporte portátil de madera">
+            <img src="{{ 'product-media-H43efb61d5f9348f1b53da0d6bc37cba9y.jpg' | asset_url }}" alt="" width="1200" height="1500" loading="lazy">
           </button>
-          <button type="button" aria-label="Ver otra vista del soporte" aria-pressed="false" data-premium-image="{{ 'Hb24d8690081143bdac982e5102f33c18C.avif' | asset_url }}" data-premium-alt="Vista adicional del atril de madera">
-            <img src="{{ 'Hb24d8690081143bdac982e5102f33c18C.avif' | asset_url }}" alt="" width="1280" height="1857" loading="lazy">
+          <button type="button" aria-label="Ver clip elevable para libros" aria-pressed="false" data-premium-image="{{ 'product-media-H5ba6a17b211f44a7aa2103ffaa26e290v.jpg' | asset_url }}" data-premium-alt="Detalle del soporte para libros">
+            <img src="{{ 'product-media-H5ba6a17b211f44a7aa2103ffaa26e290v.jpg' | asset_url }}" alt="" width="1200" height="1500" loading="lazy">
           </button>
-          <button type="button" aria-label="Ver el soporte en un escritorio" aria-pressed="false" data-premium-image="{{ 'Hb5f1ee0a42944e8da27b90df6e3ed1877.avif' | asset_url }}" data-premium-alt="Soporte de lectura portátil en un espacio de trabajo">
-            <img src="{{ 'Hb5f1ee0a42944e8da27b90df6e3ed1877.avif' | asset_url }}" alt="" width="1024" height="1024" loading="lazy">
+          <button type="button" aria-label="Ver otra vista del soporte" aria-pressed="false" data-premium-image="{{ 'product-media-Hb24d8690081143bdac982e5102f33c18C.jpg' | asset_url }}" data-premium-alt="Vista adicional del atril de madera">
+            <img src="{{ 'product-media-Hb24d8690081143bdac982e5102f33c18C.jpg' | asset_url }}" alt="" width="1200" height="1500" loading="lazy">
           </button>
-          <button type="button" aria-label="Ver detalle del soporte para tabletas" aria-pressed="false" data-premium-image="{{ 'He1c69a86185942a6b7db4bcdd258049el.avif' | asset_url }}" data-premium-alt="Detalle del atril ajustable">
-            <img src="{{ 'He1c69a86185942a6b7db4bcdd258049el.avif' | asset_url }}" alt="" width="1280" height="1857" loading="lazy">
+          <button type="button" aria-label="Ver el soporte en un escritorio" aria-pressed="false" data-premium-image="{{ 'product-media-Hb5f1ee0a42944e8da27b90df6e3ed1877.jpg' | asset_url }}" data-premium-alt="Soporte de lectura portátil en un espacio de trabajo">
+            <img src="{{ 'product-media-Hb5f1ee0a42944e8da27b90df6e3ed1877.jpg' | asset_url }}" alt="" width="1200" height="1500" loading="lazy">
           </button>
+          <button type="button" aria-label="Ver detalle del soporte para laptop y tabletas" aria-pressed="false" data-premium-image="{{ 'product-media-He1c69a86185942a6b7db4bcdd258049el.jpg' | asset_url }}" data-premium-alt="Detalle del atril ajustable para laptop, libros y tabletas">
+            <img src="{{ 'product-media-He1c69a86185942a6b7db4bcdd258049el.jpg' | asset_url }}" alt="" width="1200" height="1500" loading="lazy">
+          </button>
+          {% elsif is_k25_light %}
+            {% assign light_gallery_images = 'product-media-k25-video-light-02.jpg,product-media-k25-video-light-03.jpg,product-media-k25-video-light-04.jpg,product-media-k25-video-light-05.jpg,product-media-k25-video-light-main.jpg,product-media-k25-video-light-07.jpg,product-media-k25-video-light-08.jpg,product-media-k25-video-light-09.jpg,product-media-k25-video-light-10.jpg,product-media-k25-video-light-11.jpg,product-media-k25-video-light-12.jpg,product-media-k25-video-light-13.jpg,product-media-k25-video-light-14.jpg,product-media-k25-video-light-15.jpg,product-media-k25-video-light-16.jpg' | split: ',' %}
+            {% for image_file in light_gallery_images %}
+              <button class="{% if forloop.first %}is-active{% endif %}" type="button" aria-label="Ver lámpara K25, imagen {{ forloop.index }}" aria-pressed="{% if forloop.first %}true{% else %}false{% endif %}" data-premium-image="{{ image_file | asset_url }}" data-premium-alt="Lámpara de video K25 RGB, imagen {{ forloop.index }}">
+                <img src="{{ image_file | asset_url }}" alt="" loading="lazy">
+              </button>
+            {% endfor %}
+          {% else %}
+            {% for media in featured_product.media %}
+              {% if media.media_type == 'image' %}
+                <button type="button" aria-label="Ver {{ featured_product.title | escape }} · imagen {{ forloop.index }}" aria-pressed="{% if forloop.first %}true{% else %}false{% endif %}" data-premium-image="{{ media | image_url: width: 1800 }}" data-premium-alt="{{ media.alt | default: featured_product.title | escape }}">
+                  <img src="{{ media | image_url: width: 260 }}" alt="" loading="lazy">
+                </button>
+              {% endif %}
+            {% endfor %}
+          {% endif %}
         </div>
+        <dialog class="premium-lightbox" aria-label="Galería de imágenes del producto" data-premium-lightbox>
+          <div class="premium-lightbox-content">
+            <button class="premium-lightbox-close" type="button" aria-label="Cerrar imagen ampliada" data-lightbox-close>
+              <span aria-hidden="true">×</span>
+            </button>
+            <button class="premium-gallery-control premium-lightbox-previous" type="button" aria-label="Ver imagen anterior" data-lightbox-previous>
+              <span aria-hidden="true">←</span>
+            </button>
+            <img class="premium-lightbox-image" alt="" data-lightbox-image>
+            <button class="premium-gallery-control premium-lightbox-next" type="button" aria-label="Ver imagen siguiente" data-lightbox-next>
+              <span aria-hidden="true">→</span>
+            </button>
+            <p class="premium-lightbox-caption" aria-live="polite" data-lightbox-caption></p>
+          </div>
+        </dialog>
       </div>
     </div>
 
+    {% if is_reading_stand %}
     <div class="premium-marquee" aria-label="Nekova: objetos para una vida mejor">
       <span>MENOS ESFUERZO</span><i></i><span>MÁS COMODIDAD</span><i></i><span>MEJOR ENFOQUE</span><i></i><span>NEKOVA OBJECTS</span>
     </div>
 
     <div class="premium-story">
       <div class="premium-story-image">
-        <img src="{{ 'Hb5f1ee0a42944e8da27b90df6e3ed1877.avif' | asset_url }}" alt="Soporte de lectura portátil para libros y tablet" width="1024" height="1024" loading="lazy">
+        <img src="{{ 'product-media-Hb5f1ee0a42944e8da27b90df6e3ed1877.jpg' | asset_url }}" alt="Soporte portátil de madera para laptop, libros y tabletas" width="1200" height="1500" loading="lazy">
       </div>
       <div class="premium-story-copy">
         <p class="premium-eyebrow"><span></span> UNA MEJOR FORMA DE LEER</p>
         <h2>Tu espacio.<br>Tu ritmo.<br><em>Tu ángulo.</em></h2>
-        <p>Un buen objeto hace más simple lo cotidiano. Este atril sostiene tus libros o tablet, libera tus manos y se adapta a tu forma de leer, estudiar o trabajar.</p>
+        <p>Un buen objeto hace más simple lo cotidiano. Este atril sostiene tu laptop, tus libros y tus tabletas, libera tus manos y se adapta a tu forma de leer, estudiar o trabajar.</p>
         <a href="#detalles-producto">Descubrí sus detalles <span aria-hidden="true">↓</span></a>
       </div>
     </div>
+    {% elsif is_k25_light %}
+    <div class="premium-story">
+      <div class="premium-story-image">
+        <img src="{{ 'product-media-k25-video-light-03.jpg' | asset_url }}" alt="Lámpara K25 iluminando distintos escenarios para fotografía, gaming y streaming" width="768" height="874" loading="lazy">
+      </div>
+      <div class="premium-story-copy">
+        <p class="premium-eyebrow"><span></span> TU LUZ, TU ESCENA</p>
+        <h2>Creá con<br><em>tu color.</em></h2>
+        <p>Desde una luz suave para retratos hasta efectos RGB para video y streaming: la K25 reúne potencia, control y portabilidad en un formato compacto.</p>
+        <a href="#detalles-producto">Descubrí sus detalles <span aria-hidden="true">↓</span></a>
+      </div>
+    </div>
+    {% endif %}
+
+    <div class="premium-photo-story" aria-label="Galería completa del producto">
+      {% if is_reading_stand %}
+        <figure><img src="{{ 'product-media-Hfa9cf59005624810920467ea450cbfb5o.jpg' | asset_url }}" alt="Atril de madera con libro abierto, vista completa" width="1200" height="1500" loading="lazy"><figcaption>Lectura cómoda, con las manos libres.</figcaption></figure>
+        <figure><img src="{{ 'product-media-H028aa62769ca4ad9b54aca33682d19ec0.jpg' | asset_url }}" alt="Vista del soporte ajustable y su ranura de almacenamiento" width="1200" height="1500" loading="lazy"><figcaption>Una superficie para tus esenciales.</figcaption></figure>
+        <figure><img src="{{ 'product-media-H2b4cc26ef0d8449ba2492fe241016991o.jpg' | asset_url }}" alt="Vista lateral del atril giratorio" width="1200" height="1500" loading="lazy"><figcaption>Ajustá la inclinación a tu postura.</figcaption></figure>
+        <figure><img src="{{ 'product-media-H43efb61d5f9348f1b53da0d6bc37cba9y.jpg' | asset_url }}" alt="Detalle del soporte de lectura portátil" width="1200" height="1500" loading="lazy"><figcaption>Detalles que hacen más simple la rutina.</figcaption></figure>
+        <figure><img src="{{ 'product-media-H5ba6a17b211f44a7aa2103ffaa26e290v.jpg' | asset_url }}" alt="Detalle del clip para sostener las páginas" width="1200" height="1500" loading="lazy"><figcaption>Clip elevable para mantener el libro abierto.</figcaption></figure>
+        <figure><img src="{{ 'product-media-Hb24d8690081143bdac982e5102f33c18C.jpg' | asset_url }}" alt="Otra vista del atril de madera" width="1200" height="1500" loading="lazy"><figcaption>Una pieza funcional desde todos sus ángulos.</figcaption></figure>
+        <figure><img src="{{ 'product-media-Hb5f1ee0a42944e8da27b90df6e3ed1877.jpg' | asset_url }}" alt="Soporte portátil para laptop, libros y tabletas sobre un escritorio" width="1200" height="1500" loading="lazy"><figcaption>Tu espacio de lectura o trabajo, donde lo necesites.</figcaption></figure>
+        <figure><img src="{{ 'product-media-He1c69a86185942a6b7db4bcdd258049el.jpg' | asset_url }}" alt="Detalle del atril ajustable para laptop, libros y tabletas" width="1200" height="1500" loading="lazy"><figcaption>Diseñado para acompañarte todos los días.</figcaption></figure>
+      {% elsif is_k25_light %}
+        {% assign light_gallery_images = 'product-media-k25-video-light-02.jpg,product-media-k25-video-light-03.jpg,product-media-k25-video-light-04.jpg,product-media-k25-video-light-05.jpg,product-media-k25-video-light-main.jpg,product-media-k25-video-light-07.jpg,product-media-k25-video-light-08.jpg,product-media-k25-video-light-09.jpg,product-media-k25-video-light-10.jpg,product-media-k25-video-light-11.jpg,product-media-k25-video-light-12.jpg,product-media-k25-video-light-13.jpg,product-media-k25-video-light-14.jpg,product-media-k25-video-light-15.jpg,product-media-k25-video-light-16.jpg' | split: ',' %}
+        {% assign light_gallery_captions = 'Potencia RGB de 25 W en un formato compacto.|Iluminá fotografía, streaming, gaming y video.|Ventilación integrada para acompañar su rendimiento.|20 efectos dinámicos para crear escenas.|Elegí entre una amplia gama de colores RGB.|Una luz suave para retratos y videollamadas.|Difusor magnético para una iluminación más uniforme.|Creá una atmósfera cálida con efecto sunset.|De luz cálida a fría, según cada momento.|CRI 95+ para una reproducción precisa del color.|Batería integrada de 3300 mAh.|Formato ultracompacto para llevarlo fácilmente.|Controles intuitivos de potencia y modos.|Montaje en cámara, trípode o laptop.|Detalles de la superficie LED y los controles.' | split: '|' %}
+        {% for image_file in light_gallery_images %}
+          <figure><img src="{{ image_file | asset_url }}" alt="Lámpara de video K25 RGB portátil, imagen {{ forloop.index }}" loading="lazy"><figcaption>{{ light_gallery_captions[forloop.index0] }}</figcaption></figure>
+        {% endfor %}
+      {% else %}
+        {% for media in featured_product.media %}
+          {% if media.media_type == 'image' %}
+            <figure><img src="{{ media | image_url: width: 2000 }}" alt="{{ media.alt | default: featured_product.title | escape }}" width="{{ media.preview_image.width }}" height="{{ media.preview_image.height }}" loading="lazy"><figcaption>{{ media.alt | default: featured_product.title | escape }}</figcaption></figure>
+          {% endif %}
+        {% endfor %}
+      {% endif %}
+    </div>
+
+    {% if is_k25_light %}
+    <section class="premium-video" aria-labelledby="K25VideoTitle-{{ section.id }}">
+      <div class="premium-section-heading">
+        <p class="premium-eyebrow"><span></span> K25 RGB · EN ACCIÓN</p>
+        <h2 id="K25VideoTitle-{{ section.id }}">Mirá la luz<br><em>en movimiento.</em></h2>
+        <p>Explorá los modos de color y los efectos de iluminación de la lámpara K25.</p>
+      </div>
+      <video controls playsinline preload="metadata" poster="{{ 'product-media-k25-video-light-poster.jpg' | asset_url }}" aria-label="Demostración de la lámpara de video K25 RGB">
+        <source src="{{ 'k25-video-light.mp4' | asset_url }}" type="video/mp4">
+        Tu navegador no puede reproducir este video.
+      </video>
+    </section>
+    {% endif %}
 
     <div class="premium-benefits" id="detalles-producto">
       <div class="premium-section-heading">
         <p class="premium-eyebrow"><span></span> DISEÑADO PARA ACOMPAÑARTE</p>
         <h2>Pequeños detalles.<br><em>Una gran diferencia.</em></h2>
       </div>
+      {% if is_reading_stand %}
       <div class="premium-benefit-grid">
         <article><span class="premium-benefit-number">01</span><h3>Giratorio 360°</h3><p>Encontrá el ángulo justo para leer, estudiar o seguir una receta con comodidad.</p></article>
         <article><span class="premium-benefit-number">02</span><h3>Todo en su lugar</h3><p>La ranura de almacenamiento mantiene lápices y accesorios siempre a mano.</p></article>
-        <article><span class="premium-benefit-number">03</span><h3>Listo para llevar</h3><p>Diseño plegable y portátil: armá tu espacio de lectura donde estés.</p></article>
+        <article><span class="premium-benefit-number">03</span><h3>Listo para llevar</h3><p>Diseño plegable y portátil: armá tu espacio de lectura o trabajo donde estés, con laptop, libros o tabletas.</p></article>
         <article><span class="premium-benefit-number">04</span><h3>Madera MDF</h3><p>Una estructura firme, duradera y de estética cálida para tu hogar u oficina.</p></article>
       </div>
+      {% elsif is_k25_light %}
+      <div class="premium-benefit-grid">
+        <article><span class="premium-benefit-number">01</span><h3>20 efectos dinámicos</h3><p>Escenas de luz para sumar creatividad a tus fotos, videos y transmisiones.</p></article>
+        <article><span class="premium-benefit-number">02</span><h3>Color a tu manera</h3><p>RGB de 360° y temperatura ajustable de 1800 K a 9000 K para encontrar el tono indicado.</p></article>
+        <article><span class="premium-benefit-number">03</span><h3>Brillo preciso</h3><p>Regulación continua del 0 al 100 % para adaptar la intensidad a cada escena.</p></article>
+        <article><span class="premium-benefit-number">04</span><h3>Color fiel</h3><p>CRI 95+ para una reproducción cromática cuidada en tus tomas.</p></article>
+        <article><span class="premium-benefit-number">05</span><h3>Autonomía para crear</h3><p>Batería de 3300 mAh: hasta 45 minutos a brillo máximo o 600 minutos al mínimo.</p></article>
+        <article><span class="premium-benefit-number">06</span><h3>Compacta y portátil</h3><p>Solo 12,8 × 7,8 × 2,58 cm y 212 g, lista para acompañarte.</p></article>
+        <article><span class="premium-benefit-number">07</span><h3>36.000 colores</h3><p>Explorá una amplia variedad cromática y encontrá el ambiente que imaginás.</p></article>
+        <article><span class="premium-benefit-number">08</span><h3>Luz suave</h3><p>Su difusor magnético ayuda a crear una iluminación más uniforme y agradable.</p></article>
+        <article><span class="premium-benefit-number">09</span><h3>Lista para montar</h3><p>Con orificio de 1/4″ y soporte para teléfono para sumar opciones de uso.</p></article>
+      </div>
+      {% else %}
+        <div class="premium-generic-description rte">{{ featured_product.description }}</div>
+      {% endif %}
     </div>
 
+    {% if is_reading_stand %}
     <div class="premium-specs">
       <div class="premium-specs-intro">
         <p class="premium-eyebrow"><span></span> FICHA TÉCNICA</p>
@@ -128,15 +300,50 @@
         <div><dt>Dimensiones</dt><dd>340 × 235 × 76 mm</dd></div>
         <div><dt>Peso neto</dt><dd>1,22 kg</dd></div>
         <div><dt>Modelo</dt><dd>R51C</dd></div>
-        <div><dt>Soporte</dt><dd>Libros y tabletas</dd></div>
+        <div><dt>Tipo</dt><dd>Soporte para laptop y tabletas</dd></div>
+        <div><dt>Marca</dt><dd>Neutral / OEM</dd></div>
+        <div><dt>Diseño</dt><dd>Molde privado</dd></div>
+        <div><dt>Soporte</dt><dd>Laptop, libros y tabletas</dd></div>
         <div><dt>Clip para libros</dt><dd>Elevable</dd></div>
         <div><dt>Almacenamiento</dt><dd>Ranura integrada</dd></div>
-        <div><dt>Origen</dt><dd>Guangdong, China</dd></div>
         <div><dt>Empaque individual</dt><dd>38 × 27 × 10 cm</dd></div>
         <div><dt>Peso bruto</dt><dd>2 kg</dd></div>
       </dl>
     </div>
+    {% elsif is_k25_light %}
+    <div class="premium-specs">
+      <div class="premium-specs-intro">
+        <p class="premium-eyebrow"><span></span> FICHA TÉCNICA</p>
+        <h2>Compacta por fuera.<br><em>Creativa por dentro.</em></h2>
+        <p>Potencia y control en un formato pensado para llevar.</p>
+      </div>
+      <dl class="premium-spec-list">
+        <div><dt>Modelo</dt><dd>K25 RGB</dd></div>
+        <div><dt>Potencia</dt><dd>25 W</dd></div>
+        <div><dt>Temperatura de color</dt><dd>1800–9000 K</dd></div>
+        <div><dt>Brillo</dt><dd>Regulable de 0 a 100 %</dd></div>
+        <div><dt>Efectos dinámicos</dt><dd>20 modos</dd></div>
+        <div><dt>Reproducción cromática</dt><dd>CRI 95+</dd></div>
+        <div><dt>Batería</dt><dd>3300 mAh · 7,4 V</dd></div>
+        <div><dt>Autonomía estimada</dt><dd>45 min máx. · 600 min mín.</dd></div>
+        <div><dt>Iluminancia</dt><dd>6400 lux a 0,3 m · 9000 K</dd></div>
+        <div><dt>Ángulo de haz</dt><dd>120°</dd></div>
+        <div><dt>Dimensiones</dt><dd>12,8 × 7,8 × 2,58 cm</dd></div>
+        <div><dt>Peso</dt><dd>212 g</dd></div>
+        <div><dt>Material</dt><dd>ABS</dd></div>
+        <div><dt>Alimentación</dt><dd>Batería recargable</dd></div>
+        <div><dt>Iluminación LED</dt><dd>168 LED SMD</dd></div>
+        <div><dt>Conexión de carga</dt><dd>USB-C</dd></div>
+        <div><dt>Tiempo de carga</dt><dd>Aprox. 170 min · 5 V / 2 A</dd></div>
+        <div><dt>Montaje</dt><dd>Rosca de 1/4″</dd></div>
+        <div><dt>Empaque</dt><dd>17 × 15 × 7 cm</dd></div>
+      </dl>
+    </div>
+    {% elsif featured_product.metafields.custom.specifications != blank %}
+      <div class="premium-specs"><div class="premium-specs-intro"><p class="premium-eyebrow"><span></span> FICHA TÉCNICA</p><h2>Detalles del <em>producto.</em></h2></div><div class="premium-generic-description rte">{{ featured_product.metafields.custom.specifications | metafield_tag }}</div></div>
+    {% endif %}
 
+    {% if is_reading_stand %}
     <div class="premium-packaging">
       <div><span class="premium-packaging-mark">N.</span></div>
       <div>
@@ -158,32 +365,54 @@
         <h2>Preguntas <em>frecuentes.</em></h2>
       </div>
       <div class="premium-faq-list">
-        <details><summary>¿Puedo usarlo con una tablet?</summary><p>Sí. El atril está pensado para sostener libros y tabletas, y su rotación de 360° permite ajustar la orientación.</p></details>
+        <details><summary>¿Puedo usarlo con laptop, libros o tabletas?</summary><p>Sí. El atril está pensado para sostener laptop, libros y tabletas, y su rotación de 360° permite ajustar la orientación.</p></details>
         <details><summary>¿Se puede plegar y guardar?</summary><p>Sí. Su diseño portátil se pliega para facilitar el guardado y el traslado.</p></details>
         <details><summary>¿Qué espacio ocupa?</summary><p>Sus dimensiones son 340 × 235 × 76 mm. Incluye una ranura para tener pequeños accesorios a mano.</p></details>
         <details><summary>¿De qué material está hecho?</summary><p>La estructura está fabricada en MDF.</p></details>
       </div>
     </div>
+    {% endif %}
+
+    <section class="premium-reviews" aria-labelledby="PremiumReviewsTitle-{{ section.id }}">
+      <div class="premium-section-heading">
+        <p class="premium-eyebrow"><span></span> EXPERIENCIAS REALES</p>
+        <h2 id="PremiumReviewsTitle-{{ section.id }}">Reseñas de<br><em>este producto.</em></h2>
+        <p>Opiniones compartidas por clientes. Las reseñas se mostrarán aquí cuando se conecte la app de reseñas de la tienda.</p>
+      </div>
+      <div class="premium-reviews-apps">
+        {% for block in section.blocks %}
+          {% render block %}
+        {% else %}
+          <p class="premium-reviews-empty">Todavía no hay reseñas publicadas. Próximamente vas a poder leer las experiencias de quienes compraron este producto.</p>
+        {% endfor %}
+      </div>
+    </section>
 
     <div class="premium-final-cta">
       <p class="premium-eyebrow"><span></span> COLECCIÓN 01 · NEKOVA</p>
       <h2>Hacé lugar<br>para <em>una mejor rutina.</em></h2>
-      <p>Precio de lanzamiento por tiempo limitado.</p>
+      <p>{% if has_discount %}Precio especial por tiempo limitado.{% elsif is_k25_light %}Luz RGB portátil para tus proyectos creativos.{% else %}Diseño funcional para acompañar tu día.{% endif %}</p>
       <div class="premium-price premium-price-centered">
         <span class="premium-price-current">{{ current_price | money_without_trailing_zeros }} <small>ARS</small></span>
-        <span class="premium-price-was">{{ original_price | money_without_trailing_zeros }} ARS</span>
-        <span class="premium-discount">20% OFF</span>
+        {% if has_discount %}
+          <span class="premium-price-was">{{ original_price | money_without_trailing_zeros }} ARS</span>
+          <span class="premium-discount">{{ discount_percent }}% OFF</span>
+        {% endif %}
       </div>
-      {%- if featured_product != blank -%}
+      {%- if featured_product != blank and featured_product.available -%}
         {% form 'product', featured_product, class: 'premium-buy-form' %}
           <input type="hidden" name="id" value="{{ selected_variant.id }}">
           <input type="hidden" name="quantity" value="1">
-          <button class="premium-buy-button" type="submit" name="add" {% unless featured_product.available %}disabled{% endunless %}>
-            <span>{% if featured_product.available %}Quiero mi soporte{% else %}Producto agotado{% endif %}</span><span aria-hidden="true">↗</span>
+          <button class="premium-buy-button" type="submit" name="add">
+            <span>{% if is_k25_light %}Quiero mi lámpara{% else %}Quiero mi soporte{% endif %}</span><span aria-hidden="true">↗</span>
           </button>
         {% endform %}
+      {%- elsif featured_product != blank -%}
+        <a class="premium-buy-button" href="#BackInStockEmail-{{ section.id }}">
+          <span>Avisarme cuando esté disponible</span><span aria-hidden="true">↗</span>
+        </a>
       {%- endif -%}
-      <p class="premium-small-note">MDF · Giratorio 360° · Ajustable y portátil</p>
+      <p class="premium-small-note">{{ featured_product.vendor }}{% if is_reading_stand %} · MDF · Giratorio 360° · Ajustable y portátil{% endif %}</p>
     </div>
   </div>
 </section>
@@ -230,21 +459,58 @@
   .premium-buy-button { align-items: center; background: var(--premium-accent); border: 1px solid var(--premium-accent); color: #151510; cursor: pointer; display: flex; font: 600 1.2rem Arial, sans-serif; justify-content: space-between; letter-spacing: .04em; max-width: 44rem; min-height: 5.8rem; padding: 0 2rem; text-decoration: none; transition: background .2s, color .2s; width: 100%; }
   .premium-buy-button:hover { background: transparent; color: var(--premium-accent); }
   .premium-buy-button:disabled { cursor: not-allowed; opacity: .55; }
+  .premium-stock-notice { background: var(--premium-panel); margin-top: 2.2rem; max-width: 48rem; padding: 2rem; }
+  .premium-stock-status { color: var(--premium-accent); font-size: .9rem; letter-spacing: .16em; }
+  .premium-stock-notice > p { color: var(--premium-muted); font-size: 1.1rem; line-height: 1.7; }
+  .premium-stock-form > label:first-of-type { color: var(--premium-ink); display: block; font-size: 1rem; margin-bottom: .7rem; }
+  .premium-stock-input-row { display: flex; gap: .8rem; }
+  .premium-stock-input-row input { background: var(--premium-bg); border: 1px solid var(--premium-line); color: var(--premium-ink); flex: 1; min-width: 0; padding: 1.2rem; }
+  .premium-stock-submit { background: var(--premium-accent); border: 1px solid var(--premium-accent); color: #151510; cursor: pointer; font-weight: 600; padding: 0 1.6rem; }
+  .premium-stock-consent { align-items: flex-start; color: var(--premium-muted); display: flex; font-size: .95rem; gap: .8rem; line-height: 1.5; margin-top: 1.2rem; }
+  .premium-stock-consent input { accent-color: var(--premium-accent); margin-top: .2rem; }
+  .premium-stock-success { color: var(--premium-accent); line-height: 1.7; }
+  .premium-stock-error { color: #ffb4a9; line-height: 1.7; }
   .premium-assurances { color: var(--premium-muted); display: flex; flex-wrap: wrap; font-size: .95rem; gap: .6rem 1.8rem; letter-spacing: .05em; margin-top: 1.8rem; }
   .premium-assurances span::before { color: var(--premium-accent); content: '✓'; margin-right: .7rem; }
   .premium-gallery { min-width: 0; }
-  .premium-gallery-main { background: #292823; height: min(70vh, 760px); min-height: 440px; overflow: hidden; position: relative; }
-  .premium-gallery-main img { height: 100%; object-fit: cover; object-position: center 55%; width: 100%; }
+  .premium-gallery-main { aspect-ratio: 4 / 5; background: #292823; height: auto; min-height: 0; overflow: hidden; position: relative; }
+  .premium-gallery-open { background: transparent; border: 0; cursor: zoom-in; display: block; height: 100%; inset: 0; padding: 0; position: absolute; width: 100%; }
+  .premium-gallery-main img { display: block; height: 100%; object-fit: cover; object-position: center; width: 100%; }
+  .premium-gallery-control { align-items: center; background: rgba(17, 19, 16, .78); border: 1px solid rgba(255, 255, 255, .25); border-radius: 50%; color: #f4f1e8; cursor: pointer; display: flex; height: 4.4rem; justify-content: center; padding: 0; position: absolute; top: 50%; transform: translateY(-50%); transition: background .2s, color .2s; width: 4.4rem; z-index: 2; }
+  .premium-gallery-control:hover { background: var(--premium-accent); color: #151510; }
+  .premium-gallery-control span { font-size: 2rem; line-height: 1; }
+  .premium-gallery-previous { left: 1.5rem; }
+  .premium-gallery-next { right: 1.5rem; }
   .premium-image-index { background: rgba(17, 19, 16, .75); bottom: 1.5rem; color: var(--premium-ink); font-size: .9rem; letter-spacing: .17em; padding: .9rem 1.2rem; position: absolute; right: 1.5rem; }
   .premium-gallery-thumbs { display: grid; gap: .8rem; grid-template-columns: repeat(8, minmax(0, 1fr)); margin-top: .8rem; }
   .premium-gallery-thumbs button { aspect-ratio: 1; background: var(--premium-panel); border: 1px solid transparent; cursor: pointer; opacity: .65; overflow: hidden; padding: 0; }
   .premium-gallery-thumbs button.is-active, .premium-gallery-thumbs button:hover { border-color: var(--premium-accent); opacity: 1; }
   .premium-gallery-thumbs img { height: 100%; object-fit: cover; width: 100%; }
+  .premium-lightbox { background: rgba(15, 16, 14, .98); border: 0; color: var(--premium-ink); height: 100dvh; margin: 0; max-height: none; max-width: none; overflow: hidden; padding: 0; position: fixed; width: 100vw; }
+  .premium-lightbox[open] { align-items: center; display: flex; justify-content: center; }
+  .premium-lightbox::backdrop { background: rgba(15, 16, 14, .98); }
+  .premium-lightbox-content { align-items: center; display: flex; height: 100%; justify-content: center; position: relative; width: 100%; }
+  .premium-lightbox-image { display: block; height: calc(100dvh - 8rem); max-height: calc(100dvh - 8rem); max-width: calc(100vw - 10rem); object-fit: contain; width: auto; }
+  .premium-lightbox-close { align-items: center; background: rgba(17, 19, 16, .78); border: 1px solid rgba(255, 255, 255, .25); border-radius: 50%; color: var(--premium-ink); cursor: pointer; display: flex; font-size: 3.2rem; height: 4.8rem; justify-content: center; line-height: 1; padding: 0 0 .3rem; position: absolute; right: 2.4rem; top: 2.4rem; width: 4.8rem; z-index: 3; }
+  .premium-lightbox-previous { left: 2.4rem; }
+  .premium-lightbox-next { right: 2.4rem; }
+  .premium-lightbox-caption { bottom: 1rem; color: var(--premium-ink); font-size: 1.2rem; left: 7rem; letter-spacing: .06em; margin: 0; position: absolute; right: 7rem; text-align: center; }
   .premium-marquee { align-items: center; border-bottom: 1px solid var(--premium-line); border-top: 1px solid var(--premium-line); color: var(--premium-muted); display: flex; flex-wrap: wrap; font-size: .95rem; gap: 1.4rem; justify-content: space-around; letter-spacing: .2em; padding: 2.1rem 0; }
   .premium-marquee i { background: var(--premium-accent); border-radius: 50%; height: .45rem; width: .45rem; }
   .premium-story { align-items: center; display: grid; gap: 10%; grid-template-columns: 1.05fr .8fr; padding: 13rem 7%; }
-  .premium-story-image { background: var(--premium-panel); height: 56rem; overflow: hidden; }
-  .premium-story-image img { height: 100%; object-fit: cover; width: 100%; }
+  .premium-story-image { aspect-ratio: 4 / 5; background: var(--premium-panel); overflow: hidden; }
+  .premium-story-image img { height: 100%; object-fit: contain; width: 100%; }
+  .premium-photo-story { display: grid; gap: 3rem; grid-template-columns: 1fr; margin: 0 auto; max-width: 980px; padding: 2rem 0 8rem; }
+  .premium-photo-story figure { margin: 0; }
+  .premium-photo-story img { aspect-ratio: 4 / 5; background: var(--premium-panel); display: block; height: auto; object-fit: contain; width: 100%; }
+  .premium-photo-story figcaption { color: var(--premium-muted); font-size: 1.05rem; letter-spacing: .05em; padding: 1rem 0; }
+  .premium-video { border-top: 1px solid var(--premium-line); display: grid; gap: 8%; grid-template-columns: .7fr 1.3fr; align-items: center; padding: 7rem 7%; }
+  .premium-video .premium-section-heading { margin: 0; }
+  .premium-video .premium-section-heading h2 { color: var(--premium-ink); font: 400 clamp(4rem, 6vw, 7rem)/1 Georgia, 'Times New Roman', serif; margin: 1.8rem 0; }
+  .premium-video .premium-section-heading h2 em { color: var(--premium-accent); }
+  .premium-video .premium-section-heading > p:last-child { color: var(--premium-muted); font-size: 1.1rem; line-height: 1.8; }
+  .premium-video video { background: #000; display: block; max-height: 75vh; width: 100%; }
+  .premium-generic-description { color: var(--premium-muted); font-size: 1.4rem; line-height: 1.8; }
   .premium-story-copy h2, .premium-specs h2, .premium-packaging h2 { font-size: clamp(4rem, 6vw, 6.8rem); }
   .premium-story-copy a { color: var(--premium-accent); display: inline-block; font-size: 1.15rem; margin-top: 1.6rem; text-decoration: none; }
   .premium-section-heading { margin-bottom: 4.8rem; }
@@ -273,6 +539,13 @@
   .premium-faq-list summary::after { color: var(--premium-accent); content: '+'; float: right; font-family: Arial, sans-serif; }
   .premium-faq-list details[open] summary::after { content: '−'; }
   .premium-faq-list details p { color: var(--premium-muted); font-size: 1.15rem; line-height: 1.8; max-width: 55rem; }
+  .premium-reviews { border-top: 1px solid var(--premium-line); display: grid; gap: 8%; grid-template-columns: .75fr 1.25fr; padding: 7rem 7%; }
+  .premium-reviews .premium-section-heading { align-self: center; margin: 0; }
+  .premium-reviews .premium-section-heading h2 { color: var(--premium-ink); font: 400 clamp(4rem, 6vw, 7rem)/1 Georgia, 'Times New Roman', serif; margin: 1.8rem 0; }
+  .premium-reviews .premium-section-heading h2 em { color: var(--premium-accent); }
+  .premium-reviews .premium-section-heading > p:last-child, .premium-reviews-empty { color: var(--premium-muted); font-size: 1.1rem; line-height: 1.8; }
+  .premium-reviews-apps { align-self: center; }
+  .premium-reviews-empty { background: var(--premium-panel); margin: 0; padding: 3rem; }
   .premium-final-cta { background: var(--premium-panel); margin: 0 7%; padding: 7rem 2rem; text-align: center; }
   .premium-final-cta .premium-eyebrow { justify-content: center; }
   .premium-final-cta h2 { font-size: clamp(4.5rem, 7vw, 8rem); }
@@ -285,15 +558,14 @@
     .premium-hero { gap: 4rem; grid-template-columns: 1fr; padding: 5rem 0; }
     .premium-copy { max-width: 70rem; }
     .premium-edition { margin-top: 2.8rem; }
-    .premium-gallery-main { height: min(105vw, 720px); }
+    .premium-gallery-main { height: auto; }
     .premium-gallery-thumbs { grid-template-columns: repeat(4, minmax(0, 1fr)); }
     .premium-story { gap: 5rem; grid-template-columns: 1fr 1fr; padding: 8rem 0; }
-    .premium-story-image { height: 44rem; }
     .premium-benefit-grid { grid-template-columns: repeat(2, 1fr); }
     .premium-specs { gap: 4rem; grid-template-columns: 1fr; }
     .premium-packaging { gap: 3rem; grid-template-columns: .3fr 1fr; }
     .premium-packaging ul { grid-column: 2; }
-    .premium-faq { gap: 4rem; grid-template-columns: 1fr; }
+    .premium-faq, .premium-reviews, .premium-video { gap: 4rem; grid-template-columns: 1fr; }
   }
   @media screen and (max-width: 600px) {
     .premium-shell { padding: 0 1.8rem; }
@@ -302,11 +574,21 @@
     .premium-copy h1 { font-size: clamp(4.4rem, 15vw, 6.5rem); }
     .premium-product-name { font-size: 1.2rem; }
     .premium-intro { font-size: 1.25rem; }
-    .premium-gallery-main { height: 118vw; min-height: 36rem; }
+    .premium-gallery-main { height: auto; min-height: 0; }
+    .premium-gallery-control { height: 3.8rem; width: 3.8rem; }
+    .premium-gallery-previous { left: .8rem; }
+    .premium-gallery-next { right: .8rem; }
+    .premium-lightbox-image { height: calc(100dvh - 7rem); max-height: calc(100dvh - 7rem); max-width: calc(100vw - 5rem); }
+    .premium-lightbox-close { right: 1rem; top: 1rem; }
+    .premium-lightbox-previous { left: .6rem; }
+    .premium-lightbox-next { right: .6rem; }
+    .premium-lightbox-caption { bottom: .8rem; font-size: 1rem; left: 2rem; right: 2rem; }
     .premium-story { gap: 3.5rem; grid-template-columns: 1fr; padding: 7rem 0; }
-    .premium-story-image { height: 110vw; max-height: 48rem; }
+    .premium-story-image { max-height: 48rem; }
     .premium-story h2, .premium-section-heading h2, .premium-specs h2 { font-size: 4.6rem; }
     .premium-benefits, .premium-specs, .premium-faq { padding: 5.5rem 0; }
+    .premium-reviews { padding: 5.5rem 0; }
+    .premium-video { padding: 5.5rem 0; }
     .premium-section-heading { margin-bottom: 3rem; }
     .premium-benefit-grid { grid-template-columns: 1fr 1fr; }
     .premium-benefit-grid article { min-height: 19rem; padding: 1.5rem; }
@@ -320,6 +602,9 @@
     .premium-faq .premium-section-heading h2 { font-size: 4rem; }
     .premium-faq-list summary { font-size: 1.45rem; }
     .premium-final-cta { margin: 0; padding: 5rem 1.5rem; }
+    .premium-reviews-empty { padding: 2rem; }
+    .premium-stock-input-row { flex-direction: column; }
+    .premium-stock-submit { min-height: 4.8rem; }
     .premium-final-cta h2 { font-size: 5rem; }
   }
 {% endstyle %}
@@ -345,7 +630,12 @@
       "type": "textarea",
       "id": "description",
       "label": "Descripción breve",
-      "default": "Un soporte de madera versátil, ajustable y giratorio para disfrutar tus libros y dispositivos con las manos libres."
+      "default": "Un soporte de madera versátil, ajustable y giratorio para laptop, libros y tabletas."
+    }
+  ],
+  "blocks": [
+    {
+      "type": "@app"
     }
   ],
   "presets": [

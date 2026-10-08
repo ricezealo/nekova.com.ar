@@ -1,0 +1,53 @@
+.nekova-social-links {
+  color: var(--premium-ink, #f1eee6);
+}
+
+.nekova-social-links__heading {
+  color: inherit;
+  font-size: 1rem;
+  letter-spacing: 0.08em;
+  margin: 0 0 1.2rem;
+}
+
+.nekova-social-links__list {
+  align-items: center;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.9rem;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.nekova-social-links__icon {
+  align-items: center;
+  border: 1px solid var(--premium-accent, #c9a878);
+  border-radius: 50%;
+  color: var(--premium-accent, #c9a878);
+  display: inline-flex;
+  height: 4.4rem;
+  justify-content: center;
+  width: 4.4rem;
+}
+
+.nekova-social-links__icon svg {
+  display: block;
+  height: 2rem;
+  width: 2rem;
+}
+
+.nekova-footer-social {
+  margin: 0 auto;
+  max-width: 1200px;
+  padding: 2rem 5rem;
+}
+
+.nekova-contact-social {
+  margin-top: 2rem;
+}
+
+@media screen and (max-width: 600px) {
+  .nekova-footer-social {
+    padding: 2rem;
+  }
+}

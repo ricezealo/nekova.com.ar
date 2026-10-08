@@ -29,26 +29,63 @@ const colors = Object.entries(schemes).map(([id, value]) => ({
 }));
 const previewImage = '/assets/offline-preview.svg';
 const image = { src: previewImage, url: previewImage, alt: 'Imagen de muestra local', width: 1200, height: 1200 };
+const upcomingProductImage = {
+  src: '/assets/preview-coming-soon.svg',
+  url: '/assets/preview-coming-soon.svg',
+  alt: 'Ilustración de una lámpara de escritorio Nekova de muestra',
+  width: 900,
+  height: 1125,
+};
 
 const productImageFiles = [
-  'Hfa9cf59005624810920467ea450cbfb5o.avif',
-  'H028aa62769ca4ad9b54aca33682d19ec0.avif',
-  'H2b4cc26ef0d8449ba2492fe241016991o.avif',
-  'H43efb61d5f9348f1b53da0d6bc37cba9y.avif',
-  'H5ba6a17b211f44a7aa2103ffaa26e290v.avif',
-  'Hb24d8690081143bdac982e5102f33c18C.avif',
-  'Hb5f1ee0a42944e8da27b90df6e3ed1877.avif',
-  'He1c69a86185942a6b7db4bcdd258049el.avif',
+  'Hb5f1ee0a42944e8da27b90df6e3ed1877.jpg',
+  'Hfa9cf59005624810920467ea450cbfb5o.jpg',
+  'H028aa62769ca4ad9b54aca33682d19ec0.jpg',
+  'H2b4cc26ef0d8449ba2492fe241016991o.jpg',
+  'H43efb61d5f9348f1b53da0d6bc37cba9y.jpg',
+  'H5ba6a17b211f44a7aa2103ffaa26e290v.jpg',
+  'Hb24d8690081143bdac982e5102f33c18C.jpg',
+  'He1c69a86185942a6b7db4bcdd258049el.jpg',
 ];
 const productImages = productImageFiles.map((filename, index) => ({
-  src: `/assets/${filename}`,
-  url: `/assets/${filename}`,
+  src: `/assets/product-media-${filename}`,
+  url: `/assets/product-media-${filename}`,
   alt: `Soporte de madera giratorio, vista ${index + 1}`,
-  width: index === 6 ? 1024 : 1280,
-  height: index === 6 ? 1024 : 1857,
+  width: 1200,
+  height: 1500,
 }));
 const productMedia = productImages.map((preview, index) => ({
   id: 100 + index,
+  media_type: 'image',
+  preview_image: preview,
+  alt: preview.alt,
+}));
+const lightImageFiles = [
+  'k25-video-light-02.jpg',
+  'k25-video-light-03.jpg',
+  'k25-video-light-04.jpg',
+  'k25-video-light-05.jpg',
+  'k25-video-light-main.jpg',
+  'k25-video-light-07.jpg',
+  'k25-video-light-08.jpg',
+  'k25-video-light-09.jpg',
+  'k25-video-light-10.jpg',
+  'k25-video-light-11.jpg',
+  'k25-video-light-12.jpg',
+  'k25-video-light-13.jpg',
+  'k25-video-light-14.jpg',
+  'k25-video-light-15.jpg',
+  'k25-video-light-16.jpg',
+];
+const lightImages = lightImageFiles.map((filename, index) => ({
+  src: `/assets/product-media-${filename}`,
+  url: `/assets/product-media-${filename}`,
+  alt: `Lámpara de video K25 RGB, imagen ${index + 1}`,
+  width: 1200,
+  height: 1500,
+}));
+const lightMedia = lightImages.map((preview, index) => ({
+  id: 200 + index,
   media_type: 'image',
   preview_image: preview,
   alt: preview.alt,
@@ -80,12 +117,81 @@ const featuredProduct = {
   options_with_values: [],
   variants: [productVariant],
   selected_or_first_available_variant: productVariant,
-  description: '<p>Soporte de madera MDF con rotación de 360°, altura ajustable, ranura de almacenamiento y clip elevable. Plegable y portátil para libros y tabletas.</p>',
+  description: '<p>Soporte de madera MDF con rotación de 360°, altura ajustable, ranura de almacenamiento y clip elevable. Plegable y portátil para laptop, libros y tabletas.</p>',
   url: '/products/atril-madera-giratorio-360',
   type: 'Hogar y oficina',
   has_only_default_variant: true,
 };
-const products = [featuredProduct];
+const lightVariant = {
+  id: 52001,
+  title: 'Default Title',
+  price: 9900000,
+  compare_at_price: null,
+  available: true,
+  featured_image: lightImages[0],
+  featured_media: lightMedia[0],
+  options: ['Default Title'],
+  inventory_quantity: 24,
+};
+const lightProduct = {
+  id: 5200,
+  handle: 'lampara-video-portatil-k25-rgb',
+  title: 'Mini Lámpara de Video Portátil K25 RGB, 25 W',
+  vendor: 'NEKOVA',
+  price: 9900000,
+  compare_at_price: null,
+  available: true,
+  featured_image: lightImages[0],
+  featured_media: lightMedia[0],
+  media: lightMedia,
+  images: lightImages,
+  options: ['Title'],
+  options_with_values: [],
+  variants: [lightVariant],
+  selected_or_first_available_variant: lightVariant,
+  description: '<p>Luz RGB portátil de 25 W con batería de 3300 mAh, 20 efectos dinámicos, temperatura de color de 1800 a 9000 K y CRI 95+. Compacta para fotografía, video y streaming.</p>',
+  url: '/products/lampara-video-portatil-k25-rgb',
+  type: 'Fotografía y video',
+  has_only_default_variant: true,
+};
+const upcomingVariant = {
+  id: 53001,
+  title: 'Default Title',
+  price: 8900000,
+  compare_at_price: null,
+  available: false,
+  featured_image: upcomingProductImage,
+  featured_media: {
+    id: 300,
+    media_type: 'image',
+    preview_image: upcomingProductImage,
+    alt: upcomingProductImage.alt,
+  },
+  options: ['Default Title'],
+  inventory_quantity: 0,
+};
+const upcomingProduct = {
+  id: 5300,
+  handle: 'lampara-escritorio-nordica-demo',
+  title: 'Lámpara de Escritorio Nórdica · Muestra',
+  vendor: 'NEKOVA',
+  price: 8900000,
+  compare_at_price: null,
+  available: false,
+  featured_image: upcomingProductImage,
+  featured_media: upcomingVariant.featured_media,
+  media: [upcomingVariant.featured_media],
+  images: [upcomingProductImage],
+  options: ['Title'],
+  options_with_values: [],
+  variants: [upcomingVariant],
+  selected_or_first_available_variant: upcomingVariant,
+  description: '<p>Una lámpara de escritorio de líneas simples, luz cálida y una silueta serena para acompañar tus espacios de lectura y trabajo. Producto ficticio de muestra, próximamente disponible.</p>',
+  url: '/products/lampara-escritorio-nordica-demo',
+  type: 'Iluminación',
+  has_only_default_variant: true,
+};
+const products = [featuredProduct, lightProduct, upcomingProduct];
 const collection = { id: 1, handle: 'all', title: 'Todos los productos', description: '<p>Productos de ejemplo para la vista local.</p>', products, all_products_count: products.length, products_count: products.length, url: '/collections/all', image };
 const menuItems = [
   { title: 'Inicio', url: '/' },
@@ -97,25 +203,36 @@ const emptyCart = { items: [], item_count: 0, total_price: 0, cart_level_discoun
 const shop = { name: 'Nekova (vista local)', currency: 'ARS', money_format: '${{amount}}' };
 const routes = { root_url: '/', cart_url: '/cart', cart_add_url: '/cart/add', cart_change_url: '/cart/change', cart_update_url: '/cart/update', search_url: '/search', account_login_url: '/account/login', account_register_url: '/account/register', all_products_collection_url: '/collections/all' };
 
-function createCart(count) {
-  if (!count) return emptyCart;
-  const item = {
-    ...featuredProduct,
-    product: featuredProduct,
-    image: productImages[0],
-    quantity: count,
-    final_price: featuredProduct.price,
-    original_price: featuredProduct.compare_at_price,
-    final_line_price: featuredProduct.price * count,
-    original_line_price: featuredProduct.compare_at_price * count,
+function createCart(standCount, lightCount = 0) {
+  const items = [
+    [featuredProduct, productVariant, productImages[0], standCount],
+    [lightProduct, lightVariant, lightImages[0], lightCount],
+  ].filter(([, , , quantity]) => quantity > 0).map(([itemProduct, variant, itemImage, quantity], index) => ({
+    ...itemProduct,
+    product: itemProduct,
+    image: itemImage,
+    quantity,
+    final_price: itemProduct.price,
+    original_price: variant.compare_at_price || itemProduct.price,
+    final_line_price: itemProduct.price * quantity,
+    original_line_price: (variant.compare_at_price || itemProduct.price) * quantity,
     discounts: [],
     options_with_values: [],
     properties: {},
-    url: featuredProduct.url,
-    key: String(productVariant.id),
-    index: 0,
+    url: itemProduct.url,
+    key: String(variant.id),
+    index,
+  }));
+  const itemCount = standCount + lightCount;
+  if (!itemCount) return emptyCart;
+  return {
+    items,
+    item_count: itemCount,
+    total_price: items.reduce((total, item) => total + item.final_line_price, 0),
+    cart_level_discount_applications: [],
+    note: '',
+    empty: false,
   };
-  return { items: [item], item_count: count, total_price: featuredProduct.price * count, cart_level_discount_applications: [], note: '', empty: false };
 }
 
 function colorValue(hex) {
@@ -163,7 +280,11 @@ engine.registerFilter('t', (key, options = {}) => {
 });
 engine.registerFilter('asset_url', (name) => `/assets/${String(name).replace(/^\/+/, '')}`);
 engine.registerFilter('shopify_asset_url', (name) => `/assets/${String(name).replace(/^\/+/, '')}`);
-engine.registerFilter('image_url', (value) => typeof value === 'string' ? value : value?.src || value?.url || previewImage);
+engine.registerFilter('image_url', (value) => (
+  typeof value === 'string'
+    ? value
+    : value?.src || value?.url || value?.preview_image?.src || value?.preview_image?.url || previewImage
+));
 engine.registerFilter('image_tag', (src, options = {}) => `<img src="${src || previewImage}" alt="${options.alt || ''}" loading="${options.loading || 'lazy'}">`);
 engine.registerFilter('inline_asset_content', (name) => {
   const path = join(root, 'assets', String(name));
@@ -196,6 +317,7 @@ function normalizeLiquid(source) {
     .replace(/\{%[-\s]*stylesheet[-\s]*%\}/g, '<style>')
     .replace(/\{%[-\s]*endstylesheet[-\s]*%\}/g, '</style>')
     .replace(/\{%[-\s]*form\s+['"]product['"][^%]*%\}/g, '<form action="/cart/add" method="post">')
+    .replace(/\{%[-\s]*form\s+['"]customer['"][^%]*class:\s*['"]premium-stock-form['"][^%]*%\}/g, '<form action="/back-in-stock" method="post" class="premium-stock-form">')
     .replace(/\{%[-\s]*form\b[^%]*%\}/g, '<form action="#" method="post">')
     .replace(/\{%[-\s]*endform[-\s]*%\}/g, '</form>')
     .replace(/\{%[-\s]*paginate\b[^%]*%\}/g, '{% if true %}')
@@ -268,7 +390,9 @@ async function renderGroup(fileName, context) {
   }
   const contents = output.join('\n');
   const groupClass = group.class || (group.type === 'header' ? 'section-header' : '');
-  return groupClass ? `<div class="${groupClass}">${contents}</div>` : contents;
+  const shopifyGroupClass = group.type ? `shopify-section-group-${group.type}-group` : '';
+  const wrapperClasses = [shopifyGroupClass, groupClass].filter(Boolean).join(' ');
+  return wrapperClasses ? `<div class="${wrapperClasses}">${contents}</div>` : contents;
 }
 
 function templateFor(pathname) {
@@ -339,11 +463,12 @@ function accountPreview(pathname) {
   return `<section class="customer account page-width"><h1>${title}</h1>${content}</section>`;
 }
 
-async function renderPage(pathname, cartCount = 0) {
+async function renderPage(pathname, cartCount = 0, lightCount = 0, stockNotificationRegistered = false) {
   if (pathname.startsWith('/account')) {
     const settings = { ...themeSettings, color_schemes: colors };
     const context = {
-      settings, shop, routes, cart: createCart(cartCount), products, collections: { all: collection, frontpage: collection },
+      settings, shop, routes, cart: createCart(cartCount, lightCount), products, collections: { all: collection, frontpage: collection },
+      stock_notification_registered: stockNotificationRegistered,
       customer: null, localization: { available_countries: [], available_languages: [] },
       request: { locale: { iso_code: 'es-AR' }, origin: `http://localhost:${port}`, path: pathname },
       template: { name: 'customers' }, page_title: 'Cuenta de cliente', page_description: '',
@@ -363,7 +488,8 @@ async function renderPage(pathname, cartCount = 0) {
   const template = JSON.parse(readFileSync(templatePath, 'utf8'));
   const settings = { ...themeSettings, color_schemes: colors };
   const context = {
-    settings, shop, routes, cart: createCart(cartCount), products, collections: { all: collection, frontpage: collection },
+    settings, shop, routes, cart: createCart(cartCount, lightCount), products, collections: { all: collection, frontpage: collection },
+    stock_notification_registered: stockNotificationRegistered,
     collection: templateName === 'collection' ? collection : undefined,
     product: templateName === 'product' ? resource : undefined,
     page: templateName.startsWith('page') ? resource : undefined,
@@ -390,11 +516,12 @@ async function renderPage(pathname, cartCount = 0) {
   return renderLayout(context);
 }
 
-const types = { '.css': 'text/css; charset=utf-8', '.js': 'text/javascript; charset=utf-8', '.svg': 'image/svg+xml', '.png': 'image/png', '.jpg': 'image/jpeg', '.jpeg': 'image/jpeg', '.webp': 'image/webp', '.woff2': 'font/woff2' };
+const types = { '.css': 'text/css; charset=utf-8', '.js': 'text/javascript; charset=utf-8', '.svg': 'image/svg+xml', '.png': 'image/png', '.jpg': 'image/jpeg', '.jpeg': 'image/jpeg', '.webp': 'image/webp', '.mp4': 'video/mp4', '.woff2': 'font/woff2' };
 createServer(async (request, response) => {
   try {
     const url = new URL(request.url, `http://localhost:${port}`);
     const cookieCount = Number.parseInt(request.headers.cookie?.match(/(?:^|;\s*)nekova_cart=(\d+)/)?.[1] || '0', 10);
+    const lightCookieCount = Number.parseInt(request.headers.cookie?.match(/(?:^|;\s*)nekova_cart_k25=(\d+)/)?.[1] || '0', 10);
     if (request.method === 'POST' && url.pathname === '/cart/add') {
       let body = '';
       for await (const chunk of request) {
@@ -407,15 +534,42 @@ createServer(async (request, response) => {
       const form = new URLSearchParams(body);
       const quantity = Number(form.get('quantity') || 1);
       const variantId = form.get('id');
-      if (variantId !== String(productVariant.id) || !Number.isSafeInteger(quantity) || quantity < 1 || quantity > 10) {
+      const isLight = variantId === String(lightVariant.id);
+      const isStand = variantId === String(productVariant.id);
+      if ((!isStand && !isLight) || !Number.isSafeInteger(quantity) || quantity < 1 || quantity > 10) {
         response.writeHead(400, { 'content-type': 'text/plain; charset=utf-8' }).end('No se pudo agregar el producto. Verifica la variante y la cantidad.');
         return;
       }
-      const nextCount = Math.min(cookieCount + quantity, 99);
+      const nextCount = Math.min((isLight ? lightCookieCount : cookieCount) + quantity, 99);
       response.writeHead(303, {
         location: '/cart',
-        'set-cookie': `nekova_cart=${nextCount}; Path=/; Max-Age=604800; SameSite=Lax; HttpOnly`,
+        'set-cookie': `${isLight ? 'nekova_cart_k25' : 'nekova_cart'}=${nextCount}; Path=/; Max-Age=604800; SameSite=Lax; HttpOnly`,
       }).end();
+      return;
+    }
+    if (request.method === 'POST' && url.pathname === '/back-in-stock') {
+      let body = '';
+      for await (const chunk of request) {
+        body += chunk;
+        if (body.length > 8192) {
+          response.writeHead(413).end('Form data too large');
+          return;
+        }
+      }
+      const form = new URLSearchParams(body);
+      const email = form.get('contact[email]')?.trim().toLowerCase();
+      const tagValue = form.get('contact[tags]') || '';
+      const taggedProduct = products.find((item) => !item.available && tagValue.split(',').map((tag) => tag.trim()).includes(`back-in-stock-${item.handle}`));
+      const acceptedNotification = form.get('contact[accepts_marketing]') === 'true';
+      if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email) || !taggedProduct || !acceptedNotification) {
+        response.writeHead(400, { 'content-type': 'text/plain; charset=utf-8' }).end('Ingresá un email válido y aceptá recibir el aviso de disponibilidad.');
+        return;
+      }
+      const referer = request.headers.referer ? new URL(request.headers.referer) : null;
+      const returnPath = referer?.origin === `http://localhost:${port}` && referer.pathname === taggedProduct.url
+        ? referer.pathname
+        : taggedProduct.url;
+      response.writeHead(303, { location: `${returnPath}?stock-notification=registered` }).end();
       return;
     }
     if (url.pathname.startsWith('/assets/')) {
@@ -428,7 +582,12 @@ createServer(async (request, response) => {
       createReadStream(assetPath).pipe(response);
       return;
     }
-    const html = await renderPage(url.pathname, Math.min(Math.max(cookieCount, 0), 99));
+    const html = await renderPage(
+      url.pathname,
+      Math.min(Math.max(cookieCount, 0), 99),
+      Math.min(Math.max(lightCookieCount, 0), 99),
+      url.searchParams.get('stock-notification') === 'registered',
+    );
     response.writeHead(200, { 'content-type': 'text/html; charset=utf-8', 'cache-control': 'no-cache' });
     response.end(html);
   } catch (error) {

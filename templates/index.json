@@ -1,13 +1,14 @@
 {
   "sections": {
-    "product_landing": {
-      "type": "premium-product-landing",
+    "home_showcase": {
+      "type": "home-product-showcase",
       "settings": {
-        "product": "",
-        "heading": "Leé, trabajá y creá desde otro ángulo.",
-        "description": "Un soporte de madera versátil, ajustable y giratorio para disfrutar tus libros y dispositivos con las manos libres."
+        "collection": "all",
+        "products_to_show": 6,
+        "collection_heading": "Objetos que elevan lo cotidiano.",
+        "blog": ""
       }
     }
   },
-  "order": ["product_landing"]
+  "order": ["home_showcase"]
 }

@@ -290,8 +290,9 @@
 }
 
 .card__media .media img {
+  background: rgb(var(--color-background));
   height: 100%;
-  object-fit: cover;
+  object-fit: contain;
   object-position: center center;
   width: 100%;
 }
@@ -592,4 +593,24 @@
   .grid__item:nth-child(8n) .product-card-wrapper:hover .shape--blob {
     clip-path: polygon(var(--shape--blob-5));
   }
+}
+.card__coming-soon {
+  align-items: center;
+  background: #c9a878;
+  color: #151510;
+  display: flex;
+  font-size: 1.35rem;
+  font-weight: 700;
+  justify-content: center;
+  left: -12%;
+  letter-spacing: 0.15em;
+  padding: 1.3rem 0;
+  pointer-events: none;
+  position: absolute;
+  text-align: center;
+  text-transform: uppercase;
+  top: 43%;
+  transform: rotate(-32deg);
+  width: 124%;
+  z-index: 2;
 }

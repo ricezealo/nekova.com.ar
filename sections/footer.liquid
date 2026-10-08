@@ -4,6 +4,7 @@
 {{ 'component-list-menu.css' | asset_url | stylesheet_tag }}
 {{ 'component-list-payment.css' | asset_url | stylesheet_tag }}
 {{ 'component-list-social.css' | asset_url | stylesheet_tag }}
+{{ 'nekova-social-icons.css' | asset_url | stylesheet_tag }}
 
 {%- style -%}
   .footer {
@@ -249,6 +250,8 @@
       </div>
     {%- endunless -%}
   {%- endif -%}
+
+  {% render 'nekova-social-icons', class: 'nekova-footer-social' %}
 
   <div
     class="footer__content-bottom{% if settings.animations_reveal_on_scroll %} scroll-trigger animate--slide-in{% endif %}"

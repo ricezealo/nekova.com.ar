@@ -172,7 +172,7 @@
       endif
 
       if section.settings.menu != blank
-        render 'header-drawer', show_country_selector: country_selector, show_language_selector: language_selector, show_social_links: social_links
+        render 'header-drawer', menu: section.settings.menu, show_country_selector: country_selector, show_language_selector: language_selector, show_social_links: social_links
       endif
 
       if render_search_left
@@ -205,7 +205,14 @@
             }}
           </div>
         {%- else -%}
-          <span class="h2">{{ shop.name }}</span>
+          <img
+            src="{{ 'nekova-logo.svg' | asset_url }}"
+            alt="{{ shop.name | escape }}"
+            class="nekova-header-logo"
+            width="174"
+            height="48"
+            fetchpriority="high"
+          >
         {%- endif -%}
       </a>
       {%- if request.page_type == 'index' -%}
@@ -248,7 +255,14 @@
             }}
           </div>
         {%- else -%}
-          <span class="h2">{{ shop.name }}</span>
+          <img
+            src="{{ 'nekova-logo.svg' | asset_url }}"
+            alt="{{ shop.name | escape }}"
+            class="nekova-header-logo"
+            width="174"
+            height="48"
+            fetchpriority="high"
+          >
         {%- endif -%}
       </a>
       {%- if request.page_type == 'index' -%}
