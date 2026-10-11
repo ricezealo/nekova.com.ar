@@ -1,5 +1,12 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 330 64" fill="none">
-  <path d="M12 50V14l38 36V14" stroke="#F1EEE6" stroke-linecap="round" stroke-linejoin="round" stroke-width="6"/>
-  <path d="M31 32 50 50" stroke="#C9A878" stroke-linecap="round" stroke-width="6"/>
-  <text x="76" y="46" fill="#F1EEE6" font-family="Arial, Helvetica, sans-serif" font-size="39" font-weight="500" letter-spacing="5">NEKOVA</text>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 420 72" fill="none">
+  <circle cx="36" cy="36" r="31" stroke="#C9A878" stroke-width="1.5"/>
+  <path d="M25 47V25.5C25 23.8 27.2 23.1 28.2 24.5L44.1 46.1C45.1 47.5 47.3 46.8 47.3 45.1V24.5" stroke="#F1EEE6" stroke-linecap="round" stroke-linejoin="round" stroke-width="5.5"/>
+  <g stroke="#F1EEE6" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.7">
+    <path d="M91 49V24L119 49V24"/>
+    <path d="M170 24H147V49H170M147 36.5H165"/>
+    <path d="M199 24V49M223 24L200 36.5L224 49"/>
+    <path d="M255 24C246 24 241 29 241 36.5S246 49 255 49S269 44 269 36.5S264 24 255 24Z"/>
+    <path d="M286 24L301 49L316 24"/>
+    <path d="M333 49L348 24L363 49M340 38H356"/>
+  </g>
 </svg>
