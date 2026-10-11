@@ -1,5 +1,6 @@
 import { createReadStream, existsSync, readFileSync, statSync } from 'node:fs';
 import { createServer } from 'node:http';
+import { networkInterfaces } from 'node:os';
 import { dirname, extname, join, normalize, resolve } from 'node:path';
 import { Liquid } from 'liquidjs';
 
@@ -655,7 +656,13 @@ createServer(async (request, response) => {
     response.writeHead(500, { 'content-type': 'text/plain; charset=utf-8' });
     response.end(`Error renderizando la vista offline: ${error.message}`);
   }
-}).listen(port, '127.0.0.1', () => {
+}).listen(port, '0.0.0.0', () => {
   console.log(`Vista offline de Shopify disponible en http://localhost:${port}`);
+  const lanAddresses = Object.values(networkInterfaces()).flat()
+    .filter((address) => address?.family === 'IPv4' && !address.internal)
+    .map((address) => address.address);
+  for (const address of lanAddresses) {
+    console.log(`Acceso desde la red local: http://${address}:${port}`);
+  }
   console.log('Datos y checkout simulados; no requiere Shopify CLI ni conexion a Shopify.');
 });
