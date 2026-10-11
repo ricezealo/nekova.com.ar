@@ -18,8 +18,61 @@
   {{ 'component-list-social.css' | asset_url | stylesheet_tag }}
 {% endif %}
 
+<style>
+  .nekova-announcement-bar {
+    background: #eee9df;
+    background-image: none;
+    color: #292a25;
+  }
+
+  .nekova-announcement-bar .announcement-bar {
+    color: #292a25;
+    max-width: 100%;
+    min-width: 0;
+    width: 100%;
+  }
+
+  .nekova-announcement-bar.utility-bar--bottom-border {
+    border-color: rgba(41, 42, 37, .12);
+  }
+
+  .nekova-announcement-bar .utility-bar__grid,
+  .nekova-announcement-bar .announcement-bar-slider,
+  .nekova-announcement-bar .announcement-bar-slider .slider-buttons,
+  .nekova-announcement-bar .announcement-bar-slider .slider,
+  .nekova-announcement-bar .announcement-bar-slider .slideshow__slide {
+    max-width: 100%;
+    min-width: 0;
+    width: 100%;
+  }
+
+  .nekova-announcement-bar .utility-bar__grid {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .nekova-announcement-bar .announcement-bar-slider .slideshow__slide {
+    flex: 0 0 100%;
+  }
+
+  .nekova-announcement-bar .announcement-bar-slider .slider-button {
+    display: none;
+  }
+
+  .nekova-announcement-bar .announcement-bar__message {
+    color: #292a25;
+    font-size: 1.15rem;
+    letter-spacing: .04rem;
+    line-height: 1.2;
+    min-height: 0;
+    overflow: hidden;
+    padding: .55rem .25rem;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+</style>
+
 <div
-  class="utility-bar color-{{ section.settings.color_scheme }} gradient{% if section.settings.show_line_separator and section.blocks.size > 0 %} utility-bar--bottom-border{% elsif section.settings.show_line_separator and section.settings.show_social and social_icons%} utility-bar--bottom-border-social-only{% endif %}{% if section.settings.enable_country_selector or section.settings.enable_language_selector %} header-localization{% endif %}"
+  class="utility-bar nekova-announcement-bar color-{{ section.settings.color_scheme }} gradient{% if section.settings.show_line_separator and section.blocks.size > 0 %} utility-bar--bottom-border{% elsif section.settings.show_line_separator and section.settings.show_social and social_icons%} utility-bar--bottom-border-social-only{% endif %}{% if section.settings.enable_country_selector or section.settings.enable_language_selector %} header-localization{% endif %}"
 >
   <div class="page-width utility-bar__grid{% if announcement_bar and language_country_selector or section.settings.show_social and social_icons %} utility-bar__grid--3-col{% elsif language_country_selector or section.settings.show_social and social_icons %} utility-bar__grid--2-col{% endif %}">
     {%- if section.settings.show_social and social_icons -%}

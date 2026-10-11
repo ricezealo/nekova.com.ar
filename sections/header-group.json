@@ -5,19 +5,37 @@
     "announcement-bar": {
       "type": "announcement-bar",
       "settings": {
-        "color_scheme": "scheme-1",
+        "color_scheme": "scheme-6",
         "show_line_separator": true,
         "show_social": false,
-        "auto_rotate": false,
+        "auto_rotate": true,
         "change_slides_speed": 5,
         "enable_country_selector": false,
         "enable_language_selector": false
       },
       "blocks": {
-        "announcement-bar-0": {
+        "announcement-guarantee": {
           "type": "announcement",
           "settings": {
-            "text": "Diseño para tu casa, trabajo y descanso",
+            "text": "60 días de garantía en nuestros productos",
+            "text_alignment": "center",
+            "color_scheme": "scheme-1",
+            "link": ""
+          }
+        },
+        "announcement-shipping": {
+          "type": "announcement",
+          "settings": {
+            "text": "Conocé el costo de envío antes de pagar",
+            "text_alignment": "center",
+            "color_scheme": "scheme-1",
+            "link": ""
+          }
+        },
+        "announcement-details": {
+          "type": "announcement",
+          "settings": {
+            "text": "Materiales y detalles claros al comprar",
             "text_alignment": "center",
             "color_scheme": "scheme-1",
             "link": ""
@@ -25,7 +43,9 @@
         }
       },
       "block_order": [
-        "announcement-bar-0"
+        "announcement-guarantee",
+        "announcement-shipping",
+        "announcement-details"
       ]
     },
     "header": {
