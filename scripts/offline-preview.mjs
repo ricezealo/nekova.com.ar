@@ -90,6 +90,29 @@ const lightMedia = lightImages.map((preview, index) => ({
   preview_image: preview,
   alt: preview.alt,
 }));
+const cushionImageFiles = [
+  'cojin-ergonomico-07.jpg',
+  'cojin-ergonomico-01.jpg',
+  'cojin-ergonomico-02.jpg',
+  'cojin-ergonomico-03.jpg',
+  'cojin-ergonomico-04.jpg',
+  'cojin-ergonomico-05.jpg',
+  'cojin-ergonomico-06.jpg',
+  'cojin-ergonomico-08.jpg',
+];
+const cushionImages = cushionImageFiles.map((filename, index) => ({
+  src: `/assets/product-media-${filename}`,
+  url: `/assets/product-media-${filename}`,
+  alt: `Cojín ergonómico de doble capa, imagen ${index + 1}`,
+  width: 1200,
+  height: 1200,
+}));
+const cushionMedia = cushionImages.map((preview, index) => ({
+  id: 300 + index,
+  media_type: 'image',
+  preview_image: preview,
+  alt: preview.alt,
+}));
 const productVariant = {
   id: 51001,
   title: 'Default Title',
@@ -154,6 +177,38 @@ const lightProduct = {
   type: 'Fotografía y video',
   has_only_default_variant: true,
 };
+const cushionVariant = {
+  id: 54001,
+  title: 'Default Title',
+  price: 7200000,
+  compare_at_price: 9000000,
+  available: true,
+  featured_image: cushionImages[0],
+  featured_media: cushionMedia[0],
+  options: ['Default Title'],
+  inventory_quantity: 24,
+};
+const cushionProduct = {
+  id: 5400,
+  handle: 'cojin-ergonomico-doble-capa',
+  title: 'Cojín Ergonómico de Doble Capa',
+  vendor: 'NEKOVA',
+  price: 7200000,
+  compare_at_price: 9000000,
+  available: true,
+  featured_image: cushionImages[0],
+  featured_media: cushionMedia[0],
+  media: cushionMedia,
+  images: cushionImages,
+  options: ['Title'],
+  options_with_values: [],
+  variants: [cushionVariant],
+  selected_or_first_available_variant: cushionVariant,
+  description: '<h2>Confort para tus espacios</h2><p>Su relleno compuesto de dos capas combina espuma viscoelástica y una base de esponja elástica de alta densidad.</p><p><strong>Capa superior:</strong> espuma viscoelástica de recuperación lenta, suave al tacto y adaptable a la forma del asiento.</p><p><strong>Capa inferior:</strong> esponja elástica de alta densidad para un apoyo firme en el uso diario.</p><p>El diseño ergonómico con ranura hueca en forma de U deja libre la zona central al sentarte. Una alternativa práctica para el escritorio, el automóvil o los momentos de lectura.</p><p>La cubierta de malla transpirable con patrón de panal se siente liviana y la funda es extraíble para facilitar su limpieza.</p><p>Puede usarse en sillas de escritorio, asientos de automóvil, sillas de ruedas, sofás, sillas gamer y asientos de viaje.</p>',
+  url: '/products/cojin-ergonomico-doble-capa',
+  type: 'Hogar y oficina',
+  has_only_default_variant: true,
+};
 const upcomingVariant = {
   id: 53001,
   title: 'Default Title',
@@ -191,11 +246,11 @@ const upcomingProduct = {
   type: 'Iluminación',
   has_only_default_variant: true,
 };
-const products = [featuredProduct, lightProduct, upcomingProduct];
+const products = [featuredProduct, lightProduct, cushionProduct, upcomingProduct];
 const collection = { id: 1, handle: 'all', title: 'Todos los productos', description: '<p>Productos de ejemplo para la vista local.</p>', products, all_products_count: products.length, products_count: products.length, url: '/collections/all', image };
 const menuItems = [
   { title: 'Inicio', url: '/' },
-  { title: 'Hogar y oficina', url: '/collections/all', links: [{ title: 'Todos los productos', url: '/collections/all', links: [] }] },
+  { title: 'Casa y trabajo', url: '/collections/all', links: [{ title: 'Todos los objetos', url: '/collections/all', links: [] }] },
   { title: 'Contacto', url: '/pages/contact' },
 ];
 const menu = { links: menuItems };
@@ -203,10 +258,11 @@ const emptyCart = { items: [], item_count: 0, total_price: 0, cart_level_discoun
 const shop = { name: 'Nekova (vista local)', currency: 'ARS', money_format: '${{amount}}' };
 const routes = { root_url: '/', cart_url: '/cart', cart_add_url: '/cart/add', cart_change_url: '/cart/change', cart_update_url: '/cart/update', search_url: '/search', account_login_url: '/account/login', account_register_url: '/account/register', all_products_collection_url: '/collections/all' };
 
-function createCart(standCount, lightCount = 0) {
+function createCart(standCount, lightCount = 0, cushionCount = 0) {
   const items = [
     [featuredProduct, productVariant, productImages[0], standCount],
     [lightProduct, lightVariant, lightImages[0], lightCount],
+    [cushionProduct, cushionVariant, cushionImages[0], cushionCount],
   ].filter(([, , , quantity]) => quantity > 0).map(([itemProduct, variant, itemImage, quantity], index) => ({
     ...itemProduct,
     product: itemProduct,
@@ -223,7 +279,7 @@ function createCart(standCount, lightCount = 0) {
     key: String(variant.id),
     index,
   }));
-  const itemCount = standCount + lightCount;
+  const itemCount = standCount + lightCount + cushionCount;
   if (!itemCount) return emptyCart;
   return {
     items,
@@ -463,11 +519,11 @@ function accountPreview(pathname) {
   return `<section class="customer account page-width"><h1>${title}</h1>${content}</section>`;
 }
 
-async function renderPage(pathname, cartCount = 0, lightCount = 0, stockNotificationRegistered = false) {
+async function renderPage(pathname, cartCount = 0, lightCount = 0, cushionCount = 0, stockNotificationRegistered = false) {
   if (pathname.startsWith('/account')) {
     const settings = { ...themeSettings, color_schemes: colors };
     const context = {
-      settings, shop, routes, cart: createCart(cartCount, lightCount), products, collections: { all: collection, frontpage: collection },
+      settings, shop, routes, cart: createCart(cartCount, lightCount, cushionCount), products, collections: { all: collection, frontpage: collection },
       stock_notification_registered: stockNotificationRegistered,
       customer: null, localization: { available_countries: [], available_languages: [] },
       request: { locale: { iso_code: 'es-AR' }, origin: `http://localhost:${port}`, path: pathname },
@@ -488,7 +544,7 @@ async function renderPage(pathname, cartCount = 0, lightCount = 0, stockNotifica
   const template = JSON.parse(readFileSync(templatePath, 'utf8'));
   const settings = { ...themeSettings, color_schemes: colors };
   const context = {
-    settings, shop, routes, cart: createCart(cartCount, lightCount), products, collections: { all: collection, frontpage: collection },
+    settings, shop, routes, cart: createCart(cartCount, lightCount, cushionCount), products, collections: { all: collection, frontpage: collection },
     stock_notification_registered: stockNotificationRegistered,
     collection: templateName === 'collection' ? collection : undefined,
     product: templateName === 'product' ? resource : undefined,
@@ -522,6 +578,7 @@ createServer(async (request, response) => {
     const url = new URL(request.url, `http://localhost:${port}`);
     const cookieCount = Number.parseInt(request.headers.cookie?.match(/(?:^|;\s*)nekova_cart=(\d+)/)?.[1] || '0', 10);
     const lightCookieCount = Number.parseInt(request.headers.cookie?.match(/(?:^|;\s*)nekova_cart_k25=(\d+)/)?.[1] || '0', 10);
+    const cushionCookieCount = Number.parseInt(request.headers.cookie?.match(/(?:^|;\s*)nekova_cart_cushion=(\d+)/)?.[1] || '0', 10);
     if (request.method === 'POST' && url.pathname === '/cart/add') {
       let body = '';
       for await (const chunk of request) {
@@ -536,14 +593,16 @@ createServer(async (request, response) => {
       const variantId = form.get('id');
       const isLight = variantId === String(lightVariant.id);
       const isStand = variantId === String(productVariant.id);
-      if ((!isStand && !isLight) || !Number.isSafeInteger(quantity) || quantity < 1 || quantity > 10) {
+      const isCushion = variantId === String(cushionVariant.id);
+      if ((!isStand && !isLight && !isCushion) || !Number.isSafeInteger(quantity) || quantity < 1 || quantity > 10) {
         response.writeHead(400, { 'content-type': 'text/plain; charset=utf-8' }).end('No se pudo agregar el producto. Verifica la variante y la cantidad.');
         return;
       }
-      const nextCount = Math.min((isLight ? lightCookieCount : cookieCount) + quantity, 99);
+      const currentCount = isLight ? lightCookieCount : isCushion ? cushionCookieCount : cookieCount;
+      const nextCount = Math.min(currentCount + quantity, 99);
       response.writeHead(303, {
         location: '/cart',
-        'set-cookie': `${isLight ? 'nekova_cart_k25' : 'nekova_cart'}=${nextCount}; Path=/; Max-Age=604800; SameSite=Lax; HttpOnly`,
+        'set-cookie': `${isLight ? 'nekova_cart_k25' : isCushion ? 'nekova_cart_cushion' : 'nekova_cart'}=${nextCount}; Path=/; Max-Age=604800; SameSite=Lax; HttpOnly`,
       }).end();
       return;
     }
@@ -586,6 +645,7 @@ createServer(async (request, response) => {
       url.pathname,
       Math.min(Math.max(cookieCount, 0), 99),
       Math.min(Math.max(lightCookieCount, 0), 99),
+      Math.min(Math.max(cushionCookieCount, 0), 99),
       url.searchParams.get('stock-notification') === 'registered',
     );
     response.writeHead(200, { 'content-type': 'text/html; charset=utf-8', 'cache-control': 'no-cache' });

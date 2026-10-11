@@ -17,20 +17,29 @@
   if featured_product.handle == 'lampara-video-portatil-k25-rgb'
     assign is_k25_light = true
   endif
+  assign is_ergonomic_cushion = false
+  if featured_product.handle == 'cojin-ergonomico-doble-capa'
+    assign is_ergonomic_cushion = true
+  endif
+  assign product_type_downcase = featured_product.type | downcase
+  assign is_comfort_product = false
+  if featured_product.handle contains 'cojin' or featured_product.handle contains 'almohada' or product_type_downcase contains 'cojin' or product_type_downcase contains 'almohada' or product_type_downcase contains 'descanso' or featured_product.tags contains 'confort' or featured_product.tags contains 'cojines' or featured_product.tags contains 'almohadas'
+    assign is_comfort_product = true
+  endif
   assign stock_form_id = 'BackInStockForm-' | append: section.id
 -%}
 
 {{ 'premium-product-landing.js' | asset_url | script_tag }}
 
-<section class="premium-landing section-{{ section.id }}" aria-labelledby="PremiumTitle-{{ section.id }}">
+<section class="premium-landing section-{{ section.id }}{% if is_comfort_product %} premium-landing--comfort{% endif %}" aria-labelledby="PremiumTitle-{{ section.id }}">
   <div class="premium-shell">
     <div class="premium-hero">
       <div class="premium-copy">
-        <p class="premium-eyebrow"><span></span> NEKOVA · HOGAR Y OFICINA</p>
-        <p class="premium-edition">OBJETOS PARA UNA VIDA MEJOR &nbsp; / &nbsp; {{ featured_product.type | default: 'COLECCIÓN NEKOVA' }}</p>
+        <p class="premium-eyebrow"><span></span> NEKOVA · CASA, TRABAJO Y CONFORT</p>
+        <p class="premium-edition">OBJETOS PARA TODOS TUS ESPACIOS &nbsp; / &nbsp; {{ featured_product.type | default: 'COLECCIÓN NEKOVA' }}</p>
         <h1 id="PremiumTitle-{{ section.id }}">{{ featured_product.title | default: section.settings.heading | escape }}</h1>
-        <p class="premium-product-name">{% if is_reading_stand %}Diseño funcional para leer, estudiar y crear.{% elsif is_k25_light %}Luz creativa, lista para llevar.{% else %}Diseño pensado para acompañar tu día.{% endif %}</p>
-        <div class="premium-intro">{% if is_reading_stand %}Soporte plegable de madera MDF, ajustable y giratorio 360°, para laptop, libros y tabletas. Incluye una ranura de almacenamiento y un clip elevable para páginas.{% elsif is_k25_light %}Una luz RGB compacta de 25 W para fotografía, video, streaming y creación de contenido. Ajustá el color, la temperatura y el brillo para darle forma a cada escena.{% else %}{{ featured_product.description | strip_html | truncatewords: 34 }}{% endif %}</div>
+        <p class="premium-product-name">{% if is_reading_stand %}Diseño funcional para leer, estudiar y crear.{% elsif is_k25_light %}Luz creativa, lista para llevar.{% elsif is_ergonomic_cushion %}Confort ergonómico para tus horas sentado.{% else %}Diseño pensado para acompañar tu día.{% endif %}</p>
+        <div class="premium-intro">{% if is_reading_stand %}Soporte plegable de madera MDF, ajustable y giratorio 360°, para laptop, libros y tabletas. Incluye una ranura de almacenamiento y un clip elevable para páginas.{% elsif is_k25_light %}Una luz RGB compacta de 25 W para fotografía, video, streaming y creación de contenido. Ajustá el color, la temperatura y el brillo para darle forma a cada escena.{% elsif is_ergonomic_cushion %}Dos capas de espuma, una ranura ergonómica en U y una funda transpirable y extraíble: comodidad práctica para el trabajo, los viajes y el uso diario.{% else %}{{ featured_product.description | strip_html | truncatewords: 34 }}{% endif %}</div>
 
         <div class="premium-price" aria-label="Precio del producto">
           <span class="premium-price-current">{{ current_price | money_without_trailing_zeros }} <small>ARS</small></span>
@@ -86,10 +95,13 @@
         <div class="premium-assurances">
           {% if is_k25_light %}
             <span>25 W RGB</span><span>Batería 3300 mAh</span><span>Diseño portátil</span>
+          {% elsif is_ergonomic_cushion %}
+            <span>Relleno de doble capa</span><span>Funda extraíble</span><span>Diseño ergonómico</span>
           {% else %}
             <span>Diseño funcional</span><span>Madera MDF</span><span>Uso diario</span>
           {% endif %}
         </div>
+        <p class="premium-policy-note">60 días de garantía. El costo de envío y los medios de pago se confirman antes de finalizar tu compra. <a href="/#NekovaFaqTitle-home_showcase">Ver condiciones de compra</a>.</p>
       </div>
 
       <div class="premium-gallery" data-premium-gallery>
@@ -113,6 +125,15 @@
               fetchpriority="high"
               data-premium-main-image
             >
+          {% elsif is_ergonomic_cushion %}
+            <img
+              src="{{ 'product-media-cojin-ergonomico-07.jpg' | asset_url }}"
+              alt="Cojín ergonómico de doble capa con malla transpirable y ranura central en U"
+              width="1200"
+              height="1200"
+              fetchpriority="high"
+              data-premium-main-image
+            >
           {% elsif featured_product.featured_image %}
             <img src="{{ featured_product.featured_image | image_url: width: 1600 }}" alt="{{ featured_product.featured_image.alt | default: featured_product.title | escape }}" fetchpriority="high" data-premium-main-image            >
           {% endif %}
@@ -123,7 +144,7 @@
           <button class="premium-gallery-control premium-gallery-next" type="button" aria-label="Ver imagen siguiente" data-gallery-next>
             <span aria-hidden="true">→</span>
           </button>
-          <span class="premium-image-index">NEKOVA OBJECTS &nbsp; — &nbsp; {% if is_reading_stand %}8{% elsif is_k25_light %}15{% else %}{{ featured_product.media.size }}{% endif %} IMÁGENES</span>
+          <span class="premium-image-index">NEKOVA OBJECTS &nbsp; — &nbsp; {% if is_reading_stand %}8{% elsif is_k25_light %}15{% elsif is_ergonomic_cushion %}8{% else %}{{ featured_product.media.size }}{% endif %} IMÁGENES</span>
         </div>
         <div class="premium-gallery-thumbs" aria-label="Galería del producto">
           {% if is_reading_stand %}
@@ -158,6 +179,13 @@
             {% assign light_gallery_images = 'product-media-k25-video-light-02.jpg,product-media-k25-video-light-03.jpg,product-media-k25-video-light-04.jpg,product-media-k25-video-light-05.jpg,product-media-k25-video-light-main.jpg,product-media-k25-video-light-07.jpg,product-media-k25-video-light-08.jpg,product-media-k25-video-light-09.jpg,product-media-k25-video-light-10.jpg,product-media-k25-video-light-11.jpg,product-media-k25-video-light-12.jpg,product-media-k25-video-light-13.jpg,product-media-k25-video-light-14.jpg,product-media-k25-video-light-15.jpg,product-media-k25-video-light-16.jpg' | split: ',' %}
             {% for image_file in light_gallery_images %}
               <button class="{% if forloop.first %}is-active{% endif %}" type="button" aria-label="Ver lámpara K25, imagen {{ forloop.index }}" aria-pressed="{% if forloop.first %}true{% else %}false{% endif %}" data-premium-image="{{ image_file | asset_url }}" data-premium-alt="Lámpara de video K25 RGB, imagen {{ forloop.index }}">
+                <img src="{{ image_file | asset_url }}" alt="" loading="lazy">
+              </button>
+            {% endfor %}
+          {% elsif is_ergonomic_cushion %}
+            {% assign cushion_gallery_images = 'product-media-cojin-ergonomico-07.jpg,product-media-cojin-ergonomico-01.jpg,product-media-cojin-ergonomico-02.jpg,product-media-cojin-ergonomico-03.jpg,product-media-cojin-ergonomico-04.jpg,product-media-cojin-ergonomico-05.jpg,product-media-cojin-ergonomico-06.jpg,product-media-cojin-ergonomico-08.jpg' | split: ',' %}
+            {% for image_file in cushion_gallery_images %}
+              <button class="{% if forloop.first %}is-active{% endif %}" type="button" aria-label="Ver cojín ergonómico, imagen {{ forloop.index }}" aria-pressed="{% if forloop.first %}true{% else %}false{% endif %}" data-premium-image="{{ image_file | asset_url }}" data-premium-alt="Cojín ergonómico de doble capa, imagen {{ forloop.index }}">
                 <img src="{{ image_file | asset_url }}" alt="" loading="lazy">
               </button>
             {% endfor %}
@@ -217,6 +245,18 @@
         <a href="#detalles-producto">Descubrí sus detalles <span aria-hidden="true">↓</span></a>
       </div>
     </div>
+    {% elsif is_ergonomic_cushion %}
+    <div class="premium-story">
+      <div class="premium-story-image">
+        <img src="{{ 'product-media-cojin-ergonomico-02.jpg' | asset_url }}" alt="Cojín ergonómico con relleno de doble capa" width="1200" height="1200" loading="lazy">
+      </div>
+      <div class="premium-story-copy">
+        <p class="premium-eyebrow"><span></span> CONFORT PARA CADA DÍA</p>
+        <h2>Sentate mejor.<br><em>Sentite cómodo.</em></h2>
+        <p>La espuma viscoelástica y la base de alta densidad ofrecen dos sensaciones de apoyo en un formato liviano. Su funda de malla transpirable se retira para facilitar la limpieza.</p>
+        <a href="#detalles-producto">Descubrí sus detalles <span aria-hidden="true">↓</span></a>
+      </div>
+    </div>
     {% endif %}
 
     <div class="premium-photo-story" aria-label="Galería completa del producto">
@@ -234,6 +274,12 @@
         {% assign light_gallery_captions = 'Potencia RGB de 25 W en un formato compacto.|Iluminá fotografía, streaming, gaming y video.|Ventilación integrada para acompañar su rendimiento.|20 efectos dinámicos para crear escenas.|Elegí entre una amplia gama de colores RGB.|Una luz suave para retratos y videollamadas.|Difusor magnético para una iluminación más uniforme.|Creá una atmósfera cálida con efecto sunset.|De luz cálida a fría, según cada momento.|CRI 95+ para una reproducción precisa del color.|Batería integrada de 3300 mAh.|Formato ultracompacto para llevarlo fácilmente.|Controles intuitivos de potencia y modos.|Montaje en cámara, trípode o laptop.|Detalles de la superficie LED y los controles.' | split: '|' %}
         {% for image_file in light_gallery_images %}
           <figure><img src="{{ image_file | asset_url }}" alt="Lámpara de video K25 RGB portátil, imagen {{ forloop.index }}" loading="lazy"><figcaption>{{ light_gallery_captions[forloop.index0] }}</figcaption></figure>
+        {% endfor %}
+      {% elsif is_ergonomic_cushion %}
+        {% assign cushion_gallery_images = 'product-media-cojin-ergonomico-07.jpg,product-media-cojin-ergonomico-01.jpg,product-media-cojin-ergonomico-02.jpg,product-media-cojin-ergonomico-03.jpg,product-media-cojin-ergonomico-04.jpg,product-media-cojin-ergonomico-05.jpg,product-media-cojin-ergonomico-06.jpg,product-media-cojin-ergonomico-08.jpg' | split: ',' %}
+        {% assign cushion_gallery_captions = 'Diseño ergonómico, espuma viscoelástica y malla transpirable.|Dos capas que equilibran suavidad y soporte.|Una forma ergonómica para acompañar tus horas sentado.|Base de alta densidad para un apoyo firme.|Usalo en una silla de oficina.|Dimensiones y presentación del producto.|Malla transpirable y textura suave.|Comodidad práctica para el hogar y el trabajo.' | split: '|' %}
+        {% for image_file in cushion_gallery_images %}
+          <figure><img src="{{ image_file | asset_url }}" alt="Cojín ergonómico de doble capa, imagen {{ forloop.index }}" width="1200" height="1200" loading="lazy"><figcaption>{{ cushion_gallery_captions[forloop.index0] }}</figcaption></figure>
         {% endfor %}
       {% else %}
         {% for media in featured_product.media %}
@@ -281,6 +327,14 @@
         <article><span class="premium-benefit-number">07</span><h3>36.000 colores</h3><p>Explorá una amplia variedad cromática y encontrá el ambiente que imaginás.</p></article>
         <article><span class="premium-benefit-number">08</span><h3>Luz suave</h3><p>Su difusor magnético ayuda a crear una iluminación más uniforme y agradable.</p></article>
         <article><span class="premium-benefit-number">09</span><h3>Lista para montar</h3><p>Con orificio de 1/4″ y soporte para teléfono para sumar opciones de uso.</p></article>
+      </div>
+      {% elsif is_ergonomic_cushion %}
+      <div class="premium-benefit-grid">
+        <article><span class="premium-benefit-number">01</span><h3>Relleno de dos capas</h3><p>Espuma viscoelástica superior y una base elástica de alta densidad para combinar adaptación y soporte.</p></article>
+        <article><span class="premium-benefit-number">02</span><h3>Diseño con ranura en U</h3><p>Su recorte central deja libre la zona del coxis al sentarte y aporta una forma ergonómica al cojín.</p></article>
+        <article><span class="premium-benefit-number">03</span><h3>Malla transpirable</h3><p>La cubierta con patrón de panal favorece la circulación de aire y ayuda a mantener la frescura.</p></article>
+        <article><span class="premium-benefit-number">04</span><h3>Funda removible</h3><p>Retírala para limpiarla con facilidad y mantener el cojín listo para el uso diario.</p></article>
+        <article><span class="premium-benefit-number">05</span><h3>Para distintos asientos</h3><p>Úsalo en sillas de escritorio, autos, sillas de ruedas, sofás, sillas gamer y asientos de viaje.</p></article>
       </div>
       {% else %}
         <div class="premium-generic-description rte">{{ featured_product.description }}</div>
@@ -339,6 +393,22 @@
         <div><dt>Empaque</dt><dd>17 × 15 × 7 cm</dd></div>
       </dl>
     </div>
+    {% elsif is_ergonomic_cushion %}
+    <div class="premium-specs">
+      <div class="premium-specs-intro">
+        <p class="premium-eyebrow"><span></span> FICHA DEL PRODUCTO</p>
+        <h2>Confort pensado<br><em>para todos los días.</em></h2>
+        <p>Detalles del cojín ergonómico de doble capa.</p>
+      </div>
+      <dl class="premium-spec-list">
+        <div><dt>Relleno superior</dt><dd>Espuma viscoelástica de recuperación lenta</dd></div>
+        <div><dt>Relleno inferior</dt><dd>Esponja elástica de alta densidad</dd></div>
+        <div><dt>Diseño</dt><dd>Ergonómico con ranura hueca en forma de U</dd></div>
+        <div><dt>Cubierta</dt><dd>Tela de malla transpirable con patrón de panal</dd></div>
+        <div><dt>Funda</dt><dd>Extraíble para facilitar la limpieza</dd></div>
+        <div><dt>Uso</dt><dd>Oficina, automóvil, hogar, silla de ruedas y viaje</dd></div>
+      </dl>
+    </div>
     {% elsif featured_product.metafields.custom.specifications != blank %}
       <div class="premium-specs"><div class="premium-specs-intro"><p class="premium-eyebrow"><span></span> FICHA TÉCNICA</p><h2>Detalles del <em>producto.</em></h2></div><div class="premium-generic-description rte">{{ featured_product.metafields.custom.specifications | metafield_tag }}</div></div>
     {% endif %}
@@ -391,7 +461,7 @@
     <div class="premium-final-cta">
       <p class="premium-eyebrow"><span></span> COLECCIÓN 01 · NEKOVA</p>
       <h2>Hacé lugar<br>para <em>una mejor rutina.</em></h2>
-      <p>{% if has_discount %}Precio especial por tiempo limitado.{% elsif is_k25_light %}Luz RGB portátil para tus proyectos creativos.{% else %}Diseño funcional para acompañar tu día.{% endif %}</p>
+      <p>{% if has_discount %}Precio especial. Los costos de envío y las opciones de pago se confirman en el checkout.{% elsif is_k25_light %}Luz RGB portátil para tus proyectos creativos.{% elsif is_comfort_product %}Confort cotidiano para acompañar tus espacios.{% else %}Diseño funcional para acompañar tu día.{% endif %}</p>
       <div class="premium-price premium-price-centered">
         <span class="premium-price-current">{{ current_price | money_without_trailing_zeros }} <small>ARS</small></span>
         {% if has_discount %}
@@ -404,7 +474,7 @@
           <input type="hidden" name="id" value="{{ selected_variant.id }}">
           <input type="hidden" name="quantity" value="1">
           <button class="premium-buy-button" type="submit" name="add">
-            <span>{% if is_k25_light %}Quiero mi lámpara{% else %}Quiero mi soporte{% endif %}</span><span aria-hidden="true">↗</span>
+            <span>{% if is_k25_light %}Quiero mi lámpara{% elsif is_ergonomic_cushion %}Quiero mi cojín{% elsif is_reading_stand %}Quiero mi soporte{% else %}Quiero el mío{% endif %}</span><span aria-hidden="true">↗</span>
           </button>
         {% endform %}
       {%- elsif featured_product != blank -%}
@@ -412,7 +482,7 @@
           <span>Avisarme cuando esté disponible</span><span aria-hidden="true">↗</span>
         </a>
       {%- endif -%}
-      <p class="premium-small-note">{{ featured_product.vendor }}{% if is_reading_stand %} · MDF · Giratorio 360° · Ajustable y portátil{% endif %}</p>
+      <p class="premium-small-note">{{ featured_product.vendor }}{% if is_reading_stand %} · MDF · Giratorio 360° · Ajustable y portátil{% elsif is_ergonomic_cushion %} · Doble capa · Funda extraíble{% endif %}</p>
     </div>
   </div>
 </section>
@@ -431,6 +501,22 @@
     font-family: Arial, Helvetica, sans-serif;
     padding: 0 0 8rem;
   }
+  .premium-landing--comfort {
+    --premium-bg: #f5f1e9;
+    --premium-panel: #ebe5da;
+    --premium-panel-soft: #e3dccf;
+    --premium-ink: #292a25;
+    --premium-muted: #5f6059;
+    --premium-accent: #806545;
+    --premium-line: rgba(41, 42, 37, .18);
+  }
+  .premium-landing--comfort .premium-gallery-main { aspect-ratio: 1; background: #e9e3d9; }
+  .premium-landing--comfort .premium-gallery-main img { object-fit: contain; padding: 3%; }
+  .premium-landing--comfort .premium-gallery-thumbs button { background: #e9e3d9; }
+  .premium-landing--comfort .premium-story-image { background: #e9e3d9; }
+  .premium-landing--comfort .premium-photo-story img { background: #e9e3d9; }
+  .premium-landing--comfort .premium-benefit-grid article { background: #f5f1e9; }
+  .premium-landing--comfort .premium-final-cta { border: 1px solid var(--premium-line); }
   .premium-landing * { box-sizing: border-box; }
   .premium-shell { max-width: 1440px; margin: 0 auto; padding: 0 5.5%; }
   .premium-hero { min-height: 78vh; display: grid; grid-template-columns: .88fr 1.12fr; align-items: center; gap: 8%; padding: 7rem 0 6rem; }
@@ -472,6 +558,8 @@
   .premium-stock-error { color: #ffb4a9; line-height: 1.7; }
   .premium-assurances { color: var(--premium-muted); display: flex; flex-wrap: wrap; font-size: .95rem; gap: .6rem 1.8rem; letter-spacing: .05em; margin-top: 1.8rem; }
   .premium-assurances span::before { color: var(--premium-accent); content: '✓'; margin-right: .7rem; }
+  .premium-policy-note { color: var(--premium-muted); font-size: 1rem; line-height: 1.7; margin: 1.4rem 0 0; max-width: 48rem; }
+  .premium-policy-note a { color: var(--premium-accent); text-underline-offset: .2em; }
   .premium-gallery { min-width: 0; }
   .premium-gallery-main { aspect-ratio: 4 / 5; background: #292823; height: auto; min-height: 0; overflow: hidden; position: relative; }
   .premium-gallery-open { background: transparent; border: 0; cursor: zoom-in; display: block; height: 100%; inset: 0; padding: 0; position: absolute; width: 100%; }
@@ -500,9 +588,9 @@
   .premium-story { align-items: center; display: grid; gap: 10%; grid-template-columns: 1.05fr .8fr; padding: 13rem 7%; }
   .premium-story-image { aspect-ratio: 4 / 5; background: var(--premium-panel); overflow: hidden; }
   .premium-story-image img { height: 100%; object-fit: contain; width: 100%; }
-  .premium-photo-story { display: grid; gap: 3rem; grid-template-columns: 1fr; margin: 0 auto; max-width: 980px; padding: 2rem 0 8rem; }
-  .premium-photo-story figure { margin: 0; }
-  .premium-photo-story img { aspect-ratio: 4 / 5; background: var(--premium-panel); display: block; height: auto; object-fit: contain; width: 100%; }
+  .premium-photo-story { display: grid; gap: 2rem; grid-template-columns: repeat(2, minmax(0, 1fr)); margin: 0 auto; max-width: 1120px; padding: 2rem 0 8rem; }
+  .premium-photo-story figure { background: var(--premium-panel); border: 1px solid var(--premium-line); margin: 0; padding: .9rem; }
+  .premium-photo-story img { aspect-ratio: 4 / 5; background: var(--premium-panel-soft); display: block; height: auto; object-fit: contain; width: 100%; }
   .premium-photo-story figcaption { color: var(--premium-muted); font-size: 1.05rem; letter-spacing: .05em; padding: 1rem 0; }
   .premium-video { border-top: 1px solid var(--premium-line); display: grid; gap: 8%; grid-template-columns: .7fr 1.3fr; align-items: center; padding: 7rem 7%; }
   .premium-video .premium-section-heading { margin: 0; }
@@ -561,6 +649,7 @@
     .premium-gallery-main { height: auto; }
     .premium-gallery-thumbs { grid-template-columns: repeat(4, minmax(0, 1fr)); }
     .premium-story { gap: 5rem; grid-template-columns: 1fr 1fr; padding: 8rem 0; }
+    .premium-photo-story { gap: 1.5rem; }
     .premium-benefit-grid { grid-template-columns: repeat(2, 1fr); }
     .premium-specs { gap: 4rem; grid-template-columns: 1fr; }
     .premium-packaging { gap: 3rem; grid-template-columns: .3fr 1fr; }
@@ -584,6 +673,7 @@
     .premium-lightbox-next { right: .6rem; }
     .premium-lightbox-caption { bottom: .8rem; font-size: 1rem; left: 2rem; right: 2rem; }
     .premium-story { gap: 3.5rem; grid-template-columns: 1fr; padding: 7rem 0; }
+    .premium-photo-story { grid-template-columns: 1fr; }
     .premium-story-image { max-height: 48rem; }
     .premium-story h2, .premium-section-heading h2, .premium-specs h2 { font-size: 4.6rem; }
     .premium-benefits, .premium-specs, .premium-faq { padding: 5.5rem 0; }

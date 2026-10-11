@@ -1,4 +1,47 @@
 (() => {
+  const initializeProductFilters = (container = document) => {
+    container.querySelectorAll('[data-home-product-filters]').forEach((filters) => {
+      if (filters.dataset.filtersInitialized) return;
+
+      const section = filters.closest('.nekova-home');
+      const products = [...section.querySelectorAll('[data-home-product-category]')];
+      const count = section.querySelector('[data-home-product-count]');
+      const emptyMessage = section.querySelector('[data-home-filter-empty]');
+      const buttons = [...filters.querySelectorAll('[data-home-product-filter]')];
+
+      if (!products.length || !buttons.length || !count || !emptyMessage) return;
+
+      filters.dataset.filtersInitialized = 'true';
+      const setFilter = (category) => {
+        let visibleCount = 0;
+
+        products.forEach((product) => {
+          const visible = category === 'all' || product.dataset.homeProductCategory === category;
+          product.hidden = !visible;
+          if (visible) visibleCount += 1;
+        });
+
+        count.textContent = `${visibleCount} ${visibleCount === 1 ? 'OBJETO' : 'OBJETOS'}`;
+        emptyMessage.hidden = visibleCount > 0;
+        buttons.forEach((button) => {
+          button.setAttribute('aria-pressed', String(button.dataset.homeProductFilter === category));
+        });
+      };
+
+      buttons.forEach((button) => {
+        button.addEventListener('click', () => setFilter(button.dataset.homeProductFilter));
+      });
+
+      section.querySelectorAll('[data-home-category-link]').forEach((link) => {
+        link.addEventListener('click', () => {
+          const category = link.dataset.homeCategoryLink;
+          const matchingButton = buttons.find((button) => button.dataset.homeProductFilter === category);
+          if (matchingButton) setFilter(category);
+        });
+      });
+    });
+  };
+
   const initializeImageCarousels = (container = document) => {
     container.querySelectorAll('[data-home-image-carousel]').forEach((carousel) => {
       if (carousel.dataset.carouselInitialized) return;
@@ -43,12 +86,17 @@
   };
 
   if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', () => initializeImageCarousels(), { once: true });
+    document.addEventListener('DOMContentLoaded', () => {
+      initializeProductFilters();
+      initializeImageCarousels();
+    }, { once: true });
   } else {
+    initializeProductFilters();
     initializeImageCarousels();
   }
 
   document.addEventListener('shopify:section:load', (event) => {
+    initializeProductFilters(event.target);
     initializeImageCarousels(event.target);
   });
 })();

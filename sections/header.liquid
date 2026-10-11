@@ -17,6 +17,13 @@
 {%- endif -%}
 
 <style>
+  .nekova-header-logo {
+    display: block;
+    height: auto;
+    max-width: 45vw;
+    width: 210px;
+  }
+
   header-drawer {
     justify-self: start;
     margin-left: -1.2rem;
@@ -209,7 +216,7 @@
             src="{{ 'nekova-logo.svg' | asset_url }}"
             alt="{{ shop.name | escape }}"
             class="nekova-header-logo"
-            width="174"
+            width="210"
             height="48"
             fetchpriority="high"
           >
@@ -259,7 +266,7 @@
             src="{{ 'nekova-logo.svg' | asset_url }}"
             alt="{{ shop.name | escape }}"
             class="nekova-header-logo"
-            width="174"
+            width="210"
             height="48"
             fetchpriority="high"
           >
