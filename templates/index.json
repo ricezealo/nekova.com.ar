@@ -1,7 +1,17 @@
 {
   "sections": {
+    "launch_product": {
+      "type": "nekova-product",
+      "settings": {
+        "product": "cojin-ortopedico-u",
+        "launch_heading": "Sentate mejor, todo el día."
+      },
+      "blocks": {},
+      "block_order": []
+    },
     "home_showcase": {
       "type": "home-product-showcase",
+      "disabled": true,
       "settings": {
         "collection": "all",
         "products_to_show": 6,
@@ -10,5 +20,8 @@
       }
     }
   },
-  "order": ["home_showcase"]
+  "order": [
+    "launch_product",
+    "home_showcase"
+  ]
 }

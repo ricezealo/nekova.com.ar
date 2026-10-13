@@ -49,14 +49,19 @@
 
 {{ 'premium-product-landing.js' | asset_url | script_tag }}
 
-<section class="premium-landing section-{{ section.id }}{% if is_comfort_product %} premium-landing--comfort{% endif %}" aria-labelledby="PremiumTitle-{{ section.id }}">
+<section class="premium-landing section-{{ section.id }}" aria-labelledby="PremiumTitle-{{ section.id }}">
   <div class="premium-shell">
     <div class="premium-hero">
       <div class="premium-copy">
-        <p class="premium-eyebrow"><span></span> NEKOVA · CASA, TRABAJO Y CONFORT</p>
-        <p class="premium-edition">OBJETOS PARA TODOS TUS ESPACIOS &nbsp; / &nbsp; {{ featured_product.type | default: 'COLECCIÓN NEKOVA' }}</p>
-        <h1 id="PremiumTitle-{{ section.id }}">{{ featured_product.title | default: section.settings.heading | escape }}</h1>
-        <p class="premium-product-name">{% if is_reading_stand %}Diseño funcional para leer, estudiar y crear.{% elsif is_k25_light %}Luz creativa, lista para llevar.{% elsif is_ergonomic_cushion %}Confort ergonómico para tus horas sentado.{% elsif is_orthopedic_cushion %}Apoyo envolvente para cada hora sentado.{% else %}Diseño pensado para acompañar tu día.{% endif %}</p>
+        <p class="premium-eyebrow"><span></span> NEKOVA · ERGONOMÍA Y BIENESTAR</p>
+        {%- if section.settings.launch_heading != blank -%}
+          <h1 id="PremiumTitle-{{ section.id }}">{{ section.settings.launch_heading }}</h1>
+          <p class="premium-product-title">{{ featured_product.title | escape }}</p>
+        {%- else -%}
+          <p class="premium-edition">CONFORT PARA CADA DÍA &nbsp; / &nbsp; {{ featured_product.type | default: 'NEKOVA' }}</p>
+          <h1 id="PremiumTitle-{{ section.id }}">{{ featured_product.title | default: section.settings.heading | escape }}</h1>
+        {%- endif -%}
+        <p class="premium-product-name">{% if is_reading_stand %}Diseño funcional para leer, estudiar y crear.{% elsif is_k25_light %}Luz creativa, lista para llevar.{% elsif is_ergonomic_cushion %}Confort ergonómico para tus horas sentado.{% elsif is_orthopedic_cushion %}Un apoyo envolvente para tus horas sentado.{% else %}Diseño pensado para acompañar tu día.{% endif %}</p>
         <div class="premium-intro">{% if is_reading_stand %}Soporte plegable de madera MDF, ajustable y giratorio 360°, para laptop, libros y tabletas. Incluye una ranura de almacenamiento y un clip elevable para páginas.{% elsif is_k25_light %}Una luz RGB compacta de 25 W para fotografía, video, streaming y creación de contenido. Ajustá el color, la temperatura y el brillo para darle forma a cada escena.{% elsif is_ergonomic_cushion %}Dos capas de espuma, una ranura ergonómica en U y una funda transpirable y extraíble: comodidad práctica para el trabajo, los viajes y el uso diario.{% elsif is_orthopedic_cushion %}Espuma viscoelástica de recuperación lenta, una ranura en U que libera la zona del coxis y laterales elevados que acompañan tu postura. Con funda transpirable y extraíble, para la oficina, el auto o tu casa.{% else %}{{ featured_product.description | strip_html | truncatewords: 34 }}{% endif %}</div>
 
         <div class="premium-price" aria-label="Precio del producto">
@@ -210,7 +215,7 @@
             <span>Diseño funcional</span><span>Uso diario</span>
           {% endif %}
         </div>
-        <p class="premium-policy-note">60 días de garantía. El costo de envío y los medios de pago se confirman antes de finalizar tu compra. <a href="/#NekovaFaqTitle-home_showcase">Ver condiciones de compra</a>.</p>
+        <p class="premium-policy-note">60 días de garantía. El costo de envío y los medios de pago se confirman antes de finalizar tu compra. <a href="#PremiumFaq-{{ section.id }}">Ver condiciones de compra</a>.</p>
       </div>
 
       <div class="premium-gallery" data-premium-gallery>
@@ -246,7 +251,7 @@
           {% elsif is_orthopedic_cushion %}
             <img
               src="{{ 'product-media-cojin-ortopedico-01.jpg' | asset_url }}"
-              alt="Cojín ortopédico en U de espuma viscoelástica, color gris"
+              alt="Cojín ergonómico en U de espuma viscoelástica, color gris"
               width="1200"
               height="1200"
               fetchpriority="high"
@@ -310,7 +315,7 @@
           {% elsif is_orthopedic_cushion %}
             {% assign orthopedic_gallery_images = 'product-media-cojin-ortopedico-01.jpg,product-media-cojin-ortopedico-02.jpg,product-media-cojin-ortopedico-03.jpg,product-media-cojin-ortopedico-04.jpg,product-media-cojin-ortopedico-05.jpg,product-media-cojin-ortopedico-06.jpg,product-media-cojin-ortopedico-07.jpg,product-media-cojin-ortopedico-08.jpg,product-media-cojin-ortopedico-09.jpg,product-media-cojin-ortopedico-10.jpg,product-media-cojin-ortopedico-11.jpg,product-media-cojin-ortopedico-12.jpg' | split: ',' %}
             {% for image_file in orthopedic_gallery_images %}
-              <button class="{% if forloop.first %}is-active{% endif %}" type="button" aria-label="Ver cojín ortopédico en U, imagen {{ forloop.index }}" aria-pressed="{% if forloop.first %}true{% else %}false{% endif %}" data-premium-image="{{ image_file | asset_url }}" data-premium-alt="Cojín ortopédico en U, imagen {{ forloop.index }}">
+              <button class="{% if forloop.first %}is-active{% endif %}" type="button" aria-label="Ver cojín ergonómico en U, imagen {{ forloop.index }}" aria-pressed="{% if forloop.first %}true{% else %}false{% endif %}" data-premium-image="{{ image_file | asset_url }}" data-premium-alt="Cojín ergonómico en U, imagen {{ forloop.index }}">
                 <img src="{{ image_file | asset_url }}" alt="" width="1200" height="1200" loading="lazy">
               </button>
             {% endfor %}
@@ -341,6 +346,20 @@
         </dialog>
       </div>
     </div>
+
+    {% if is_orthopedic_cushion %}
+    <section class="premium-needs" aria-labelledby="PremiumNeeds-{{ section.id }}">
+      <div class="premium-section-heading">
+        <p class="premium-eyebrow"><span></span> ¿PASÁS MUCHAS HORAS SENTADO?</p>
+        <h2 id="PremiumNeeds-{{ section.id }}">Pensado para<br><em>tu día a día.</em></h2>
+      </div>
+      <div class="premium-needs-grid">
+        <article><span class="premium-benefit-number">01</span><h3>Escritorio y home office</h3><p>Trabajo, estudio o videollamadas: un apoyo cómodo se nota al final del día.</p></article>
+        <article><span class="premium-benefit-number">02</span><h3>Viajes en auto</h3><p>Sumá comodidad al asiento en los trayectos diarios o en los viajes largos.</p></article>
+        <article><span class="premium-benefit-number">03</span><h3>Zona del coxis</h3><p>La ranura en U deja libre esa zona para que te sientes con más comodidad.</p></article>
+      </div>
+    </section>
+    {% endif %}
 
     {% if is_reading_stand %}
     <div class="premium-marquee" aria-label="Nekova: objetos para una vida mejor">
@@ -385,12 +404,12 @@
     {% elsif is_orthopedic_cushion %}
     <div class="premium-story">
       <div class="premium-story-image">
-        <img src="{{ 'product-media-cojin-ortopedico-08.jpg' | asset_url }}" alt="Cojín ortopédico en U sobre una silla de oficina, con laterales elevados que envuelven los muslos" width="1200" height="1200" loading="lazy">
+        <img src="{{ 'product-media-cojin-ortopedico-04.jpg' | asset_url }}" alt="Zonas de apoyo del cojín en U: laterales, ranura central y canal de ventilación" width="1200" height="1200" loading="lazy">
       </div>
       <div class="premium-story-copy">
-        <p class="premium-eyebrow"><span></span> POSTURA Y DESCANSO</p>
+        <p class="premium-eyebrow"><span></span> CÓMO FUNCIONA</p>
         <h2>Un apoyo que<br><em>te envuelve.</em></h2>
-        <p>Sus laterales elevados envuelven la cadera, el frente en arco acompaña la base de los muslos y la parte trasera, más alta, da soporte a la zona lumbar. La ranura en U deja libre el coxis para que tus horas sentado sean más cómodas.</p>
+        <p>Sus laterales elevados envuelven la cadera, el frente en arco acompaña la base de los muslos y la parte trasera, más alta, da apoyo a la espalda baja. La ranura en U deja libre la zona del coxis para que tus horas sentado sean más cómodas.</p>
         <a href="#detalles-producto">Descubrí sus detalles <span aria-hidden="true">↓</span></a>
       </div>
     </div>
@@ -419,10 +438,10 @@
           <figure><img src="{{ image_file | asset_url }}" alt="Cojín ergonómico de doble capa, imagen {{ forloop.index }}" width="1200" height="1200" loading="lazy"><figcaption>{{ cushion_gallery_captions[forloop.index0] }}</figcaption></figure>
         {% endfor %}
       {% elsif is_orthopedic_cushion %}
-        {% assign orthopedic_gallery_images = 'product-media-cojin-ortopedico-01.jpg,product-media-cojin-ortopedico-02.jpg,product-media-cojin-ortopedico-03.jpg,product-media-cojin-ortopedico-04.jpg,product-media-cojin-ortopedico-05.jpg,product-media-cojin-ortopedico-06.jpg,product-media-cojin-ortopedico-07.jpg,product-media-cojin-ortopedico-08.jpg,product-media-cojin-ortopedico-09.jpg,product-media-cojin-ortopedico-10.jpg,product-media-cojin-ortopedico-11.jpg,product-media-cojin-ortopedico-12.jpg' | split: ',' %}
-        {% assign orthopedic_gallery_captions = 'Espuma viscoelástica con funda transpirable y laterales elevados.|Ranura en U para liberar la zona del coxis.|Disponible en gris y azul marino.|Zonas de apoyo para la cadera, los muslos y el coxis.|Una forma pensada para acompañar la pelvis al sentarte.|Canal central que favorece la circulación de aire.|Apoyo suave, con recuperación lenta de 3 a 5 segundos.|Laterales elevados que envuelven los muslos.|Parte trasera elevada para acompañar el coxis y la zona lumbar.|Zonas ergonómicas: laterales, coxis y canal de ventilación.|Funda transpirable y extraíble.|Elegí tu color: gris o azul marino.' | split: '|' %}
-        {% for image_file in orthopedic_gallery_images %}
-          <figure><img src="{{ image_file | asset_url }}" alt="Cojín ortopédico en U, imagen {{ forloop.index }}" width="1200" height="1200" loading="lazy"><figcaption>{{ orthopedic_gallery_captions[forloop.index0] }}</figcaption></figure>
+        {% assign orthopedic_story_images = 'product-media-cojin-ortopedico-01.jpg,product-media-cojin-ortopedico-02.jpg,product-media-cojin-ortopedico-06.jpg,product-media-cojin-ortopedico-05.jpg' | split: ',' %}
+        {% assign orthopedic_story_captions = 'Espuma viscoelástica, funda transpirable y laterales elevados.|Ranura en U que deja libre la zona del coxis.|Canal central que favorece la circulación de aire.|Una forma que acompaña la cadera al sentarte.' | split: '|' %}
+        {% for image_file in orthopedic_story_images %}
+          <figure><img src="{{ image_file | asset_url }}" alt="{{ orthopedic_story_captions[forloop.index0] | remove: '.' }}" width="1200" height="1200" loading="lazy"><figcaption>{{ orthopedic_story_captions[forloop.index0] }}</figcaption></figure>
         {% endfor %}
       {% else %}
         {% for media in featured_product.media %}
@@ -490,7 +509,7 @@
         <article><span class="premium-benefit-number">01</span><h3>Espuma viscoelástica</h3><p>Un núcleo de recuperación lenta que se adapta a tu forma y vuelve a su posición en 3 a 5 segundos.</p></article>
         <article><span class="premium-benefit-number">02</span><h3>Ranura en U</h3><p>Su recorte central deja libre la zona del coxis y ayuda a repartir el peso al sentarte.</p></article>
         <article><span class="premium-benefit-number">03</span><h3>Laterales elevados</h3><p>Envuelven la cadera y los muslos para un apoyo más estable durante el día.</p></article>
-        <article><span class="premium-benefit-number">04</span><h3>Frente en arco</h3><p>Acompaña la base de los muslos, mientras la parte trasera, más alta, da soporte a la zona lumbar.</p></article>
+        <article><span class="premium-benefit-number">04</span><h3>Frente en arco</h3><p>Acompaña la base de los muslos, mientras la parte trasera, más alta, acompaña la espalda baja.</p></article>
         <article><span class="premium-benefit-number">05</span><h3>Funda transpirable</h3><p>Malla con canal de ventilación central. Se retira para lavarla con facilidad.</p></article>
         <article><span class="premium-benefit-number">06</span><h3>Oficina, auto y casa</h3><p>Usalo en la silla de escritorio, el asiento del auto o donde pases más tiempo sentado.</p></article>
       </div>
@@ -572,7 +591,7 @@
       <div class="premium-specs-intro">
         <p class="premium-eyebrow"><span></span> FICHA DEL PRODUCTO</p>
         <h2>Diseñado para<br><em>sentarte mejor.</em></h2>
-        <p>Detalles del cojín ortopédico en U.</p>
+        <p>Detalles del cojín ergonómico en U.</p>
       </div>
       <dl class="premium-spec-list">
         <div><dt>Relleno</dt><dd>Espuma viscoelástica de recuperación lenta</dd></div>
@@ -602,53 +621,61 @@
         <li>340 × 235 × 76 mm</li>
       </ul>
     </div>
-
-    <div class="premium-faq">
-      <div class="premium-section-heading">
-        <p class="premium-eyebrow"><span></span> ANTES DE ELEGIR</p>
-        <h2>Preguntas <em>frecuentes.</em></h2>
-      </div>
-      <div class="premium-faq-list">
-        <details><summary>¿Puedo usarlo con laptop, libros o tabletas?</summary><p>Sí. El atril está pensado para sostener laptop, libros y tabletas, y su rotación de 360° permite ajustar la orientación.</p></details>
-        <details><summary>¿Se puede plegar y guardar?</summary><p>Sí. Su diseño portátil se pliega para facilitar el guardado y el traslado.</p></details>
-        <details><summary>¿Qué espacio ocupa?</summary><p>Sus dimensiones son 340 × 235 × 76 mm. Incluye una ranura para tener pequeños accesorios a mano.</p></details>
-        <details><summary>¿De qué material está hecho?</summary><p>La estructura está fabricada en MDF.</p></details>
-      </div>
-    </div>
-    {% elsif is_orthopedic_cushion %}
-    <div class="premium-faq">
-      <div class="premium-section-heading">
-        <p class="premium-eyebrow"><span></span> ANTES DE ELEGIR</p>
-        <h2>Preguntas <em>frecuentes.</em></h2>
-      </div>
-      <div class="premium-faq-list">
-        <details><summary>¿Qué medidas tiene?</summary><p>Mide 48 × 38 × 12 cm. Antes de comprar, verificá que el asiento de tu silla o de tu auto tenga al menos ese ancho y esa profundidad.</p></details>
-        <details><summary>¿Cómo se limpia?</summary><p>La funda es extraíble, así podés retirarla y lavarla por separado. Recomendamos no mojar el núcleo de espuma viscoelástica.</p></details>
-        <details><summary>¿Cuánto tarda en recuperar su forma?</summary><p>La espuma viscoelástica es de recuperación lenta: vuelve a su forma original en 3 a 5 segundos después de usarla.</p></details>
-        <details><summary>¿En qué colores está disponible?</summary><p>En gris y en azul marino. Elegí el color antes de agregarlo al carrito.</p></details>
-      </div>
-    </div>
     {% endif %}
 
+    <section class="premium-trust" aria-label="Información de compra">
+      <div><span aria-hidden="true">01</span><p><strong>60 días de garantía</strong><small>Te acompañamos después de tu compra.</small></p></div>
+      <div><span aria-hidden="true">02</span><p><strong>Despacho rápido</strong><small>Mismo día antes de las 13 h; después, dentro de las 24 h.</small></p></div>
+      <div><span aria-hidden="true">03</span><p><strong>10 días para devolverlo</strong><small>Desde la compra, con el producto completo y en perfecto estado.</small></p></div>
+      <div><span aria-hidden="true">04</span><p><strong>Envío y pago claros</strong><small>Costos y medios de pago visibles antes de confirmar.</small></p></div>
+    </section>
+
+    <div class="premium-faq">
+      <div class="premium-section-heading">
+        <p class="premium-eyebrow"><span></span> ANTES DE ELEGIR</p>
+        <h2 id="PremiumFaq-{{ section.id }}">Preguntas <em>frecuentes.</em></h2>
+        <p>Todo lo que necesitás saber sobre el producto y tu compra.</p>
+      </div>
+      <div class="premium-faq-list">
+        {% if is_reading_stand %}
+          <details><summary>¿Puedo usarlo con laptop, libros o tabletas?</summary><p>Sí. El atril está pensado para sostener laptop, libros y tabletas, y su rotación de 360° permite ajustar la orientación.</p></details>
+          <details><summary>¿Se puede plegar y guardar?</summary><p>Sí. Su diseño portátil se pliega para facilitar el guardado y el traslado.</p></details>
+          <details><summary>¿Qué espacio ocupa?</summary><p>Sus dimensiones son 340 × 235 × 76 mm. Incluye una ranura para tener pequeños accesorios a mano.</p></details>
+          <details><summary>¿De qué material está hecho?</summary><p>La estructura está fabricada en MDF.</p></details>
+        {% elsif is_orthopedic_cushion %}
+          <details><summary>¿Qué medidas tiene?</summary><p>Mide 48 × 38 × 12 cm. Antes de comprar, verificá que el asiento de tu silla o de tu auto tenga al menos ese ancho y esa profundidad.</p></details>
+          <details><summary>¿Cómo se limpia?</summary><p>La funda es extraíble, así podés retirarla y lavarla por separado. Recomendamos no mojar el núcleo de espuma viscoelástica.</p></details>
+          <details><summary>¿Cuánto tarda en recuperar su forma?</summary><p>La espuma viscoelástica es de recuperación lenta: vuelve a su forma original en 3 a 5 segundos después de usarla.</p></details>
+          <details><summary>¿En qué colores está disponible?</summary><p>En gris y en azul marino. Elegí el color antes de agregarlo al carrito.</p></details>
+        {% endif %}
+        <details><summary>¿Cómo puedo comprar?</summary><p>Elegí el producto, agregalo al carrito y seguí los pasos del checkout para completar tus datos, elegir el envío y confirmar el pago.</p></details>
+        <details><summary>¿Qué garantía tiene?</summary><p>Los productos cuentan con 60 días de garantía. Si necesitás asistencia, escribinos desde la <a href="/pages/contact">página de contacto</a> e incluí tu número de pedido y una descripción del inconveniente.</p></details>
+        <details><summary>¿Puedo devolver mi compra?</summary><p>Podés solicitar la devolución dentro de los 10 días desde la compra para pedir el reintegro. El producto debe estar en perfectas condiciones y completo, sin faltantes. Contactanos para coordinar la devolución.</p></details>
+        <details><summary>¿Cuándo se despacha mi pedido?</summary><p>Las compras realizadas antes de las 13:00 se despachan ese mismo día. Las compras realizadas después de ese horario se despachan dentro de las 24 horas. El plazo de entrega depende del destino y del operador logístico.</p></details>
+        <details><summary>¿Cuánto cuesta y cuánto demora el envío?</summary><p>El costo y la estimación de entrega se calculan según tu destino y se muestran durante el checkout, antes de confirmar la compra.</p></details>
+        <details><summary>¿Qué medios de pago puedo usar?</summary><p>En el checkout vas a ver los medios de pago disponibles para tu compra, junto con las opciones de cuotas cuando correspondan.</p></details>
+      </div>
+    </div>
+
+    {% if section.blocks.size > 0 %}
     <section class="premium-reviews" aria-labelledby="PremiumReviewsTitle-{{ section.id }}">
       <div class="premium-section-heading">
         <p class="premium-eyebrow"><span></span> EXPERIENCIAS REALES</p>
-        <h2 id="PremiumReviewsTitle-{{ section.id }}">Reseñas de<br><em>este producto.</em></h2>
-        <p>Opiniones compartidas por clientes. Las reseñas se mostrarán aquí cuando se conecte la app de reseñas de la tienda.</p>
+        <h2 id="PremiumReviewsTitle-{{ section.id }}">Lo que dicen<br><em>quienes lo usan.</em></h2>
+        <p>Opiniones de clientes que compraron este producto.</p>
       </div>
       <div class="premium-reviews-apps">
         {% for block in section.blocks %}
           {% render block %}
-        {% else %}
-          <p class="premium-reviews-empty">Todavía no hay reseñas publicadas. Próximamente vas a poder leer las experiencias de quienes compraron este producto.</p>
         {% endfor %}
       </div>
     </section>
+    {% endif %}
 
     <div class="premium-final-cta">
-      <p class="premium-eyebrow"><span></span> COLECCIÓN 01 · NEKOVA</p>
-      <h2>Hacé lugar<br>para <em>una mejor rutina.</em></h2>
-      <p>{% if has_discount %}Precio especial. Los costos de envío y las opciones de pago se confirman en el checkout.{% elsif is_k25_light %}Luz RGB portátil para tus proyectos creativos.{% elsif is_comfort_product %}Confort cotidiano para acompañar tus espacios.{% else %}Diseño funcional para acompañar tu día.{% endif %}</p>
+      <p class="premium-eyebrow"><span></span> NEKOVA · CONFORT DIARIO</p>
+      <h2>Tu próxima hora sentado<br><em>puede ser más cómoda.</em></h2>
+      <p>{% if has_discount %}Precio especial. Los costos de envío y las opciones de pago se confirman en el checkout.{% elsif is_k25_light %}Luz RGB portátil para tus proyectos creativos.{% elsif is_comfort_product %}60 días de garantía y despacho en el día para compras antes de las 13 h.{% else %}Diseño funcional para acompañar tu día.{% endif %}</p>
       <div class="premium-price premium-price-centered">
         <span class="premium-price-current">{{ current_price | money_without_trailing_zeros }} <small>ARS</small></span>
         {% if has_discount %}
@@ -674,65 +701,69 @@
         </a>
       {%- endif -%}
       <p class="premium-small-note">{{ featured_product.vendor }}{% if is_reading_stand %} · MDF · Giratorio 360° · Ajustable y portátil{% elsif is_ergonomic_cushion %} · Doble capa · Funda extraíble{% elsif is_orthopedic_cushion %} · Espuma viscoelástica · Ranura en U · Funda extraíble{% endif %}</p>
+      <p class="premium-contact-note">¿Tenés dudas? <a href="/pages/contact">Escribinos</a> y te ayudamos a elegir.</p>
     </div>
   </div>
 </section>
 
 {% style %}
   .premium-landing {
-    --premium-bg: var(--nekova-black);
+    --premium-bg: var(--nekova-bg);
+    --premium-surface: var(--nekova-surface);
     --premium-panel: var(--nekova-panel);
-    --premium-panel-soft: var(--nekova-panel-soft);
     --premium-ink: var(--nekova-ink);
     --premium-muted: var(--nekova-muted);
-    --premium-accent: var(--nekova-gold);
+    --premium-accent: var(--nekova-accent);
+    --premium-accent-strong: var(--nekova-accent-strong);
+    --premium-accent-soft: var(--nekova-accent-soft);
     --premium-line: var(--nekova-line);
-    --premium-media: var(--nekova-media);
     background: var(--premium-bg);
     color: var(--premium-ink);
-    font-family: var(--nekova-sans);
+    font-family: var(--nekova-font-body);
     padding: 0 0 8rem;
   }
-  .premium-landing--comfort {
-    --premium-bg: var(--nekova-cream-light);
-    --premium-panel: var(--nekova-cream-panel);
-    --premium-panel-soft: var(--nekova-cream-panel-soft);
-    --premium-ink: var(--nekova-charcoal);
-    --premium-muted: var(--nekova-charcoal-muted);
-    --premium-accent: var(--nekova-bronze);
-    --premium-line: var(--nekova-line-dark);
-  }
-  .premium-landing--comfort .premium-gallery-main { aspect-ratio: 1; background: var(--premium-media); }
-  .premium-landing--comfort .premium-gallery-main img { object-fit: contain; padding: 3%; }
-  .premium-landing--comfort .premium-gallery-thumbs button { background: var(--premium-media); }
-  .premium-landing--comfort .premium-story-image { background: var(--premium-media); }
-  .premium-landing--comfort .premium-photo-story img { background: var(--premium-media); }
-  .premium-landing--comfort .premium-benefit-grid article { background: var(--premium-bg); }
-  .premium-landing--comfort .premium-final-cta { border: 1px solid var(--premium-line); }
-  .premium-landing--comfort .premium-buy-button, .premium-landing--comfort .premium-stock-submit { color: var(--nekova-cream-light); }
-  .premium-landing--comfort .premium-buy-button:hover { color: var(--premium-accent); }
   .premium-landing * { box-sizing: border-box; }
-  .premium-shell { max-width: 1440px; margin: 0 auto; padding: 0 5.5%; }
-  .premium-hero { min-height: 78vh; display: grid; grid-template-columns: .88fr 1.12fr; align-items: center; gap: 8%; padding: 7rem 0 6rem; }
-  .premium-copy { max-width: 490px; padding: 2rem 0; }
-  .premium-copy .premium-edition { margin-top: 4.2rem; }
+  .premium-shell { margin: 0 auto; max-width: 1360px; padding: 0 5%; }
+  .premium-hero { align-items: center; display: grid; gap: 6%; grid-template-columns: .9fr 1.1fr; padding: 5rem 0 7rem; }
+  .premium-copy { max-width: 52rem; padding: 1rem 0; }
+  .premium-copy .premium-edition { margin-top: 3rem; }
   .premium-copy h1, .premium-story h2, .premium-section-heading h2, .premium-specs h2, .premium-packaging h2, .premium-final-cta h2 {
-    color: var(--premium-ink); font-family: var(--nekova-serif); font-size: clamp(4rem, 6vw, 7.4rem);
-    font-weight: 400; letter-spacing: -.045em; line-height: .99; margin: 1.8rem 0 1.2rem;
+    color: var(--premium-ink); font-family: var(--nekova-font-heading); font-size: clamp(3.4rem, 4.4vw, 5.2rem);
+    font-weight: 400; letter-spacing: -.02em; line-height: 1.08; margin: 1.6rem 0 1.2rem;
   }
-  .premium-copy h1 { font-size: clamp(4.2rem, 6.5vw, 7.8rem); }
-  .premium-copy h1 em, .premium-story h2 em, .premium-section-heading h2 em, .premium-specs h2 em, .premium-final-cta h2 em { color: var(--premium-accent); font-weight: 400; }
-  .premium-product-name { color: var(--premium-ink); font-size: 1.6rem; letter-spacing: .025em; margin: 2.2rem 0 .8rem; }
+  .premium-copy h1 { font-size: clamp(4rem, 5.2vw, 6.4rem); }
+  .premium-copy h1 em, .premium-story h2 em, .premium-section-heading h2 em, .premium-specs h2 em, .premium-packaging h2 em, .premium-final-cta h2 em { color: var(--premium-accent); font-style: italic; font-weight: 400; }
+  .premium-product-title { color: var(--premium-muted); font-size: 1.25rem; font-weight: 700; letter-spacing: .14em; margin: 0 0 .4rem; text-transform: uppercase; }
+  .premium-product-name { color: var(--premium-ink); font-size: 1.8rem; font-weight: 600; margin: 2rem 0 .8rem; }
   .premium-intro, .premium-story-copy > p:not(.premium-eyebrow), .premium-specs-intro > p:not(.premium-eyebrow), .premium-packaging > div:first-child > p:not(.premium-eyebrow) {
-    color: var(--premium-muted); font-size: 1.6rem; line-height: 1.8; max-width: 48rem;
+    color: var(--premium-muted); font-size: 1.6rem; line-height: 1.75; max-width: 48rem;
   }
-  .premium-price { display: flex; flex-wrap: wrap; align-items: center; gap: .8rem 1.2rem; margin: 2.4rem 0 .7rem; }
-  .premium-price-current { color: var(--premium-ink); font-family: var(--nekova-serif); font-size: 2.8rem; }
-  .premium-price-current small { color: var(--premium-muted); font: 500 1.1rem var(--nekova-sans); letter-spacing: .1em; }
+  .premium-price { align-items: center; display: flex; flex-wrap: wrap; gap: .8rem 1.2rem; margin: 2.4rem 0 .7rem; }
+  .premium-price-current { color: var(--premium-ink); font-family: var(--nekova-font-heading); font-size: 3rem; }
+  .premium-price-current small { color: var(--premium-muted); font: 600 1.1rem var(--nekova-font-body); letter-spacing: .1em; }
   .premium-price-was { color: var(--premium-muted); font-size: 1.4rem; text-decoration: line-through; }
-  .premium-discount { border: 1px solid var(--premium-accent); color: var(--premium-accent); font-size: 1.2rem; letter-spacing: .08em; padding: .65rem .8rem; }
+  .premium-discount { background: var(--nekova-warm-soft); border-radius: var(--nekova-radius-pill); color: var(--premium-ink); font-size: 1.2rem; font-weight: 700; letter-spacing: .06em; padding: .5rem 1.2rem; }
   .premium-launch-note, .premium-select-note { color: var(--premium-muted); font-size: 1.3rem; margin: 0 0 2rem; }
-  .premium-buy-form { margin: 2.2rem 0 0; }
+  .premium-buy-form { margin: 2.4rem 0 0; }
+  .premium-buy-button { align-items: center; background: var(--premium-accent); border: 0; border-radius: var(--nekova-radius-pill); box-shadow: 0 .8rem 2rem rgba(var(--nekova-ink-rgb), .12); color: var(--nekova-on-accent); cursor: pointer; display: flex; font: 700 1.5rem var(--nekova-font-body); justify-content: space-between; letter-spacing: .02em; max-width: 44rem; min-height: 5.6rem; padding: 0 2.6rem; text-decoration: none; transition: background .2s, transform .2s; width: 100%; }
+  .premium-buy-button:hover { background: var(--premium-accent-strong); transform: translateY(-1px); }
+  .premium-buy-button:focus-visible { outline: 2px solid var(--premium-accent); outline-offset: 3px; }
+  .premium-buy-button:disabled { cursor: not-allowed; opacity: .55; }
+  .premium-stock-notice { background: var(--premium-surface); border: 1px solid var(--premium-line); border-radius: var(--nekova-radius); margin-top: 2.2rem; max-width: 48rem; padding: 2.2rem; }
+  .premium-stock-status { color: var(--premium-accent); font-size: 1.2rem; font-weight: 700; letter-spacing: .14em; }
+  .premium-stock-notice > p { color: var(--premium-muted); font-size: 1.4rem; line-height: 1.7; }
+  .premium-stock-form > label:first-of-type { color: var(--premium-ink); display: block; font-size: 1.3rem; margin-bottom: .7rem; }
+  .premium-stock-input-row { display: flex; gap: .8rem; }
+  .premium-stock-input-row input { background: var(--premium-bg); border: 1px solid var(--nekova-line-strong); border-radius: var(--nekova-radius-pill); color: var(--premium-ink); flex: 1; font: inherit; min-width: 0; padding: 1.2rem 1.6rem; }
+  .premium-stock-submit { background: var(--premium-accent); border: 0; border-radius: var(--nekova-radius-pill); color: var(--nekova-on-accent); cursor: pointer; font: 700 1.4rem var(--nekova-font-body); padding: 0 2rem; }
+  .premium-stock-consent { align-items: flex-start; color: var(--premium-muted); display: flex; font-size: 1.25rem; gap: .8rem; line-height: 1.5; margin-top: 1.2rem; }
+  .premium-stock-consent input { accent-color: var(--premium-accent); margin-top: .2rem; }
+  .premium-stock-success { color: var(--premium-accent); line-height: 1.7; }
+  .premium-stock-error { color: var(--nekova-error); line-height: 1.7; }
+  .premium-assurances { color: var(--premium-muted); display: flex; flex-wrap: wrap; font-size: 1.3rem; gap: .6rem 1.8rem; margin-top: 1.8rem; }
+  .premium-assurances span::before { color: var(--premium-accent); content: '✓'; font-weight: 700; margin-right: .6rem; }
+  .premium-policy-note { color: var(--premium-muted); font-size: 1.25rem; line-height: 1.7; margin: 1.4rem 0 0; max-width: 48rem; }
+  .premium-policy-note a, .premium-faq-list a, .premium-contact-note a { color: var(--premium-accent); text-underline-offset: .2em; }
   .premium-variant-picker { border: 0; margin: 0 0 1.8rem; min-width: 0; padding: 0; }
   .premium-variant-picker legend { color: var(--premium-muted); font-size: 1.2rem; letter-spacing: .16em; margin-bottom: 1rem; padding: 0; text-transform: uppercase; }
   .premium-variant-picker legend > span { color: var(--premium-ink); }
@@ -754,162 +785,153 @@
   .premium-variant-option input:disabled + span { cursor: not-allowed; opacity: .45; }
   .premium-variant-option input:disabled + .premium-variant-pill { text-decoration: line-through; }
   .premium-variant-option input:disabled + .premium-variant-swatch { background-image: linear-gradient(135deg, transparent 47%, var(--premium-muted) 47%, var(--premium-muted) 53%, transparent 53%); }
-  .premium-buy-button { align-items: center; background: var(--premium-accent); border: 1px solid var(--premium-accent); color: var(--nekova-on-gold); cursor: pointer; display: flex; font: 600 1.4rem var(--nekova-sans); justify-content: space-between; letter-spacing: .04em; max-width: 44rem; min-height: 5.8rem; padding: 0 2rem; text-decoration: none; transition: background .2s, color .2s; width: 100%; }
-  .premium-buy-button:hover { background: transparent; color: var(--premium-accent); }
-  .premium-buy-button:disabled { cursor: not-allowed; opacity: .55; }
-  .premium-stock-notice { background: var(--premium-panel); margin-top: 2.2rem; max-width: 48rem; padding: 2rem; }
-  .premium-stock-status { color: var(--premium-accent); font-size: 1.15rem; letter-spacing: .16em; }
-  .premium-stock-notice > p { color: var(--premium-muted); font-size: 1.4rem; line-height: 1.7; }
-  .premium-stock-form > label:first-of-type { color: var(--premium-ink); display: block; font-size: 1.3rem; margin-bottom: .7rem; }
-  .premium-stock-input-row { display: flex; gap: .8rem; }
-  .premium-stock-input-row input { background: var(--premium-bg); border: 1px solid var(--premium-line); color: var(--premium-ink); flex: 1; min-width: 0; padding: 1.2rem; }
-  .premium-stock-submit { background: var(--premium-accent); border: 1px solid var(--premium-accent); color: var(--nekova-on-gold); cursor: pointer; font-weight: 600; padding: 0 1.6rem; }
-  .premium-stock-consent { align-items: flex-start; color: var(--premium-muted); display: flex; font-size: 1.25rem; gap: .8rem; line-height: 1.5; margin-top: 1.2rem; }
-  .premium-stock-consent input { accent-color: var(--premium-accent); margin-top: .2rem; }
-  .premium-stock-success { color: var(--premium-accent); line-height: 1.7; }
-  .premium-stock-error { color: var(--nekova-error); line-height: 1.7; }
-  .premium-assurances { color: var(--premium-muted); display: flex; flex-wrap: wrap; font-size: 1.25rem; gap: .6rem 1.8rem; letter-spacing: .05em; margin-top: 1.8rem; }
-  .premium-assurances span::before { color: var(--premium-accent); content: '✓'; margin-right: .7rem; }
-  .premium-policy-note { color: var(--premium-muted); font-size: 1.25rem; line-height: 1.7; margin: 1.4rem 0 0; max-width: 48rem; }
-  .premium-policy-note a { color: var(--premium-accent); text-underline-offset: .2em; }
   .premium-gallery { min-width: 0; }
-  .premium-gallery-main { aspect-ratio: 4 / 5; background: var(--premium-panel-soft); height: auto; min-height: 0; overflow: hidden; position: relative; touch-action: pan-y; }
+  .premium-gallery-main { aspect-ratio: 1; background: var(--premium-surface); border: 1px solid var(--premium-line); border-radius: var(--nekova-radius-lg); box-shadow: var(--nekova-shadow); overflow: hidden; position: relative; touch-action: pan-y; }
   .premium-gallery-open { background: transparent; border: 0; cursor: zoom-in; display: block; height: 100%; inset: 0; padding: 0; position: absolute; width: 100%; }
-  .premium-gallery-main img { display: block; height: 100%; object-fit: cover; object-position: center; width: 100%; }
-  .premium-gallery-control { align-items: center; background: linear-gradient(90deg, rgba(var(--nekova-black-rgb), .4), rgba(var(--nekova-black-rgb), 0)); border: 0; color: var(--nekova-ink); cursor: pointer; display: flex; height: 100%; justify-content: center; padding: 0; position: absolute; top: 0; transition: background .2s, color .2s; width: 4.8rem; z-index: 2; }
-  .premium-gallery-control:hover { color: var(--premium-accent); }
-  .premium-gallery-control:focus-visible { outline: 2px solid var(--premium-accent); outline-offset: -3px; }
-  .premium-gallery-control span { font-size: 2.4rem; line-height: 1; text-shadow: 0 1px 8px rgba(0, 0, 0, .5); }
-  .premium-gallery-previous { background: linear-gradient(90deg, rgba(var(--nekova-black-rgb), .46), rgba(var(--nekova-black-rgb), 0)); box-shadow: inset -1px 0 rgba(255, 255, 255, .12); left: 0; }
-  .premium-gallery-next { background: linear-gradient(270deg, rgba(var(--nekova-black-rgb), .46), rgba(var(--nekova-black-rgb), 0)); box-shadow: inset 1px 0 rgba(255, 255, 255, .12); right: 0; }
-  .premium-image-index { background: rgba(var(--nekova-black-rgb), .75); bottom: 1.5rem; color: var(--nekova-ink); font-size: 1.1rem; letter-spacing: .17em; padding: .9rem 1.2rem; position: absolute; right: 1.5rem; }
-  .premium-gallery-thumbs { display: grid; gap: .8rem; grid-template-columns: repeat(8, minmax(0, 1fr)); margin-top: .8rem; }
-  .premium-gallery-thumbs button { aspect-ratio: 1; background: var(--premium-panel); border: 1px solid transparent; cursor: pointer; opacity: .65; overflow: hidden; padding: 0; }
-  .premium-gallery-thumbs button.is-active, .premium-gallery-thumbs button:hover { border-color: var(--premium-accent); opacity: 1; }
-  .premium-gallery-thumbs img { height: 100%; object-fit: cover; width: 100%; }
+  .premium-gallery-main img { display: block; height: 100%; object-fit: contain; padding: 4%; width: 100%; }
+  .premium-gallery-control { align-items: center; background: rgba(255, 255, 255, .92); border: 1px solid var(--premium-line); border-radius: 50%; box-shadow: 0 .4rem 1.2rem rgba(var(--nekova-ink-rgb), .1); color: var(--premium-ink); cursor: pointer; display: flex; height: 4.4rem; justify-content: center; padding: 0; position: absolute; top: 50%; transform: translateY(-50%); transition: background .2s, color .2s; width: 4.4rem; z-index: 2; }
+  .premium-gallery-control:hover { background: var(--premium-accent); color: var(--nekova-on-accent); }
+  .premium-gallery-control:focus-visible { outline: 2px solid var(--premium-accent); outline-offset: 2px; }
+  .premium-gallery-control span { font-size: 1.8rem; line-height: 1; }
+  .premium-gallery-previous { left: 1.4rem; }
+  .premium-gallery-next { right: 1.4rem; }
+  .premium-image-index { background: rgba(255, 255, 255, .92); border-radius: var(--nekova-radius-pill); bottom: 1.4rem; color: var(--premium-muted); font-size: 1.1rem; font-weight: 700; letter-spacing: .12em; padding: .6rem 1.2rem; position: absolute; right: 1.4rem; }
+  .premium-gallery-thumbs { display: grid; gap: .8rem; grid-template-columns: repeat(8, minmax(0, 1fr)); margin-top: 1rem; }
+  .premium-gallery-thumbs button { aspect-ratio: 1; background: var(--premium-surface); border: 1px solid var(--premium-line); border-radius: var(--nekova-radius-sm); cursor: pointer; opacity: .7; overflow: hidden; padding: 0; transition: border-color .2s, opacity .2s; }
+  .premium-gallery-thumbs button.is-active, .premium-gallery-thumbs button:hover { border-color: var(--premium-accent); box-shadow: inset 0 0 0 1px var(--premium-accent); opacity: 1; }
+  .premium-gallery-thumbs img { height: 100%; object-fit: contain; width: 100%; }
   .premium-copy, .premium-story > *, .premium-benefit-grid > *, .premium-specs > *, .premium-faq > *, .premium-reviews > * { min-width: 0; }
   .premium-landing .rte { max-width: 100%; overflow-wrap: anywhere; }
   .premium-landing .rte img, .premium-landing .rte video, .premium-landing .rte iframe { max-width: 100%; }
   .premium-landing .rte table { display: block; max-width: 100%; overflow-x: auto; }
-  .premium-lightbox { background: rgba(var(--nekova-black-rgb), .98); border: 0; color: var(--premium-ink); height: 100dvh; margin: 0; max-height: none; max-width: none; overflow: hidden; padding: 0; position: fixed; width: 100vw; }
+  .premium-lightbox { background: rgba(var(--nekova-bg-rgb), .98); border: 0; color: var(--premium-ink); height: 100dvh; margin: 0; max-height: none; max-width: none; overflow: hidden; padding: 0; position: fixed; width: 100vw; }
   .premium-lightbox[open] { align-items: center; display: flex; justify-content: center; }
-  .premium-lightbox::backdrop { background: rgba(var(--nekova-black-rgb), .98); }
+  .premium-lightbox::backdrop { background: rgba(var(--nekova-bg-rgb), .98); }
   .premium-lightbox-content { align-items: center; display: flex; height: 100%; justify-content: center; position: relative; touch-action: pan-y; width: 100%; }
-  .premium-lightbox-image { display: block; height: calc(100dvh - 8rem); max-height: calc(100dvh - 8rem); max-width: calc(100vw - 10rem); object-fit: contain; touch-action: pan-y; width: auto; }
-  .premium-lightbox-close { align-items: center; background: rgba(var(--nekova-black-rgb), .78); border: 1px solid rgba(255, 255, 255, .25); border-radius: 50%; color: var(--premium-ink); cursor: pointer; display: flex; font-size: 3.2rem; height: 4.8rem; justify-content: center; line-height: 1; padding: 0 0 .3rem; position: absolute; right: 2.4rem; top: 2.4rem; width: 4.8rem; z-index: 3; }
+  .premium-lightbox-image { background: var(--premium-surface); border-radius: var(--nekova-radius-lg); display: block; height: calc(100dvh - 8rem); max-height: calc(100dvh - 8rem); max-width: calc(100vw - 12rem); object-fit: contain; touch-action: pan-y; width: auto; }
+  .premium-lightbox-close { align-items: center; background: var(--premium-surface); border: 1px solid var(--premium-line); border-radius: 50%; color: var(--premium-ink); cursor: pointer; display: flex; font-size: 3rem; height: 4.8rem; justify-content: center; line-height: 1; padding: 0 0 .3rem; position: absolute; right: 2.4rem; top: 2.4rem; width: 4.8rem; z-index: 3; }
   .premium-lightbox-previous { left: 2.4rem; }
   .premium-lightbox-next { right: 2.4rem; }
-  .premium-lightbox-caption { bottom: 1rem; color: var(--premium-ink); font-size: 1.3rem; left: 7rem; letter-spacing: .06em; margin: 0; position: absolute; right: 7rem; text-align: center; }
+  .premium-lightbox-caption { bottom: 1rem; color: var(--premium-muted); font-size: 1.3rem; left: 7rem; margin: 0; position: absolute; right: 7rem; text-align: center; }
   .premium-marquee { align-items: center; border-bottom: 1px solid var(--premium-line); border-top: 1px solid var(--premium-line); color: var(--premium-muted); display: flex; flex-wrap: wrap; font-size: 1.2rem; gap: 1.4rem; justify-content: space-around; letter-spacing: .2em; padding: 2.1rem 0; }
   .premium-marquee i { background: var(--premium-accent); border-radius: 50%; height: .45rem; width: .45rem; }
-  .premium-story { align-items: center; display: grid; gap: 10%; grid-template-columns: 1.05fr .8fr; padding: 13rem 7%; }
-  .premium-story-image { aspect-ratio: 4 / 5; background: var(--premium-panel); overflow: hidden; }
-  .premium-story-image img { height: 100%; object-fit: contain; width: 100%; }
-  .premium-photo-story { display: grid; gap: 2rem; grid-template-columns: repeat(2, minmax(0, 1fr)); margin: 0 auto; max-width: 1120px; padding: 2rem 0 8rem; }
-  .premium-photo-story figure { background: var(--premium-panel); border: 1px solid var(--premium-line); margin: 0; padding: .9rem; }
-  .premium-photo-story img { aspect-ratio: 4 / 5; background: var(--premium-panel-soft); display: block; height: auto; object-fit: contain; width: 100%; }
-  .premium-photo-story figcaption { color: var(--premium-muted); font-size: 1.3rem; letter-spacing: .05em; padding: 1rem 0; }
-  .premium-video { border-top: 1px solid var(--premium-line); display: grid; gap: 8%; grid-template-columns: .7fr 1.3fr; align-items: center; padding: 7rem 7%; }
+  .premium-section-heading { margin-bottom: 4rem; }
+  .premium-section-heading h2 { margin-bottom: 0; }
+  .premium-section-heading > p:last-child:not(.premium-eyebrow) { color: var(--premium-muted); font-size: 1.5rem; line-height: 1.75; max-width: 46rem; }
+  .premium-needs { padding: 2rem 0 8rem; }
+  .premium-needs-grid { display: grid; gap: 1.6rem; grid-template-columns: repeat(3, minmax(0, 1fr)); }
+  .premium-needs-grid article, .premium-benefit-grid article { background: var(--premium-surface); border: 1px solid var(--premium-line); border-radius: var(--nekova-radius); padding: 2.8rem; }
+  .premium-benefit-number { align-items: center; background: var(--premium-accent-soft); border-radius: 50%; color: var(--premium-accent-strong); display: inline-flex; font-size: 1.2rem; font-weight: 700; height: 3.6rem; justify-content: center; width: 3.6rem; }
+  .premium-needs-grid h3, .premium-benefit-grid h3 { color: var(--premium-ink); font-family: var(--nekova-font-heading); font-size: 2.1rem; font-weight: 400; line-height: 1.25; margin: 2.2rem 0 .8rem; }
+  .premium-needs-grid p, .premium-benefit-grid p { color: var(--premium-muted); font-size: 1.45rem; line-height: 1.7; margin: 0; }
+  .premium-story { align-items: center; background: var(--premium-panel); border-radius: var(--nekova-radius-lg); display: grid; gap: 7%; grid-template-columns: 1fr 1fr; padding: 5rem; }
+  .premium-story-image { aspect-ratio: 1; background: var(--premium-surface); border-radius: var(--nekova-radius); overflow: hidden; }
+  .premium-story-image img { display: block; height: 100%; object-fit: contain; width: 100%; }
+  .premium-story-copy a { color: var(--premium-accent); display: inline-block; font-size: 1.4rem; font-weight: 700; margin-top: 1.6rem; text-decoration: none; }
+  .premium-photo-story { display: grid; gap: 1.6rem; grid-template-columns: repeat(2, minmax(0, 1fr)); margin: 0 auto; max-width: 1120px; padding: 6rem 0; }
+  .premium-photo-story figure { background: var(--premium-surface); border: 1px solid var(--premium-line); border-radius: var(--nekova-radius-lg); margin: 0; overflow: hidden; }
+  .premium-photo-story img { aspect-ratio: 1; display: block; height: auto; object-fit: contain; width: 100%; }
+  .premium-photo-story figcaption { border-top: 1px solid var(--premium-line); color: var(--premium-muted); font-size: 1.4rem; line-height: 1.5; padding: 1.4rem 2rem; }
+  .premium-video { align-items: center; background: var(--premium-accent-soft); border-radius: var(--nekova-radius-lg); display: grid; gap: 6%; grid-template-columns: .75fr 1.25fr; padding: 5rem; }
   .premium-video .premium-section-heading { margin: 0; }
-  .premium-video .premium-section-heading h2 { color: var(--premium-ink); font: 400 clamp(4rem, 6vw, 7rem)/1 var(--nekova-serif); margin: 1.8rem 0; }
-  .premium-video .premium-section-heading h2 em { color: var(--premium-accent); }
-  .premium-video .premium-section-heading > p:last-child { color: var(--premium-muted); font-size: 1.5rem; line-height: 1.8; }
-  .premium-video video { background: #000; display: block; max-height: 75vh; width: 100%; }
+  .premium-video video { background: var(--premium-surface); border-radius: var(--nekova-radius); display: block; max-height: 75vh; width: 100%; }
   .premium-generic-description { color: var(--premium-muted); font-size: 1.6rem; line-height: 1.8; }
-  .premium-story-copy h2, .premium-specs h2, .premium-packaging h2 { font-size: clamp(4rem, 6vw, 6.8rem); }
-  .premium-story-copy a { color: var(--premium-accent); display: inline-block; font-size: 1.4rem; margin-top: 1.6rem; text-decoration: none; }
-  .premium-section-heading { margin-bottom: 4.8rem; }
-  .premium-section-heading h2 { font-size: clamp(4rem, 5.5vw, 6.2rem); margin-bottom: 0; }
-  .premium-benefits { border-top: 1px solid var(--premium-line); padding: 8rem 7%; }
-  .premium-benefit-grid { display: grid; gap: 1px; grid-template-columns: repeat(4, 1fr); overflow: hidden; }
-  .premium-benefit-grid article { background: var(--premium-bg); box-shadow: 1px 0 0 var(--premium-line), 0 1px 0 var(--premium-line); min-height: 21rem; padding: 2.4rem; }
-  .premium-benefit-number { color: var(--premium-accent); font-size: 1.2rem; letter-spacing: .15em; }
-  .premium-benefit-grid h3 { color: var(--premium-ink); font-family: var(--nekova-serif); font-size: 2.15rem; font-weight: 400; margin: 4.3rem 0 1rem; }
-  .premium-benefit-grid p { color: var(--premium-muted); font-size: 1.4rem; line-height: 1.75; margin: 0; }
-  .premium-specs { background: var(--premium-panel); display: grid; gap: 12%; grid-template-columns: .7fr 1fr; padding: 8rem 7%; }
+  .premium-benefits { padding: 8rem 0 4rem; }
+  .premium-benefit-grid { display: grid; gap: 1.6rem; grid-template-columns: repeat(3, minmax(0, 1fr)); }
+  .premium-specs { background: var(--premium-surface); border: 1px solid var(--premium-line); border-radius: var(--nekova-radius-lg); display: grid; gap: 8%; grid-template-columns: .75fr 1fr; margin: 4rem 0; padding: 5rem; }
   .premium-specs-intro > p:not(.premium-eyebrow) { max-width: 34rem; }
   .premium-spec-list { margin: 0; }
-  .premium-spec-list div { align-items: baseline; border-bottom: 1px solid var(--premium-line); display: flex; justify-content: space-between; gap: 2rem; padding: 1.35rem 0; }
+  .premium-spec-list div { align-items: baseline; border-bottom: 1px solid var(--premium-line); display: flex; gap: 2rem; justify-content: space-between; padding: 1.4rem 0; }
+  .premium-spec-list div:last-child { border-bottom: 0; }
   .premium-spec-list dt { color: var(--premium-muted); font-size: 1.4rem; }
-  .premium-spec-list dd { color: var(--premium-ink); font-size: 1.4rem; margin: 0; text-align: right; }
-  .premium-packaging { align-items: center; display: grid; gap: 8%; grid-template-columns: 1fr .65fr; padding: 10rem 7%; }
-  .premium-packaging ul { border-left: 1px solid var(--premium-line); color: var(--premium-muted); font-size: 1.4rem; line-height: 2.8; list-style: none; margin: 0; padding-left: 2.5rem; }
-  .premium-faq { border-top: 1px solid var(--premium-line); display: grid; gap: 10%; grid-template-columns: .75fr 1fr; padding: 8rem 7%; }
+  .premium-spec-list dd { color: var(--premium-ink); font-size: 1.4rem; font-weight: 600; margin: 0; text-align: right; }
+  .premium-packaging { align-items: center; display: grid; gap: 8%; grid-template-columns: 1fr .65fr; padding: 8rem 0; }
+  .premium-packaging ul { border-left: 2px solid var(--premium-accent-soft); color: var(--premium-muted); font-size: 1.4rem; line-height: 2.8; list-style: none; margin: 0; padding-left: 2.5rem; }
+  .premium-trust { display: grid; gap: 1.6rem; grid-template-columns: repeat(4, minmax(0, 1fr)); margin: 4rem 0; }
+  .premium-trust > div { align-items: flex-start; background: var(--premium-accent-soft); border-radius: var(--nekova-radius); display: flex; gap: 1.2rem; padding: 2.4rem 2rem; }
+  .premium-trust > div > span { color: var(--premium-accent-strong); font-size: 1.2rem; font-weight: 700; padding-top: .3rem; }
+  .premium-trust p { margin: 0; }
+  .premium-trust strong, .premium-trust small { display: block; }
+  .premium-trust strong { color: var(--premium-ink); font: 400 1.8rem/1.3 var(--nekova-font-heading); }
+  .premium-trust small { color: var(--premium-muted); font-size: 1.3rem; line-height: 1.5; margin-top: .6rem; }
+  .premium-faq { display: grid; gap: 8%; grid-template-columns: .75fr 1.25fr; padding: 6rem 0; }
   .premium-faq .premium-section-heading { margin: 0; }
-  .premium-faq .premium-section-heading h2 { font-size: clamp(3.5rem, 5vw, 5.6rem); }
-  .premium-faq-list details { border-bottom: 1px solid var(--premium-line); padding: 1.7rem 0; }
-  .premium-faq-list summary { color: var(--premium-ink); cursor: pointer; font-family: var(--nekova-serif); font-size: 1.9rem; list-style: none; }
+  .premium-faq-list details { background: var(--premium-surface); border: 1px solid var(--premium-line); border-radius: var(--nekova-radius); margin-bottom: 1rem; padding: 0 2.2rem; }
+  .premium-faq-list summary { color: var(--premium-ink); cursor: pointer; font-size: 1.6rem; font-weight: 600; list-style: none; padding: 1.9rem 3.6rem 1.9rem 0; position: relative; }
   .premium-faq-list summary::-webkit-details-marker { display: none; }
-  .premium-faq-list summary::after { color: var(--premium-accent); content: '+'; float: right; font-family: var(--nekova-sans); }
+  .premium-faq-list summary::after { align-items: center; background: var(--premium-accent-soft); border-radius: 50%; color: var(--premium-accent-strong); content: '+'; display: flex; font-size: 1.8rem; height: 2.8rem; justify-content: center; position: absolute; right: 0; top: 50%; transform: translateY(-50%); width: 2.8rem; }
   .premium-faq-list details[open] summary::after { content: '−'; }
-  .premium-faq-list details p { color: var(--premium-muted); font-size: 1.5rem; line-height: 1.8; max-width: 55rem; }
-  .premium-reviews { border-top: 1px solid var(--premium-line); display: grid; gap: 8%; grid-template-columns: .75fr 1.25fr; padding: 7rem 7%; }
+  .premium-faq-list summary:focus-visible { outline: 2px solid var(--premium-accent); outline-offset: 4px; }
+  .premium-faq-list details p { color: var(--premium-muted); font-size: 1.5rem; line-height: 1.75; margin: 0 0 2rem; max-width: 60rem; }
+  .premium-reviews { display: grid; gap: 8%; grid-template-columns: .75fr 1.25fr; padding: 6rem 0; }
   .premium-reviews .premium-section-heading { align-self: center; margin: 0; }
-  .premium-reviews .premium-section-heading h2 { color: var(--premium-ink); font: 400 clamp(4rem, 6vw, 7rem)/1 var(--nekova-serif); margin: 1.8rem 0; }
-  .premium-reviews .premium-section-heading h2 em { color: var(--premium-accent); }
-  .premium-reviews .premium-section-heading > p:last-child, .premium-reviews-empty { color: var(--premium-muted); font-size: 1.5rem; line-height: 1.8; }
   .premium-reviews-apps { align-self: center; }
-  .premium-reviews-empty { background: var(--premium-panel); margin: 0; padding: 3rem; }
-  .premium-final-cta { background: var(--premium-panel); margin: 0 7%; padding: 7rem 2rem; text-align: center; }
+  .premium-final-cta { --premium-ink: var(--nekova-on-accent); --premium-muted: rgba(255, 255, 255, .82); --premium-accent: var(--nekova-accent-soft); background: var(--nekova-accent); border-radius: var(--nekova-radius-lg); color: var(--premium-ink); margin-top: 4rem; padding: 7rem 2rem; text-align: center; }
   .premium-final-cta .premium-eyebrow { justify-content: center; }
-  .premium-final-cta h2 { font-size: clamp(4.5rem, 7vw, 8rem); }
+  .premium-final-cta h2 { font-size: clamp(3.6rem, 5vw, 6rem); }
   .premium-final-cta > p:not(.premium-eyebrow) { color: var(--premium-muted); font-size: 1.5rem; }
   .premium-price-centered { justify-content: center; }
-  .premium-final-cta .premium-buy-button { margin: 2rem auto 0; text-align: left; }
-  .premium-small-note { color: var(--premium-muted); font-size: 1.2rem; letter-spacing: .08em; margin-top: 1.6rem; }
-  @media screen and (max-width: 900px) {
+  .premium-final-cta .premium-discount { color: var(--nekova-ink); }
+  .premium-final-cta .premium-buy-button { background: var(--nekova-surface); color: var(--nekova-accent-strong); margin: 2.4rem auto 0; text-align: left; }
+  .premium-final-cta .premium-buy-button:hover { background: var(--nekova-accent-soft); }
+  .premium-final-cta .premium-buy-button:focus-visible { outline-color: var(--nekova-surface); }
+  .premium-small-note { color: var(--premium-muted); font-size: 1.25rem; letter-spacing: .06em; margin-top: 1.8rem; }
+  .premium-contact-note { color: var(--premium-muted); font-size: 1.4rem; margin: .8rem 0 0; }
+  .premium-final-cta .premium-contact-note a { color: var(--nekova-on-accent); }
+  @media screen and (max-width: 990px) {
     .premium-shell { padding: 0 2.2rem; }
-    .premium-hero { gap: 4rem; grid-template-columns: 1fr; padding: 5rem 0; }
+    .premium-hero { gap: 4rem; grid-template-columns: 1fr; padding: 3rem 0 5rem; }
     .premium-copy { max-width: 70rem; }
-    .premium-edition { margin-top: 2.8rem; }
-    .premium-gallery-main { height: auto; }
-    .premium-gallery-thumbs { grid-template-columns: repeat(4, minmax(0, 1fr)); }
-    .premium-story { gap: 5rem; grid-template-columns: 1fr 1fr; padding: 8rem 0; }
-    .premium-photo-story { gap: 1.5rem; }
-    .premium-benefit-grid { grid-template-columns: repeat(2, 1fr); }
-    .premium-specs { gap: 4rem; grid-template-columns: 1fr; }
+    .premium-gallery { order: -1; }
+    .premium-gallery-thumbs { grid-template-columns: repeat(6, minmax(0, 1fr)); }
+    .premium-needs-grid { grid-template-columns: 1fr; }
+    .premium-story { gap: 4rem; grid-template-columns: 1fr; padding: 3.2rem; }
+    .premium-story-image { margin: 0 auto; max-width: 48rem; width: 100%; }
+    .premium-benefit-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .premium-specs { gap: 3rem; grid-template-columns: 1fr; padding: 3.2rem; }
     .premium-packaging { gap: 3rem; grid-template-columns: 1fr .65fr; }
-    .premium-packaging ul { grid-column: 2; }
-    .premium-faq, .premium-reviews, .premium-video { gap: 4rem; grid-template-columns: 1fr; }
+    .premium-trust { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .premium-faq, .premium-reviews, .premium-video { gap: 3rem; grid-template-columns: 1fr; }
+    .premium-video { padding: 3.2rem; }
   }
   @media screen and (max-width: 600px) {
-    .premium-shell { padding: 0 1.8rem; }
+    .premium-shell { padding: 0 1.6rem; }
     .premium-landing { padding-bottom: 4rem; }
-    .premium-hero { min-height: auto; padding: 4rem 0 3rem; }
-    .premium-copy h1 { font-size: clamp(4.4rem, 15vw, 6.5rem); }
-    .premium-product-name { font-size: 1.5rem; }
+    .premium-hero { padding: 1.6rem 0 4rem; }
+    .premium-copy h1 { font-size: clamp(3.6rem, 11vw, 4.6rem); }
+    .premium-product-name { font-size: 1.7rem; }
     .premium-intro { font-size: 1.5rem; }
-    .premium-gallery-main { height: auto; min-height: 0; }
-    .premium-gallery-control { width: 4.4rem; }
-    .premium-lightbox-image { height: calc(100dvh - 7rem); max-height: calc(100dvh - 7rem); max-width: calc(100vw - 5rem); }
+    .premium-gallery-main { border-radius: var(--nekova-radius); }
+    .premium-gallery-control { height: 3.8rem; width: 3.8rem; }
+    .premium-gallery-previous { left: .8rem; }
+    .premium-gallery-next { right: .8rem; }
+    .premium-gallery-thumbs { gap: .6rem; grid-template-columns: repeat(5, minmax(0, 1fr)); }
+    .premium-buy-button { max-width: none; }
+    .premium-lightbox-image { border-radius: var(--nekova-radius); height: auto; max-height: calc(100dvh - 9rem); max-width: calc(100vw - 2rem); }
     .premium-lightbox-close { right: 1rem; top: 1rem; }
     .premium-lightbox-previous { left: .6rem; }
     .premium-lightbox-next { right: .6rem; }
     .premium-lightbox-caption { bottom: .8rem; font-size: 1.2rem; left: 2rem; right: 2rem; }
-    .premium-story { gap: 3.5rem; grid-template-columns: 1fr; padding: 7rem 0; }
-    .premium-photo-story { grid-template-columns: 1fr; }
-    .premium-story-image { max-height: 48rem; }
-    .premium-story h2, .premium-section-heading h2, .premium-specs h2 { font-size: 4.6rem; }
-    .premium-benefits, .premium-specs, .premium-faq { padding: 5.5rem 0; }
-    .premium-reviews { padding: 5.5rem 0; }
-    .premium-video { padding: 5.5rem 0; }
-    .premium-section-heading { margin-bottom: 3rem; }
-    .premium-benefit-grid { grid-template-columns: 1fr 1fr; }
-    .premium-benefit-grid article { min-height: 19rem; padding: 1.5rem; }
-    .premium-benefit-grid h3 { font-size: 1.75rem; margin-top: 3rem; }
-    .premium-benefit-grid p { font-size: 1.3rem; }
-    .premium-spec-list div { align-items: flex-start; flex-direction: column; gap: .45rem; }
-    .premium-spec-list dt, .premium-spec-list dd { font-size: 1.3rem; }
+    .premium-copy h1, .premium-story h2, .premium-section-heading h2, .premium-specs h2, .premium-packaging h2 { font-size: 3.4rem; }
+    .premium-needs { padding-bottom: 5rem; }
+    .premium-needs-grid article, .premium-benefit-grid article { padding: 2.2rem; }
+    .premium-story { padding: 2.2rem; }
+    .premium-photo-story { gap: 1.2rem; grid-template-columns: 1fr; padding: 4rem 0; }
+    .premium-video { padding: 2.2rem; }
+    .premium-benefits { padding-top: 5rem; }
+    .premium-benefit-grid { grid-template-columns: 1fr; }
+    .premium-specs { padding: 2.2rem; }
+    .premium-spec-list div { align-items: flex-start; flex-direction: column; gap: .4rem; }
     .premium-spec-list dt, .premium-spec-list dd { max-width: 100%; overflow-wrap: anywhere; text-align: left; }
-    .premium-packaging { gap: 2.5rem; grid-template-columns: 1fr; padding: 6rem 0; }
-    .premium-packaging ul { grid-column: 1; }
-    .premium-faq .premium-section-heading h2 { font-size: 4rem; }
-    .premium-faq-list summary { font-size: 1.7rem; }
-    .premium-final-cta { margin: 0; padding: 5rem 1.5rem; }
-    .premium-reviews-empty { padding: 2rem; }
+    .premium-packaging { gap: 2.5rem; grid-template-columns: 1fr; padding: 5rem 0; }
+    .premium-trust { gap: 1rem; grid-template-columns: 1fr; }
+    .premium-faq, .premium-reviews { padding: 4rem 0; }
+    .premium-faq-list details { padding: 0 1.6rem; }
+    .premium-faq-list summary { font-size: 1.5rem; }
+    .premium-final-cta { padding: 5rem 1.8rem; }
+    .premium-final-cta h2 { font-size: 3.4rem; }
     .premium-stock-input-row { flex-direction: column; }
     .premium-stock-submit { min-height: 4.8rem; }
-    .premium-final-cta h2 { font-size: 5rem; }
   }
 {% endstyle %}
 
@@ -923,6 +945,12 @@
       "type": "product",
       "id": "product",
       "label": "Producto para agregar al carrito"
+    },
+    {
+      "type": "inline_richtext",
+      "id": "launch_heading",
+      "label": "Título de lanzamiento",
+      "info": "Opcional. Reemplaza el nombre del producto como título principal (ideal para la página de inicio). Usá cursiva para la frase destacada."
     },
     {
       "type": "text",

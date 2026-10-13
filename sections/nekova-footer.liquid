@@ -1,0 +1,198 @@
+{%- liquid
+  assign faq_url = section.settings.faq_url | default: '/#preguntas-frecuentes'
+  assign has_contact_info = false
+  if shop.email != blank or section.settings.whatsapp != blank or section.settings.hours != blank
+    assign has_contact_info = true
+  endif
+-%}
+
+{{ 'nekova-social-icons.css' | asset_url | stylesheet_tag }}
+
+<footer class="nk-footer">
+  <div class="nk-footer-shell nk-footer-columns">
+    <div class="nk-footer-col nk-footer-brand">
+      <a href="{{ routes.root_url }}" class="nk-footer-logo">
+        <img src="{{ 'nekova-logo-white.svg' | asset_url }}" alt="{{ shop.name | escape }}" width="200" height="42" loading="lazy">
+      </a>
+      {%- if section.settings.brand_text != blank -%}
+        <p class="nk-footer-text">{{ section.settings.brand_text }}</p>
+      {%- endif -%}
+      {% render 'nekova-social-icons', class: 'nk-footer-social', hide_heading: true %}
+    </div>
+
+    <div class="nk-footer-col">
+      <h2 class="nk-footer-heading">Ayuda</h2>
+      <ul class="nk-footer-links" role="list">
+        {%- if section.settings.menu != blank and section.settings.menu.links.size > 0 -%}
+          {%- for link in section.settings.menu.links -%}
+            <li><a href="{{ link.url }}">{{ link.title | escape }}</a></li>
+          {%- endfor -%}
+        {%- else -%}
+          <li><a href="{{ faq_url }}">Preguntas frecuentes</a></li>
+          <li><a href="{{ shop.refund_policy.url | default: faq_url }}">Envíos, cambios y devoluciones</a></li>
+          <li><a href="{{ routes.root_url }}pages/contact">Contacto</a></li>
+          {%- if shop.privacy_policy != blank -%}<li><a href="{{ shop.privacy_policy.url }}">{{ shop.privacy_policy.title | escape }}</a></li>{%- endif -%}
+          {%- if shop.terms_of_service != blank -%}<li><a href="{{ shop.terms_of_service.url }}">{{ shop.terms_of_service.title | escape }}</a></li>{%- endif -%}
+        {%- endif -%}
+      </ul>
+      <div class="nk-footer-contact">
+        {%- if has_contact_info -%}
+          {%- if shop.email != blank -%}<p><a href="mailto:{{ shop.email }}">{{ shop.email }}</a></p>{%- endif -%}
+          {%- if section.settings.whatsapp != blank -%}
+            {%- assign whatsapp_digits = section.settings.whatsapp | remove: ' ' | remove: '+' | remove: '-' | remove: '(' | remove: ')' -%}
+            <p><a href="https://wa.me/{{ whatsapp_digits }}" target="_blank" rel="noopener">WhatsApp {{ section.settings.whatsapp | escape }}</a></p>
+          {%- endif -%}
+          {%- if section.settings.hours != blank -%}<p>{{ section.settings.hours | escape }}</p>{%- endif -%}
+        {%- else -%}
+          <p>¿Tenés una consulta? <a href="{{ routes.root_url }}pages/contact">Escribinos</a> y te respondemos.</p>
+        {%- endif -%}
+      </div>
+    </div>
+
+    <div class="nk-footer-col">
+      <h2 class="nk-footer-heading">{{ section.settings.newsletter_heading | escape }}</h2>
+      {%- if section.settings.newsletter_text != blank -%}
+        <p class="nk-footer-text">{{ section.settings.newsletter_text | escape }}</p>
+      {%- endif -%}
+      {%- form 'customer', id: 'NkFooterNewsletter', class: 'nk-footer-form' -%}
+        <input type="hidden" name="contact[tags]" value="newsletter">
+        {%- if form.posted_successfully? -%}
+          <p class="nk-footer-success" role="status">¡Gracias! Ya estás suscripto a las novedades de Nekova.</p>
+        {%- else -%}
+          <div class="nk-footer-field">
+            <label class="visually-hidden" for="NkFooterEmail">Correo electrónico</label>
+            <input id="NkFooterEmail" type="email" name="contact[email]" autocomplete="email" placeholder="Tu correo electrónico" required{% if form.errors %} aria-invalid="true" aria-describedby="NkFooterError"{% endif %}>
+            <button type="submit">Suscribirme</button>
+          </div>
+          {%- if form.errors -%}
+            <p class="nk-footer-error" id="NkFooterError" role="alert">Revisá el correo e intentá nuevamente.</p>
+          {%- endif -%}
+        {%- endif -%}
+      {%- endform -%}
+    </div>
+  </div>
+
+  <div class="nk-footer-bottom">
+    <div class="nk-footer-shell nk-footer-bottom-inner">
+      <small>© {{ 'now' | date: '%Y' }} {{ shop.name | escape }}. Todos los derechos reservados.</small>
+      {%- if shop.enabled_payment_types.size > 0 -%}
+        <ul class="nk-footer-payments" role="list" aria-label="Medios de pago">
+          {%- for type in shop.enabled_payment_types -%}
+            <li>{{ type | payment_type_svg_tag: class: 'icon icon--full-color' }}</li>
+          {%- endfor -%}
+        </ul>
+      {%- endif -%}
+    </div>
+  </div>
+</footer>
+
+{% style %}
+  .nk-footer { background: var(--nekova-ink); color: rgba(255, 255, 255, .72); font-family: var(--nekova-font-body); font-size: 1.45rem; line-height: 1.6; }
+  .nk-footer a { color: #fff; text-decoration: none; transition: color .2s; }
+  .nk-footer a:hover { color: var(--nekova-accent-soft); text-decoration: underline; text-underline-offset: .2em; }
+  .nk-footer a:focus-visible, .nk-footer button:focus-visible, .nk-footer input:focus-visible { outline: 2px solid var(--nekova-accent-soft); outline-offset: 3px; }
+  .nk-footer-shell { margin: 0 auto; max-width: 1280px; padding: 0 5rem; }
+  .nk-footer-columns { display: grid; gap: 6rem; grid-template-columns: repeat(3, minmax(0, 1fr)); padding-bottom: 6.4rem; padding-top: 7.2rem; }
+  .nk-footer-col { min-width: 0; }
+  .nk-footer-logo { display: inline-block; }
+  .nk-footer-logo img { display: block; height: auto; max-width: 18rem; width: 100%; }
+  .nk-footer-heading { color: #fff; font-family: var(--nekova-font-heading); font-size: 1.8rem; font-weight: var(--font-heading-weight); letter-spacing: -.01em; margin: 0 0 2rem; }
+  .nk-footer-text { margin: 2rem 0 0; max-width: 34rem; }
+  .nk-footer-col > .nk-footer-heading + .nk-footer-text { margin-top: 0; }
+  .nk-footer-links { display: grid; gap: 1.1rem; list-style: none; margin: 0; padding: 0; }
+  .nk-footer-contact { border-top: 1px solid rgba(255, 255, 255, .14); margin-top: 2.4rem; padding-top: 2rem; }
+  .nk-footer-contact p { margin: 0 0 .6rem; }
+  .nk-footer-social { margin-top: 2.8rem; }
+  .nk-footer-social .nekova-social-links__icon { border-color: rgba(255, 255, 255, .3); color: #fff; transition: background .2s, border-color .2s; }
+  .nk-footer-social .nekova-social-links__icon:hover { background: var(--nekova-accent); border-color: var(--nekova-accent); }
+  .nk-footer-form { margin-top: 2rem; }
+  .nk-footer-field { background: rgba(255, 255, 255, .08); border: 1px solid rgba(255, 255, 255, .22); border-radius: var(--nekova-radius-pill); display: flex; padding: .5rem; }
+  .nk-footer-field:focus-within { border-color: rgba(255, 255, 255, .6); }
+  .nk-footer-field input { background: transparent; border: 0; color: #fff; flex: 1; font: inherit; min-width: 0; outline: none; padding: 0 1.4rem; }
+  .nk-footer-field input::placeholder { color: rgba(255, 255, 255, .55); }
+  .nk-footer-field button { background: var(--nekova-accent); border: 0; border-radius: var(--nekova-radius-pill); color: var(--nekova-on-accent); cursor: pointer; font: 800 1.4rem var(--nekova-font-body); min-height: 4.4rem; padding: 0 2rem; transition: background .2s; white-space: nowrap; }
+  .nk-footer-field button:hover { background: var(--nekova-accent-strong); }
+  .nk-footer-success { color: #fff; font-weight: 700; margin: 0; }
+  .nk-footer-error { color: var(--nekova-error-on-dark); margin: .8rem 0 0; }
+  .nk-footer-bottom { border-top: 1px solid rgba(255, 255, 255, .12); }
+  .nk-footer-bottom-inner { align-items: center; display: flex; flex-wrap: wrap; gap: 1.6rem; justify-content: space-between; padding-bottom: 2.4rem; padding-top: 2.4rem; }
+  .nk-footer-bottom small { font-size: 1.3rem; }
+  .nk-footer-payments { display: flex; flex-wrap: wrap; gap: .8rem; list-style: none; margin: 0; padding: 0; }
+  .nk-footer-payments svg { display: block; height: 2.4rem; width: auto; }
+  @media screen and (max-width: 990px) {
+    .nk-footer-shell { padding: 0 2.4rem; }
+    .nk-footer-columns { gap: 4rem; grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .nk-footer-brand { grid-column: 1 / -1; }
+  }
+  @media screen and (max-width: 600px) {
+    .nk-footer-shell { padding: 0 1.6rem; }
+    .nk-footer-columns { gap: 4rem; grid-template-columns: 1fr; padding-bottom: 4.8rem; padding-top: 5.6rem; }
+    .nk-footer-bottom-inner { flex-direction: column; text-align: center; }
+  }
+{% endstyle %}
+
+{% schema %}
+{
+  "name": "Nekova · footer",
+  "class": "nekova-footer-section",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Marca"
+    },
+    {
+      "type": "inline_richtext",
+      "id": "brand_text",
+      "label": "Texto de la marca",
+      "default": "Ergonomía y bienestar para tu día a día. Objetos pensados para que trabajes, viajes y descanses más cómodo."
+    },
+    {
+      "type": "header",
+      "content": "Ayuda"
+    },
+    {
+      "type": "link_list",
+      "id": "menu",
+      "label": "Menú de ayuda",
+      "info": "Si no elegís un menú se muestran preguntas frecuentes, envíos y devoluciones, contacto y las políticas de la tienda."
+    },
+    {
+      "type": "text",
+      "id": "faq_url",
+      "label": "Link de preguntas frecuentes",
+      "default": "/#preguntas-frecuentes"
+    },
+    {
+      "type": "text",
+      "id": "whatsapp",
+      "label": "WhatsApp",
+      "info": "Opcional. Con código de país, por ejemplo +54 9 11 1234 5678."
+    },
+    {
+      "type": "text",
+      "id": "hours",
+      "label": "Horario de atención",
+      "info": "Opcional. Por ejemplo: Lunes a viernes de 9 a 18 h."
+    },
+    {
+      "type": "header",
+      "content": "Novedades"
+    },
+    {
+      "type": "text",
+      "id": "newsletter_heading",
+      "label": "Título",
+      "default": "Novedades de Nekova"
+    },
+    {
+      "type": "text",
+      "id": "newsletter_text",
+      "label": "Texto",
+      "default": "Lanzamientos, consejos de bienestar y ofertas exclusivas, directo a tu correo."
+    }
+  ],
+  "enabled_on": {
+    "groups": ["footer"]
+  }
+}
+{% endschema %}

@@ -1,6 +1,6 @@
 <section class="nekova-contact-intro" aria-labelledby="NekovaContactPageTitle-{{ section.id }}">
   <div class="nekova-contact-intro__inner">
-    <p class="premium-eyebrow"><span></span> NEKOVA · HOGAR Y OFICINA</p>
+    <p class="premium-eyebrow"><span></span> NEKOVA · ERGONOMÍA Y BIENESTAR</p>
     <h1 id="NekovaContactPageTitle-{{ section.id }}">Estamos para<br><em>escucharte.</em></h1>
     <p>¿Tenés una consulta sobre un producto, una compra o un pedido? Completá el formulario y nuestro equipo se pondrá en contacto con vos.</p>
     {% render 'nekova-social-icons', class: 'nekova-contact-social' %}
@@ -9,19 +9,19 @@
 
 {% style %}
   .nekova-contact-intro {
-    --premium-accent: var(--nekova-gold);
+    --premium-accent: var(--nekova-accent);
     --premium-muted: var(--nekova-muted);
-    background: var(--nekova-black);
+    background: var(--nekova-bg);
     color: var(--nekova-ink);
     padding: 7rem 5.5% 4rem;
   }
   .nekova-contact-intro__inner { margin: 0 auto; max-width: 1120px; }
-  .nekova-contact-intro h1 { color: var(--nekova-ink); font: 400 clamp(5rem, 8vw, 9rem)/.98 var(--nekova-serif); letter-spacing: -.05em; margin: 2.4rem 0 1.5rem; }
-  .nekova-contact-intro h1 em { color: var(--nekova-gold); font-weight: 400; }
+  .nekova-contact-intro h1 { color: var(--nekova-ink); font-family: var(--nekova-font-heading); font-size: clamp(3.4rem, 4.4vw, 5.2rem); font-weight: var(--font-heading-weight); letter-spacing: -.02em; line-height: 1.1; margin: 2.4rem 0 1.5rem; }
+  .nekova-contact-intro h1 em { color: var(--nekova-accent); font-style: normal; }
   .nekova-contact-intro__inner > p:not(.premium-eyebrow) { color: var(--nekova-muted); font-size: 1.6rem; line-height: 1.8; max-width: 62rem; }
   @media screen and (max-width: 600px) {
     .nekova-contact-intro { padding: 4rem 2rem 2rem; }
-    .nekova-contact-intro h1 { font-size: clamp(4.5rem, 16vw, 6rem); }
+    .nekova-contact-intro h1 { font-size: clamp(3.6rem, 11vw, 4.6rem); }
   }
 {% endstyle %}
 

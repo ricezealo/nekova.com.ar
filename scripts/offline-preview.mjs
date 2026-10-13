@@ -12,18 +12,21 @@ const settingsSchema = JSON.parse(readFileSync(join(root, 'config/settings_schem
 const settingDefaults = Object.fromEntries(settingsSchema.flatMap((group) => group.settings || [])
   .filter((setting) => Object.hasOwn(setting, 'default'))
   .map((setting) => [setting.id, setting.default]));
-const themeSettings = { ...settingDefaults, ...(settingsData.presets?.[settingsData.current]?.settings || {}) };
-const previewFont = {
-  family: 'Arial',
-  fallback_families: 'sans-serif',
+const currentPreset = typeof settingsData.current === 'object' ? settingsData.current : settingsData.presets?.[settingsData.current];
+const themeSettings = { ...settingDefaults, ...(currentPreset?.settings || currentPreset || {}) };
+// Shopify serves the theme fonts (poppins_n6, nunito_sans_n4); locally the same families come from Google Fonts.
+const previewFontFor = (family, fallback) => ({
+  family,
+  fallback_families: fallback,
   style: 'normal',
   weight: 400,
   'system?': true,
-  toString: () => 'Arial, sans-serif',
-};
-themeSettings.type_body_font = previewFont;
-themeSettings.type_header_font = previewFont;
-const schemes = settingsData.presets?.[settingsData.current]?.color_schemes || {};
+  toString: () => `${family}, ${fallback}`,
+});
+const previewFontsLink = '<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@600&family=Nunito+Sans:wght@400;600;700;800&display=swap">';
+themeSettings.type_body_font = previewFontFor('"Nunito Sans"', 'sans-serif');
+themeSettings.type_header_font = { ...previewFontFor('Poppins', 'sans-serif'), weight: 600 };
+const schemes = currentPreset?.color_schemes || {};
 const colors = Object.entries(schemes).map(([id, value]) => ({
   id,
   settings: Object.fromEntries(Object.entries(value.settings).map(([key, color]) => [key, colorValue(color)])),
@@ -252,7 +255,7 @@ const orthopedicImages = Array.from({ length: 12 }, (_, index) => {
   return {
     src: `/assets/product-media-cojin-ortopedico-${number}.jpg`,
     url: `/assets/product-media-cojin-ortopedico-${number}.jpg`,
-    alt: `Cojín ortopédico en U, imagen ${index + 1}`,
+    alt: `Cojín ergonómico en U, imagen ${index + 1}`,
     width: 1200,
     height: 1200,
   };
@@ -278,7 +281,7 @@ const orthopedicVariants = ['Gris', 'Azul marino'].map((color, index) => ({
 const orthopedicProduct = {
   id: 5500,
   handle: 'cojin-ortopedico-u',
-  title: 'Cojín Ortopédico en U de Espuma Viscoelástica',
+  title: 'Cojín Ergonómico en U de Espuma Viscoelástica',
   vendor: 'NEKOVA',
   price: 7900000,
   compare_at_price: null,
@@ -304,7 +307,9 @@ const cartLines = [
   { product: cushionProduct, variant: cushionVariant, image: cushionImages[0], cookie: 'nekova_cart_cushion' },
   ...orthopedicVariants.map((variant) => ({ product: orthopedicProduct, variant, image: variant.featured_image, cookie: `nekova_cart_${variant.id}` })),
 ];
-const collection = { id: 1, handle: 'all', title: 'Todos los productos', description: '<p>Productos de ejemplo para la vista local.</p>', products, all_products_count: products.length, products_count: products.length, url: '/collections/all', image };
+// Launch catalog: only the U cushion is for sale. The other sample products stay reachable by URL for template testing.
+const launchProducts = [orthopedicProduct];
+const collection = { id: 1, handle: 'all', title: 'Todos los productos', description: '<p>Productos de ejemplo para la vista local.</p>', products: launchProducts, all_products_count: launchProducts.length, products_count: launchProducts.length, url: '/collections/all', image };
 const menuItems = [
   { title: 'Inicio', url: '/' },
   { title: 'Casa y trabajo', url: '/collections/all', links: [{ title: 'Todos los objetos', url: '/collections/all', links: [] }] },
@@ -431,9 +436,14 @@ function normalizeLiquid(source) {
     .replace(/\{%[-\s]*endjavascript[-\s]*%\}/g, '</script>')
     .replace(/\{%[-\s]*stylesheet[-\s]*%\}/g, '<style>')
     .replace(/\{%[-\s]*endstylesheet[-\s]*%\}/g, '</style>')
-    .replace(/\{%[-\s]*form\s+['"]product['"][^%]*%\}/g, '<form action="/cart/add" method="post">')
-    .replace(/\{%[-\s]*form\s+['"]customer['"][^%]*class:\s*['"]premium-stock-form['"][^%]*%\}/g, '<form action="/back-in-stock" method="post" class="premium-stock-form">')
-    .replace(/\{%[-\s]*form\b[^%]*%\}/g, '<form action="#" method="post">')
+    .replace(/\{%[-\s]*form\s+['"]([\w-]+)['"]([^%]*)%\}/g, (tag, type, args) => {
+      // Keep literal class and id so forms get the same styles as in Shopify.
+      const className = /\bclass:\s*['"]([^'"]+)['"]/.exec(args)?.[1];
+      const id = /\bid:\s*['"]([^'"]+)['"]/.exec(args)?.[1];
+      const action = type === 'product' ? '/cart/add'
+        : type === 'customer' && /\bpremium-stock-form\b/.test(className || '') ? '/back-in-stock' : '#';
+      return `<form action="${action}" method="post"${id ? ` id="${id}"` : ''}${className ? ` class="${className}"` : ''}>`;
+    })
     .replace(/\{%[-\s]*endform[-\s]*%\}/g, '</form>')
     .replace(/\{%[-\s]*paginate\b[^%]*%\}/g, '{% if true %}')
     .replace(/\{%[-\s]*endpaginate[-\s]*%\}/g, '{% endif %}')
@@ -449,7 +459,7 @@ function sectionContext(id, definition, context) {
   const settings = { ...(definition.settings || {}) };
   if (typeof settings.collection === 'string') settings.collection = context.collections?.[settings.collection] || null;
   if (typeof settings.menu === 'string') settings.menu = context.menus?.[settings.menu] || context.linklists?.[settings.menu] || null;
-  if (definition.type === 'premium-product-landing') {
+  if (definition.type === 'premium-product-landing' || definition.type === 'nekova-product') {
     settings.product = (typeof settings.product === 'string' && context.products.find((item) => item.handle === settings.product))
       || context.products[0];
   }
@@ -468,7 +478,7 @@ function sectionContext(id, definition, context) {
   return section;
 }
 
-async function renderSection(id, definition, context) {
+async function renderSection(id, definition, context, groupClass = '') {
   const file = join(root, 'sections', `${definition.type}.liquid`);
   if (!existsSync(file)) return `<aside class="offline-preview-note">Seccion no disponible localmente: ${definition.type}</aside>`;
   const section = sectionContext(id, definition, context);
@@ -487,12 +497,21 @@ async function renderSection(id, definition, context) {
     }
   }
   globals.block = section.blocks[0] || {};
-  const source = normalizeLiquid(readFileSync(file, 'utf8'));
+  const rawSource = readFileSync(file, 'utf8');
+  // Like Shopify: the wrapper gets the group class plus the "class" declared in the section schema.
+  let schemaClass = '';
+  try {
+    schemaClass = JSON.parse(/{%-?\s*schema\s*-?%}([\s\S]*?){%-?\s*endschema/.exec(rawSource)?.[1] || '{}').class || '';
+  } catch {
+    schemaClass = '';
+  }
+  const source = normalizeLiquid(rawSource);
   let html = await engine.parseAndRender(source, globals);
   if (definition.type === 'main-product' && !html.includes('<img')) {
     html = html.replace('<div class="grid__item product__media-wrapper">', `<div class="grid__item product__media-wrapper"><img src="${previewImage}" alt="${image.alt}" style="width:100%;height:auto">`);
   }
-  return `<div id="shopify-section-${id}" class="shopify-section">${html}</div>`;
+  const wrapperClass = ['shopify-section', groupClass, schemaClass].filter(Boolean).join(' ');
+  return `<div id="shopify-section-${id}" class="${wrapperClass}">${html}</div>`;
 }
 
 async function renderGroup(fileName, context) {
@@ -501,13 +520,10 @@ async function renderGroup(fileName, context) {
   const group = JSON.parse(readFileSync(file, 'utf8'));
   const output = [];
   for (const id of group.order || []) {
-    if (group.sections?.[id]) output.push(await renderSection(id, group.sections[id], context));
+    const groupClass = group.type ? `shopify-section-group-${group.type}-group` : '';
+    if (group.sections?.[id] && !group.sections[id].disabled) output.push(await renderSection(id, group.sections[id], context, groupClass));
   }
-  const contents = output.join('\n');
-  const groupClass = group.class || (group.type === 'header' ? 'section-header' : '');
-  const shopifyGroupClass = group.type ? `shopify-section-group-${group.type}-group` : '';
-  const wrapperClasses = [shopifyGroupClass, groupClass].filter(Boolean).join(' ');
-  return wrapperClasses ? `<div class="${wrapperClasses}">${contents}</div>` : contents;
+  return output.join('\n');
 }
 
 function templateFor(pathname) {
@@ -556,6 +572,7 @@ async function renderLayout(context) {
     preview_password_footer: passwordFooter,
   });
   return html
+    .replace('</head>', `${previewFontsLink}</head>`)
     .replace(/<link\b(?=[^>]*\brel="preload")(?=[^>]*\bhref="")[^>]*>/g, '')
     .replace(/\s+srcset="[^"]*"/g, '')
     .replaceAll('__OFFLINE_CART_COUNT__', `${context.cart?.item_count || 0} ${(context.cart?.item_count || 0) === 1 ? 'item' : 'items'}`)
@@ -625,7 +642,7 @@ async function renderPage(pathname, cartCounts = [], stockNotificationRegistered
   const sections = [];
   for (const id of template.order || []) {
     const definition = template.sections?.[id];
-    if (definition) sections.push(await renderSection(id, definition, context));
+    if (definition && !definition.disabled) sections.push(await renderSection(id, definition, context));
   }
   context.content_for_layout = sections.join('\n');
   return renderLayout(context);

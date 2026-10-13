@@ -1,5 +1,7 @@
 <div class="nekova-social-links{% if class %} {{ class }}{% endif %}">
-  <p class="nekova-social-links__heading">Encontranos en nuestras redes</p>
+  {%- unless hide_heading -%}
+    <p class="nekova-social-links__heading">Encontranos en nuestras redes</p>
+  {%- endunless -%}
   <ul class="nekova-social-links__list" role="list" aria-label="Redes sociales de Nekova">
     <li>
       <span class="nekova-social-links__icon" role="img" aria-label="Facebook">

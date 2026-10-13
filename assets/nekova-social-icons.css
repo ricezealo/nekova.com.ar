@@ -21,9 +21,9 @@
 
 .nekova-social-links__icon {
   align-items: center;
-  border: 1px solid var(--premium-accent, var(--nekova-gold));
+  border: 1px solid var(--premium-accent, var(--nekova-accent));
   border-radius: 50%;
-  color: var(--premium-accent, var(--nekova-gold));
+  color: var(--premium-accent, var(--nekova-accent));
   display: inline-flex;
   height: 4.4rem;
   justify-content: center;
@@ -37,9 +37,21 @@
 }
 
 .nekova-footer-social {
+  color: rgb(var(--color-foreground));
   margin: 0 auto;
   max-width: 1200px;
   padding: 2rem 5rem;
+}
+
+.nekova-footer-social .nekova-social-links__icon {
+  border-color: rgba(var(--color-foreground), 0.35);
+  color: rgb(var(--color-foreground));
+  transition: background 0.2s, border-color 0.2s;
+}
+
+.nekova-footer-social .nekova-social-links__icon:hover {
+  background: var(--nekova-accent);
+  border-color: var(--nekova-accent);
 }
 
 .nekova-contact-social {

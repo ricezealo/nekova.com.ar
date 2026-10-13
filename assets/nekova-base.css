@@ -1,40 +1,47 @@
 /* Nekova design tokens and shared components. Loaded globally from layout/theme.liquid. */
 :root {
-  --nekova-black: #111310;
-  --nekova-black-rgb: 17, 19, 16;
-  --nekova-panel: #191b17;
-  --nekova-panel-soft: #20221d;
-  --nekova-ink: #f1eee6;
-  --nekova-muted: #aaa99f;
-  --nekova-gold: #c9a878;
-  --nekova-on-gold: #151510;
-  --nekova-line: rgba(241, 238, 230, 0.15);
-  --nekova-line-strong: rgba(241, 238, 230, 0.35);
+  /* Fresco y luminoso: base blanca, texto casi negro, un acento vivo. */
+  --nekova-bg: #ffffff;
+  --nekova-bg-rgb: 255, 255, 255;
+  --nekova-surface: #ffffff;
+  --nekova-panel: #f3f5f9;
+  --nekova-ink: #14161a;
+  --nekova-ink-rgb: 20, 22, 26;
+  --nekova-muted: #5b6270;
+  --nekova-line: rgba(20, 22, 26, 0.1);
+  --nekova-line-strong: rgba(20, 22, 26, 0.22);
 
-  --nekova-cream: #eee9df;
-  --nekova-cream-light: #f5f1e9;
-  --nekova-cream-panel: #ebe5da;
-  --nekova-cream-panel-soft: #e3dccf;
-  --nekova-media: #e9e3d9;
-  --nekova-charcoal: #292a25;
-  --nekova-charcoal-muted: #5f6059;
-  --nekova-bronze: #765f42;
-  --nekova-bronze-soft: #9b805c;
-  --nekova-line-dark: rgba(41, 42, 37, 0.18);
+  /* Acento: azul cobalto. Alternativas: coral #d64a31 / #b53b25 / #fdeeea; violeta #6a4dff / #5338e0 / #efebff. */
+  --nekova-accent: #2f5bff;
+  --nekova-accent-strong: #1f45d9;
+  --nekova-accent-soft: #eaf0ff;
+  --nekova-on-accent: #ffffff;
 
-  --nekova-error: #ffb4a9;
+  /* Detalle cálido (descuentos). */
+  --nekova-warm: #c94430;
+  --nekova-warm-soft: #fdeeea;
 
-  --nekova-serif: Georgia, 'Times New Roman', serif;
-  --nekova-sans: Arial, Helvetica, sans-serif;
+  --nekova-error: #c0392b;
+  --nekova-error-on-dark: #ffb4a9;
+
+  --nekova-radius-sm: 1rem;
+  --nekova-radius: 1.6rem;
+  --nekova-radius-lg: 2.4rem;
+  --nekova-radius-pill: 999px;
+  --nekova-shadow: 0 1.2rem 3rem rgba(20, 22, 26, 0.08);
+
+  /* Fuentes elegidas en el editor de Shopify (Configuración del tema → Tipografía). */
+  --nekova-font-heading: var(--font-heading-family);
+  --nekova-font-body: var(--font-body-family);
 }
 
 .premium-eyebrow,
 .premium-edition {
-  color: var(--premium-accent, var(--nekova-gold));
-  font-family: var(--nekova-sans);
+  color: var(--premium-accent, var(--nekova-accent));
+  font-family: var(--nekova-font-body);
   font-size: 1.2rem;
-  font-weight: 600;
-  letter-spacing: 0.18em;
+  font-weight: 700;
+  letter-spacing: 0.16em;
   line-height: 1.6;
   margin: 0;
 }
@@ -46,14 +53,42 @@
 }
 
 .premium-eyebrow span {
-  background: var(--premium-accent, var(--nekova-gold));
+  background: var(--premium-accent, var(--nekova-accent));
+  border-radius: var(--nekova-radius-pill);
   display: inline-block;
-  height: 1px;
-  width: 2.6rem;
+  height: 2px;
+  width: 2.4rem;
 }
 
 .premium-edition {
   color: var(--premium-muted, var(--nekova-muted));
   font-size: 1.15rem;
-  letter-spacing: 0.16em;
+  font-weight: 600;
+}
+
+/* Ajustes sobre Dawn */
+.footer-block__newsletter {
+  text-align: center;
+  width: 100%;
+}
+
+.footer-block__newsletter form {
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.footer .nekova-footer-social {
+  text-align: center;
+}
+
+.footer .nekova-footer-social .nekova-social-links__list {
+  justify-content: center;
+}
+
+.footer__content-bottom-wrapper {
+  justify-content: center;
+}
+
+.footer__copyright {
+  text-align: center;
 }

@@ -1,0 +1,757 @@
+{%- liquid
+  assign featured_product = product | default: section.settings.product
+  assign selected_variant = featured_product.selected_or_first_available_variant
+  assign current_price = selected_variant.price | default: featured_product.price
+  assign original_price = selected_variant.compare_at_price | default: featured_product.compare_at_price
+  assign has_discount = false
+  if original_price > current_price
+    assign has_discount = true
+    assign discount_percent = original_price | minus: current_price | times: 100.0 | divided_by: original_price | round
+  endif
+
+  assign is_u_cushion = false
+  if featured_product.handle == 'cojin-ortopedico-u'
+    assign is_u_cushion = true
+  endif
+
+  assign product_video = ''
+  assign product_video_poster = ''
+  if is_u_cushion
+    assign product_video = 'cojin-ortopedico.mp4'
+    assign product_video_poster = 'product-media-cojin-ortopedico-poster.jpg'
+  endif
+
+  assign has_variant_choice = false
+  if featured_product.has_only_default_variant == false and featured_product.variants.size > 1
+    assign has_variant_choice = true
+    assign variant_option_name = featured_product.options.first | default: 'Variante'
+  endif
+  assign stock_form_id = 'NkStockForm-' | append: section.id
+-%}
+
+{{ 'premium-product-landing.js' | asset_url | script_tag }}
+
+<section class="nk-product" data-premium-product aria-labelledby="NkTitle-{{ section.id }}">
+  <div class="nk-shell">
+    <div class="nk-main" id="NkBuy-{{ section.id }}">
+      <div class="nk-gallery" id="NkGallery-{{ section.id }}" data-premium-gallery>
+        <div class="nk-gallery-main premium-gallery-main">
+          <button class="nk-gallery-open" type="button" aria-label="Ampliar imagen del producto" data-gallery-open>
+            {%- if is_u_cushion -%}
+              <img src="{{ 'product-media-cojin-ortopedico-01.jpg' | asset_url }}" alt="Cojín ergonómico en U de espuma viscoelástica, color gris" width="1200" height="1200" fetchpriority="high" data-premium-main-image>
+            {%- elsif featured_product.featured_image -%}
+              <img src="{{ featured_product.featured_image | image_url: width: 1600 }}" alt="{{ featured_product.featured_image.alt | default: featured_product.title | escape }}" fetchpriority="high" data-premium-main-image>
+            {%- endif -%}
+          </button>
+          <button class="nk-gallery-control nk-gallery-previous" type="button" aria-label="Ver imagen anterior" data-gallery-previous>{% render 'nekova-icon', icon: 'arrow-left' %}</button>
+          <button class="nk-gallery-control nk-gallery-next" type="button" aria-label="Ver imagen siguiente" data-gallery-next>{% render 'nekova-icon', icon: 'arrow-right' %}</button>
+          {%- if has_discount -%}<span class="nk-badge">-{{ discount_percent }}%</span>{%- endif -%}
+        </div>
+        <div class="nk-gallery-thumbs" aria-label="Galería del producto">
+          {%- if is_u_cushion -%}
+            {%- assign gallery_images = 'product-media-cojin-ortopedico-01.jpg,product-media-cojin-ortopedico-02.jpg,product-media-cojin-ortopedico-03.jpg,product-media-cojin-ortopedico-04.jpg,product-media-cojin-ortopedico-05.jpg,product-media-cojin-ortopedico-06.jpg,product-media-cojin-ortopedico-07.jpg,product-media-cojin-ortopedico-08.jpg,product-media-cojin-ortopedico-09.jpg,product-media-cojin-ortopedico-10.jpg,product-media-cojin-ortopedico-11.jpg,product-media-cojin-ortopedico-12.jpg' | split: ',' -%}
+            {%- for image_file in gallery_images -%}
+              <button class="{% if forloop.first %}is-active{% endif %}" type="button" aria-label="Ver imagen {{ forloop.index }}" aria-pressed="{% if forloop.first %}true{% else %}false{% endif %}" data-premium-image="{{ image_file | asset_url }}" data-premium-alt="Cojín ergonómico en U, imagen {{ forloop.index }}">
+                <img src="{{ image_file | asset_url }}" alt="" width="1200" height="1200" loading="lazy">
+              </button>
+            {%- endfor -%}
+          {%- else -%}
+            {%- for media in featured_product.media -%}
+              {%- if media.media_type == 'image' -%}
+                <button class="{% if forloop.first %}is-active{% endif %}" type="button" aria-label="Ver imagen {{ forloop.index }}" aria-pressed="{% if forloop.first %}true{% else %}false{% endif %}" data-premium-image="{{ media | image_url: width: 1800 }}" data-premium-alt="{{ media.alt | default: featured_product.title | escape }}">
+                  <img src="{{ media | image_url: width: 260 }}" alt="" loading="lazy">
+                </button>
+              {%- endif -%}
+            {%- endfor -%}
+          {%- endif -%}
+        </div>
+        <dialog class="nk-lightbox" aria-label="Galería de imágenes del producto" data-premium-lightbox>
+          <div class="nk-lightbox-content premium-lightbox-content">
+            <button class="nk-lightbox-close" type="button" aria-label="Cerrar imagen ampliada" data-lightbox-close>{% render 'nekova-icon', icon: 'close' %}</button>
+            <button class="nk-gallery-control nk-lightbox-previous" type="button" aria-label="Ver imagen anterior" data-lightbox-previous>{% render 'nekova-icon', icon: 'arrow-left' %}</button>
+            <img class="nk-lightbox-image" alt="" data-lightbox-image>
+            <button class="nk-gallery-control nk-lightbox-next" type="button" aria-label="Ver imagen siguiente" data-lightbox-next>{% render 'nekova-icon', icon: 'arrow-right' %}</button>
+            <p class="nk-lightbox-caption" aria-live="polite" data-lightbox-caption></p>
+          </div>
+        </dialog>
+      </div>
+
+      <div class="nk-buy">
+        {%- if section.settings.launch_heading != blank -%}
+          <p class="nk-tagline">{{ section.settings.launch_heading }}</p>
+        {%- else -%}
+          <p class="nk-tagline">Ergonomía y bienestar</p>
+        {%- endif -%}
+        <h1 class="nk-title" id="NkTitle-{{ section.id }}">{{ featured_product.title | escape }}</h1>
+        <p class="nk-lead">
+          {%- if is_u_cushion -%}
+            Espuma viscoelástica, ranura en U y funda transpirable. Para la oficina, el auto o tu casa.
+          {%- else -%}
+            {{ featured_product.description | strip_html | truncatewords: 26 }}
+          {%- endif -%}
+        </p>
+
+        <div class="nk-price" aria-label="Precio del producto">
+          <span class="nk-price-current">{{ current_price | money_without_trailing_zeros }}</span>
+          {%- if has_discount -%}
+            <s class="nk-price-was">{{ original_price | money_without_trailing_zeros }}</s>
+            <span class="nk-price-off">{{ discount_percent }}% OFF</span>
+          {%- endif -%}
+        </div>
+
+        {%- if featured_product != blank and featured_product.available -%}
+          {% form 'product', featured_product, class: 'nk-buy-form' %}
+            {%- if has_variant_choice -%}
+              {%- assign variant_option_handle = variant_option_name | handleize -%}
+              {%- assign is_color_option = false -%}
+              {%- if variant_option_handle == 'color' or variant_option_handle == 'colour' or variant_option_handle == 'colores' -%}
+                {%- assign is_color_option = true -%}
+              {%- endif -%}
+              <fieldset class="nk-variants{% if is_color_option %} nk-variants--swatches{% endif %}" id="PremiumVariants-{{ section.id }}" data-premium-variant-picker>
+                <legend>{{ variant_option_name | escape }}: <strong data-premium-variant-label>{{ selected_variant.title | escape }}</strong></legend>
+                <div class="nk-variant-options">
+                  {%- for variant in featured_product.variants -%}
+                    {%- liquid
+                      assign variant_image = ''
+                      if is_u_cushion
+                        assign variant_title_handle = variant.title | handleize
+                        if variant_title_handle contains 'azul'
+                          assign variant_image = 'product-media-cojin-ortopedico-02.jpg' | asset_url
+                        else
+                          assign variant_image = 'product-media-cojin-ortopedico-01.jpg' | asset_url
+                        endif
+                      elsif variant.featured_media
+                        assign variant_image = variant.featured_media | image_url: width: 1800
+                      endif
+
+                      assign swatch_color = ''
+                      assign swatch_image = ''
+                      if is_color_option
+                        for option_value in featured_product.options_with_values.first.values
+                          assign option_value_name = option_value.name | default: option_value
+                          if option_value_name == variant.option1
+                            assign swatch_color = option_value.swatch.color
+                            if option_value.swatch.image
+                              assign swatch_image = option_value.swatch.image | image_url: width: 80
+                            endif
+                          endif
+                        endfor
+                        # Fallback when the Shopify option value has no swatch: product colors by name.
+                        if swatch_color == blank and swatch_image == blank
+                          assign variant_color_handle = variant.option1 | handleize
+                          case variant_color_handle
+                            when 'gris'
+                              assign swatch_color = '#7b8287'
+                            when 'gris-claro'
+                              assign swatch_color = '#b8bdc1'
+                            when 'gris-oscuro'
+                              assign swatch_color = '#4b4f53'
+                            when 'azul-marino'
+                              assign swatch_color = '#252b5c'
+                            when 'azul'
+                              assign swatch_color = '#2f4f8a'
+                            when 'celeste'
+                              assign swatch_color = '#8fb8d8'
+                            when 'negro'
+                              assign swatch_color = '#1d1d1b'
+                            when 'blanco'
+                              assign swatch_color = '#f4f3ef'
+                            when 'beige', 'crema'
+                              assign swatch_color = '#d9c7a7'
+                            when 'marron', 'cafe', 'madera'
+                              assign swatch_color = '#7a5638'
+                            when 'verde'
+                              assign swatch_color = '#4d6b4a'
+                            when 'rojo'
+                              assign swatch_color = '#a83232'
+                            when 'rosa'
+                              assign swatch_color = '#d8a1a8'
+                          endcase
+                        endif
+                      endif
+                      assign has_swatch = false
+                      if swatch_color != blank or swatch_image != blank
+                        assign has_swatch = true
+                      endif
+                    -%}
+                    <label class="nk-variant-option">
+                      <input type="radio" name="id" value="{{ variant.id }}" data-variant-title="{{ variant.title | escape }}"{% if variant_image != blank %} data-variant-image="{{ variant_image }}"{% endif %}{% if variant.id == selected_variant.id %} checked{% endif %}{% unless variant.available %} disabled{% endunless %}>
+                      {%- if has_swatch -%}
+                        <span class="nk-swatch" style="{% if swatch_image != blank %}background-image: url('{{ swatch_image }}');{% else %}background-color: {{ swatch_color }};{% endif %}" aria-hidden="true"></span>
+                        <span class="nk-tooltip">{{ variant.title | escape }}{% unless variant.available %} · Agotado{% endunless %}</span>
+                      {%- else -%}
+                        <span class="nk-pill">{{ variant.title | escape }}{% unless variant.available %} · Agotado{% endunless %}</span>
+                      {%- endif -%}
+                    </label>
+                  {%- endfor -%}
+                  <a class="nk-variant-preview" href="#NkGallery-{{ section.id }}" data-premium-variant-preview hidden>
+                    <img alt="" width="1200" height="1200">
+                    <span class="visually-hidden">Ver la galería</span>
+                  </a>
+                </div>
+              </fieldset>
+            {%- else -%}
+              <input type="hidden" name="id" value="{{ selected_variant.id }}">
+            {%- endif -%}
+            <div class="nk-buy-row">
+              <div class="nk-qty" data-nk-qty>
+                <button type="button" data-nk-qty-step="-1" aria-label="Restar una unidad">−</button>
+                <input type="number" name="quantity" value="1" min="1" max="10" inputmode="numeric" aria-label="Cantidad">
+                <button type="button" data-nk-qty-step="1" aria-label="Sumar una unidad">+</button>
+              </div>
+              <button class="nk-button nk-button--cart" type="submit" name="add">{% render 'nekova-icon', icon: 'cart' %}<span>Agregar al carrito</span></button>
+            </div>
+          {% endform %}
+        {%- elsif featured_product != blank -%}
+          <div class="nk-stock">
+            <p class="nk-stock-status">Próximamente</p>
+            <p>Dejanos tu email y te avisamos cuando esté disponible.</p>
+            {% form 'customer', id: stock_form_id, class: 'nk-stock-form premium-stock-form' %}
+              {% if form.posted_successfully? or stock_notification_registered %}
+                <p class="nk-stock-success" role="status">¡Listo! Te vamos a avisar cuando esté disponible.</p>
+              {% else %}
+                {% if form.errors %}
+                  <p class="nk-stock-error" role="alert">No pudimos registrar tu email. Revisá el dato e intentá nuevamente.</p>
+                {% endif %}
+                <input type="hidden" name="contact[tags]" value="back-in-stock, back-in-stock-{{ featured_product.handle }}">
+                <label class="visually-hidden" for="NkStockEmail-{{ section.id }}">Tu correo electrónico</label>
+                <div class="nk-stock-row">
+                  <input id="NkStockEmail-{{ section.id }}" type="email" name="contact[email]" autocomplete="email" placeholder="nombre@correo.com" required>
+                  <button type="submit" class="nk-button">Avisarme</button>
+                </div>
+                <label class="nk-stock-consent" for="NkStockConsent-{{ section.id }}">
+                  <input id="NkStockConsent-{{ section.id }}" type="checkbox" name="contact[accepts_marketing]" value="true" required>
+                  <span>Acepto recibir por email un aviso cuando este producto esté disponible.</span>
+                </label>
+              {% endif %}
+            {% endform %}
+          </div>
+        {%- endif -%}
+
+        {%- if is_u_cushion -%}
+          <ul class="nk-checks">
+            <li>{% render 'nekova-icon', icon: 'check' %} Espuma viscoelástica de recuperación lenta</li>
+            <li>{% render 'nekova-icon', icon: 'check' %} Ranura en U que deja libre la zona del coxis</li>
+            <li>{% render 'nekova-icon', icon: 'check' %} Funda transpirable y extraíble</li>
+          </ul>
+        {%- endif -%}
+
+        <div class="nk-accordions">
+          <details>
+            <summary>Detalles del producto</summary>
+            <div class="nk-accordion-body">
+              {%- if is_u_cushion -%}
+                <p>Un cojín de asiento con forma ergonómica: los laterales elevados envuelven la cadera, el frente en arco acompaña la base de los muslos y la parte trasera, más alta, da apoyo a la espalda baja. La ranura en U deja libre la zona del coxis y el canal central favorece la circulación de aire.</p>
+              {%- else -%}
+                <div class="rte">{{ featured_product.description }}</div>
+              {%- endif -%}
+            </div>
+          </details>
+          {%- if is_u_cushion or featured_product.metafields.custom.specifications != blank -%}
+            <details>
+              <summary>Medidas y materiales</summary>
+              <div class="nk-accordion-body">
+                {%- if is_u_cushion -%}
+                  <dl class="nk-specs">
+                    <div><dt>Medidas</dt><dd>48 × 38 × 12 cm</dd></div>
+                    <div><dt>Relleno</dt><dd>Espuma viscoelástica de recuperación lenta (3 a 5 s)</dd></div>
+                    <div><dt>Funda</dt><dd>Malla transpirable, extraíble con cierre</dd></div>
+                    <div><dt>Diseño</dt><dd>Ranura en U, laterales elevados y frente en arco</dd></div>
+                    <div><dt>Colores</dt><dd>Gris y azul marino</dd></div>
+                    <div><dt>Uso</dt><dd>Oficina, auto, hogar y viajes</dd></div>
+                  </dl>
+                {%- else -%}
+                  <div class="rte">{{ featured_product.metafields.custom.specifications | metafield_tag }}</div>
+                {%- endif -%}
+              </div>
+            </details>
+          {%- endif -%}
+          <details>
+            <summary>Envío, garantía y devoluciones</summary>
+            <div class="nk-accordion-body">
+              <p>Las compras realizadas antes de las 13 h se despachan ese mismo día; después de ese horario, dentro de las 24 h. El costo y el plazo de envío se calculan según tu destino y los ves en el checkout antes de pagar.</p>
+              <p>Tenés 60 días de garantía y 10 días desde la compra para solicitar la devolución, con el producto completo y en perfecto estado. <a href="/pages/contact">Escribinos</a> para coordinarla.</p>
+            </div>
+          </details>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  {%- if is_u_cushion -%}
+    <section class="nk-section nk-section--panel" aria-labelledby="NkUses-{{ section.id }}">
+      <div class="nk-shell">
+        <div class="nk-head nk-head--split">
+          <div>
+            <p class="nk-eyebrow">Para tu día a día</p>
+            <h2 id="NkUses-{{ section.id }}">Pensado para las horas que pasás <span class="nk-hl">sentado</span></h2>
+          </div>
+          <p class="nk-head-lead">En el escritorio, en el auto o leyendo en casa: un apoyo cómodo se nota al final del día.</p>
+        </div>
+        <div class="nk-uses" data-nk-autoplay="3000">
+          <figure>
+            <img src="{{ 'product-media-cojin-ortopedico-vida-01.jpg' | asset_url }}" alt="Mujer trabajando en su escritorio sentada sobre el cojín en U" width="900" height="1125" loading="lazy">
+            <figcaption><span class="nk-num">01</span><strong>Home office</strong>Largas jornadas frente a la compu, con más comodidad.</figcaption>
+          </figure>
+          <figure>
+            <img src="{{ 'product-media-cojin-ortopedico-vida-02.jpg' | asset_url }}" alt="Persona sentada sobre el cojín en el asiento del auto" width="900" height="1125" loading="lazy">
+            <figcaption><span class="nk-num">02</span><strong>En el auto</strong>Trayectos diarios o viajes largos, con un apoyo estable.</figcaption>
+          </figure>
+          <figure>
+            <img src="{{ 'product-media-cojin-ortopedico-vida-03.jpg' | asset_url }}" alt="Mujer sentada cómodamente sobre el cojín en una silla de escritorio" width="900" height="1125" loading="lazy">
+            <figcaption><span class="nk-num">03</span><strong>Estudio y lectura</strong>Para las horas de clase, de lectura o de videollamadas.</figcaption>
+          </figure>
+        </div>
+      </div>
+    </section>
+
+    <section class="nk-section nk-section--dark" aria-labelledby="NkHow-{{ section.id }}">
+      <div class="nk-shell nk-split">
+        <div class="nk-how-media">
+          <img src="{{ 'product-media-cojin-ortopedico-04.jpg' | asset_url }}" alt="Zonas del cojín: A laterales, B zona trasera y C canal central" width="1200" height="1200" loading="lazy">
+        </div>
+        <div>
+          <p class="nk-eyebrow">Cómo funciona</p>
+          <h2 id="NkHow-{{ section.id }}">Tres zonas, <span class="nk-hl">un solo apoyo</span></h2>
+          <p class="nk-head-lead">Cada parte del cojín cumple una función para que te sientes más cómodo.</p>
+          <ol class="nk-zones">
+            <li><span aria-hidden="true">A</span><div><strong>Laterales elevados</strong>Envuelven la cadera y los muslos para un apoyo más estable.</div></li>
+            <li><span aria-hidden="true">B</span><div><strong>Zona trasera de apoyo</strong>Más alta, acompaña la espalda baja cuando te sentás.</div></li>
+            <li><span aria-hidden="true">C</span><div><strong>Ranura en U y canal de aire</strong>Deja libre la zona del coxis y favorece la ventilación.</div></li>
+          </ol>
+        </div>
+      </div>
+    </section>
+
+    <section class="nk-section" aria-labelledby="NkBenefits-{{ section.id }}">
+      <div class="nk-shell">
+        <div class="nk-head nk-head--split">
+          <div>
+            <p class="nk-eyebrow">Detalles que se notan</p>
+            <h2 id="NkBenefits-{{ section.id }}">Diseñado para tu <span class="nk-hl">comodidad</span></h2>
+          </div>
+          <p class="nk-head-lead">Materiales y formas pensados para el uso de todos los días.</p>
+        </div>
+        <ul class="nk-benefits" role="list">
+          <li><span class="nk-benefit-icon">{% render 'nekova-icon', icon: 'foam' %}</span><strong>Espuma viscoelástica</strong><p>Se adapta a tu forma y recupera la suya en 3 a 5 segundos.</p></li>
+          <li><span class="nk-benefit-icon">{% render 'nekova-icon', icon: 'slot' %}</span><strong>Ranura en U</strong><p>Su recorte central deja libre la zona del coxis.</p></li>
+          <li><span class="nk-benefit-icon">{% render 'nekova-icon', icon: 'sides' %}</span><strong>Laterales elevados</strong><p>Envuelven la cadera y los muslos para que no te deslices.</p></li>
+          <li><span class="nk-benefit-icon">{% render 'nekova-icon', icon: 'arc' %}</span><strong>Frente en arco</strong><p>Acompaña la base de los muslos con una transición suave.</p></li>
+          <li><span class="nk-benefit-icon">{% render 'nekova-icon', icon: 'wind' %}</span><strong>Funda transpirable</strong><p>Malla con canal central de ventilación para mantenerlo fresco.</p></li>
+          <li><span class="nk-benefit-icon">{% render 'nekova-icon', icon: 'zip' %}</span><strong>Funda con cierre</strong><p>Se retira fácilmente para lavarla por separado.</p></li>
+        </ul>
+      </div>
+    </section>
+  {%- endif -%}
+
+  {%- if product_video != blank -%}
+    <section class="nk-section nk-section--soft" aria-labelledby="NkVideo-{{ section.id }}">
+      <div class="nk-shell nk-split nk-split--video">
+        <div>
+          <p class="nk-eyebrow">En detalle</p>
+          <h2 id="NkVideo-{{ section.id }}">Miralo de <span class="nk-hl">cerca</span></h2>
+          <p class="nk-head-lead">La funda, el núcleo de espuma y cómo se usa en la oficina y en el auto.</p>
+          {%- if is_u_cushion -%}
+            <div class="nk-details">
+              <figure><img src="{{ 'product-media-cojin-ortopedico-detalle-espuma.jpg' | asset_url }}" alt="Mano presionando el núcleo de espuma viscoelástica" width="900" height="1125" loading="lazy"><figcaption>Núcleo de espuma viscoelástica</figcaption></figure>
+              <figure><img src="{{ 'product-media-cojin-ortopedico-detalle-funda.jpg' | asset_url }}" alt="Manos abriendo el cierre de la funda del cojín" width="900" height="1125" loading="lazy"><figcaption>Funda con cierre, fácil de lavar</figcaption></figure>
+            </div>
+          {%- endif -%}
+        </div>
+        <div class="nk-video-frame">
+          <video controls playsinline preload="metadata" poster="{{ product_video_poster | asset_url }}" aria-label="Video de {{ featured_product.title | escape }}">
+            <source src="{{ product_video | asset_url }}" type="video/mp4">
+            Tu navegador no puede reproducir este video.
+          </video>
+        </div>
+      </div>
+    </section>
+  {%- endif -%}
+
+  {%- if is_u_cushion -%}
+    <section class="nk-section" aria-labelledby="NkCompare-{{ section.id }}">
+      <div class="nk-shell">
+        <div class="nk-head nk-head--center">
+          <p class="nk-eyebrow">La diferencia</p>
+          <h2 id="NkCompare-{{ section.id }}">Un cojín común vs. <span class="nk-hl">Nekova</span></h2>
+        </div>
+        <div class="nk-compare" role="table" aria-label="Comparación entre un cojín común y el cojín Nekova">
+          <div class="nk-compare-row nk-compare-head" role="row">
+            <span role="columnheader"><span class="visually-hidden">Característica</span></span>
+            <span role="columnheader">Cojín común</span>
+            <span role="columnheader" class="nk-compare-us"><img src="{{ 'nekova-mark-white.svg' | asset_url }}" alt="" width="22" height="22"><span class="nk-compare-brand">Nekova</span></span>
+          </div>
+          {%- assign compare_rows = 'Laterales elevados que envuelven la cadera|no,Ranura en U para la zona del coxis|no,Espuma viscoelástica de recuperación lenta|a veces,Canal central de ventilación|no,Funda transpirable con cierre|a veces,60 días de garantía|depende' | split: ',' -%}
+          {%- for row in compare_rows -%}
+            {%- assign cells = row | split: '|' -%}
+            <div class="nk-compare-row" role="row">
+              <span role="rowheader">{{ cells[0] }}</span>
+              <span role="cell" class="nk-compare-them">
+                {%- if cells[1] == 'no' -%}{% render 'nekova-icon', icon: 'cross' %}<span class="visually-hidden">No</span>{%- else -%}{{ cells[1] | capitalize }}{%- endif -%}
+              </span>
+              <span role="cell" class="nk-compare-us">{% render 'nekova-icon', icon: 'check' %}<span class="visually-hidden">Sí</span></span>
+            </div>
+          {%- endfor -%}
+        </div>
+      </div>
+    </section>
+
+    <section class="nk-section nk-section--panel" aria-labelledby="NkSpecs-{{ section.id }}">
+      <div class="nk-shell nk-split nk-split--specs">
+        <div>
+          <p class="nk-eyebrow">Ficha técnica</p>
+          <h2 id="NkSpecs-{{ section.id }}">Todo lo que tenés que <span class="nk-hl">saber</span></h2>
+          <p class="nk-head-lead">Antes de comprar, verificá que el asiento de tu silla o de tu auto tenga al menos 48 × 38 cm.</p>
+          <img class="nk-specs-image" src="{{ 'product-media-cojin-ortopedico-03.jpg' | asset_url }}" alt="El cojín en sus dos colores: gris y azul marino" width="1200" height="1200" loading="lazy">
+        </div>
+        <dl class="nk-spec-table">
+          <div><dt>Medidas</dt><dd>48 × 38 × 12 cm</dd></div>
+          <div><dt>Relleno</dt><dd>Espuma viscoelástica de recuperación lenta</dd></div>
+          <div><dt>Recuperación</dt><dd>3 a 5 segundos</dd></div>
+          <div><dt>Diseño</dt><dd>Ranura en U, laterales elevados y frente en arco</dd></div>
+          <div><dt>Funda</dt><dd>Malla transpirable, extraíble con cierre</dd></div>
+          <div><dt>Colores</dt><dd>Gris y azul marino</dd></div>
+          <div><dt>Uso</dt><dd>Oficina, auto, hogar y viajes</dd></div>
+          <div><dt>Garantía</dt><dd>60 días</dd></div>
+        </dl>
+      </div>
+    </section>
+  {%- endif -%}
+
+  {%- if section.blocks.size > 0 -%}
+    <section class="nk-section">
+      <div class="nk-shell">
+        <div class="nk-head nk-head--center"><p class="nk-eyebrow">Opiniones</p><h2>Lo que dicen <span class="nk-hl">quienes lo usan</span></h2></div>
+        {%- for block in section.blocks -%}
+          {% render block %}
+        {%- endfor -%}
+      </div>
+    </section>
+  {%- endif -%}
+
+  <section class="nk-section" id="preguntas-frecuentes" aria-labelledby="NkFaq-{{ section.id }}">
+    <div class="nk-shell nk-split nk-split--faq">
+      <div>
+        <p class="nk-eyebrow">Antes de comprar</p>
+        <h2 id="NkFaq-{{ section.id }}">Preguntas <span class="nk-hl">frecuentes</span></h2>
+        <p class="nk-head-lead">¿Tenés otra duda? <a href="/pages/contact">Escribinos</a> y te ayudamos.</p>
+      </div>
+      <div class="nk-faq-list">
+        {%- if is_u_cushion -%}
+          <details><summary>¿Qué medidas tiene?</summary><p>Mide 48 × 38 × 12 cm. Antes de comprar, verificá que el asiento de tu silla o de tu auto tenga al menos ese ancho y esa profundidad.</p></details>
+          <details><summary>¿Cómo se limpia?</summary><p>La funda tiene cierre: retirala y lavala por separado. Recomendamos no mojar el núcleo de espuma viscoelástica.</p></details>
+          <details><summary>¿En qué colores está disponible?</summary><p>En gris y en azul marino. Elegí el color antes de agregarlo al carrito.</p></details>
+        {%- endif -%}
+        <details><summary>¿Cuándo se despacha mi pedido?</summary><p>Las compras realizadas antes de las 13:00 se despachan ese mismo día; después de ese horario, dentro de las 24 horas. El plazo de entrega depende del destino y del operador logístico.</p></details>
+        <details><summary>¿Cuánto cuesta el envío?</summary><p>El costo y la estimación de entrega se calculan según tu destino y se muestran en el checkout, antes de confirmar la compra.</p></details>
+        <details><summary>¿Qué garantía tiene?</summary><p>60 días de garantía. Si necesitás asistencia, escribinos desde la <a href="/pages/contact">página de contacto</a> con tu número de pedido.</p></details>
+        <details><summary>¿Puedo devolverlo?</summary><p>Sí, dentro de los 10 días desde la compra, con el producto completo y en perfecto estado. Contactanos para coordinar la devolución.</p></details>
+        <details><summary>¿Qué medios de pago puedo usar?</summary><p>En el checkout vas a ver los medios de pago disponibles y las opciones de cuotas cuando correspondan.</p></details>
+      </div>
+    </div>
+  </section>
+
+  {%- if featured_product != blank -%}
+    <div class="nk-cta-band">
+      <div class="nk-shell nk-cta">
+        {%- if is_u_cushion -%}
+          <img src="{{ 'product-media-cojin-ortopedico-01.jpg' | asset_url }}" alt="" width="1200" height="1200" loading="lazy">
+        {%- elsif featured_product.featured_image -%}
+          <img src="{{ featured_product.featured_image | image_url: width: 600 }}" alt="" loading="lazy">
+        {%- endif -%}
+        <div>
+          <h2>Sentate más cómodo desde hoy</h2>
+          <p>{{ current_price | money_without_trailing_zeros }} · 60 días de garantía · Despacho en el día</p>
+        </div>
+        <a class="nk-button nk-button--light" href="#NkBuy-{{ section.id }}">{% if featured_product.available %}Comprar ahora{% else %}Avisarme{% endif %}</a>
+      </div>
+    </div>
+  {%- endif -%}
+</section>
+
+{% style %}
+  .nk-product {
+    --nk-bg: var(--nekova-bg);
+    --nk-panel: var(--nekova-panel);
+    --nk-ink: var(--nekova-ink);
+    --nk-muted: var(--nekova-muted);
+    --nk-line: var(--nekova-line);
+    --nk-accent: var(--nekova-accent);
+    background: var(--nk-bg);
+    color: var(--nk-ink);
+    font-family: var(--nekova-font-body);
+  }
+  .nk-product * { box-sizing: border-box; }
+  .nk-shell { margin: 0 auto; max-width: 1280px; padding: 0 5rem; }
+  .nk-product h1, .nk-product h2 { color: var(--nk-ink); font-family: var(--nekova-font-heading); font-weight: var(--font-heading-weight); letter-spacing: -.02em; }
+  .nk-product a { color: var(--nk-accent); text-underline-offset: .2em; }
+  .nk-product svg { flex: 0 0 auto; }
+  .nk-product button, .nk-product summary, .nk-variant-option, .nk-product a { touch-action: manipulation; }
+
+  .nk-main { align-items: start; display: grid; gap: 5rem; grid-template-columns: minmax(0, 1.15fr) minmax(0, .85fr); padding: 3.2rem 0 7rem; }
+  .nk-gallery { min-width: 0; }
+  .nk-gallery-main { aspect-ratio: 1; background: var(--nk-panel); border-radius: var(--nekova-radius-lg); overflow: hidden; position: relative; touch-action: pan-y; }
+  .nk-gallery-open { background: transparent; border: 0; cursor: zoom-in; display: block; height: 100%; inset: 0; padding: 0; position: absolute; width: 100%; }
+  .nk-gallery-main img { display: block; height: 100%; mix-blend-mode: multiply; object-fit: contain; padding: 6%; width: 100%; }
+  .nk-gallery-control { align-items: center; background: var(--nekova-surface); border: 0; border-radius: 50%; box-shadow: 0 .4rem 1.4rem rgba(var(--nekova-ink-rgb), .12); color: var(--nk-ink); cursor: pointer; display: flex; height: 4.4rem; justify-content: center; padding: 0; position: absolute; top: 50%; transform: translateY(-50%); transition: background .2s, color .2s; width: 4.4rem; z-index: 2; }
+  .nk-gallery-control:hover { background: var(--nk-accent); color: var(--nekova-on-accent); }
+  .nk-gallery-control:focus-visible, .nk-gallery-thumbs button:focus-visible { outline: 2px solid var(--nk-accent); outline-offset: 2px; }
+  .nk-gallery-previous { left: 1.6rem; }
+  .nk-gallery-next { right: 1.6rem; }
+  .nk-badge { background: var(--nekova-warm); border-radius: var(--nekova-radius-pill); color: var(--nekova-on-accent); font-size: 1.3rem; font-weight: 800; left: 1.6rem; padding: .5rem 1.2rem; position: absolute; top: 1.6rem; }
+  .nk-gallery-thumbs { display: grid; gap: .8rem; grid-template-columns: repeat(6, minmax(0, 1fr)); margin-top: 1rem; }
+  .nk-gallery-thumbs button { aspect-ratio: 1; background: var(--nk-panel); border: 2px solid transparent; border-radius: var(--nekova-radius-sm); cursor: pointer; overflow: hidden; padding: 0; transition: border-color .2s; }
+  .nk-gallery-thumbs button.is-active, .nk-gallery-thumbs button:hover { border-color: var(--nk-accent); }
+  .nk-gallery-thumbs img { display: block; height: 100%; mix-blend-mode: multiply; object-fit: contain; width: 100%; }
+  .nk-lightbox { background: rgba(var(--nekova-bg-rgb), .98); border: 0; height: 100dvh; margin: 0; max-height: none; max-width: none; overflow: hidden; padding: 0; position: fixed; width: 100vw; }
+  .nk-lightbox[open] { align-items: center; display: flex; justify-content: center; }
+  .nk-lightbox::backdrop { background: rgba(var(--nekova-bg-rgb), .98); }
+  .nk-lightbox-content { align-items: center; display: flex; height: 100%; justify-content: center; position: relative; touch-action: pan-y; width: 100%; }
+  .nk-lightbox-image { display: block; max-height: calc(100dvh - 8rem); max-width: calc(100vw - 12rem); object-fit: contain; }
+  .nk-lightbox-close { align-items: center; background: var(--nk-panel); border: 0; border-radius: 50%; color: var(--nk-ink); cursor: pointer; display: flex; height: 4.8rem; justify-content: center; position: absolute; right: 2.4rem; top: 2.4rem; width: 4.8rem; z-index: 3; }
+  .nk-lightbox-previous { left: 2.4rem; }
+  .nk-lightbox-next { right: 2.4rem; }
+  .nk-lightbox-caption { bottom: 1.2rem; color: var(--nk-muted); font-size: 1.3rem; left: 7rem; margin: 0; position: absolute; right: 7rem; text-align: center; }
+
+  .nk-buy { min-width: 0; position: sticky; top: 12rem; }
+  .nk-tagline { color: var(--nk-accent); font-size: 1.4rem; font-weight: 800; margin: 0 0 .8rem; }
+  .nk-tagline em { font-style: normal; }
+  .nk-title { font-size: clamp(2.8rem, 3vw, 3.6rem); line-height: 1.15; margin: 0 0 1.2rem; }
+  .nk-lead { color: var(--nk-muted); font-size: 1.6rem; line-height: 1.6; margin: 0 0 2rem; }
+  .nk-price { align-items: baseline; display: flex; flex-wrap: wrap; gap: .6rem 1.2rem; margin-bottom: 2.4rem; }
+  .nk-price-current { font-family: var(--nekova-font-heading); font-size: 3.2rem; font-weight: var(--font-heading-weight); }
+  .nk-price-was { color: var(--nk-muted); font-size: 1.6rem; }
+  .nk-price-off { color: var(--nekova-warm); font-size: 1.4rem; font-weight: 800; }
+
+  .nk-variants { border: 0; margin: 0 0 2.4rem; min-width: 0; padding: 0; }
+  .nk-variants legend { color: var(--nk-muted); font-size: 1.4rem; margin-bottom: 1rem; padding: 0; }
+  .nk-variants legend strong { color: var(--nk-ink); }
+  .nk-variant-options { display: flex; flex-wrap: wrap; gap: 1.2rem; padding-top: .4rem; }
+  .nk-variant-option { cursor: pointer; position: relative; }
+  .nk-variant-preview { display: none; }
+  .nk-variant-option input { height: 1px; margin: 0; opacity: 0; position: absolute; width: 1px; }
+  .nk-swatch { background-position: center; background-size: cover; border: 1px solid var(--nk-line); border-radius: 50%; box-shadow: 0 0 0 3px var(--nk-bg), 0 0 0 5px transparent; display: block; height: 3.8rem; transition: box-shadow .2s; width: 3.8rem; }
+  .nk-variant-option:hover .nk-swatch { box-shadow: 0 0 0 3px var(--nk-bg), 0 0 0 5px var(--nekova-line-strong); }
+  .nk-variant-option input:checked + .nk-swatch { box-shadow: 0 0 0 3px var(--nk-bg), 0 0 0 5px var(--nk-accent); }
+  .nk-pill { align-items: center; border: 1px solid var(--nekova-line-strong); border-radius: var(--nekova-radius-pill); display: inline-flex; font-size: 1.4rem; font-weight: 600; min-height: 4.4rem; padding: .8rem 1.8rem; transition: border-color .2s, background .2s, color .2s; }
+  .nk-variant-option:hover .nk-pill { border-color: var(--nk-accent); }
+  .nk-variant-option input:checked + .nk-pill { background: var(--nk-accent); border-color: var(--nk-accent); color: var(--nekova-on-accent); }
+  .nk-tooltip { background: var(--nk-ink); border-radius: var(--nekova-radius-sm); bottom: calc(100% + 1.2rem); color: var(--nk-bg); font-size: 1.25rem; font-weight: 600; left: 50%; opacity: 0; padding: .5rem 1rem; pointer-events: none; position: absolute; transform: translate(-50%, .4rem); transition: opacity .15s, transform .15s; white-space: nowrap; z-index: 2; }
+  .nk-tooltip::after { border: .5rem solid transparent; border-top-color: var(--nk-ink); content: ''; left: 50%; position: absolute; top: 100%; transform: translateX(-50%); }
+  .nk-variant-option:hover .nk-tooltip, .nk-variant-option input:focus-visible ~ .nk-tooltip { opacity: 1; transform: translate(-50%, 0); }
+  @media (hover: none) {
+    .nk-variant-option:hover .nk-tooltip { opacity: 0; }
+  }
+  .nk-variant-option input:focus-visible + span { outline: 2px solid var(--nk-accent); outline-offset: 6px; }
+  .nk-variant-option input:disabled + span { cursor: not-allowed; opacity: .4; }
+  .nk-variant-option input:disabled + .nk-pill { text-decoration: line-through; }
+  .nk-variant-option input:disabled + .nk-swatch { background-image: linear-gradient(135deg, transparent 47%, var(--nk-muted) 47%, var(--nk-muted) 53%, transparent 53%); }
+
+  .nk-button { align-items: center; background: var(--nk-accent); border: 0; border-radius: 1.2rem; color: var(--nekova-on-accent); cursor: pointer; display: inline-flex; font: 700 1.6rem var(--nekova-font-body); gap: 1rem; justify-content: center; min-height: 5.4rem; padding: 0 3.2rem; text-decoration: none; transition: background .2s; }
+  .nk-product a.nk-button { color: var(--nekova-on-accent); }
+  .nk-button:hover { background: var(--nekova-accent-strong); }
+  .nk-button:focus-visible { outline: 2px solid var(--nk-accent); outline-offset: 3px; }
+  .nk-button--block { width: 100%; }
+  .nk-buy-row { display: flex; gap: 1rem; }
+  .nk-button--cart { flex: 1; padding: 0 2rem; }
+  .nk-button--cart svg { height: 2.1rem; width: 2.1rem; }
+  .nk-qty { align-items: center; border: 1px solid var(--nekova-line-strong); border-radius: 1.2rem; display: flex; flex: 0 0 12.8rem; justify-content: space-between; }
+  .nk-qty button { align-items: center; background: transparent; border: 0; border-radius: 1rem; color: var(--nk-muted); cursor: pointer; display: flex; font-size: 2rem; height: 100%; justify-content: center; min-height: 5.2rem; width: 4.2rem; }
+  .nk-qty button:hover { color: var(--nk-accent); }
+  .nk-qty button:focus-visible, .nk-qty input:focus-visible { outline: 2px solid var(--nk-accent); outline-offset: -2px; }
+  .nk-qty input { -moz-appearance: textfield; appearance: textfield; background: transparent; border: 0; color: var(--nk-ink); font: 700 1.6rem var(--nekova-font-body); min-width: 0; text-align: center; width: 4rem; }
+  .nk-qty input::-webkit-outer-spin-button, .nk-qty input::-webkit-inner-spin-button { -webkit-appearance: none; margin: 0; }
+  .nk-button--light, .nk-product a.nk-button--light { background: var(--nekova-surface); color: var(--nk-accent); }
+  .nk-button--light:hover { background: var(--nekova-accent-soft); }
+
+  .nk-stock { background: var(--nk-panel); border-radius: var(--nekova-radius); padding: 2.4rem; }
+  .nk-stock-status { color: var(--nk-accent); font-size: 1.4rem; font-weight: 800; margin: 0; }
+  .nk-stock > p { color: var(--nk-muted); font-size: 1.5rem; }
+  .nk-stock-row { display: flex; gap: .8rem; }
+  .nk-stock-row input[type='email'] { background: var(--nekova-surface); border: 1px solid var(--nekova-line-strong); border-radius: 1.2rem; color: var(--nk-ink); flex: 1; font: inherit; min-width: 0; padding: 1.2rem 1.8rem; }
+  .nk-stock-consent { align-items: flex-start; color: var(--nk-muted); display: flex; font-size: 1.3rem; gap: .8rem; line-height: 1.5; margin-top: 1.2rem; }
+  .nk-stock-consent input { accent-color: var(--nk-accent); margin-top: .2rem; }
+  .nk-stock-success { color: var(--nk-accent); font-weight: 700; }
+  .nk-stock-error { color: var(--nekova-error); }
+
+  .nk-checks { display: grid; gap: .9rem; list-style: none; margin: 2.4rem 0 0; padding: 0; }
+  .nk-checks li { align-items: center; display: flex; font-size: 1.5rem; gap: 1rem; }
+  .nk-checks svg { color: var(--nk-accent); }
+
+  .nk-accordions { border-top: 1px solid var(--nk-line); margin-top: 2.4rem; }
+  .nk-accordions details, .nk-faq-list details { border-bottom: 1px solid var(--nk-line); }
+  .nk-accordions summary, .nk-faq-list summary { align-items: center; cursor: pointer; display: flex; font-size: 1.6rem; font-weight: 700; justify-content: space-between; list-style: none; padding: 1.8rem 0; }
+  .nk-accordions summary::-webkit-details-marker, .nk-faq-list summary::-webkit-details-marker { display: none; }
+  .nk-accordions summary::after, .nk-faq-list summary::after { color: var(--nk-accent); content: '+'; font-size: 2.4rem; font-weight: 400; line-height: 1; transition: transform .2s; }
+  .nk-accordions details[open] summary::after, .nk-faq-list details[open] summary::after { transform: rotate(45deg); }
+  .nk-accordions summary:focus-visible, .nk-faq-list summary:focus-visible { outline: 2px solid var(--nk-accent); outline-offset: 4px; }
+  .nk-accordion-body, .nk-faq-list details > p { color: var(--nk-muted); font-size: 1.5rem; line-height: 1.7; padding-bottom: 1.8rem; }
+  .nk-accordion-body p { margin: 0 0 1rem; }
+  .nk-faq-list details > p { margin: 0; }
+  .nk-specs { margin: 0; }
+  .nk-specs div { display: grid; gap: 1.6rem; grid-template-columns: 11rem 1fr; padding: .6rem 0; }
+  .nk-specs dt { color: var(--nk-ink); font-weight: 700; }
+  .nk-specs dd { margin: 0; }
+
+  .nk-main { scroll-margin-top: 9rem; }
+  .nk-section { padding: 9rem 0; scroll-margin-top: 6rem; }
+  .nk-section--panel { background: var(--nk-panel); }
+  .nk-section--soft { background: var(--nekova-accent-soft); }
+  .nk-section--dark { --nk-ink: #fff; --nk-muted: rgba(255, 255, 255, .72); --nk-line: rgba(255, 255, 255, .14); background: var(--nekova-ink); color: #fff; }
+  .nk-section h2 { font-size: clamp(3rem, 3.6vw, 4.6rem); line-height: 1.12; margin: 0; }
+  .nk-hl { color: var(--nk-accent); }
+  .nk-section--dark .nk-hl { color: #8fa8ff; }
+  .nk-eyebrow { align-items: center; color: var(--nk-accent); display: flex; font-size: 1.25rem; font-weight: 800; gap: 1rem; letter-spacing: .14em; margin: 0 0 1.6rem; text-transform: uppercase; }
+  .nk-eyebrow::before { background: currentColor; border-radius: 2px; content: ''; height: 2px; width: 2.4rem; }
+  .nk-section--dark .nk-eyebrow { color: #8fa8ff; }
+  .nk-head { margin-bottom: 4.8rem; }
+  .nk-head--split { align-items: end; display: grid; gap: 4rem; grid-template-columns: minmax(0, 1.1fr) minmax(0, .9fr); }
+  .nk-head--split h2 { max-width: 60rem; }
+  .nk-head--center { text-align: center; }
+  .nk-head--center .nk-eyebrow { justify-content: center; }
+  .nk-head-lead { color: var(--nk-muted); font-size: 1.65rem; line-height: 1.65; margin: 2rem 0 0; max-width: 48rem; }
+  .nk-head--split .nk-head-lead { margin: 0; }
+  .nk-split { align-items: center; display: grid; gap: 7rem; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); }
+  .nk-num { color: var(--nk-accent); display: block; font-size: 1.25rem; font-weight: 800; letter-spacing: .14em; margin-bottom: .8rem; }
+
+  .nk-uses { display: grid; gap: 2rem; grid-template-columns: repeat(3, minmax(0, 1fr)); }
+  .nk-uses figure { background: var(--nekova-surface); border-radius: var(--nekova-radius-lg); margin: 0; overflow: hidden; }
+  .nk-uses img { aspect-ratio: 4 / 5; display: block; height: auto; object-fit: cover; width: 100%; }
+  .nk-uses figcaption { color: var(--nk-muted); font-size: 1.45rem; line-height: 1.55; padding: 2.2rem 2.4rem 2.6rem; }
+  .nk-uses strong, .nk-benefits strong, .nk-zones strong { color: var(--nk-ink); display: block; font-family: var(--nekova-font-heading); font-size: 1.9rem; font-weight: var(--font-heading-weight); margin-bottom: .4rem; }
+
+  .nk-how-media { background: var(--nekova-surface); border-radius: var(--nekova-radius-lg); overflow: hidden; }
+  .nk-how-media img { aspect-ratio: 1; display: block; height: auto; object-fit: contain; width: 100%; }
+  .nk-zones { display: grid; gap: 2.4rem; list-style: none; margin: 3.6rem 0 0; padding: 0; }
+  .nk-zones li { align-items: flex-start; display: flex; font-size: 1.5rem; gap: 1.8rem; line-height: 1.6; }
+  .nk-zones li > span { align-items: center; background: var(--nk-accent); border-radius: 50%; color: #fff; display: flex; flex: 0 0 4.4rem; font-size: 1.6rem; font-weight: 800; height: 4.4rem; justify-content: center; }
+  .nk-zones li > div { color: var(--nk-muted); }
+
+  .nk-benefits { display: grid; gap: 2rem; grid-template-columns: repeat(3, minmax(0, 1fr)); list-style: none; margin: 0; padding: 0; }
+  .nk-benefits li { border: 1px solid var(--nk-line); border-radius: var(--nekova-radius-lg); padding: 3.2rem; }
+  .nk-benefit-icon { align-items: center; background: var(--nekova-accent-soft); border-radius: 50%; color: var(--nk-accent); display: flex; height: 5.6rem; justify-content: center; margin-bottom: 2.4rem; width: 5.6rem; }
+  .nk-benefit-icon svg { height: 2.6rem; width: 2.6rem; }
+  .nk-benefits p { color: var(--nk-muted); font-size: 1.45rem; line-height: 1.6; margin: 0; }
+
+  .nk-split--video { grid-template-columns: minmax(0, .85fr) minmax(0, 1.15fr); }
+  .nk-video-frame { background: var(--nekova-surface); border-radius: var(--nekova-radius-lg); box-shadow: var(--nekova-shadow); overflow: hidden; }
+  .nk-video-frame video { aspect-ratio: 16 / 9; display: block; height: auto; object-fit: cover; width: 100%; }
+  .nk-details { display: grid; gap: 1.6rem; grid-template-columns: 1fr 1fr; margin-top: 3.2rem; max-width: 44rem; }
+  .nk-details figure { margin: 0; }
+  .nk-details img { aspect-ratio: 1; border-radius: var(--nekova-radius); display: block; height: auto; object-fit: cover; width: 100%; }
+  .nk-details figcaption { color: var(--nk-ink); font-size: 1.3rem; font-weight: 700; line-height: 1.4; margin-top: 1rem; }
+
+  .nk-compare { border: 1px solid var(--nk-line); border-radius: var(--nekova-radius-lg); margin: 0 auto; max-width: 88rem; overflow: hidden; }
+  .nk-compare-row { align-items: stretch; display: grid; grid-template-columns: minmax(0, 1.6fr) minmax(0, .7fr) minmax(0, .7fr); }
+  .nk-compare-row + .nk-compare-row { border-top: 1px solid var(--nk-line); }
+  .nk-compare-row > span { align-items: center; display: flex; font-size: 1.5rem; gap: .8rem; justify-content: center; min-height: 6.4rem; padding: 1.4rem 2rem; text-align: center; }
+  .nk-compare-row > span:first-child { justify-content: flex-start; text-align: left; }
+  .nk-compare-head > span { color: var(--nk-muted); font-size: 1.3rem; font-weight: 800; letter-spacing: .1em; text-transform: uppercase; }
+  .nk-compare-them { color: var(--nk-muted); }
+  .nk-compare-them svg { color: rgba(var(--nekova-ink-rgb), .35); height: 2.4rem; width: 2.4rem; }
+  .nk-compare-row > .nk-compare-us { background: var(--nekova-accent-soft); color: var(--nk-accent); }
+  .nk-compare-head > .nk-compare-us { background: var(--nk-accent); color: #fff; }
+  .nk-compare-us svg { height: 2.6rem; width: 2.6rem; }
+  .nk-compare-head .nk-compare-us img { flex: 0 0 auto; }
+
+  .nk-split--specs { align-items: start; }
+  .nk-specs-image { background: var(--nekova-surface); border-radius: var(--nekova-radius-lg); display: block; height: auto; margin-top: 3.2rem; max-width: 40rem; mix-blend-mode: multiply; width: 100%; }
+  .nk-spec-table { background: var(--nekova-surface); border-radius: var(--nekova-radius-lg); margin: 0; padding: 1.2rem 3.2rem; }
+  .nk-spec-table div { display: grid; gap: 2rem; grid-template-columns: 14rem 1fr; padding: 1.8rem 0; }
+  .nk-spec-table div + div { border-top: 1px solid var(--nk-line); }
+  .nk-spec-table dt { color: var(--nk-muted); font-size: 1.45rem; }
+  .nk-spec-table dd { font-size: 1.5rem; font-weight: 700; margin: 0; }
+
+  .nk-split--faq { align-items: start; grid-template-columns: minmax(0, .8fr) minmax(0, 1.2fr); }
+  .nk-split--faq > div:first-child { position: sticky; top: 12rem; }
+  .nk-faq-list details:first-child { border-top: 1px solid var(--nk-line); }
+  .nk-cta-band { background: var(--nk-accent); color: var(--nekova-on-accent); }
+  .nk-cta .nk-button { border-radius: 0; }
+  .nk-cta { align-items: center; display: grid; gap: 3rem; grid-template-columns: 12rem 1fr auto; padding-bottom: 4.8rem; padding-top: 4.8rem; }
+  .nk-cta img { aspect-ratio: 1; background: var(--nekova-surface); border-radius: var(--nekova-radius); display: block; height: auto; object-fit: contain; width: 100%; }
+  .nk-product .nk-cta h2 { color: var(--nekova-on-accent); font-size: clamp(2.4rem, 2.6vw, 3.2rem); margin: 0 0 .6rem; }
+  .nk-cta p { font-size: 1.5rem; margin: 0; opacity: .88; }
+
+  @media screen and (max-width: 990px) {
+    .nk-variant-options { align-items: center; }
+    .nk-variant-preview:not([hidden]) { background: var(--nk-panel); border: 1px solid var(--nk-line); border-radius: 1.2rem; display: block; height: 6.4rem; margin-left: auto; overflow: hidden; width: 6.4rem; }
+    .nk-variant-preview img { display: block; height: 100%; mix-blend-mode: multiply; object-fit: contain; width: 100%; }
+    .nk-gallery { scroll-margin-top: 8rem; }
+    .nk-section { padding: 7rem 0; }
+    .nk-head--split, .nk-split, .nk-split--video, .nk-split--faq { gap: 3.2rem; grid-template-columns: 1fr; }
+    .nk-split--faq > div:first-child { position: static; }
+    .nk-uses { gap: 1.2rem; }
+    .nk-benefits { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .nk-how-media { margin: 0 auto; max-width: 52rem; width: 100%; }
+    .nk-shell { padding: 0 2.4rem; }
+    .nk-main { gap: 3.2rem; grid-template-columns: 1fr; padding-bottom: 5rem; }
+    .nk-buy { position: static; }
+    .nk-cta { grid-template-columns: 9rem 1fr; }
+    .nk-cta .nk-button { grid-column: 1 / -1; }
+  }
+  @media screen and (max-width: 600px) {
+    .nk-compare-brand { clip: rect(0 0 0 0); height: 1px; overflow: hidden; position: absolute; white-space: nowrap; width: 1px; }
+    .nk-compare-head .nk-compare-us img { height: 2.8rem; width: 2.8rem; }
+    .nk-qty { flex-basis: 11.2rem; }
+    .nk-qty button { width: 3.6rem; }
+    .nk-section { padding: 5.6rem 0; }
+    .nk-head { margin-bottom: 3.2rem; }
+    .nk-uses { display: flex; gap: 1.2rem; margin: 0 -1.6rem; overflow-x: auto; padding: 0 1.6rem .4rem; scroll-snap-type: x mandatory; }
+    .nk-uses figure { flex: 0 0 78%; scroll-snap-align: start; }
+    .nk-uses figcaption { padding: 1.6rem 1.8rem 2rem; }
+    .nk-benefits { gap: 1.2rem; grid-template-columns: 1fr; }
+    .nk-benefits li { align-items: flex-start; display: grid; gap: 0 1.6rem; grid-template-columns: 4.8rem 1fr; padding: 2rem; }
+    .nk-benefit-icon { grid-row: span 2; height: 4.8rem; margin: 0; width: 4.8rem; }
+    .nk-compare-row > span { font-size: 1.3rem; min-height: 5.6rem; padding: 1.2rem; }
+    .nk-compare-head > span { font-size: 1.2rem; letter-spacing: .04em; }
+    .nk-spec-table { padding: .8rem 2rem; }
+    .nk-spec-table div { gap: .2rem; grid-template-columns: 1fr; padding: 1.4rem 0; }
+    .nk-shell { padding: 0 1.6rem; }
+    .nk-main { padding-top: 1.6rem; }
+    .nk-gallery-main { border-radius: var(--nekova-radius); }
+    .nk-gallery-control { height: 3.8rem; width: 3.8rem; }
+    .nk-gallery-previous { left: .8rem; }
+    .nk-gallery-next { right: .8rem; }
+    .nk-gallery-thumbs { display: flex; gap: .6rem; overflow-x: auto; padding-bottom: .4rem; scroll-snap-type: x mandatory; }
+    .nk-gallery-thumbs button { flex: 0 0 6.4rem; scroll-snap-align: start; }
+    .nk-lightbox-image { max-width: calc(100vw - 2rem); }
+    .nk-lightbox-close { right: 1rem; top: 1rem; }
+    .nk-lightbox-previous { left: .6rem; }
+    .nk-lightbox-next { right: .6rem; }
+    .nk-specs div { gap: .2rem; grid-template-columns: 1fr; }
+    .nk-cta { gap: 1.6rem; padding-bottom: 4rem; padding-top: 4rem; }
+    .nk-stock-row { flex-direction: column; }
+  }
+{% endstyle %}
+
+{% schema %}
+{
+  "name": "Nekova · producto",
+  "tag": "div",
+  "class": "nekova-product-section",
+  "settings": [
+    {
+      "type": "product",
+      "id": "product",
+      "label": "Producto",
+      "info": "En la página de producto se usa el producto actual. En otras páginas (por ejemplo, el inicio) se muestra este."
+    },
+    {
+      "type": "inline_richtext",
+      "id": "launch_heading",
+      "label": "Frase destacada",
+      "info": "Opcional. Aparece arriba del nombre del producto."
+    }
+  ],
+  "blocks": [
+    {
+      "type": "@app"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Nekova · producto"
+    }
+  ]
+}
+{% endschema %}

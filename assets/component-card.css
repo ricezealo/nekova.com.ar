@@ -596,8 +596,8 @@
 }
 .card__coming-soon {
   align-items: center;
-  background: var(--nekova-gold);
-  color: var(--nekova-on-gold);
+  background: var(--nekova-accent);
+  color: var(--nekova-on-accent);
   display: flex;
   font-size: 1.35rem;
   font-weight: 700;

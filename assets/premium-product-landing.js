@@ -95,8 +95,36 @@ document.querySelectorAll('[data-premium-gallery]').forEach((gallery) => {
     });
   });
 
-  previousButton.addEventListener('click', () => moveBy(-1));
-  nextButton.addEventListener('click', () => moveBy(1));
+  // Arrows react on touch release (when the finger did not move) so a tap right after a swipe
+  // is never swallowed by the browser's gesture handling; mouse and keyboard keep using click.
+  const onTap = (button, action) => {
+    let touchStart = null;
+    let handledByTouch = false;
+    button.addEventListener('pointerdown', (event) => {
+      touchStart = event.pointerType === 'touch' ? { x: event.clientX, y: event.clientY } : null;
+    });
+    button.addEventListener('pointerup', (event) => {
+      if (!touchStart || event.pointerType !== 'touch') return;
+      const moved = Math.abs(event.clientX - touchStart.x) > 10 || Math.abs(event.clientY - touchStart.y) > 10;
+      touchStart = null;
+      if (moved) return;
+      handledByTouch = true;
+      action();
+      window.setTimeout(() => {
+        handledByTouch = false;
+      }, 500);
+    });
+    button.addEventListener('click', () => {
+      if (handledByTouch) {
+        handledByTouch = false;
+        return;
+      }
+      action();
+    });
+  };
+
+  onTap(previousButton, () => moveBy(-1));
+  onTap(nextButton, () => moveBy(1));
   openButton.addEventListener('click', (event) => {
     if (suppressImageClick) {
       event.preventDefault();
@@ -109,8 +137,8 @@ document.querySelectorAll('[data-premium-gallery]').forEach((gallery) => {
     gallery.querySelector('[data-lightbox-close]').focus();
   });
   gallery.querySelector('[data-lightbox-close]').addEventListener('click', () => lightbox.close());
-  gallery.querySelector('[data-lightbox-previous]').addEventListener('click', () => moveBy(-1));
-  gallery.querySelector('[data-lightbox-next]').addEventListener('click', () => moveBy(1));
+  onTap(gallery.querySelector('[data-lightbox-previous]'), () => moveBy(-1));
+  onTap(gallery.querySelector('[data-lightbox-next]'), () => moveBy(1));
   lightbox.addEventListener('click', (event) => {
     if (event.target === lightbox) lightbox.close();
   });
@@ -144,11 +172,18 @@ document.querySelectorAll('[data-premium-variant-picker]').forEach((picker) => {
   if (picker.dataset.pickerInitialized === 'true') return;
   picker.dataset.pickerInitialized = 'true';
 
-  const gallery = picker.closest('.premium-landing')?.querySelector('[data-premium-gallery]');
+  const gallery = picker.closest('[data-premium-product], .premium-landing')?.querySelector('[data-premium-gallery]');
   const label = picker.querySelector('[data-premium-variant-label]');
+  const preview = picker.querySelector('[data-premium-variant-preview]');
 
   const showVariant = (input, updateUrl) => {
     if (label) label.textContent = input.dataset.variantTitle;
+    if (preview && input.dataset.variantImage) {
+      const previewImage = preview.querySelector('img');
+      previewImage.src = input.dataset.variantImage;
+      previewImage.alt = `Color elegido: ${input.dataset.variantTitle}`;
+      preview.hidden = false;
+    }
     if (gallery && input.dataset.variantImage) {
       gallery.dispatchEvent(new CustomEvent('premium:show-image', { detail: { src: input.dataset.variantImage } }));
     }
@@ -165,4 +200,56 @@ document.querySelectorAll('[data-premium-variant-picker]').forEach((picker) => {
 
   const checked = picker.querySelector('input[name="id"]:checked');
   if (checked) showVariant(checked, false);
+});
+
+document.querySelectorAll('[data-nk-qty]').forEach((stepper) => {
+  if (stepper.dataset.qtyInitialized === 'true') return;
+  stepper.dataset.qtyInitialized = 'true';
+
+  const input = stepper.querySelector('input[name="quantity"]');
+  const min = Number(input.min) || 1;
+  const max = Number(input.max) || 99;
+  const clamp = (value) => Math.min(max, Math.max(min, Number.isFinite(value) ? Math.round(value) : min));
+
+  stepper.querySelectorAll('[data-nk-qty-step]').forEach((button) => {
+    button.addEventListener('click', () => {
+      input.value = clamp(Number(input.value) + Number(button.dataset.nkQtyStep));
+    });
+  });
+  input.addEventListener('change', () => {
+    input.value = clamp(Number(input.value));
+  });
+});
+
+// Horizontal card rows that auto-advance while they actually scroll (mobile), are visible and untouched.
+document.querySelectorAll('[data-nk-autoplay]').forEach((track) => {
+  if (track.dataset.autoplayInitialized === 'true') return;
+  track.dataset.autoplayInitialized = 'true';
+  if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+
+  const interval = Number(track.dataset.nkAutoplay) || 3000;
+  const items = [...track.children];
+  let visible = false;
+  let pausedUntil = 0;
+
+  const pause = () => {
+    pausedUntil = Date.now() + 8000;
+  };
+  ['pointerdown', 'touchstart', 'wheel', 'focusin'].forEach((type) => track.addEventListener(type, pause, { passive: true }));
+
+  new IntersectionObserver((entries) => {
+    visible = entries[0].isIntersecting;
+  }, { threshold: 0.5 }).observe(track);
+
+  window.setInterval(() => {
+    if (!visible || document.hidden || Date.now() < pausedUntil) return;
+    if (track.scrollWidth <= track.clientWidth + 4) return;
+    const start = items[0].offsetLeft;
+    const current = items.reduce((best, item, index) => (
+      Math.abs(item.offsetLeft - start - track.scrollLeft) < Math.abs(items[best].offsetLeft - start - track.scrollLeft) ? index : best
+    ), 0);
+    const atEnd = track.scrollLeft + track.clientWidth >= track.scrollWidth - 4;
+    const next = atEnd ? 0 : (current + 1) % items.length;
+    track.scrollTo({ left: items[next].offsetLeft - start, behavior: 'smooth' });
+  }, interval);
 });

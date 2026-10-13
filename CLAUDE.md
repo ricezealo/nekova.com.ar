@@ -1,66 +1,93 @@
 # Nekova — tema Shopify
 
-Tienda de objetos para casa, trabajo y confort (Argentina, ARS). Tema basado en **Dawn 16.0.0** (`upstream` = Shopify/dawn) con una capa propia "Nekova" encima. Todo el texto visible está en español rioplatense.
+Tienda de **ergonomía, bienestar, confort y accesorios** (Argentina, ARS): cojines (producto estrella), almohadas, antifaces, reposamuñecas, auriculares con cancelación de ruido, etc. Tema basado en **Dawn 16.0.0** (`upstream` = Shopify/dawn) con una capa propia "Nekova" encima. Todo el texto visible está en español rioplatense (voseo).
+
+## Estado actual: lanzamiento con un solo producto
+
+Solo se vende el **cojín ergonómico en U** (handle `cojin-ortopedico-u`, variantes Gris / Azul marino). La home (`templates/index.json`) y la página de producto (`templates/product.json`) usan la sección **`nekova-product`**; en la home se fija el producto por setting y se agrega una frase destacada (`launch_heading`). La sección de catálogo `home-product-showcase` queda en `index.json` **deshabilitada** (`"disabled": true`) para cuando haya más productos; su diseño y contenido están desactualizados (estética anterior) y hay que rehacerla al reactivarla, con categorías por necesidad: Postura, Descanso, Escritorio, Silencio.
 
 ## Vista local
 
-`npm run preview:offline` → http://localhost:4173 (`scripts/offline-preview.mjs`, renderiza con liquidjs, datos de ejemplo, sin Shopify). Productos de ejemplo definidos en el script: `atril-madera-giratorio-360`, `lampara-video-portatil-k25-rgb`, `cojin-ergonomico-doble-capa`, `cojin-ortopedico-u` (variantes Gris / Azul marino), `lampara-escritorio-nordica-demo` (no disponible → "Próximamente"). Al agregar filtros/tags de Liquid nuevos, puede hacer falta implementarlos en el script.
+`npm run preview:offline` → http://localhost:4173 (`scripts/offline-preview.mjs`, renderiza con liquidjs, datos de ejemplo, sin Shopify). El catálogo de muestra (`launchProducts`) tiene solo el cojín en U; los demás productos de muestra siguen accesibles por URL. La vista previa carga Poppins + Nunito Sans desde Google Fonts (en Shopify las sirve el CDN de Shopify), lee la configuración del tema de `config/settings_data.json` y respeta `"disabled": true`. Si se usa un filtro o tag de Liquid nuevo, puede faltar en el script (ej. `handleize` se agregó a mano).
 
 ## Qué es propio vs. Dawn
 
 Propio (editar con libertad):
-- `sections/home-product-showcase.liquid` + `assets/home-product-showcase.js` — **toda la home** es esta única sección (hero, franja de confianza, grilla con filtros y carrusel por tarjeta, "Tu espacio", journal, FAQ, CTA contacto).
-- `sections/premium-product-landing.liquid` + `assets/premium-product-landing.js` — **toda la página de producto** (hero con compra, galería + lightbox, story, fotos con caption, video K25, beneficios, ficha técnica, FAQ, reseñas vía app blocks, CTA final, formulario "avisarme" si no hay stock).
-- `sections/nekova-contact-intro.liquid`, `snippets/nekova-social-icons.liquid`, `assets/nekova-social-icons.css`, `assets/nekova-logo.svg`.
+- `sections/nekova-product.liquid`: **sección actual de producto y home**. Estructura "mixta": ficha compacta arriba (galería + columna de compra fija al hacer scroll con frase, nombre, precio, selector de color, botón, 3 checks y acordeones Detalles / Medidas y materiales / Envío, garantía y devoluciones), y debajo secciones que alternan fondo y diagramación (ritmo: blanco → gris → negro → blanco → celeste → blanco → gris → blanco → azul → footer negro): "Pensado para las horas que pasás sentado" (3 fotos de uso con número), "Cómo funciona" sobre negro (imagen de zonas + A/B/C), beneficios (6 tarjetas con ícono), video en dos columnas con fotos de detalle, comparación "Un cojín común vs. Nekova", ficha técnica visible, reseñas (solo si hay app blocks), preguntas frecuentes en dos columnas y banda final de compra. Sistema de títulos: antetítulo azul en mayúsculas con rayita (`.nk-eyebrow`), h2 con una palabra destacada en acento (`.nk-hl`), encabezado dividido (título a la izquierda, bajada a la derecha, `.nk-head--split`) o centrado. Fotos de uso y de detalle: `product-media-cojin-ortopedico-vida-NN.jpg` y `-detalle-*.jpg` (recortes sin texto de fotos del proveedor y cuadros del video).
+- `sections/nekova-trust-bar.liquid`: franja de beneficios con íconos debajo del header (en `header-group.json`, bloques editables). En pantallas < 1200px se desplaza en loop (sin animación si el usuario pide movimiento reducido). La barra de anuncios de Dawn (arriba del logo) está deshabilitada porque repetía estos mensajes; se puede reactivar para promociones.
+- `sections/nekova-footer.liquid`: footer propio en `footer-group.json` (el footer de Dawn queda deshabilitado). 3 columnas iguales sobre negro: marca (logo en blanco con `filter`, texto, redes), Ayuda (menú elegido en el editor o, si no hay, links por defecto: preguntas frecuentes `/#preguntas-frecuentes`, envíos y devoluciones, contacto y las políticas de Shopify que existan; más email de la tienda `shop.email`, WhatsApp y horario si se cargan en el editor) y Novedades (formulario de newsletter con tag `newsletter`). Abajo: copyright e íconos de medios de pago activos. Los textos están en los settings de la sección.
+- `snippets/nekova-icon.liquid`: íconos de línea (arrow-left/right, close, check, truck, shield, return, card). Agregar íconos nuevos ahí, mismo estilo (24px, trazo 1.8, `currentColor`).
+- `assets/premium-product-landing.js`: JS de galería, lightbox y selector de variantes; lo usa `nekova-product` (los hooks son `data-premium-*`; las clases `premium-gallery-main` y `premium-lightbox-content` son necesarias en el markup).
+- `assets/nekova-base.css` (tokens), `sections/nekova-contact-intro.liquid`, `snippets/nekova-social-icons.liquid`, `assets/nekova-social-icons.css`, kit de logos `assets/nekova-logo*.svg` y `assets/nekova-mark*.svg` (ver "Marca y logo").
+- Heredadas, sin uso actual: `sections/premium-product-landing.liquid` (landing larga anterior, con contenido de productos previos: atril, lámpara K25, cojín doble capa) y `sections/home-product-showcase.liquid`. Sirven de referencia de contenido; no reflejan la estética actual.
 
-Dawn modificado (cambios mínimos, mantenerlos acotados): `announcement-bar.liquid` (estilo crema fijo), `header.liquid` (logo SVG si no hay logo en Shopify), `header-drawer.liquid`, `footer.liquid` (íconos sociales), `card-product.liquid` + `component-card.css` (ratio 4:5 fijo, `object-fit: contain`, cinta "Próximamente").
+Dawn modificado (cambios mínimos): `announcement-bar.liquid` (barra de acento), `header.liquid` (logo SVG si no hay logo en Shopify; setting `show_search` "Mostrar buscador", desactivado mientras haya un solo producto; header fijo arriba con `sticky_header_type: always`), `header-drawer.liquid`, `footer.liquid` (íconos sociales), `card-product.liquid` + `component-card.css` (ratio 4:5, `object-fit: contain`, cinta "Próximamente"), `layout/theme.liquid` (carga `nekova-base.css`; favicon `nekova-mark.svg` si no hay uno cargado en Shopify).
 
-El resto es Dawn sin tocar; las secciones Nekova traen su propio CSS en `{% style %}` y **no dependen de los estilos de Dawn**.
+## Sistema visual: "fresco y luminoso"
 
-## Sistema visual
+Blanco, limpio y moderno, tipo marcas DTC: mucho aire, foco en el producto, un solo color vivo para acciones y detalles. Poco texto; beneficios en frases cortas.
 
-**Tokens globales** en `assets/nekova-base.css` (cargado en `layout/theme.liquid` después de `base.css`): `--nekova-black`, `--nekova-panel`, `--nekova-panel-soft`, `--nekova-ink`, `--nekova-muted`, `--nekova-gold`, `--nekova-on-gold` (texto sobre dorado), `--nekova-line`, `--nekova-line-strong`; crema: `--nekova-cream`, `--nekova-cream-light`, `--nekova-cream-panel(-soft)`, `--nekova-media` (fondo de fotos de producto), `--nekova-charcoal`, `--nekova-charcoal-muted`, `--nekova-bronze` (acento sobre crema), `--nekova-bronze-soft`, `--nekova-line-dark`; `--nekova-black-rgb` para `rgba(var(--nekova-black-rgb), .4)`; fuentes `--nekova-serif` / `--nekova-sans`. **No usar hex sueltos**: usar estos tokens (solo se permiten sombras neutras blanco/negro con alpha).
+**Tokens globales** en `assets/nekova-base.css`. **No usar hex sueltos** en secciones; solo tokens (salvo blanco/negro con alpha en sombras y el mapa de colores de variantes).
 
-Cada sección mapea los tokens a variables semánticas `--premium-*` que es lo que usan las reglas:
-| Variable | Oscuro (default) | Claro (`.premium-landing--comfort`) |
+| Token | Valor | Uso |
 |---|---|---|
-| `--premium-bg` | black `#111310` | cream-light `#f5f1e9` |
-| `--premium-panel` | panel `#191b17` | cream-panel `#ebe5da` |
-| `--premium-panel-soft` | panel-soft `#20221d` | cream-panel-soft `#e3dccf` |
-| `--premium-ink` | ink `#f1eee6` | charcoal `#292a25` |
-| `--premium-muted` | muted `#aaa99f` | charcoal-muted `#5f6059` |
-| `--premium-accent` | gold `#c9a878` | bronze `#765f42` |
-| `--premium-line` | line | line-dark |
+| `--nekova-bg` (+ `-rgb`) | `#ffffff` | fondo de página |
+| `--nekova-surface` | `#ffffff` | tarjetas sobre bandas grises |
+| `--nekova-panel` | `#f3f5f9` gris frío muy claro | fondo de galería, bandas |
+| `--nekova-ink` (+ `-rgb`) | `#14161a` | texto y títulos |
+| `--nekova-muted` | `#5b6270` | texto secundario |
+| `--nekova-line` / `-line-strong` | 10% / 22% | divisores, bordes |
+| `--nekova-accent` | `#2f5bff` azul cobalto | botones, frase destacada, íconos, links, selección |
+| `--nekova-accent-strong` / `-accent-soft` | `#1f45d9` / `#eaf0ff` | hover / fondos suaves |
+| `--nekova-on-accent` | `#ffffff` | texto sobre acento |
+| `--nekova-warm` / `-warm-soft` | `#c94430` / `#fdeeea` | descuentos (badge, % OFF) |
+| `--nekova-radius-sm` / `radius` / `radius-lg` / `radius-pill` | 1 / 1.6 / 2.4rem / 999px | esquinas |
 
-Para un bloque crema dentro de una sección oscura, redefinir `--premium-accent: var(--nekova-bronze)` en el bloque (ver `.nekova-home-spaces`). En fondo claro, los botones bronce llevan texto `--nekova-cream-light`. Los color schemes de Dawn en `config/settings_data.json` replican esta paleta (scheme-1 oscuro, scheme-4 dorado, scheme-6 crema).
+**Cambiar el acento** (ej. coral o violeta, valores en el comentario del archivo): `--nekova-accent`, `-accent-strong`, `-accent-soft` en `nekova-base.css`, el `ACCENT` de `scripts/build-logo-kit.mjs` (y regenerar el kit) y los color schemes de `config/settings_data.json` que usan `#2F5BFF`/`#1F45D9`/`#EAF0FF`.
 
-Tipografía (hardcodeada, ignora la fuente del editor):
-- Títulos: `var(--nekova-serif)` (Georgia), peso 400, `letter-spacing: -.045em`, `line-height` ~1, tamaños con `clamp()`.
-- Cuerpo/UI: `var(--nekova-sans)` (Arial).
-- Patrón de título: dos líneas con `<br>`, la última frase en `<em>` coloreada con accent → `Comprar con<br><em>tranquilidad.</em>`.
-- Eyebrow: `<p class="premium-eyebrow"><span></span> TEXTO EN MAYÚSCULAS</p>` y `.premium-edition` (subtítulo muted): estilos compartidos en `nekova-base.css`, toman `--premium-accent`/`--premium-muted` del contenedor. No redefinirlos por sección.
-- Etiquetas/números: mayúsculas, tracking .1–.2em, numeración `01`, `02`… o `01 / CATEGORÍA`.
-- `1rem = 10px` (Dawn usa `html { font-size: 62.5% }`). Escala mínima: etiquetas en mayúsculas 1.1–1.2rem; texto UI/meta 1.25–1.4rem; párrafos 1.5–1.6rem; lead 1.6–1.7rem; títulos serif de ítem 1.9–2.1rem. No bajar de 1.1rem.
+Color schemes de Dawn (header, footer, carrito, formularios): scheme-1 blanco, scheme-2 gris claro (footer), scheme-3 blanco (tarjetas), scheme-4 acento (barra de anuncios), scheme-5 acento suave, scheme-6 descuento, scheme-7 negro (no usado por el footer propio, que toma `--nekova-ink`). Ancho de página 1280px (`page_width`), igual que `.nk-shell` y la franja de beneficios, para que logo, franja y contenido arranquen en la misma línea. Radios: botones 40, inputs 10, tarjetas/medios 16.
 
-Formas y detalles: esquinas rectas (radius 0) salvo pills de filtro (`999px`) y botones circulares. Bordes de 1px con `--premium-line`. Divisores de grilla: `gap: 1px` + `box-shadow: 1px 0 0 line, 0 1px 0 line` en cada ítem y `overflow: hidden` en la grilla (así filas incompletas no dejan celdas grises). Flechas tipográficas `→ ↗ ↓ ← ×` (no íconos SVG). Botón primario: fondo accent, texto oscuro, texto a la izquierda y `↗` a la derecha, hover invierte a transparente. Badge de descuento `NN% OFF`. Producto sin stock: cinta diagonal dorada "Próximamente" (−32°).
+Tipografía (editor de Shopify → Configuración del tema → Tipografía; las secciones la leen vía `--font-heading-family`/`--font-body-family` y `--font-heading-weight`):
+- Títulos: **Poppins 600** (`poppins_n6`), `letter-spacing: -.02em`, sin cursivas.
+- Cuerpo/UI: **Nunito Sans** (`nunito_sans_n4`); énfasis 700–800.
+- `1rem = 10px`. Escala: etiquetas 1.25–1.4rem; texto 1.45–1.6rem; títulos de sección `clamp(2.8rem, 3.4vw, 4.2rem)`; nombre de producto `clamp(2.8rem, 3vw, 3.6rem)`. No bajar de 1.2rem.
 
-Layout: contenedor `max-width: 1440px; padding: 0 5.5%`; secciones internas con `padding: 7–8rem 7%` y `border-top: 1px solid var(--premium-line)`; grillas asimétricas (`.75fr 1.25fr`, `.7fr 1.3fr`). Breakpoints: home 800/540px, producto 900/600px.
+Formas y componentes: botón primario rectángulo suave (`border-radius: 1.2rem`, peso 700, sin sombra); compra = selector de cantidad (`[data-nk-qty]`, 1 a 10, JS en `premium-product-landing.js`) + botón "Agregar al carrito" con ícono de carrito a la izquierda del texto (`.nk-button--cart`); el botón de la banda final es rectangular sin redondeo;  fotos de producto sobre `--nekova-panel` con `mix-blend-mode: multiply` (las fotos deben tener fondo blanco puro); tarjetas blancas `radius-lg` sobre banda gris; acordeones con línea divisoria y `+` de acento que rota; secciones a todo el ancho (`.nk-section` + `--panel` gris, `--soft` celeste, `--dark` negro) con diagramación variada (dividida, centrada, imagen + texto) para que la página no sea monótona. Layout: contenedor 1280px con 5rem de margen; breakpoints 990px y 600px; en móvil las miniaturas son una fila deslizable, las fotos de uso son un carrusel que avanza solo cada 3 s (`data-nk-autoplay`, se pausa al tocarlo, solo cuando está a la vista y sin movimiento si el usuario lo pide), junto a los colores aparece una miniatura del color elegido que lleva a la galería, y la tabla comparativa muestra solo la N en la columna de Nekova.
+
+## Marca y logo
+
+Logo elegido: **"Ranuras"**. Isotipo = cuadrado blando (esquinas redondeadas) con dos cortes en U, uno desde abajo y otro desde arriba, que dibujan la N; los cortes repiten la ranura en U del cojín. Logotipo = "nekova" en minúsculas, trazo redondeado de grosor parejo. Pensado para bordarse (etiqueta en los cojines): formas llenas, sin líneas finas, funciona en un color. Los cortes son transparentes (`fill-rule: evenodd`), así el fondo o la tela se ve a través.
+
+Kit en `assets/` (generado con `node scripts/build-logo-kit.mjs`; para ajustar formas o colores, editar el script y regenerar, no los SVG a mano):
+
+| Archivo | Versión | Usar en |
+|---|---|---|
+| `nekova-logo.svg` | isotipo azul + texto carbón | header y fondos claros (es el principal) |
+| `nekova-logo-white.svg` | todo blanco | footer, fondos negros o azules, fotos oscuras |
+| `nekova-logo-ink.svg` | todo carbón | impresión a una tinta, empaque, documentos |
+| `nekova-mark.svg` | isotipo azul | favicon (si no hay uno cargado en Shopify), avatar de redes, íconos |
+| `nekova-mark-white.svg` | isotipo blanco | bordado sobre la tela gris o azul marino de los cojines, sobre azul o negro |
+| `nekova-mark-ink.svg` | isotipo carbón | etiqueta tejida clara, sellos, una tinta |
+
+Reglas: el isotipo va siempre a la izquierda del texto; no deformar ni rotar; en fondos de color usar la versión blanca, nunca el azul sobre azul. Antes de registrar la marca, buscar en el INPI marcas similares en la clase de productos y hacer el ajuste fino con un diseñador.
+
+## Textos y afirmaciones de salud
+
+Hablar de **comodidad, apoyo y descanso**; no prometer resultados de salud ("alivia el dolor", "corrige la postura", "ortopédico"), porque en Argentina pueden caer bajo la regulación de productos médicos (ANMAT). El título visible del producto es "Cojín Ergonómico en U de Espuma Viscoelástica"; el handle `cojin-ortopedico-u` y los nombres de archivo quedan así por compatibilidad (no son visibles).
 
 ## Convenciones de código
 
-- Prefijos de clase: `nekova-home-*` (home), `premium-*` (producto, y eyebrow compartido), `nekova-*` (resto). BEM-ish solo en social icons.
-- CSS dentro de la sección en `{% style %}`, una regla por línea, propiedades en orden alfabético aproximado.
-- JS: IIFE / `querySelectorAll(...).forEach`, hooks por `data-*` (`data-home-*`, `data-premium-*`, `data-carousel-*`), guardas `dataset.*Initialized`, re-init en `shopify:section:load`. Sin dependencias.
-- Accesibilidad: `aria-label` en español en todos los controles, `aria-pressed` en toggles, `aria-hidden` en flechas decorativas, `:focus-visible` con outline accent.
+- Prefijos de clase: `nk-*` (sección actual de producto), `premium-*`/`nekova-home-*` (secciones heredadas), `nekova-*` (resto).
+- CSS dentro de la sección en `{% style %}`, una regla por línea.
+- JS: `querySelectorAll(...).forEach`, hooks por `data-*`, guardas `dataset.*Initialized`. Sin dependencias.
+- Accesibilidad: `aria-label` en español en controles, `aria-hidden` en íconos, `:focus-visible` con outline de acento.
 - Schemas: nombres "Nekova · …", labels en español.
-- Texto: voseo (Elegí, Tenés, Conocé, Escribinos). Precios con `money_without_trailing_zeros` + `<small>ARS</small>`.
+- Precios con `money_without_trailing_zeros`.
+- Liquid: para inicializar variables vacías usar `assign x = ''` (no `= blank`, que la vista previa no trata como vacío).
+- Archivos con CRLF (`core.autocrlf=true`): al editar con scripts, respetar los finales de línea.
 
-## Contenido por producto (importante)
+## Contenido por producto
 
-Los 4 productos reales tienen contenido **hardcodeado por handle** en ambas secciones (imágenes desde `assets/product-media-*.jpg`, textos, beneficios, ficha técnica, captions). Variables: `is_reading_stand`, `is_k25_light`, `is_ergonomic_cushion`, `is_orthopedic_cushion`. Cualquier otro producto usa el fallback genérico (media, descripción y metafield `custom.specifications` de Shopify). Agregar un producto con landing a medida = nueva rama `elsif` en cada bloque (frase, intro, assurances, imagen principal, contador de imágenes, thumbs, story, fotos con caption, beneficios, ficha, FAQ opcional, botón y nota del CTA final) + rama en la home (imagen, 3 imágenes del carrusel, descripción) + producto de muestra en `scripts/offline-preview.mjs` (agregarlo a `products` y sus variantes a `cartLines`). Imágenes: JPG 1200×1200 sobre blanco, `assets/product-media-<slug>-NN.jpg`, sin marcas del proveedor. Video opcional: asignar `product_video` y `product_video_poster` (1280×720) al inicio de la sección; el bloque de video se muestra solo.
+En `nekova-product.liquid` el contenido propio del cojín está bajo `is_u_cushion` (handle `cojin-ortopedico-u`): galería desde `assets/product-media-cojin-ortopedico-NN.jpg`, frase corta, checks, acordeones, tarjetas, video y preguntas propias. Cualquier otro producto usa la versión genérica (media, descripción y metafield `custom.specifications` de Shopify; sin tarjetas ni video). Para un producto nuevo con contenido a medida: agregar una variable `is_<producto>` y ramas en esos mismos puntos, más el producto de muestra en `scripts/offline-preview.mjs` (`products`/`launchProducts` y sus variantes en `cartLines`). Imágenes: JPG 1200×1200 con fondo **blanco puro** (si no, se ve un recuadro sobre el gris: pasar por un umbral de blancos), `assets/product-media-<slug>-NN.jpg`, sin marcas del proveedor; en las tarjetas, solo fotos sin texto en inglés. Video opcional: `product_video` y `product_video_poster` (1280×720).
 
-Variantes: si el producto tiene más de una variante, el hero muestra un selector (`.premium-variant-picker`, radios `name="id"`) y el CTA final pasa a "Elegí tu <opción>" con ancla al selector. Si la opción se llama Color, cada variante es un círculo de color con el nombre en tooltip (hover/foco); el color sale del swatch de Shopify o, si no hay, de un mapa por nombre (`case variant_color_handle` en la sección: gris, azul-marino, negro, beige…; agregar ahí colores nuevos). Nombre desconocido = pill de texto. Al cambiar de variante, `premium-product-landing.js` muestra su imagen en la galería (evento `premium:show-image`), actualiza el nombre en la leyenda y `?variant=`. Imagen por variante: `variant.featured_media` en Shopify; en productos hardcodeados se asigna en el `liquid` del selector (ej. cojín ortopédico: azul → 02, resto → 01).
-
-Liquid: para inicializar variables vacías usar `assign x = ''` (no `= blank`, que la vista previa no trata como vacío).
-
-Categoría "confort" (tema claro + filtro de la home): handle/tipo contiene `cojin`/`almohada`/`descanso` o tags `confort`/`cojines`/`almohadas`. La lógica está duplicada en las dos secciones; mantenerlas sincronizadas.
+Variantes: con más de una variante se muestra el selector (`[data-premium-variant-picker]`, radios `name="id"`). Si la opción se llama Color, cada variante es un círculo de color con el nombre en tooltip (hover/foco) y el nombre elegido junto a la etiqueta; el color sale del swatch de Shopify o, si no hay, de un mapa por nombre (`case variant_color_handle`: gris, azul-marino, negro, beige…; agregar ahí colores nuevos). Nombre desconocido = pill de texto. Al cambiar de variante, el JS muestra su imagen (evento `premium:show-image`), actualiza la etiqueta y `?variant=`. Imagen por variante: `variant.featured_media` en Shopify; en el cojín en U se asigna en el selector (azul → 02, resto → 01).

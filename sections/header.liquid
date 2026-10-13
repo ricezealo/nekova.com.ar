@@ -182,7 +182,7 @@
         render 'header-drawer', menu: section.settings.menu, show_country_selector: country_selector, show_language_selector: language_selector, show_social_links: social_links
       endif
 
-      if render_search_left
+      if render_search_left and section.settings.show_search
         render 'header-search', input_id: 'Search-In-Modal-1'
       endif
     -%}
@@ -217,7 +217,7 @@
             alt="{{ shop.name | escape }}"
             class="nekova-header-logo"
             width="210"
-            height="48"
+            height="44"
             fetchpriority="high"
           >
         {%- endif -%}
@@ -267,7 +267,7 @@
             alt="{{ shop.name | escape }}"
             class="nekova-header-logo"
             width="210"
-            height="48"
+            height="44"
             fetchpriority="high"
           >
         {%- endif -%}
@@ -301,7 +301,9 @@
           </localization-form>
         {%- endif -%}
       </div>
-      {% render 'header-search', input_id: 'Search-In-Modal' %}
+      {%- if section.settings.show_search -%}
+        {% render 'header-search', input_id: 'Search-In-Modal' %}
+      {%- endif -%}
 
       {%- if shop.customer_accounts_enabled -%}
         <shopify-account
@@ -591,6 +593,12 @@
       ],
       "default": "dropdown",
       "label": "t:sections.header.settings.menu_type_desktop.label"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_search",
+      "label": "Mostrar buscador",
+      "default": true
     },
     {
       "type": "select",

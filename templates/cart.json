@@ -11,20 +11,18 @@
     "cart-footer": {
       "type": "main-cart-footer",
       "settings": {
-        "color_scheme": "scheme-1",
-        "padding_top": 20,
-        "padding_bottom": 40
+        "color_scheme": "scheme-5",
+        "padding_top": 44,
+        "padding_bottom": 52
       },
       "blocks": {
         "subtotal": {
           "type": "subtotal",
-          "settings": {
-          }
+          "settings": {}
         },
         "buttons": {
           "type": "buttons",
-          "settings": {
-          }
+          "settings": {}
         }
       },
       "block_order": [

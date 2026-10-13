@@ -1,11 +1,10 @@
 {
   "sections": {
     "main": {
-      "type": "premium-product-landing",
+      "type": "nekova-product",
       "settings": {
         "product": "",
-        "heading": "",
-        "description": ""
+        "launch_heading": ""
       },
       "blocks": {},
       "block_order": []
@@ -20,7 +19,7 @@
     "related-products": {
       "type": "related-products",
       "settings": {
-        "heading": "Más objetos para tus espacios",
+        "heading": "Más para tu bienestar",
         "heading_size": "h2",
         "products_to_show": 4,
         "columns_desktop": 4,
