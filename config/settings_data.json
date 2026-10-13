@@ -182,10 +182,10 @@
       "brand_description": "<p></p>",
       "brand_image_width": 100,
       "social_twitter_link": "",
-      "social_facebook_link": "",
+      "social_facebook_link": "https://www.facebook.com/profile.php?id=61590912921148",
       "social_pinterest_link": "",
-      "social_instagram_link": "",
-      "social_tiktok_link": "",
+      "social_instagram_link": "https://www.instagram.com/nekova_ok/",
+      "social_tiktok_link": "https://www.tiktok.com/@nekova_ok",
       "social_tumblr_link": "",
       "social_snapchat_link": "",
       "social_youtube_link": "",
@@ -212,7 +212,11 @@
             "color_scheme": "scheme-1"
           }
         }
-      }
+      },
+      "nekova_whatsapp": "+54 9 11 4945-7398",
+      "nekova_whatsapp_message": "Hola Nekova, tengo una consulta.",
+      "nekova_whatsapp_float": true,
+      "nekova_email": "info@nekova.com.ar"
     }
   }
 }

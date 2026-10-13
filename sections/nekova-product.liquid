@@ -98,6 +98,20 @@
             <span class="nk-price-off">{{ discount_percent }}% OFF</span>
           {%- endif -%}
         </div>
+        {%- if section.settings.payment_note != blank or shop.enabled_payment_types.size > 0 -%}
+          <div class="nk-pay">
+            {%- if section.settings.payment_note != blank -%}
+              <p class="nk-pay-note">{% render 'nekova-icon', icon: 'card' %}<span>{{ section.settings.payment_note }}</span></p>
+            {%- endif -%}
+            {%- if shop.enabled_payment_types.size > 0 -%}
+              <ul class="nk-pay-icons" role="list" aria-label="Medios de pago">
+                {%- for type in shop.enabled_payment_types -%}
+                  <li>{{ type | payment_type_svg_tag: class: 'icon icon--full-color' }}</li>
+                {%- endfor -%}
+              </ul>
+            {%- endif -%}
+          </div>
+        {%- endif -%}
 
         {%- if featured_product != blank and featured_product.available -%}
           {% form 'product', featured_product, class: 'nk-buy-form' %}
@@ -227,6 +241,14 @@
             {% endform %}
           </div>
         {%- endif -%}
+
+        <ul class="nk-assure" role="list">
+          <li>{% render 'nekova-icon', icon: 'return' %}<span><strong>Probalo tranquilo:</strong> si no te convence, tenés 10 días para devolverlo.</span></li>
+          <li>{% render 'nekova-icon', icon: 'shield' %}<span><strong>60 días de garantía</strong> y atención directa por WhatsApp.</span></li>
+          {%- if section.settings.shipping_note != blank -%}
+            <li>{% render 'nekova-icon', icon: 'truck' %}<span>{{ section.settings.shipping_note }}</span></li>
+          {%- endif -%}
+        </ul>
 
         {%- if is_u_cushion -%}
           <ul class="nk-checks">
@@ -445,7 +467,12 @@
         <details><summary>¿Cuándo se despacha mi pedido?</summary><p>Las compras realizadas antes de las 13:00 se despachan ese mismo día; después de ese horario, dentro de las 24 horas. El plazo de entrega depende del destino y del operador logístico.</p></details>
         <details><summary>¿Cuánto cuesta el envío?</summary><p>El costo y la estimación de entrega se calculan según tu destino y se muestran en el checkout, antes de confirmar la compra.</p></details>
         <details><summary>¿Qué garantía tiene?</summary><p>60 días de garantía. Si necesitás asistencia, escribinos desde la <a href="/pages/contact">página de contacto</a> con tu número de pedido.</p></details>
-        <details><summary>¿Puedo devolverlo?</summary><p>Sí, dentro de los 10 días desde la compra, con el producto completo y en perfecto estado. Contactanos para coordinar la devolución.</p></details>
+        <details><summary>¿Puedo devolverlo si no me convence?</summary><p>Sí. Tenés 10 días desde la compra para devolverlo, con el producto completo y en perfecto estado. Escribinos y coordinamos la devolución.</p></details>
+        <details><summary>¿Cómo me comunico con ustedes?</summary><p>
+          {%- assign faq_whatsapp_digits = settings.nekova_whatsapp | remove: ' ' | remove: '+' | remove: '-' | remove: '(' | remove: ')' | remove: '.' -%}
+          {%- assign faq_email = settings.nekova_email | default: shop.email -%}
+          {%- if settings.nekova_whatsapp != blank -%}Por WhatsApp al <a href="https://wa.me/{{ faq_whatsapp_digits }}" target="_blank" rel="noopener">{{ settings.nekova_whatsapp | escape }}</a>{%- if faq_email != blank -%}, por email a <a href="mailto:{{ faq_email }}">{{ faq_email }}</a>{%- endif -%} o desde la <a href="/pages/contact">página de contacto</a>. Te respondemos a la brevedad.{%- else -%}Escribinos desde la <a href="/pages/contact">página de contacto</a> y te respondemos a la brevedad.{%- endif -%}
+        </p></details>
         <details><summary>¿Qué medios de pago puedo usar?</summary><p>En el checkout vas a ver los medios de pago disponibles y las opciones de cuotas cuando correspondan.</p></details>
       </div>
     </div>
@@ -574,6 +601,14 @@
   .nk-stock-success { color: var(--nk-accent); font-weight: 700; }
   .nk-stock-error { color: var(--nekova-error); }
 
+  .nk-pay { align-items: center; display: flex; flex-wrap: wrap; gap: .8rem 1.6rem; margin: -1.2rem 0 2.4rem; }
+  .nk-pay-note { align-items: center; color: var(--nk-ink); display: flex; font-size: 1.45rem; font-weight: 700; gap: .8rem; margin: 0; }
+  .nk-pay-note svg { color: var(--nk-accent); height: 2.2rem; width: 2.2rem; }
+  .nk-pay-icons { display: flex; flex-wrap: wrap; gap: .6rem; list-style: none; margin: 0; padding: 0; }
+  .nk-pay-icons svg { display: block; height: 2.4rem; width: auto; }
+  .nk-assure { background: var(--nekova-accent-soft); border-radius: 1.2rem; display: grid; gap: 1rem; list-style: none; margin: 1.6rem 0 0; padding: 1.6rem 1.8rem; }
+  .nk-assure li { align-items: flex-start; color: var(--nk-ink); display: flex; font-size: 1.4rem; gap: 1rem; line-height: 1.5; }
+  .nk-assure svg { color: var(--nk-accent); flex: 0 0 auto; height: 2.2rem; margin-top: -.1rem; width: 2.2rem; }
   .nk-checks { display: grid; gap: .9rem; list-style: none; margin: 2.4rem 0 0; padding: 0; }
   .nk-checks li { align-items: center; display: flex; font-size: 1.5rem; gap: 1rem; }
   .nk-checks svg { color: var(--nk-accent); }
@@ -741,6 +776,18 @@
       "id": "launch_heading",
       "label": "Frase destacada",
       "info": "Opcional. Aparece arriba del nombre del producto."
+    },
+    {
+      "type": "inline_richtext",
+      "id": "payment_note",
+      "label": "Nota de pago",
+      "info": "Opcional. Aparece debajo del precio, por ejemplo: Hasta 3 cuotas sin interés. Los íconos de medios de pago se muestran solos."
+    },
+    {
+      "type": "inline_richtext",
+      "id": "shipping_note",
+      "label": "Nota de envío",
+      "info": "Opcional. Aparece junto al botón de compra, por ejemplo: Envíos a todo el país."
     }
   ],
   "blocks": [

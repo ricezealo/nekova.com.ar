@@ -1,7 +1,9 @@
 {%- liquid
   assign faq_url = section.settings.faq_url | default: '/#preguntas-frecuentes'
+  assign contact_email = settings.nekova_email | default: shop.email
+  assign contact_whatsapp = section.settings.whatsapp | default: settings.nekova_whatsapp
   assign has_contact_info = false
-  if shop.email != blank or section.settings.whatsapp != blank or section.settings.hours != blank
+  if contact_email != blank or contact_whatsapp != blank or section.settings.hours != blank
     assign has_contact_info = true
   endif
 -%}
@@ -30,6 +32,7 @@
         {%- else -%}
           <li><a href="{{ faq_url }}">Preguntas frecuentes</a></li>
           <li><a href="{{ shop.refund_policy.url | default: faq_url }}">Envíos, cambios y devoluciones</a></li>
+          <li><a href="{{ routes.root_url }}pages/sobre-nekova">Sobre Nekova</a></li>
           <li><a href="{{ routes.root_url }}pages/contact">Contacto</a></li>
           {%- if shop.privacy_policy != blank -%}<li><a href="{{ shop.privacy_policy.url }}">{{ shop.privacy_policy.title | escape }}</a></li>{%- endif -%}
           {%- if shop.terms_of_service != blank -%}<li><a href="{{ shop.terms_of_service.url }}">{{ shop.terms_of_service.title | escape }}</a></li>{%- endif -%}
@@ -37,10 +40,10 @@
       </ul>
       <div class="nk-footer-contact">
         {%- if has_contact_info -%}
-          {%- if shop.email != blank -%}<p><a href="mailto:{{ shop.email }}">{{ shop.email }}</a></p>{%- endif -%}
-          {%- if section.settings.whatsapp != blank -%}
-            {%- assign whatsapp_digits = section.settings.whatsapp | remove: ' ' | remove: '+' | remove: '-' | remove: '(' | remove: ')' -%}
-            <p><a href="https://wa.me/{{ whatsapp_digits }}" target="_blank" rel="noopener">WhatsApp {{ section.settings.whatsapp | escape }}</a></p>
+          {%- if contact_email != blank -%}<p><a href="mailto:{{ contact_email }}">{{ contact_email }}</a></p>{%- endif -%}
+          {%- if contact_whatsapp != blank -%}
+            {%- assign whatsapp_digits = contact_whatsapp | remove: ' ' | remove: '+' | remove: '-' | remove: '(' | remove: ')' | remove: '.' -%}
+            <p><a href="https://wa.me/{{ whatsapp_digits }}" target="_blank" rel="noopener">WhatsApp {{ contact_whatsapp | escape }}</a></p>
           {%- endif -%}
           {%- if section.settings.hours != blank -%}<p>{{ section.settings.hours | escape }}</p>{%- endif -%}
         {%- else -%}
@@ -85,6 +88,8 @@
     </div>
   </div>
 </footer>
+
+{% render 'nekova-whatsapp-float' %}
 
 {% style %}
   .nk-footer { background: var(--nekova-ink); color: rgba(255, 255, 255, .72); font-family: var(--nekova-font-body); font-size: 1.45rem; line-height: 1.6; }

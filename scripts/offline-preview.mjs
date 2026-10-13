@@ -366,6 +366,8 @@ function colorValue(hex) {
 
 const engine = new Liquid({
   root: [join(root, 'snippets'), join(root, 'sections'), join(root, 'layout')],
+  // Like Shopify, snippets rendered with {% render %} can read settings, shop and routes.
+  globals: { settings: { ...themeSettings, color_schemes: colors }, shop, routes },
   extname: '.liquid',
   strictFilters: false,
   strictVariables: false,
@@ -532,6 +534,7 @@ function templateFor(pathname) {
   if (pathname === '/collections') return ['list-collections', null];
   if (pathname.startsWith('/collections/')) return ['collection', collection];
   if (pathname === '/cart') return ['cart', null];
+  if (pathname === '/pages/sobre-nekova') return ['page.about', { title: 'Sobre Nekova', content: '' }];
   if (pathname.startsWith('/pages/')) return [pathname === '/pages/contact' ? 'page.contact' : 'page', { title: pathname.endsWith('/contact') ? 'Contacto' : 'Pagina de ejemplo', content: '<p>Contenido de pagina de ejemplo para la vista offline.</p>' }];
   if (pathname.startsWith('/blogs/')) return ['blog', { title: 'Novedades', articles: [] }];
   if (pathname.startsWith('/articles/')) return ['article', { title: 'Articulo de ejemplo', content: '<p>Contenido de articulo.</p>', image }];

@@ -3,6 +3,20 @@
     <p class="premium-eyebrow"><span></span> NEKOVA · ERGONOMÍA Y BIENESTAR</p>
     <h1 id="NekovaContactPageTitle-{{ section.id }}">Estamos para<br><em>escucharte.</em></h1>
     <p>¿Tenés una consulta sobre un producto, una compra o un pedido? Completá el formulario y nuestro equipo se pondrá en contacto con vos.</p>
+    {%- liquid
+      assign contact_email = settings.nekova_email | default: shop.email
+      assign whatsapp_digits = settings.nekova_whatsapp | remove: ' ' | remove: '+' | remove: '-' | remove: '(' | remove: ')' | remove: '.'
+    -%}
+    {%- if settings.nekova_whatsapp != blank or contact_email != blank -%}
+      <ul class="nekova-contact-ways" role="list">
+        {%- if settings.nekova_whatsapp != blank -%}
+          <li><a class="nekova-contact-way nekova-contact-way--whatsapp" href="https://wa.me/{{ whatsapp_digits }}?text={{ settings.nekova_whatsapp_message | default: 'Hola Nekova, tengo una consulta.' | url_encode }}" target="_blank" rel="noopener"><span>WhatsApp</span><strong>{{ settings.nekova_whatsapp | escape }}</strong></a></li>
+        {%- endif -%}
+        {%- if contact_email != blank -%}
+          <li><a class="nekova-contact-way" href="mailto:{{ contact_email }}"><span>Email</span><strong>{{ contact_email }}</strong></a></li>
+        {%- endif -%}
+      </ul>
+    {%- endif -%}
     {% render 'nekova-social-icons', class: 'nekova-contact-social' %}
   </div>
 </section>
@@ -18,6 +32,12 @@
   .nekova-contact-intro__inner { margin: 0 auto; max-width: 1120px; }
   .nekova-contact-intro h1 { color: var(--nekova-ink); font-family: var(--nekova-font-heading); font-size: clamp(3.4rem, 4.4vw, 5.2rem); font-weight: var(--font-heading-weight); letter-spacing: -.02em; line-height: 1.1; margin: 2.4rem 0 1.5rem; }
   .nekova-contact-intro h1 em { color: var(--nekova-accent); font-style: normal; }
+  .nekova-contact-ways { display: flex; flex-wrap: wrap; gap: 1.2rem; list-style: none; margin: 2.8rem 0 0; padding: 0; }
+  .nekova-contact-way { background: var(--nekova-panel); border: 1px solid var(--nekova-line); border-radius: 1.2rem; color: var(--nekova-ink); display: grid; gap: .2rem; min-width: 22rem; padding: 1.4rem 2rem; text-decoration: none; transition: border-color .2s; }
+  .nekova-contact-way:hover { border-color: var(--nekova-accent); }
+  .nekova-contact-way span { color: var(--nekova-muted); font-size: 1.25rem; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; }
+  .nekova-contact-way strong { font-size: 1.6rem; }
+  .nekova-contact-way--whatsapp span { color: #0f7d70; }
   .nekova-contact-intro__inner > p:not(.premium-eyebrow) { color: var(--nekova-muted); font-size: 1.6rem; line-height: 1.8; max-width: 62rem; }
   @media screen and (max-width: 600px) {
     .nekova-contact-intro { padding: 4rem 2rem 2rem; }

@@ -1,5 +1,38 @@
 [
   {
+    "name": "Nekova · contacto",
+    "settings": [
+      {
+        "type": "paragraph",
+        "content": "Datos de contacto que usan el botón flotante de WhatsApp, el footer, la página de contacto y los íconos de redes."
+      },
+      {
+        "type": "text",
+        "id": "nekova_whatsapp",
+        "label": "WhatsApp",
+        "info": "Con código de país, por ejemplo +54 9 11 1234-5678. Si queda vacío no se muestra el botón flotante."
+      },
+      {
+        "type": "text",
+        "id": "nekova_whatsapp_message",
+        "label": "Mensaje inicial de WhatsApp",
+        "default": "Hola Nekova, tengo una consulta."
+      },
+      {
+        "type": "checkbox",
+        "id": "nekova_whatsapp_float",
+        "label": "Mostrar botón flotante de WhatsApp",
+        "default": true
+      },
+      {
+        "type": "text",
+        "id": "nekova_email",
+        "label": "Email de contacto",
+        "info": "Si queda vacío se usa el email de la tienda."
+      }
+    ]
+  },
+  {
     "name": "theme_info",
     "theme_name": "Dawn",
     "theme_version": "16.0.0",

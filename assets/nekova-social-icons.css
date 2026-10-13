@@ -30,6 +30,17 @@
   width: 4.4rem;
 }
 
+a.nekova-social-links__icon {
+  text-decoration: none;
+  transition: background 0.2s, color 0.2s;
+}
+
+a.nekova-social-links__icon:hover {
+  background: var(--nekova-accent);
+  border-color: var(--nekova-accent);
+  color: var(--nekova-on-accent);
+}
+
 .nekova-social-links__icon svg {
   display: block;
   height: 2rem;
