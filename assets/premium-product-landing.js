@@ -124,6 +124,12 @@ document.querySelectorAll('[data-premium-gallery]').forEach((gallery) => {
     }
   });
 
+  gallery.addEventListener('premium:show-image', (event) => {
+    const target = new URL(event.detail.src, document.baseURI).href;
+    const index = thumbnails.findIndex((thumbnail) => new URL(thumbnail.dataset.premiumImage, document.baseURI).href === target);
+    if (index >= 0) setActiveImage(index);
+  });
+
   if (thumbnails.length < 2) {
     previousButton.hidden = true;
     nextButton.hidden = true;
@@ -132,4 +138,31 @@ document.querySelectorAll('[data-premium-gallery]').forEach((gallery) => {
   }
 
   setActiveImage(activeIndex);
+});
+
+document.querySelectorAll('[data-premium-variant-picker]').forEach((picker) => {
+  if (picker.dataset.pickerInitialized === 'true') return;
+  picker.dataset.pickerInitialized = 'true';
+
+  const gallery = picker.closest('.premium-landing')?.querySelector('[data-premium-gallery]');
+  const label = picker.querySelector('[data-premium-variant-label]');
+
+  const showVariant = (input, updateUrl) => {
+    if (label) label.textContent = input.dataset.variantTitle;
+    if (gallery && input.dataset.variantImage) {
+      gallery.dispatchEvent(new CustomEvent('premium:show-image', { detail: { src: input.dataset.variantImage } }));
+    }
+    if (updateUrl) {
+      const url = new URL(window.location.href);
+      url.searchParams.set('variant', input.value);
+      window.history.replaceState(window.history.state, '', url);
+    }
+  };
+
+  picker.addEventListener('change', (event) => {
+    if (event.target.matches('input[name="id"]')) showVariant(event.target, true);
+  });
+
+  const checked = picker.querySelector('input[name="id"]:checked');
+  if (checked) showVariant(checked, false);
 });

@@ -1,0 +1,59 @@
+/* Nekova design tokens and shared components. Loaded globally from layout/theme.liquid. */
+:root {
+  --nekova-black: #111310;
+  --nekova-black-rgb: 17, 19, 16;
+  --nekova-panel: #191b17;
+  --nekova-panel-soft: #20221d;
+  --nekova-ink: #f1eee6;
+  --nekova-muted: #aaa99f;
+  --nekova-gold: #c9a878;
+  --nekova-on-gold: #151510;
+  --nekova-line: rgba(241, 238, 230, 0.15);
+  --nekova-line-strong: rgba(241, 238, 230, 0.35);
+
+  --nekova-cream: #eee9df;
+  --nekova-cream-light: #f5f1e9;
+  --nekova-cream-panel: #ebe5da;
+  --nekova-cream-panel-soft: #e3dccf;
+  --nekova-media: #e9e3d9;
+  --nekova-charcoal: #292a25;
+  --nekova-charcoal-muted: #5f6059;
+  --nekova-bronze: #765f42;
+  --nekova-bronze-soft: #9b805c;
+  --nekova-line-dark: rgba(41, 42, 37, 0.18);
+
+  --nekova-error: #ffb4a9;
+
+  --nekova-serif: Georgia, 'Times New Roman', serif;
+  --nekova-sans: Arial, Helvetica, sans-serif;
+}
+
+.premium-eyebrow,
+.premium-edition {
+  color: var(--premium-accent, var(--nekova-gold));
+  font-family: var(--nekova-sans);
+  font-size: 1.2rem;
+  font-weight: 600;
+  letter-spacing: 0.18em;
+  line-height: 1.6;
+  margin: 0;
+}
+
+.premium-eyebrow {
+  align-items: center;
+  display: flex;
+  gap: 1rem;
+}
+
+.premium-eyebrow span {
+  background: var(--premium-accent, var(--nekova-gold));
+  display: inline-block;
+  height: 1px;
+  width: 2.6rem;
+}
+
+.premium-edition {
+  color: var(--premium-muted, var(--nekova-muted));
+  font-size: 1.15rem;
+  letter-spacing: 0.16em;
+}

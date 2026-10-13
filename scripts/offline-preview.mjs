@@ -1,7 +1,7 @@
 import { createReadStream, existsSync, readFileSync, statSync } from 'node:fs';
 import { createServer } from 'node:http';
 import { networkInterfaces } from 'node:os';
-import { dirname, extname, join, normalize, resolve } from 'node:path';
+import { dirname, extname, join, normalize, resolve, sep } from 'node:path';
 import { Liquid } from 'liquidjs';
 
 const root = process.cwd();
@@ -247,7 +247,63 @@ const upcomingProduct = {
   type: 'Iluminación',
   has_only_default_variant: true,
 };
-const products = [featuredProduct, lightProduct, cushionProduct, upcomingProduct];
+const orthopedicImages = Array.from({ length: 12 }, (_, index) => {
+  const number = String(index + 1).padStart(2, '0');
+  return {
+    src: `/assets/product-media-cojin-ortopedico-${number}.jpg`,
+    url: `/assets/product-media-cojin-ortopedico-${number}.jpg`,
+    alt: `Cojín ortopédico en U, imagen ${index + 1}`,
+    width: 1200,
+    height: 1200,
+  };
+});
+const orthopedicMedia = orthopedicImages.map((preview, index) => ({
+  id: 400 + index,
+  media_type: 'image',
+  preview_image: preview,
+  alt: preview.alt,
+}));
+const orthopedicVariants = ['Gris', 'Azul marino'].map((color, index) => ({
+  id: 55001 + index,
+  title: color,
+  price: 7900000,
+  compare_at_price: null,
+  available: true,
+  featured_image: orthopedicImages[index === 0 ? 0 : 1],
+  featured_media: orthopedicMedia[index === 0 ? 0 : 1],
+  options: [color],
+  option1: color,
+  inventory_quantity: 24,
+}));
+const orthopedicProduct = {
+  id: 5500,
+  handle: 'cojin-ortopedico-u',
+  title: 'Cojín Ortopédico en U de Espuma Viscoelástica',
+  vendor: 'NEKOVA',
+  price: 7900000,
+  compare_at_price: null,
+  available: true,
+  featured_image: orthopedicImages[0],
+  featured_media: orthopedicMedia[0],
+  media: orthopedicMedia,
+  images: orthopedicImages,
+  options: ['Color'],
+  options_with_values: [{ name: 'Color', position: 1, values: ['Gris', 'Azul marino'] }],
+  variants: orthopedicVariants,
+  selected_or_first_available_variant: orthopedicVariants[0],
+  description: '<p>Cojín de asiento de espuma viscoelástica de recuperación lenta, con ranura en U para la zona del coxis, laterales elevados y frente en arco. Funda de malla transpirable y extraíble. Medidas: 48 × 38 × 12 cm. Disponible en gris y azul marino.</p>',
+  url: '/products/cojin-ortopedico-u',
+  type: 'Confort y descanso',
+  has_only_default_variant: false,
+};
+const products = [featuredProduct, lightProduct, cushionProduct, orthopedicProduct, upcomingProduct];
+// One cookie per purchasable variant in the local sample cart.
+const cartLines = [
+  { product: featuredProduct, variant: productVariant, image: productImages[0], cookie: 'nekova_cart' },
+  { product: lightProduct, variant: lightVariant, image: lightImages[0], cookie: 'nekova_cart_k25' },
+  { product: cushionProduct, variant: cushionVariant, image: cushionImages[0], cookie: 'nekova_cart_cushion' },
+  ...orthopedicVariants.map((variant) => ({ product: orthopedicProduct, variant, image: variant.featured_image, cookie: `nekova_cart_${variant.id}` })),
+];
 const collection = { id: 1, handle: 'all', title: 'Todos los productos', description: '<p>Productos de ejemplo para la vista local.</p>', products, all_products_count: products.length, products_count: products.length, url: '/collections/all', image };
 const menuItems = [
   { title: 'Inicio', url: '/' },
@@ -259,28 +315,26 @@ const emptyCart = { items: [], item_count: 0, total_price: 0, cart_level_discoun
 const shop = { name: 'Nekova (vista local)', currency: 'ARS', money_format: '${{amount}}' };
 const routes = { root_url: '/', cart_url: '/cart', cart_add_url: '/cart/add', cart_change_url: '/cart/change', cart_update_url: '/cart/update', search_url: '/search', account_login_url: '/account/login', account_register_url: '/account/register', all_products_collection_url: '/collections/all' };
 
-function createCart(standCount, lightCount = 0, cushionCount = 0) {
-  const items = [
-    [featuredProduct, productVariant, productImages[0], standCount],
-    [lightProduct, lightVariant, lightImages[0], lightCount],
-    [cushionProduct, cushionVariant, cushionImages[0], cushionCount],
-  ].filter(([, , , quantity]) => quantity > 0).map(([itemProduct, variant, itemImage, quantity], index) => ({
+function createCart(counts = []) {
+  const items = cartLines.map((line, lineIndex) => [line, counts[lineIndex] || 0])
+    .filter(([, quantity]) => quantity > 0).map(([{ product: itemProduct, variant, image: itemImage }, quantity], index) => ({
     ...itemProduct,
     product: itemProduct,
+    variant,
     image: itemImage,
     quantity,
-    final_price: itemProduct.price,
-    original_price: variant.compare_at_price || itemProduct.price,
-    final_line_price: itemProduct.price * quantity,
-    original_line_price: (variant.compare_at_price || itemProduct.price) * quantity,
+    final_price: variant.price,
+    original_price: variant.compare_at_price || variant.price,
+    final_line_price: variant.price * quantity,
+    original_line_price: (variant.compare_at_price || variant.price) * quantity,
     discounts: [],
-    options_with_values: [],
+    options_with_values: itemProduct.has_only_default_variant ? [] : [{ name: itemProduct.options[0], value: variant.title }],
     properties: {},
     url: itemProduct.url,
     key: String(variant.id),
     index,
   }));
-  const itemCount = standCount + lightCount + cushionCount;
+  const itemCount = items.reduce((total, item) => total + item.quantity, 0);
   if (!itemCount) return emptyCart;
   return {
     items,
@@ -347,6 +401,10 @@ engine.registerFilter('inline_asset_content', (name) => {
   const path = join(root, 'assets', String(name));
   return existsSync(path) ? readFileSync(path, 'utf8') : '';
 });
+const handleize = (value) => String(value ?? '').normalize('NFD').replace(/[̀-ͯ]/g, '').toLowerCase()
+  .replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '');
+engine.registerFilter('handleize', handleize);
+engine.registerFilter('handle', handleize);
 engine.registerFilter('stylesheet_tag', (href) => `<link rel="stylesheet" href="${href}">`);
 engine.registerFilter('script_tag', (src) => `<script src="${src}" defer></script>`);
 engine.registerFilter('font_face', () => '');
@@ -520,11 +578,11 @@ function accountPreview(pathname) {
   return `<section class="customer account page-width"><h1>${title}</h1>${content}</section>`;
 }
 
-async function renderPage(pathname, cartCount = 0, lightCount = 0, cushionCount = 0, stockNotificationRegistered = false) {
+async function renderPage(pathname, cartCounts = [], stockNotificationRegistered = false) {
   if (pathname.startsWith('/account')) {
     const settings = { ...themeSettings, color_schemes: colors };
     const context = {
-      settings, shop, routes, cart: createCart(cartCount, lightCount, cushionCount), products, collections: { all: collection, frontpage: collection },
+      settings, shop, routes, cart: createCart(cartCounts), products, collections: { all: collection, frontpage: collection },
       stock_notification_registered: stockNotificationRegistered,
       customer: null, localization: { available_countries: [], available_languages: [] },
       request: { locale: { iso_code: 'es-AR' }, origin: `http://localhost:${port}`, path: pathname },
@@ -545,7 +603,7 @@ async function renderPage(pathname, cartCount = 0, lightCount = 0, cushionCount 
   const template = JSON.parse(readFileSync(templatePath, 'utf8'));
   const settings = { ...themeSettings, color_schemes: colors };
   const context = {
-    settings, shop, routes, cart: createCart(cartCount, lightCount, cushionCount), products, collections: { all: collection, frontpage: collection },
+    settings, shop, routes, cart: createCart(cartCounts), products, collections: { all: collection, frontpage: collection },
     stock_notification_registered: stockNotificationRegistered,
     collection: templateName === 'collection' ? collection : undefined,
     product: templateName === 'product' ? resource : undefined,
@@ -577,9 +635,10 @@ const types = { '.css': 'text/css; charset=utf-8', '.js': 'text/javascript; char
 createServer(async (request, response) => {
   try {
     const url = new URL(request.url, `http://localhost:${port}`);
-    const cookieCount = Number.parseInt(request.headers.cookie?.match(/(?:^|;\s*)nekova_cart=(\d+)/)?.[1] || '0', 10);
-    const lightCookieCount = Number.parseInt(request.headers.cookie?.match(/(?:^|;\s*)nekova_cart_k25=(\d+)/)?.[1] || '0', 10);
-    const cushionCookieCount = Number.parseInt(request.headers.cookie?.match(/(?:^|;\s*)nekova_cart_cushion=(\d+)/)?.[1] || '0', 10);
+    const cartCounts = cartLines.map(({ cookie }) => Math.min(Math.max(
+      Number.parseInt(request.headers.cookie?.match(new RegExp(`(?:^|;\\s*)${cookie}=(\\d+)`))?.[1] || '0', 10),
+      0,
+    ), 99));
     if (request.method === 'POST' && url.pathname === '/cart/add') {
       let body = '';
       for await (const chunk of request) {
@@ -592,18 +651,15 @@ createServer(async (request, response) => {
       const form = new URLSearchParams(body);
       const quantity = Number(form.get('quantity') || 1);
       const variantId = form.get('id');
-      const isLight = variantId === String(lightVariant.id);
-      const isStand = variantId === String(productVariant.id);
-      const isCushion = variantId === String(cushionVariant.id);
-      if ((!isStand && !isLight && !isCushion) || !Number.isSafeInteger(quantity) || quantity < 1 || quantity > 10) {
+      const lineIndex = cartLines.findIndex(({ variant }) => variantId === String(variant.id));
+      if (lineIndex < 0 || !Number.isSafeInteger(quantity) || quantity < 1 || quantity > 10) {
         response.writeHead(400, { 'content-type': 'text/plain; charset=utf-8' }).end('No se pudo agregar el producto. Verifica la variante y la cantidad.');
         return;
       }
-      const currentCount = isLight ? lightCookieCount : isCushion ? cushionCookieCount : cookieCount;
-      const nextCount = Math.min(currentCount + quantity, 99);
+      const nextCount = Math.min(cartCounts[lineIndex] + quantity, 99);
       response.writeHead(303, {
         location: '/cart',
-        'set-cookie': `${isLight ? 'nekova_cart_k25' : isCushion ? 'nekova_cart_cushion' : 'nekova_cart'}=${nextCount}; Path=/; Max-Age=604800; SameSite=Lax; HttpOnly`,
+        'set-cookie': `${cartLines[lineIndex].cookie}=${nextCount}; Path=/; Max-Age=604800; SameSite=Lax; HttpOnly`,
       }).end();
       return;
     }
@@ -634,7 +690,7 @@ createServer(async (request, response) => {
     }
     if (url.pathname.startsWith('/assets/')) {
       const assetPath = resolve(root, normalize(url.pathname.slice(1)));
-      if (!assetPath.startsWith(resolve(root, 'assets') + '/') || !existsSync(assetPath) || !statSync(assetPath).isFile()) {
+      if (!assetPath.startsWith(resolve(root, 'assets') + sep) || !existsSync(assetPath) || !statSync(assetPath).isFile()) {
         response.writeHead(404).end('Asset not found');
         return;
       }
@@ -644,9 +700,7 @@ createServer(async (request, response) => {
     }
     const html = await renderPage(
       url.pathname,
-      Math.min(Math.max(cookieCount, 0), 99),
-      Math.min(Math.max(lightCookieCount, 0), 99),
-      Math.min(Math.max(cushionCookieCount, 0), 99),
+      cartCounts,
       url.searchParams.get('stock-notification') === 'registered',
     );
     response.writeHead(200, { 'content-type': 'text/html; charset=utf-8', 'cache-control': 'no-cache' });

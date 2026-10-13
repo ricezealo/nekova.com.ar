@@ -1,10 +1,10 @@
 .nekova-social-links {
-  color: var(--premium-ink, #f1eee6);
+  color: var(--premium-ink, var(--nekova-ink));
 }
 
 .nekova-social-links__heading {
   color: inherit;
-  font-size: 1rem;
+  font-size: 1.3rem;
   letter-spacing: 0.08em;
   margin: 0 0 1.2rem;
 }
@@ -21,9 +21,9 @@
 
 .nekova-social-links__icon {
   align-items: center;
-  border: 1px solid var(--premium-accent, #c9a878);
+  border: 1px solid var(--premium-accent, var(--nekova-gold));
   border-radius: 50%;
-  color: var(--premium-accent, #c9a878);
+  color: var(--premium-accent, var(--nekova-gold));
   display: inline-flex;
   height: 4.4rem;
   justify-content: center;

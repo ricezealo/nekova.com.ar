@@ -56,6 +56,8 @@
                 <img src="{{ 'product-media-k25-video-light-02.jpg' | asset_url }}" alt="Mini lámpara de video portátil K25 RGB de 25 W" loading="lazy">
               {% elsif product.handle == 'cojin-ergonomico-doble-capa' %}
                 <img src="{{ 'product-media-cojin-ergonomico-07.jpg' | asset_url }}" alt="Cojín ergonómico de doble capa con malla transpirable y ranura central en U" loading="lazy">
+              {% elsif product.handle == 'cojin-ortopedico-u' %}
+                <img src="{{ 'product-media-cojin-ortopedico-01.jpg' | asset_url }}" alt="Cojín ortopédico en U de espuma viscoelástica, color gris" loading="lazy">
               {% elsif product.featured_image %}
                 {{ product.featured_image | image_url: width: 1000 | image_tag: alt: product.featured_image.alt, loading: 'lazy' }}
               {% endif %}
@@ -80,6 +82,13 @@
                   {% assign cushion_gallery_images = 'product-media-cojin-ergonomico-07.jpg,product-media-cojin-ergonomico-01.jpg,product-media-cojin-ergonomico-02.jpg,product-media-cojin-ergonomico-03.jpg,product-media-cojin-ergonomico-04.jpg,product-media-cojin-ergonomico-05.jpg,product-media-cojin-ergonomico-06.jpg,product-media-cojin-ergonomico-08.jpg' | split: ',' %}
                   {% for image_file in cushion_gallery_images limit: 3 %}
                     <span data-carousel-image="{{ image_file | asset_url }}" data-carousel-alt="Cojín ergonómico de doble capa, imagen {{ forloop.index }}"></span>
+                  {% endfor %}
+                </span>
+              {% elsif product.handle == 'cojin-ortopedico-u' %}
+                <span class="nekova-home-rotation-images" hidden>
+                  {% assign orthopedic_gallery_images = 'product-media-cojin-ortopedico-01.jpg,product-media-cojin-ortopedico-02.jpg,product-media-cojin-ortopedico-03.jpg' | split: ',' %}
+                  {% for image_file in orthopedic_gallery_images %}
+                    <span data-carousel-image="{{ image_file | asset_url }}" data-carousel-alt="Cojín ortopédico en U, imagen {{ forloop.index }}"></span>
                   {% endfor %}
                 </span>
               {% elsif product.media.size > 0 %}
@@ -112,7 +121,7 @@
                 <span>{{ product.price | money_without_trailing_zeros }} <small>ARS</small></span>
               </div>
             </div>
-            <p class="nekova-home-product-description">{% if product.handle == 'atril-madera-giratorio-360' %}Soporte plegable y ajustable para laptop, libros y tabletas, con giro 360° y ranura de almacenamiento.{% elsif product.handle == 'lampara-video-portatil-k25-rgb' %}Luz RGB portátil de 25 W para fotografía, video, streaming y creación de contenido.{% elsif product.handle == 'cojin-ergonomico-doble-capa' %}Confort de doble capa, ranura ergonómica en U y funda transpirable extraíble.{% else %}{{ product.description | strip_html | truncatewords: 20 }}{% endif %}</p>
+            <p class="nekova-home-product-description">{% if product.handle == 'atril-madera-giratorio-360' %}Soporte plegable y ajustable para laptop, libros y tabletas, con giro 360° y ranura de almacenamiento.{% elsif product.handle == 'lampara-video-portatil-k25-rgb' %}Luz RGB portátil de 25 W para fotografía, video, streaming y creación de contenido.{% elsif product.handle == 'cojin-ergonomico-doble-capa' %}Confort de doble capa, ranura ergonómica en U y funda transpirable extraíble.{% elsif product.handle == 'cojin-ortopedico-u' %}Espuma viscoelástica, ranura en U para el coxis y laterales elevados que envuelven la cadera.{% else %}{{ product.description | strip_html | truncatewords: 20 }}{% endif %}</p>
             <a class="nekova-home-product-link" href="{{ product.url }}">Ver detalles <span aria-hidden="true">→</span></a>
           </article>
         {% else %}
@@ -209,108 +218,108 @@
 
 {% style %}
   .nekova-home {
-    --premium-bg: #111310;
-    --premium-panel: #191b17;
-    --premium-ink: #f1eee6;
-    --premium-muted: #aaa99f;
-    --premium-accent: #c9a878;
-    --premium-line: rgba(241, 238, 230, .15);
+    --premium-bg: var(--nekova-black);
+    --premium-panel: var(--nekova-panel);
+    --premium-ink: var(--nekova-ink);
+    --premium-muted: var(--nekova-muted);
+    --premium-accent: var(--nekova-gold);
+    --premium-line: var(--nekova-line);
+    --premium-media: var(--nekova-media);
     background: var(--premium-bg);
     color: var(--premium-ink);
-    font-family: Arial, Helvetica, sans-serif;
+    font-family: var(--nekova-sans);
     padding: 0 0 9rem;
   }
   .nekova-home * { box-sizing: border-box; }
   .nekova-home-shell { margin: 0 auto; max-width: 1440px; padding: 0 5.5%; }
   .nekova-home-hero { min-height: 65vh; padding: 9rem 0 5rem; position: relative; }
   .nekova-home-hero-content { align-items: end; display: grid; gap: 8%; grid-template-columns: 1fr .45fr; margin-top: 6rem; }
-  .nekova-home-hero h1, .nekova-home-journal h2 { color: var(--premium-ink); font: 400 clamp(5rem, 8vw, 10rem)/.98 Georgia, 'Times New Roman', serif; letter-spacing: -.05em; margin: 1.8rem 0; }
+  .nekova-home-hero h1, .nekova-home-journal h2 { color: var(--premium-ink); font: 400 clamp(5rem, 8vw, 10rem)/.98 var(--nekova-serif); letter-spacing: -.05em; margin: 1.8rem 0; }
   .nekova-home-hero h1 em, .nekova-home-journal h2 em { color: var(--premium-accent); }
-  .nekova-home-hero-content > p { color: var(--premium-muted); font-size: 1.5rem; line-height: 1.8; margin: 0 0 1.6rem; max-width: 37rem; }
-  .nekova-home-scroll { bottom: 3rem; color: var(--premium-accent); font-size: .95rem; letter-spacing: .16em; position: absolute; text-decoration: none; }
+  .nekova-home-hero-content > p { color: var(--premium-muted); font-size: 1.7rem; line-height: 1.8; margin: 0 0 1.6rem; max-width: 37rem; }
+  .nekova-home-scroll { bottom: 3rem; color: var(--premium-accent); font-size: 1.2rem; letter-spacing: .16em; position: absolute; text-decoration: none; }
   .nekova-home-scroll span { margin-left: 1.2rem; }
-  .nekova-home-trust { background: #eee9df; color: #292a25; display: grid; gap: 1px; grid-template-columns: repeat(4, 1fr); }
-  .nekova-home-trust > div { align-items: flex-start; background: #eee9df; display: flex; gap: 1.2rem; min-height: 10rem; padding: 2rem 1.7rem; }
-  .nekova-home-trust > div > span { color: #8b714e; font-size: .85rem; letter-spacing: .1em; }
+  .nekova-home-trust { background: var(--nekova-cream); color: var(--nekova-charcoal); display: grid; gap: 1px; grid-template-columns: repeat(4, 1fr); }
+  .nekova-home-trust > div { align-items: flex-start; background: var(--nekova-cream); display: flex; gap: 1.2rem; min-height: 10rem; padding: 2rem 1.7rem; }
+  .nekova-home-trust > div > span { color: var(--nekova-bronze-soft); font-size: 1.2rem; letter-spacing: .1em; }
   .nekova-home-trust p { margin: 0; }
   .nekova-home-trust strong, .nekova-home-trust small { display: block; }
-  .nekova-home-trust strong { font: 400 1.35rem/1.35 Georgia, 'Times New Roman', serif; }
-  .nekova-home-trust small { color: #5d5c55; font-size: .95rem; line-height: 1.5; margin-top: .55rem; }
+  .nekova-home-trust strong { font: 400 1.7rem/1.35 var(--nekova-serif); }
+  .nekova-home-trust small { color: var(--nekova-charcoal-muted); font-size: 1.3rem; line-height: 1.5; margin-top: .55rem; }
   .nekova-home-collection { border-top: 1px solid var(--premium-line); padding: 6rem 0 8rem; }
   .nekova-home-section-heading { align-items: end; display: flex; justify-content: space-between; margin-bottom: 3rem; }
-  .nekova-home-section-heading h2 { color: var(--premium-ink); font: 400 clamp(3.5rem, 5vw, 5.8rem)/1 Georgia, 'Times New Roman', serif; margin: 1.5rem 0 0; }
-  .nekova-home-count { color: var(--premium-muted); font-size: .9rem; letter-spacing: .14em; padding-bottom: .7rem; }
+  .nekova-home-section-heading h2 { color: var(--premium-ink); font: 400 clamp(3.5rem, 5vw, 5.8rem)/1 var(--nekova-serif); margin: 1.5rem 0 0; }
+  .nekova-home-count { color: var(--premium-muted); font-size: 1.2rem; letter-spacing: .14em; padding-bottom: .7rem; }
   .nekova-home-categories { align-items: center; display: flex; flex-wrap: wrap; gap: 1.2rem 2.5rem; justify-content: space-between; margin-bottom: 2.5rem; }
-  .nekova-home-categories > p { color: var(--premium-muted); font-size: 1.05rem; margin: 0; }
+  .nekova-home-categories > p { color: var(--premium-muted); font-size: 1.4rem; margin: 0; }
   .nekova-home-categories > div { display: flex; flex-wrap: wrap; gap: .7rem; }
-  .nekova-home-categories button { background: transparent; border: 1px solid rgba(241, 238, 230, .35); border-radius: 999px; color: var(--premium-ink); cursor: pointer; font: inherit; font-size: .95rem; min-height: 4.2rem; padding: .8rem 1.5rem; transition: background .2s, border-color .2s, color .2s; }
-  .nekova-home-categories button:hover, .nekova-home-categories button[aria-pressed='true'] { background: #eee9df; border-color: #eee9df; color: #292a25; }
+  .nekova-home-categories button { background: transparent; border: 1px solid var(--nekova-line-strong); border-radius: 999px; color: var(--premium-ink); cursor: pointer; font: inherit; font-size: 1.3rem; min-height: 4.2rem; padding: .8rem 1.5rem; transition: background .2s, border-color .2s, color .2s; }
+  .nekova-home-categories button:hover, .nekova-home-categories button[aria-pressed='true'] { background: var(--nekova-cream); border-color: var(--nekova-cream); color: var(--nekova-charcoal); }
   .nekova-home-categories button:focus-visible, .nekova-home-space-links a:focus-visible { outline: 2px solid var(--premium-accent); outline-offset: 3px; }
   .nekova-home-product-grid { display: grid; gap: 2.5rem; grid-template-columns: repeat(3, minmax(0, 1fr)); }
-  .nekova-home-product-image { background: var(--premium-panel); display: block; overflow: hidden; position: relative; touch-action: pan-y; }
+  .nekova-home-product-image { display: block; overflow: hidden; position: relative; touch-action: pan-y; }
   .nekova-home-product-image-link { display: block; }
-  .nekova-home-coming-soon-ribbon { background: var(--premium-accent); color: #151510; font-size: 1.2rem; font-weight: 700; left: -12%; letter-spacing: .15em; padding: 1.3rem 0; pointer-events: none; position: absolute; text-align: center; text-transform: uppercase; top: 43%; transform: rotate(-32deg); width: 124%; z-index: 2; }
-  .nekova-home-product-image-link > img { aspect-ratio: 4 / 5; background: var(--premium-panel); box-sizing: border-box; display: block; object-fit: contain; padding: 3%; transition: transform .5s; width: 100%; }
-  .nekova-home-product-image, .nekova-home-product-image-link > img { background: #e9e3d9; }
+  .nekova-home-coming-soon-ribbon { background: var(--premium-accent); color: var(--nekova-on-gold); font-size: 1.3rem; font-weight: 700; left: -12%; letter-spacing: .15em; padding: 1.3rem 0; pointer-events: none; position: absolute; text-align: center; text-transform: uppercase; top: 43%; transform: rotate(-32deg); width: 124%; z-index: 2; }
+  .nekova-home-product-image-link > img { aspect-ratio: 4 / 5; box-sizing: border-box; display: block; object-fit: contain; padding: 3%; transition: transform .5s; width: 100%; }
+  .nekova-home-product-image, .nekova-home-product-image-link > img { background: var(--premium-media); }
   .nekova-home-product-image:hover .nekova-home-product-image-link > img { transform: scale(1.035); }
   .nekova-home-image-controls { align-items: stretch; display: flex; inset: 0; justify-content: space-between; pointer-events: none; position: absolute; z-index: 3; }
-  .nekova-home-image-control { align-items: center; background: linear-gradient(90deg, rgba(17, 19, 16, .4), rgba(17, 19, 16, 0)); border: 0; color: var(--premium-ink); cursor: pointer; display: flex; justify-content: center; padding: 0; pointer-events: auto; transition: background .2s, color .2s, opacity .2s; width: 4.2rem; }
+  .nekova-home-image-control { align-items: center; background: linear-gradient(90deg, rgba(var(--nekova-black-rgb), .4), rgba(var(--nekova-black-rgb), 0)); border: 0; color: var(--premium-ink); cursor: pointer; display: flex; justify-content: center; padding: 0; pointer-events: auto; transition: background .2s, color .2s, opacity .2s; width: 4.2rem; }
   .nekova-home-image-control:hover:not(:disabled) { color: #fff; }
   .nekova-home-image-control:focus-visible { outline: 2px solid var(--premium-accent); outline-offset: -3px; }
   .nekova-home-image-control:disabled { cursor: default; opacity: .35; }
   .nekova-home-image-control span { font-size: 2.1rem; line-height: 1; text-shadow: 0 1px 8px rgba(0, 0, 0, .5); }
   .nekova-home-image-control[data-carousel-previous] { box-shadow: inset -1px 0 rgba(255, 255, 255, .12); }
-  .nekova-home-image-control[data-carousel-next] { background: linear-gradient(270deg, rgba(17, 19, 16, .4), rgba(17, 19, 16, 0)); box-shadow: inset 1px 0 rgba(255, 255, 255, .12); }
-  .nekova-home-badge { background: var(--premium-accent); color: #151510; font-size: .85rem; letter-spacing: .1em; padding: .8rem 1rem; position: absolute; right: 1.3rem; top: 1.3rem; }
+  .nekova-home-image-control[data-carousel-next] { background: linear-gradient(270deg, rgba(var(--nekova-black-rgb), .4), rgba(var(--nekova-black-rgb), 0)); box-shadow: inset 1px 0 rgba(255, 255, 255, .12); }
+  .nekova-home-badge { background: var(--premium-accent); color: var(--nekova-on-gold); font-size: 1.15rem; letter-spacing: .1em; padding: .8rem 1rem; position: absolute; right: 1.3rem; top: 1.3rem; }
   .nekova-home-card-arrow { align-items: center; background: var(--premium-bg); border-radius: 50%; bottom: 1.2rem; color: var(--premium-ink); display: flex; height: 3.5rem; justify-content: center; position: absolute; right: 1.2rem; width: 3.5rem; }
   .nekova-home-product-meta { align-items: start; display: flex; gap: 1.2rem; justify-content: space-between; padding-top: 1.5rem; }
-  .nekova-home-product-meta p { color: var(--premium-accent); font-size: .82rem; letter-spacing: .14em; margin: 0 0 .7rem; }
-  .nekova-home-product-meta h3 { font: 400 1.8rem/1.25 Georgia, 'Times New Roman', serif; margin: 0; }
+  .nekova-home-product-meta p { color: var(--premium-accent); font-size: 1.15rem; letter-spacing: .14em; margin: 0 0 .7rem; }
+  .nekova-home-product-meta h3 { font: 400 2.1rem/1.25 var(--nekova-serif); margin: 0; }
   .nekova-home-product-meta h3 a { color: var(--premium-ink); text-decoration: none; }
-  .nekova-home-card-price { display: flex; flex-direction: column; font-size: 1rem; gap: .3rem; text-align: right; white-space: nowrap; }
+  .nekova-home-card-price { display: flex; flex-direction: column; font-size: 1.4rem; gap: .3rem; text-align: right; white-space: nowrap; }
   .nekova-home-card-price s { color: var(--premium-muted); }
   .nekova-home-card-price span { color: var(--premium-ink); }
-  .nekova-home-card-price small { color: var(--premium-muted); font-size: .8rem; }
-  .nekova-home-product-description { color: var(--premium-muted); font-size: 1rem; line-height: 1.7; margin: 1rem 0; }
-  .nekova-home-product-link { border-bottom: 1px solid var(--premium-accent); color: var(--premium-accent); display: inline-flex; font-size: .95rem; gap: 1rem; padding: .5rem 0; text-decoration: none; }
+  .nekova-home-card-price small { color: var(--premium-muted); font-size: 1.1rem; }
+  .nekova-home-product-description { color: var(--premium-muted); font-size: 1.4rem; line-height: 1.7; margin: 1rem 0; }
+  .nekova-home-product-link { border-bottom: 1px solid var(--premium-accent); color: var(--premium-accent); display: inline-flex; font-size: 1.3rem; gap: 1rem; padding: .5rem 0; text-decoration: none; }
   .nekova-home-empty { color: var(--premium-muted); grid-column: 1 / -1; }
   .nekova-home-filter-empty { border: 1px solid var(--premium-line); color: var(--premium-muted); line-height: 1.7; margin: 2rem 0 0; padding: 1.8rem; }
-  .nekova-home-spaces { align-items: center; background: #eee9df; color: #292a25; display: grid; gap: 8%; grid-template-columns: .7fr 1.3fr; margin: 0 -5.5% 7rem; padding: 5.5rem 5.5%; }
-  .nekova-home-spaces .premium-eyebrow { color: #765f42; }
-  .nekova-home-spaces .premium-eyebrow span { background: #9b805c; }
-  .nekova-home-spaces h2 { color: #292a25; font: 400 clamp(3.5rem, 5vw, 5.8rem)/1 Georgia, 'Times New Roman', serif; letter-spacing: -.04em; margin: 1.5rem 0 0; }
-  .nekova-home-spaces h2 em { color: #876b46; }
+  .nekova-home-spaces { align-items: center; background: var(--nekova-cream); color: var(--nekova-charcoal); display: grid; gap: 8%; grid-template-columns: .7fr 1.3fr; margin: 0 -5.5% 7rem; padding: 5.5rem 5.5%; }
+  .nekova-home-spaces { --premium-accent: var(--nekova-bronze); }
+  .nekova-home-spaces h2 { color: var(--nekova-charcoal); font: 400 clamp(3.5rem, 5vw, 5.8rem)/1 var(--nekova-serif); letter-spacing: -.04em; margin: 1.5rem 0 0; }
+  .nekova-home-spaces h2 em { color: var(--nekova-bronze); }
   .nekova-home-space-links { display: grid; grid-template-columns: 1fr 1fr; }
-  .nekova-home-space-links a { border-bottom: 1px solid rgba(41, 42, 37, .22); border-top: 1px solid rgba(41, 42, 37, .22); color: #292a25; display: grid; gap: 1rem; grid-template-columns: 1fr auto; padding: 1.8rem 1.4rem; text-decoration: none; }
-  .nekova-home-space-links a + a { border-left: 1px solid rgba(41, 42, 37, .22); }
-  .nekova-home-space-links a > span:first-child { color: #685d4a; font-size: .78rem; grid-column: 1 / -1; letter-spacing: .1em; }
-  .nekova-home-space-links strong { font: 400 1.65rem/1.35 Georgia, 'Times New Roman', serif; }
-  .nekova-home-space-links a > span:last-child { color: #876b46; font-size: 1.5rem; }
+  .nekova-home-space-links a { border-bottom: 1px solid var(--nekova-line-dark); border-top: 1px solid var(--nekova-line-dark); color: var(--nekova-charcoal); display: grid; gap: 1rem; grid-template-columns: 1fr auto; padding: 1.8rem 1.4rem; text-decoration: none; }
+  .nekova-home-space-links a + a { border-left: 1px solid var(--nekova-line-dark); }
+  .nekova-home-space-links a > span:first-child { color: var(--nekova-charcoal-muted); font-size: 1.15rem; grid-column: 1 / -1; letter-spacing: .1em; }
+  .nekova-home-space-links strong { font: 400 2rem/1.35 var(--nekova-serif); }
+  .nekova-home-space-links a > span:last-child { color: var(--nekova-bronze); font-size: 1.8rem; }
   .nekova-home-journal { border-top: 1px solid var(--premium-line); display: grid; gap: 10%; grid-template-columns: .8fr 1fr; padding: 7rem 0 2rem; }
   .nekova-home-journal h2 { font-size: clamp(4rem, 6vw, 7rem); margin-bottom: 0; }
   .nekova-home-journal-content { align-self: center; }
-  .nekova-home-journal-content > p { color: var(--premium-muted); font-size: 1.35rem; line-height: 1.8; max-width: 42rem; }
+  .nekova-home-journal-content > p { color: var(--premium-muted); font-size: 1.6rem; line-height: 1.8; max-width: 42rem; }
   .nekova-home-journal-link { align-items: center; border-bottom: 1px solid var(--premium-line); color: var(--premium-ink); display: grid; gap: 1.5rem; grid-template-columns: 9rem 1fr auto; padding: 1.8rem 0; text-decoration: none; }
-  .nekova-home-journal-link span:first-child { color: var(--premium-muted); font-size: .9rem; }
-  .nekova-home-journal-link strong { font: 400 1.6rem Georgia, 'Times New Roman', serif; }
+  .nekova-home-journal-link span:first-child { color: var(--premium-muted); font-size: 1.2rem; }
+  .nekova-home-journal-link strong { font: 400 1.9rem var(--nekova-serif); }
   .nekova-home-journal-link span:last-child { color: var(--premium-accent); }
-  .nekova-home-coming-soon { color: var(--premium-accent); font-size: .9rem; letter-spacing: .14em; }
+  .nekova-home-coming-soon { color: var(--premium-accent); font-size: 1.2rem; letter-spacing: .14em; }
   .nekova-home-faq { border-top: 1px solid var(--premium-line); display: grid; gap: 8%; grid-template-columns: .75fr 1.25fr; padding: 7rem 0; }
   .nekova-home-faq-heading { align-self: start; }
-  .nekova-home-faq h2, .nekova-home-contact h2 { color: var(--premium-ink); font: 400 clamp(4rem, 6vw, 7rem)/1 Georgia, 'Times New Roman', serif; margin: 1.8rem 0; }
+  .nekova-home-faq h2, .nekova-home-contact h2 { color: var(--premium-ink); font: 400 clamp(4rem, 6vw, 7rem)/1 var(--nekova-serif); margin: 1.8rem 0; }
   .nekova-home-faq h2 em, .nekova-home-contact h2 em { color: var(--premium-accent); }
-  .nekova-home-faq-heading > p:last-child, .nekova-home-contact > div > p:last-child { color: var(--premium-muted); font-size: 1.1rem; line-height: 1.8; max-width: 37rem; }
+  .nekova-home-faq-heading > p:last-child, .nekova-home-contact > div > p:last-child { color: var(--premium-muted); font-size: 1.5rem; line-height: 1.8; max-width: 37rem; }
   .nekova-home-faq-list details { border-bottom: 1px solid var(--premium-line); padding: 1.7rem 0; }
-  .nekova-home-faq-list summary { color: var(--premium-ink); cursor: pointer; font: 400 1.6rem/1.4 Georgia, 'Times New Roman', serif; list-style: none; }
+  .nekova-home-faq-list summary { color: var(--premium-ink); cursor: pointer; font: 400 1.9rem/1.4 var(--nekova-serif); list-style: none; }
   .nekova-home-faq-list summary::-webkit-details-marker { display: none; }
-  .nekova-home-faq-list summary::after { color: var(--premium-accent); content: '+'; float: right; font: 400 2rem Arial, sans-serif; }
+  .nekova-home-faq-list summary::after { color: var(--premium-accent); content: '+'; float: right; font: 400 2rem var(--nekova-sans); }
   .nekova-home-faq-list details[open] summary::after { content: '−'; }
-  .nekova-home-faq-list details > p { color: var(--premium-muted); font-size: 1.05rem; line-height: 1.8; max-width: 58rem; }
+  .nekova-home-faq-list details > p { color: var(--premium-muted); font-size: 1.5rem; line-height: 1.8; max-width: 58rem; }
   .nekova-home-faq-list details > p a { color: var(--premium-accent); }
   .nekova-home-contact { align-items: end; background: var(--premium-panel); display: flex; gap: 3rem; justify-content: space-between; margin-top: 2rem; padding: 5rem; }
   .nekova-home-contact h2 { margin-bottom: 1rem; }
-  .nekova-home-contact a { align-items: center; background: var(--premium-accent); color: #151510; display: inline-flex; flex: 0 0 auto; font-size: 1rem; font-weight: 600; gap: 2rem; justify-content: space-between; min-width: 22rem; padding: 1.5rem 1.8rem; text-decoration: none; }
-  .nekova-home-contact a span { font-size: 1.4rem; }
+  .nekova-home-contact a { align-items: center; background: var(--premium-accent); color: var(--nekova-on-gold); display: inline-flex; flex: 0 0 auto; font-size: 1.4rem; font-weight: 600; gap: 2rem; justify-content: space-between; min-width: 22rem; padding: 1.5rem 1.8rem; text-decoration: none; }
+  .nekova-home-contact a span { font-size: 1.6rem; }
   @media screen and (max-width: 800px) {
     .nekova-home-shell { padding: 0 2.2rem; }
     .nekova-home-hero { min-height: 56vh; padding-top: 6rem; }
@@ -329,8 +338,8 @@
     .nekova-home-hero { min-height: 59vh; padding-top: 4rem; }
     .nekova-home-hero h1 { font-size: clamp(4.7rem, 16vw, 7rem); }
     .nekova-home-trust > div { gap: .8rem; padding: 1.4rem 1rem; }
-    .nekova-home-trust strong { font-size: 1.2rem; }
-    .nekova-home-trust small { font-size: .9rem; }
+    .nekova-home-trust strong { font-size: 1.5rem; }
+    .nekova-home-trust small { font-size: 1.2rem; }
     .nekova-home-section-heading { align-items: start; flex-direction: column; gap: 1.5rem; }
     .nekova-home-categories { align-items: flex-start; flex-direction: column; }
     .nekova-home-categories > div { flex-wrap: nowrap; max-width: 100%; overflow-x: auto; padding: .3rem .2rem .8rem; }
@@ -339,7 +348,7 @@
     .nekova-home-spaces { margin: 0 -1.8rem 4rem; padding: 3rem 1.8rem; }
     .nekova-home-space-links { grid-template-columns: 1fr; }
     .nekova-home-space-links a + a { border-left: 0; border-top: 0; }
-    .nekova-home-product-meta h3 { font-size: 1.7rem; }
+    .nekova-home-product-meta h3 { font-size: 1.9rem; }
     .nekova-home-journal-link { gap: .8rem; grid-template-columns: 6.5rem 1fr auto; }
     .nekova-home-contact { padding: 2.2rem; }
     .nekova-home-contact a { min-width: 0; width: 100%; }
