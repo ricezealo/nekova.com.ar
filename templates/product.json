@@ -3,6 +3,8 @@
     "main": {
       "type": "nekova-product",
       "settings": {
+        "combo_heading": "Completá tu compra",
+        "combo_note": "",
         "product": "",
         "launch_heading": ""
       },

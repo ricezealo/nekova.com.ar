@@ -31,9 +31,10 @@
           {%- endfor -%}
         {%- else -%}
           <li><a href="{{ faq_url }}">Preguntas frecuentes</a></li>
-          <li><a href="{{ shop.refund_policy.url | default: faq_url }}">Envíos, cambios y devoluciones</a></li>
+          <li><a href="{{ shop.refund_policy.url | default: faq_url }}">Envíos y devoluciones</a></li>
           <li><a href="{{ routes.root_url }}pages/sobre-nekova">Sobre Nekova</a></li>
           <li><a href="{{ routes.root_url }}pages/contact">Contacto</a></li>
+          <li><a href="{{ routes.root_url }}pages/arrepentimiento">Botón de arrepentimiento</a></li>
           {%- if shop.privacy_policy != blank -%}<li><a href="{{ shop.privacy_policy.url }}">{{ shop.privacy_policy.title | escape }}</a></li>{%- endif -%}
           {%- if shop.terms_of_service != blank -%}<li><a href="{{ shop.terms_of_service.url }}">{{ shop.terms_of_service.title | escape }}</a></li>{%- endif -%}
         {%- endif -%}
@@ -77,7 +78,10 @@
 
   <div class="nk-footer-bottom">
     <div class="nk-footer-shell nk-footer-bottom-inner">
-      <small>© {{ 'now' | date: '%Y' }} {{ shop.name | escape }}. Todos los derechos reservados.</small>
+      <div class="nk-footer-legal">
+        <small>© {{ 'now' | date: '%Y' }} {{ shop.name | escape }}. Todos los derechos reservados.</small>
+        <a class="nk-footer-withdrawal" href="{{ routes.root_url }}pages/arrepentimiento">Botón de arrepentimiento</a>
+      </div>
       {%- if shop.enabled_payment_types.size > 0 -%}
         <ul class="nk-footer-payments" role="list" aria-label="Medios de pago">
           {%- for type in shop.enabled_payment_types -%}
@@ -122,6 +126,9 @@
   .nk-footer-bottom { border-top: 1px solid rgba(255, 255, 255, .12); }
   .nk-footer-bottom-inner { align-items: center; display: flex; flex-wrap: wrap; gap: 1.6rem; justify-content: space-between; padding-bottom: 2.4rem; padding-top: 2.4rem; }
   .nk-footer-bottom small { font-size: 1.3rem; }
+  .nk-footer-legal { align-items: center; display: flex; flex-wrap: wrap; gap: 1.2rem 2rem; }
+  .nk-footer a.nk-footer-withdrawal { border: 1px solid rgba(255, 255, 255, .45); border-radius: var(--nekova-radius-pill); color: #fff; font-size: 1.3rem; font-weight: 700; padding: .6rem 1.6rem; text-decoration: none; transition: background .2s, border-color .2s; }
+  .nk-footer a.nk-footer-withdrawal:hover { background: rgba(255, 255, 255, .1); border-color: #fff; }
   .nk-footer-payments { display: flex; flex-wrap: wrap; gap: .8rem; list-style: none; margin: 0; padding: 0; }
   .nk-footer-payments svg { display: block; height: 2.4rem; width: auto; }
   @media screen and (max-width: 990px) {
@@ -133,6 +140,7 @@
     .nk-footer-shell { padding: 0 1.6rem; }
     .nk-footer-columns { gap: 4rem; grid-template-columns: 1fr; padding-bottom: 4.8rem; padding-top: 5.6rem; }
     .nk-footer-bottom-inner { flex-direction: column; text-align: center; }
+    .nk-footer-legal { flex-direction: column; }
   }
 {% endstyle %}
 
@@ -177,7 +185,7 @@
       "type": "text",
       "id": "hours",
       "label": "Horario de atención",
-      "info": "Opcional. Por ejemplo: Lunes a viernes de 9 a 18 h."
+      "info": "Opcional. Por ejemplo: Lunes a viernes de 9:00 a 18:00 hs."
     },
     {
       "type": "header",
@@ -193,7 +201,7 @@
       "type": "text",
       "id": "newsletter_text",
       "label": "Texto",
-      "default": "Lanzamientos, consejos de bienestar y ofertas exclusivas, directo a tu correo."
+      "default": "Lanzamientos y novedades de Nekova, directo a tu correo."
     }
   ],
   "enabled_on": {

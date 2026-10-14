@@ -33,6 +33,21 @@
     ]
   },
   {
+    "name": "Nekova · ventas",
+    "settings": [
+      {
+        "type": "paragraph",
+        "content": "Avisos comerciales del tema. El beneficio real se configura en Shopify (Configuración → Envíos y Descuentos); acá solo se define qué se muestra."
+      },
+      {
+        "type": "number",
+        "id": "nekova_free_shipping_threshold",
+        "label": "Envío gratis desde (ARS)",
+        "info": "Muestra el aviso en el carrito (cuánto falta) y en los productos. Vacío o 0: no se muestra. Configurá también la tarifa gratis en Shopify → Configuración → Envíos."
+      }
+    ]
+  },
+  {
     "name": "theme_info",
     "theme_name": "Dawn",
     "theme_version": "16.0.0",

@@ -1,0 +1,376 @@
+{%- liquid
+  assign home_collection = section.settings.collection | default: collections.all
+-%}
+
+{%- comment -%}
+  Content per product handle: "handle::block image::hero image::short name::category::short pitch::check~check~check::fill".
+  Hero and block use different photos so the product does not repeat. "fill" makes the block image cover its
+  square (for photos with their own background) instead of a packshot on the grey panel.
+  Products not listed use their Shopify image, type and description (and no hero photo).
+{%- endcomment -%}
+{%- capture home_cards -%}cojin-ortopedico-u::product-media-cojin-ortopedico-01.jpg::product-media-cojin-ortopedico-02.jpg::Cojín ergonómico::Confort y apoyo::Para las horas que pasás sentado en la oficina, en casa o en el auto.::Espuma viscoelástica de recuperación lenta~Ranura en U que deja libre la zona del coxis~Funda transpirable y extraíble::||tapones-auditivos-silicona::product-media-tapones-02.jpg::product-media-tapones-01.jpg::Tapones auditivos::Descanso y silencio::Para dormir, concentrarte o viajar con menos ruido alrededor.::Silicona suave y reutilizable~4 tamaños de puntas: XS, S, M y L~Estuche de bolsillo con aro::fill{%- endcapture -%}
+{%- assign home_card_rows = home_cards | split: '||' -%}
+
+<section class="nk-home" aria-labelledby="NkHomeTitle-{{ section.id }}">
+  <div class="nk-home-shell nk-home-hero">
+    <div class="nk-home-hero-copy">
+      <p class="nk-home-eyebrow">Nekova · ergonomía y bienestar</p>
+      <h1 id="NkHomeTitle-{{ section.id }}">{{ section.settings.heading }}</h1>
+      {%- if section.settings.lead != blank -%}<p class="nk-home-lead">{{ section.settings.lead }}</p>{%- endif -%}
+      <div class="nk-home-actions">
+        <a class="nk-home-button" href="#NkHomeProducts-{{ section.id }}">Ver productos</a>
+        <a class="nk-home-button nk-home-button--ghost" href="{{ routes.root_url }}pages/sobre-nekova">Conocé Nekova</a>
+      </div>
+    </div>
+    <div class="nk-home-hero-media" data-nk-hero-carousel>
+      <div class="nk-home-hero-track" data-nk-hero-track role="list" aria-label="Productos">
+      {%- for product_item in home_collection.products limit: section.settings.products_to_show -%}
+        {%- liquid
+          assign hero_image = ''
+          assign hero_name = product_item.title
+          for row in home_card_rows
+            assign cells = row | split: '::'
+            if cells[0] == product_item.handle
+              assign hero_image = cells[2] | asset_url
+              assign hero_name = cells[3]
+            endif
+          endfor
+          if hero_image == blank and product_item.featured_image
+            assign hero_image = product_item.featured_image | image_url: width: 900
+          endif
+        -%}
+        {%- if hero_image != blank -%}
+          <a class="nk-home-hero-tile" href="{{ product_item.url }}" role="listitem">
+            <img src="{{ hero_image }}" alt="{{ product_item.title | escape }}" width="1200" height="1200"{% if forloop.index < 3 %} fetchpriority="high"{% else %} loading="lazy"{% endif %}>
+            <span class="nk-home-hero-tag">{{ hero_name }} {% render 'nekova-icon', icon: 'arrow-right' %}</span>
+          </a>
+        {%- endif -%}
+      {%- endfor -%}
+      </div>
+      <div class="nk-home-hero-nav" data-nk-hero-nav hidden>
+        <button type="button" class="nk-home-hero-arrow" data-nk-hero-prev aria-label="Ver productos anteriores">{% render 'nekova-icon', icon: 'arrow-left' %}</button>
+        <button type="button" class="nk-home-hero-arrow" data-nk-hero-next aria-label="Ver más productos">{% render 'nekova-icon', icon: 'arrow-right' %}</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="nk-home-band" id="NkHomeProducts-{{ section.id }}">
+    <div class="nk-home-shell">
+      <div class="nk-home-head">
+        <div>
+          <p class="nk-home-eyebrow">Nuestros productos</p>
+          <h2>{{ section.settings.products_heading }}</h2>
+        </div>
+        <p class="nk-home-head-lead">Cada uno, elegido por su diseño, sus materiales y su utilidad real en tu día a día.</p>
+      </div>
+      <ul class="nk-home-features" role="list">
+        {%- for product_item in home_collection.products limit: section.settings.products_to_show -%}
+          {%- liquid
+            assign card_image = ''
+            assign card_category = product_item.type
+            assign card_pitch = product_item.description | strip_html | truncatewords: 24
+            assign card_checks = ''
+            assign card_fill = false
+            for row in home_card_rows
+              assign cells = row | split: '::'
+              if cells[0] == product_item.handle
+                assign card_image = cells[1] | asset_url
+                assign card_category = cells[4]
+                assign card_pitch = cells[5]
+                assign card_checks = cells[6] | split: '~'
+                if cells[7] == 'fill'
+                  assign card_fill = true
+                endif
+              endif
+            endfor
+            if card_image == blank and product_item.featured_image
+              assign card_image = product_item.featured_image | image_url: width: 1200
+            endif
+          -%}
+          <li class="nk-home-feature">
+            <a class="nk-home-feature-media{% if card_fill %} nk-home-feature-media--fill{% endif %}" href="{{ product_item.url }}" tabindex="-1" aria-hidden="true">
+              {%- if card_image != blank -%}<img src="{{ card_image }}" alt="" width="1200" height="1200" loading="lazy">{%- endif -%}
+              {%- unless product_item.available -%}<span class="nk-home-card-badge">Próximamente</span>{%- endunless -%}
+            </a>
+            <div class="nk-home-feature-body">
+              <span class="nk-home-feature-index">{% if forloop.index < 10 %}0{% endif %}{{ forloop.index }}</span>
+              {%- if card_category != blank -%}<p class="nk-home-feature-category">{{ card_category }}</p>{%- endif -%}
+              <h3><a href="{{ product_item.url }}">{{ product_item.title | escape }}</a></h3>
+              <p class="nk-home-feature-pitch">{{ card_pitch }}</p>
+              {%- if card_checks != blank -%}
+                <ul class="nk-home-feature-checks" role="list">
+                  {%- for check in card_checks -%}<li>{% render 'nekova-icon', icon: 'check' %}<span>{{ check }}</span></li>{%- endfor -%}
+                </ul>
+              {%- endif -%}
+              <div class="nk-home-feature-foot">
+                <span class="nk-home-feature-price">{{ product_item.price | money_without_trailing_zeros }}</span>
+                {%- if product_item.has_only_default_variant == false -%}
+                  <span class="nk-home-card-dots">
+                    {%- for variant in product_item.variants -%}{% render 'nekova-color-dot', name: variant.option1 %}{%- endfor -%}
+                  </span>
+                {%- endif -%}
+              </div>
+              <a class="nk-home-button" href="{{ product_item.url }}">Ver producto {% render 'nekova-icon', icon: 'arrow-right' %}</a>
+            </div>
+          </li>
+        {%- endfor -%}
+      </ul>
+    </div>
+  </div>
+
+  <div class="nk-home-dark">
+    <div class="nk-home-shell nk-home-promise">
+      <div>
+        <p class="nk-home-eyebrow">Comprá tranquilo</p>
+        <h2>Te acompañamos antes y <span class="nk-home-hl">después</span> de comprar</h2>
+        <a class="nk-home-text-link" href="{{ routes.root_url }}pages/sobre-nekova">Conocé Nekova {% render 'nekova-icon', icon: 'arrow-right' %}</a>
+      </div>
+      <ul class="nk-home-promise-list" role="list">
+        <li>{% render 'nekova-icon', icon: 'return' %}<span><strong>Probalo tranquilo</strong>Si no te convence, tenés 10 días para devolverlo.</span></li>
+        <li>{% render 'nekova-icon', icon: 'lock' %}<span><strong>Pago seguro</strong>Tu compra se procesa en un checkout protegido.</span></li>
+        <li>{% render 'nekova-icon', icon: 'truck' %}<span><strong>Despacho en el día</strong>Comprando antes de las 13:00 hs, en días hábiles.</span></li>
+        <li>{% render 'nekova-icon', icon: 'check' %}<span><strong>Atención al cliente</strong>Escribinos por WhatsApp o email y te respondemos nosotros.</span></li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="nk-home-shell nk-home-faq" id="preguntas-frecuentes">
+    <div>
+      <p class="nk-home-eyebrow">Antes de comprar</p>
+      <h2>Preguntas <span class="nk-home-hl">frecuentes</span></h2>
+    </div>
+    <div class="nk-home-faq-list">
+      <details><summary>¿Cómo compro?</summary><p>Elegí el producto, el color si corresponde y la cantidad, agregalo al carrito y completá tus datos en el checkout para elegir el envío y pagar.</p></details>
+      <details><summary>¿Cuándo se despacha mi pedido?</summary><p>Las compras realizadas en días hábiles antes de las 13:00 hs se despachan ese mismo día. Si comprás después de ese horario, un fin de semana o un feriado, tu pedido sale el día hábil siguiente. El plazo de entrega depende del destino y del operador logístico.</p></details>
+      <details><summary>¿Cuánto cuesta el envío?</summary><p>El costo y la estimación de entrega se calculan según tu destino y se muestran en el checkout, antes de confirmar la compra.</p></details>
+      <details><summary>¿Puedo devolver mi compra?</summary><p>Sí. Tenés 10 días desde la compra para devolverla, con el producto completo y en perfecto estado. Los productos de uso personal, como los tapones auditivos, se aceptan solo con el envase cerrado y sin uso. Escribinos y coordinamos la devolución.</p></details>
+    </div>
+  </div>
+
+  {%- if section.settings.closing_heading != blank -%}
+    <div class="nk-home-cta">
+      <div class="nk-home-shell nk-home-cta-inner">
+        <h2>{{ section.settings.closing_heading }}</h2>
+        <a class="nk-home-button nk-home-button--light" href="#NkHomeProducts-{{ section.id }}">Ver productos</a>
+      </div>
+    </div>
+  {%- endif -%}
+</section>
+
+<script>
+  document.querySelectorAll('[data-nk-hero-carousel]').forEach((carousel) => {
+    if (carousel.dataset.nkHeroInitialized) return;
+    carousel.dataset.nkHeroInitialized = 'true';
+    const track = carousel.querySelector('[data-nk-hero-track]');
+    const nav = carousel.querySelector('[data-nk-hero-nav]');
+    const prev = carousel.querySelector('[data-nk-hero-prev]');
+    const next = carousel.querySelector('[data-nk-hero-next]');
+    const behavior = window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth';
+    const step = () => {
+      const tile = track.querySelector('.nk-home-hero-tile');
+      return tile ? tile.getBoundingClientRect().width + parseFloat(getComputedStyle(track).columnGap || 0) : track.clientWidth;
+    };
+    const update = () => {
+      const overflow = track.scrollWidth - track.clientWidth > 2;
+      nav.hidden = !overflow;
+      prev.disabled = track.scrollLeft <= 2;
+      next.disabled = track.scrollLeft >= track.scrollWidth - track.clientWidth - 2;
+    };
+    prev.addEventListener('click', () => track.scrollBy({ left: -step(), behavior }));
+    next.addEventListener('click', () => track.scrollBy({ left: step(), behavior }));
+    track.addEventListener('scroll', update, { passive: true });
+    if ('ResizeObserver' in window) new ResizeObserver(update).observe(track);
+    window.addEventListener('resize', update);
+    window.addEventListener('load', update);
+    update();
+  });
+</script>
+
+{% style %}
+  .nk-home { --nk-accent: var(--nekova-accent); background: var(--nekova-bg); color: var(--nekova-ink); font-family: var(--nekova-font-body); }
+  .nk-home * { box-sizing: border-box; }
+  .nk-home a { touch-action: manipulation; }
+  .nk-home-shell { margin: 0 auto; max-width: 1280px; padding: 0 5rem; }
+  .nk-home h1, .nk-home h2 { color: var(--nekova-ink); font-family: var(--nekova-font-heading); font-weight: var(--font-heading-weight); letter-spacing: -.02em; line-height: 1.1; margin: 0; }
+  .nk-home h1 em, .nk-home h2 em, .nk-home-hl { color: var(--nk-accent); font-style: normal; }
+  .nk-home-eyebrow { align-items: center; color: var(--nk-accent); display: flex; font-size: 1.25rem; font-weight: 800; gap: 1rem; letter-spacing: .14em; margin: 0 0 1.6rem; text-transform: uppercase; }
+  .nk-home-eyebrow::before { background: currentColor; border-radius: 2px; content: ''; height: 2px; width: 2.4rem; }
+  .nk-home-button { align-items: center; background: var(--nk-accent); border: 1px solid var(--nk-accent); border-radius: 1.2rem; color: var(--nekova-on-accent); display: inline-flex; font-size: 1.6rem; font-weight: 700; justify-content: center; min-height: 5.4rem; padding: 0 2.8rem; text-decoration: none; transition: background .2s, border-color .2s; }
+  .nk-home-button:hover { background: var(--nekova-accent-strong); border-color: var(--nekova-accent-strong); color: var(--nekova-on-accent); }
+  .nk-home-button--ghost { background: transparent; border-color: var(--nekova-line-strong); color: var(--nekova-ink); }
+  .nk-home-button--ghost:hover { background: var(--nekova-panel); border-color: var(--nekova-ink); color: var(--nekova-ink); }
+  .nk-home-button--light { background: var(--nekova-surface); border-color: var(--nekova-surface); border-radius: 0; color: var(--nk-accent); }
+  .nk-home-button--light:hover { background: var(--nekova-accent-soft); border-color: var(--nekova-accent-soft); color: var(--nk-accent); }
+  .nk-home a:focus-visible, .nk-home summary:focus-visible { outline: 2px solid var(--nk-accent); outline-offset: 3px; }
+
+  .nk-home-hero { align-items: center; display: grid; gap: 5rem; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); padding-bottom: 7rem; padding-top: 6rem; }
+  .nk-home-hero h1 { font-size: clamp(3.8rem, 5vw, 6.2rem); }
+  .nk-home-lead { color: var(--nekova-muted); font-size: 1.8rem; line-height: 1.6; margin: 2.4rem 0 0; max-width: 52rem; }
+  .nk-home-actions { display: flex; flex-wrap: wrap; gap: 1.2rem; margin-top: 3.2rem; }
+
+  .nk-home-hero-media { min-width: 0; }
+  .nk-home-hero-track { display: grid; gap: 1.6rem; grid-auto-columns: calc((100% - 1.6rem) / 2); grid-auto-flow: column; overflow-x: auto; overscroll-behavior-x: contain; scroll-behavior: smooth; scroll-snap-type: x mandatory; scrollbar-width: none; }
+  .nk-home-hero-track::-webkit-scrollbar { display: none; }
+  .nk-home-hero-tile { scroll-snap-align: start; }
+  .nk-home-hero-nav { display: flex; gap: 1rem; justify-content: flex-end; margin-top: 1.6rem; }
+  .nk-home-hero-nav[hidden] { display: none; }
+  .nk-home-hero-arrow { align-items: center; background: var(--nekova-surface); border: 1px solid var(--nekova-line-strong); border-radius: 50%; color: var(--nekova-ink); cursor: pointer; display: inline-flex; height: 4.4rem; justify-content: center; padding: 0; transition: border-color .2s, color .2s, opacity .2s; width: 4.4rem; }
+  .nk-home-hero-arrow:hover { border-color: var(--nk-accent); color: var(--nk-accent); }
+  .nk-home-hero-arrow:disabled { cursor: default; opacity: .35; }
+  .nk-home-hero-arrow:focus-visible { outline: 2px solid var(--nk-accent); outline-offset: 3px; }
+  .nk-home-hero-arrow svg { height: 2rem; width: 2rem; }
+  .nk-home-hero-tile { aspect-ratio: 4 / 5; background: var(--nekova-panel); border-radius: var(--nekova-radius-lg); display: block; overflow: hidden; position: relative; }
+  .nk-home-hero-tile:nth-child(even) { margin-top: 5rem; }
+  .nk-home-hero-tile img { display: block; height: 100%; mix-blend-mode: multiply; object-fit: contain; padding: 4% 4% 16%; transform: scale(1.12); transition: transform .4s; width: 100%; }
+  .nk-home-hero-tile:hover img { transform: scale(1.16); }
+  .nk-home-hero-tag { align-items: center; background: var(--nekova-surface); border-radius: var(--nekova-radius-pill); bottom: 1.6rem; color: var(--nekova-ink); display: inline-flex; font-size: 1.4rem; font-weight: 800; gap: .6rem; left: 1.6rem; padding: .8rem 1.4rem; position: absolute; transition: color .2s; }
+  .nk-home-hero-tag svg { color: var(--nk-accent); height: 1.6rem; width: 1.6rem; }
+  .nk-home-hero-tile:hover .nk-home-hero-tag { color: var(--nk-accent); }
+  .nk-home .nk-home-feature-media--fill img { mix-blend-mode: normal; object-fit: cover; padding: 0; }
+  .nk-home-hero h1 em { display: block; }
+
+  .nk-home-features { display: grid; gap: 2.4rem; list-style: none; margin: 0; padding: 0; }
+  .nk-home-feature { align-items: center; background: var(--nekova-surface); border-radius: var(--nekova-radius-lg); display: grid; gap: 5rem; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); overflow: hidden; padding: 2.4rem 6rem 2.4rem 2.4rem; }
+  .nk-home-feature:nth-child(even) { padding: 2.4rem 2.4rem 2.4rem 6rem; }
+  .nk-home-feature:nth-child(even) .nk-home-feature-media { order: 2; }
+  .nk-home-feature-media { aspect-ratio: 1; background: var(--nekova-panel); border-radius: var(--nekova-radius); display: block; overflow: hidden; position: relative; }
+  .nk-home-feature-media img { display: block; height: 100%; mix-blend-mode: multiply; object-fit: contain; padding: 6%; transition: transform .4s; width: 100%; }
+  .nk-home-feature-media:hover img { transform: scale(1.03); }
+  .nk-home-card-badge { background: var(--nk-accent); border-radius: var(--nekova-radius-pill); color: var(--nekova-on-accent); font-size: 1.2rem; font-weight: 800; left: 1.6rem; padding: .5rem 1.2rem; position: absolute; top: 1.6rem; }
+  .nk-home-feature-body { align-content: start; display: grid; justify-items: start; }
+  .nk-home-feature-index { color: var(--nekova-line-strong); font-family: var(--nekova-font-heading); font-size: 1.4rem; font-weight: var(--font-heading-weight); letter-spacing: .1em; margin-bottom: 1.2rem; }
+  .nk-home-feature-category { color: var(--nk-accent); font-size: 1.25rem; font-weight: 800; letter-spacing: .12em; margin: 0 0 1rem; text-transform: uppercase; }
+  .nk-home-feature h3 { font-family: var(--nekova-font-heading); font-size: clamp(2.4rem, 2.6vw, 3.2rem); font-weight: var(--font-heading-weight); letter-spacing: -.02em; line-height: 1.15; margin: 0; }
+  .nk-home .nk-home-feature h3 a { color: var(--nekova-ink); text-decoration: none; }
+  .nk-home-feature-pitch { color: var(--nekova-muted); font-size: 1.6rem; line-height: 1.6; margin: 1.2rem 0 0; }
+  .nk-home-feature-checks { display: grid; gap: 1rem; list-style: none; margin: 2.4rem 0 0; padding: 0; }
+  .nk-home-feature-checks li { align-items: center; display: flex; font-size: 1.5rem; gap: 1rem; }
+  .nk-home-feature-checks svg { color: var(--nk-accent); flex: 0 0 auto; height: 2rem; width: 2rem; }
+  .nk-home-feature-foot { align-items: center; border-top: 1px solid var(--nekova-line); display: flex; gap: 1.6rem; justify-content: space-between; margin: 2.8rem 0 2.4rem; padding-top: 2.4rem; width: 100%; }
+  .nk-home-feature-price { font-family: var(--nekova-font-heading); font-size: 2.6rem; font-weight: var(--font-heading-weight); }
+  .nk-home-feature .nk-home-button { gap: 1rem; }
+  .nk-home-feature .nk-home-button svg { height: 1.8rem; width: 1.8rem; }
+  .nk-home-card-dots { display: flex; gap: .6rem; }
+  .nk-dot { border: 1px solid var(--nekova-line-strong); border-radius: 50%; display: block; height: 1.8rem; width: 1.8rem; }
+  .nk-home-text-link { align-items: center; color: var(--nk-accent); display: inline-flex; font-size: 1.5rem; font-weight: 700; gap: .6rem; }
+  .nk-home-text-link svg { height: 1.8rem; width: 1.8rem; }
+
+  .nk-home-band { background: var(--nekova-panel); padding: 9rem 0; }
+  .nk-home-head { align-items: end; display: grid; gap: 4rem; grid-template-columns: minmax(0, 1.1fr) minmax(0, .9fr); margin-bottom: 4.8rem; }
+  .nk-home-head h2 { font-size: clamp(3rem, 3.6vw, 4.6rem); }
+  .nk-home-head-lead { color: var(--nekova-muted); font-size: 1.65rem; line-height: 1.65; margin: 0; max-width: 48rem; }
+  .nk-dot { border: 1px solid var(--nekova-line-strong); border-radius: 50%; display: block; height: 1.8rem; width: 1.8rem; }
+
+
+  .nk-home-dark { background: var(--nekova-ink); color: #fff; padding: 9rem 0; }
+  .nk-home .nk-home-dark h2 { color: #fff; font-size: clamp(3rem, 3.6vw, 4.6rem); margin-bottom: 2.4rem; }
+  .nk-home-dark .nk-home-eyebrow, .nk-home-dark .nk-home-hl { color: #8fa8ff; }
+  .nk-home .nk-home-dark .nk-home-text-link { color: #fff; }
+  .nk-home-promise { align-items: center; display: grid; gap: 6rem; grid-template-columns: minmax(0, .9fr) minmax(0, 1.1fr); }
+  .nk-home-promise-list { display: grid; gap: 1.6rem; grid-template-columns: 1fr 1fr; list-style: none; margin: 0; padding: 0; }
+  .nk-home-promise-list li { align-items: flex-start; background: rgba(255, 255, 255, .06); border: 1px solid rgba(255, 255, 255, .12); border-radius: var(--nekova-radius); color: rgba(255, 255, 255, .72); display: flex; font-size: 1.45rem; gap: 1.4rem; line-height: 1.55; padding: 2.4rem; }
+  .nk-home-promise-list strong { color: #fff; display: block; font-size: 1.65rem; margin-bottom: .4rem; }
+  .nk-home-promise-list svg { color: #8fa8ff; flex: 0 0 auto; height: 2.6rem; width: 2.6rem; }
+
+  .nk-home-faq { align-items: start; display: grid; gap: 7rem; grid-template-columns: minmax(0, .8fr) minmax(0, 1.2fr); padding-bottom: 9rem; padding-top: 9rem; scroll-margin-top: 6rem; }
+  .nk-home-faq h2 { font-size: clamp(3rem, 3.6vw, 4.6rem); }
+  .nk-home-faq-list details { border-bottom: 1px solid var(--nekova-line); }
+  .nk-home-faq-list details:first-child { border-top: 1px solid var(--nekova-line); }
+  .nk-home-faq-list summary { align-items: center; cursor: pointer; display: flex; font-size: 1.6rem; font-weight: 700; justify-content: space-between; list-style: none; padding: 1.8rem 0; }
+  .nk-home-faq-list summary::-webkit-details-marker { display: none; }
+  .nk-home-faq-list summary::after { color: var(--nk-accent); content: '+'; font-size: 2.4rem; font-weight: 400; line-height: 1; transition: transform .2s; }
+  .nk-home-faq-list details[open] summary::after { transform: rotate(45deg); }
+  .nk-home-faq-list p { color: var(--nekova-muted); font-size: 1.5rem; line-height: 1.7; margin: 0; padding-bottom: 1.8rem; }
+  .nk-home-faq-list a { color: var(--nk-accent); }
+
+  .nk-home-cta { background: var(--nk-accent); color: var(--nekova-on-accent); }
+  .nk-home-cta-inner { align-items: center; display: flex; flex-wrap: wrap; gap: 3rem; justify-content: space-between; padding-bottom: 6rem; padding-top: 6rem; }
+  .nk-home .nk-home-cta h2 em { color: inherit; display: block; }
+  .nk-home .nk-home-cta h2 { color: var(--nekova-on-accent); font-size: clamp(2.8rem, 3.4vw, 4.2rem); margin: 0; max-width: 72rem; }
+
+  @media screen and (max-width: 990px) {
+    .nk-home-shell { padding: 0 2.4rem; }
+    .nk-home-hero, .nk-home-head, .nk-home-promise, .nk-home-faq { gap: 3.2rem; grid-template-columns: 1fr; }
+    .nk-home-hero { padding-top: 3.2rem; }
+    .nk-home-band, .nk-home-dark { padding: 7rem 0; }
+    .nk-home-feature, .nk-home-feature:nth-child(even) { gap: 2.8rem; grid-template-columns: 1fr; padding: 1.6rem 1.6rem 3.2rem; }
+    .nk-home-feature:nth-child(even) .nk-home-feature-media { order: 0; }
+    .nk-home-feature-body { padding: 0 1.6rem; }
+  }
+  @media screen and (max-width: 600px) {
+    .nk-home-shell { padding: 0 1.6rem; }
+    .nk-home-hero { padding-bottom: 5rem; }
+    .nk-home-hero h1 { font-size: clamp(3.4rem, 10vw, 4.2rem); }
+    .nk-home-lead { font-size: 1.6rem; }
+    .nk-home-actions .nk-home-button { width: 100%; }
+    .nk-home-hero-tile:nth-child(even) { margin-top: 3rem; }
+    .nk-home-hero-track { gap: 1.2rem; grid-auto-columns: calc((100% - 1.2rem) / 2); }
+    .nk-home-hero-tag { bottom: 1rem; font-size: 1.25rem; left: 1rem; padding: .5rem 1rem; }
+    .nk-home-band, .nk-home-dark { padding: 5.6rem 0; }
+    .nk-home-head { margin-bottom: 3.2rem; }
+    .nk-home-promise-list { grid-template-columns: 1fr; }
+    .nk-home-promise-list li { padding: 2rem; }
+    .nk-home-cta-inner { padding-bottom: 4.8rem; padding-top: 4.8rem; }
+    .nk-home-cta .nk-home-button { width: 100%; }
+    .nk-home-feature .nk-home-button { width: 100%; }
+    .nk-home-feature-body { padding: 0 .8rem; }
+  }
+{% endstyle %}
+
+{% schema %}
+{
+  "name": "Nekova · inicio",
+  "class": "nekova-home-section",
+  "settings": [
+    {
+      "type": "inline_richtext",
+      "id": "heading",
+      "label": "Título principal",
+      "default": "Tu bienestar, <em>en los detalles.</em>"
+    },
+    {
+      "type": "text",
+      "id": "lead",
+      "label": "Bajada",
+      "default": "Objetos de ergonomía y bienestar para trabajar, viajar y descansar más cómodo."
+    },
+    {
+      "type": "collection",
+      "id": "collection",
+      "label": "Colección de productos",
+      "info": "Si no elegís una, se muestran todos los productos."
+    },
+    {
+      "type": "inline_richtext",
+      "id": "products_heading",
+      "label": "Título de productos",
+      "default": "Pensados para tu <em>bienestar</em>"
+    },
+    {
+      "type": "range",
+      "id": "products_to_show",
+      "label": "Productos a mostrar",
+      "min": 1,
+      "max": 12,
+      "step": 1,
+      "default": 6
+    },
+    {
+      "type": "header",
+      "content": "Banda final"
+    },
+    {
+      "type": "inline_richtext",
+      "id": "closing_heading",
+      "label": "Frase",
+      "default": "Pequeños cambios. <em>Días más cómodos.</em>",
+      "info": "Dejala vacía para ocultar la banda."
+    }
+  ],
+  "presets": [
+    {
+      "name": "Nekova · inicio"
+    }
+  ]
+}
+{% endschema %}

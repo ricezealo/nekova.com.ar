@@ -7,7 +7,8 @@
         "launch_heading": "Sentate mejor, todo el día."
       },
       "blocks": {},
-      "block_order": []
+      "block_order": [],
+      "disabled": true
     },
     "home_showcase": {
       "type": "home-product-showcase",
@@ -18,9 +19,21 @@
         "collection_heading": "Objetos que elevan lo cotidiano.",
         "blog": ""
       }
+    },
+    "home": {
+      "type": "nekova-home",
+      "settings": {
+        "heading": "Tu bienestar, <em>en los detalles.</em>",
+        "lead": "Objetos de ergonomía y bienestar para trabajar, viajar y descansar más cómodo.",
+        "collection": "all",
+        "products_heading": "Pensados para tu <em>bienestar</em>",
+        "closing_heading": "Pequeños cambios. <em>Días más cómodos.</em>",
+        "products_to_show": 6
+      }
     }
   },
   "order": [
+    "home",
     "launch_product",
     "home_showcase"
   ]

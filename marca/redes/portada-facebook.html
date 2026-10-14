@@ -1,0 +1,37 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<title>Nekova · portada de Facebook</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Nunito+Sans:wght@400;700&family=Poppins:wght@600&display=swap" rel="stylesheet">
+<!--
+  Fuente de la portada de Facebook (1640 × 624): fondo carbón, frase de marca y dos ranuras en U del isotipo.
+  Se exporta a nekova-portada-facebook.png con una captura de 1640 × 624 de esta página.
+  Zona segura: en el celular Facebook muestra solo el centro (aprox. x 265–1375), así que el texto va ahí.
+-->
+<style>
+  * { box-sizing: border-box; }
+  html, body { margin: 0; }
+  .cover { background: #14161a; color: #fff; font-family: 'Nunito Sans', system-ui, sans-serif; height: 624px; overflow: hidden; position: relative; width: 1640px; }
+  .text { left: 50%; position: absolute; text-align: center; top: 50%; transform: translate(-50%, -50%); width: 1000px; }
+  .phrase { font-family: Poppins, system-ui, sans-serif; font-size: 92px; font-weight: 600; letter-spacing: -.02em; line-height: 1.12; margin: 0; }
+  .phrase span { color: #8fa8ff; display: block; }
+  .meta { align-items: center; color: rgba(255, 255, 255, .7); display: flex; font-size: 22px; font-weight: 700; gap: 14px; justify-content: center; margin-top: 30px; }
+  .meta i { background: currentColor; border-radius: 50%; display: block; height: 6px; opacity: .5; width: 6px; }
+  .slot { border: 26px solid rgba(255, 255, 255, .06); border-radius: 0 0 200px 200px; border-top: 0; height: 520px; position: absolute; width: 400px; }
+  .slot-a { left: 40px; top: -60px; }
+  .slot-b { right: 40px; top: 164px; transform: rotate(180deg); }
+</style>
+</head>
+<body>
+<div class="cover">
+  <span class="slot slot-a"></span>
+  <span class="slot slot-b"></span>
+  <div class="text">
+    <p class="phrase">Tu bienestar,<span>en los detalles.</span></p>
+    <div class="meta">Ergonomía y bienestar<i></i>nekova.com.ar</div>
+  </div>
+</div>
+</body>
+</html>

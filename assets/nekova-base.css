@@ -92,3 +92,24 @@
 .footer__copyright {
   text-align: center;
 }
+
+/* Header menu: ink text with weight, accent on hover and on the current page. */
+.header__inline-menu .header__menu-item {
+  color: var(--nekova-ink);
+  font-size: 1.5rem;
+  font-weight: 700;
+}
+
+.header__inline-menu .header__menu-item:hover,
+.header__inline-menu .header__active-menu-item {
+  color: var(--nekova-accent);
+}
+
+.header__inline-menu .header__menu-item:hover span,
+.header__inline-menu .header__active-menu-item {
+  text-decoration: none;
+}
+
+.header__inline-menu .header__active-menu-item {
+  box-shadow: inset 0 -2px 0 var(--nekova-accent);
+}

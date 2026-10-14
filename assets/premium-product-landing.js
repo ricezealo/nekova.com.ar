@@ -253,3 +253,37 @@ document.querySelectorAll('[data-nk-autoplay]').forEach((track) => {
     track.scrollTo({ left: items[next].offsetLeft - start, behavior: 'smooth' });
   }, interval);
 });
+
+// Combo: adds the selected variant (with its quantity) plus the complementary product, then opens the cart.
+document.querySelectorAll('[data-nk-combo]').forEach((combo) => {
+  if (combo.dataset.comboInitialized === 'true') return;
+  combo.dataset.comboInitialized = 'true';
+  const button = combo.querySelector('[data-nk-combo-add]');
+  const error = combo.querySelector('[data-nk-combo-error]');
+  const form = combo.parentElement.querySelector('form.nk-buy-form');
+  if (!button || !form) return;
+  const root = (window.Shopify && window.Shopify.routes && window.Shopify.routes.root) || '/';
+
+  button.addEventListener('click', async () => {
+    const selected = form.querySelector('input[name="id"]:checked') || form.querySelector('input[name="id"]');
+    const quantity = Number(form.querySelector('input[name="quantity"]')?.value) || 1;
+    if (!selected) return;
+    button.setAttribute('aria-busy', 'true');
+    error.hidden = true;
+    try {
+      const response = await fetch(`${root}cart/add.js`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
+        body: JSON.stringify({ items: [
+          { id: Number(selected.value), quantity },
+          { id: Number(button.dataset.comboVariant), quantity: 1 },
+        ] }),
+      });
+      if (!response.ok) throw new Error(String(response.status));
+      window.location.href = `${root}cart`;
+    } catch {
+      error.hidden = false;
+      button.removeAttribute('aria-busy');
+    }
+  });
+});

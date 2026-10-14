@@ -18,7 +18,7 @@
         <li>
           <span class="nk-about-icon">{% render 'nekova-icon', icon: 'check' %}</span>
           <strong>Productos elegidos con criterio</strong>
-          <p>Seleccionamos cada producto por su diseño, sus materiales y su utilidad real en el día a día. Empezamos por el cojín ergonómico en U.</p>
+          <p>Seleccionamos cada producto por su diseño, sus materiales y su utilidad real en el día a día. Empezamos por el cojín ergonómico en U y los tapones auditivos de silicona.</p>
         </li>
         <li>
           <span class="nk-about-icon">{% render 'nekova-icon', icon: 'card' %}</span>
@@ -27,7 +27,7 @@
         </li>
         <li>
           <span class="nk-about-icon">{% render 'nekova-icon', icon: 'shield' %}</span>
-          <strong>Atención de personas</strong>
+          <strong>Atención al cliente</strong>
           <p>Si tenés una duda antes o después de comprar, te responde nuestro equipo, no un robot.</p>
         </li>
       </ul>
@@ -40,9 +40,8 @@
       <h2>Comprá con <span>tranquilidad</span></h2>
     </div>
     <ul class="nk-about-list" role="list">
-      <li>{% render 'nekova-icon', icon: 'truck' %}<span><strong>Despacho en el día</strong> comprando antes de las 13 h; después, dentro de las 24 h.</span></li>
+      <li>{% render 'nekova-icon', icon: 'truck' %}<span><strong>Despacho en el día</strong> comprando antes de las 13:00 hs, en días hábiles; si no, el día hábil siguiente.</span></li>
       <li>{% render 'nekova-icon', icon: 'return' %}<span><strong>10 días para devolverlo</strong> si no te convence, con el producto completo y en perfecto estado.</span></li>
-      <li>{% render 'nekova-icon', icon: 'shield' %}<span><strong>60 días de garantía</strong> en nuestros productos.</span></li>
     </ul>
   </div>
 
@@ -59,7 +58,7 @@
         {%- if contact_email != blank -%}
           <a class="nk-about-button nk-about-button--ghost" href="mailto:{{ contact_email }}">{{ contact_email }}</a>
         {%- endif -%}
-        <a class="nk-about-link" href="{{ routes.root_url }}">Ver el cojín ergonómico →</a>
+        <a class="nk-about-link" href="{{ routes.root_url }}">Ver los productos →</a>
       </div>
     </div>
   </div>
@@ -125,13 +124,13 @@
       "type": "inline_richtext",
       "id": "heading",
       "label": "Título",
-      "default": "Objetos para sentarte, trabajar y descansar <em>mejor</em>"
+      "default": "Objetos para viajar, trabajar y descansar <em>mejor</em>"
     },
     {
       "type": "richtext",
       "id": "intro",
       "label": "Texto de presentación",
-      "default": "<p>Nekova nace con una idea simple: que las horas que pasás sentado, trabajando o descansando sean más cómodas.</p><p>Elegimos productos de ergonomía y bienestar que resuelven molestias cotidianas, y los acompañamos con información clara y atención cercana.</p>"
+      "default": "<p>Nekova nace con una idea simple: que las horas que pasás sentado, trabajando o descansando sean más cómodas.</p><p>Elegimos productos de ergonomía y bienestar que hacen más cómodo el día a día, y los acompañamos con información clara y atención cercana.</p>"
     }
   ],
   "presets": [

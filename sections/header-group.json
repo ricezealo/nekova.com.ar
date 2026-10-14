@@ -17,7 +17,7 @@
         "announcement-guarantee": {
           "type": "announcement",
           "settings": {
-            "text": "60 días de garantía en nuestros productos",
+            "text": "10 días para devolverlo si no te convence",
             "text_alignment": "center",
             "color_scheme": "scheme-4",
             "link": ""
@@ -35,7 +35,7 @@
         "announcement-details": {
           "type": "announcement",
           "settings": {
-            "text": "Despacho en el día comprando antes de las 13 h",
+            "text": "Despacho en el día comprando antes de las 13:00 hs",
             "text_alignment": "center",
             "color_scheme": "scheme-4",
             "link": ""
@@ -76,15 +76,7 @@
           "settings": {
             "icon": "truck",
             "title": "Despacho en el día",
-            "text": "comprando antes de las 13 h"
-          }
-        },
-        "trust-warranty": {
-          "type": "item",
-          "settings": {
-            "icon": "shield",
-            "title": "60 días",
-            "text": "de garantía"
+            "text": "antes de las 13:00 hs, días hábiles"
           }
         },
         "trust-returns": {
@@ -98,17 +90,25 @@
         "trust-payment": {
           "type": "item",
           "settings": {
-            "icon": "card",
-            "title": "Envío y pago claros",
-            "text": "antes de confirmar"
+            "icon": "lock",
+            "title": "Pago seguro",
+            "text": "con checkout protegido"
+          }
+        },
+        "trust-contact": {
+          "type": "item",
+          "settings": {
+            "icon": "chat",
+            "title": "Atención por WhatsApp",
+            "text": ""
           }
         }
       },
       "block_order": [
         "trust-dispatch",
-        "trust-warranty",
         "trust-returns",
-        "trust-payment"
+        "trust-payment",
+        "trust-contact"
       ],
       "settings": {}
     }

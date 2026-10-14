@@ -1,6 +1,6 @@
 {%- comment -%}
   Line icons for Nekova sections (24px grid, currentColor).
-  @param {string} icon - arrow-left | arrow-right | close | check | cross | truck | shield | return | card | cart | foam | slot | sides | arc | wind | zip
+  @param {string} icon - arrow-left | arrow-right | close | check | cross | truck | shield | return | card | cart | foam | slot | sides | arc | wind | zip | ear | moon | drop | case | sizes | wave | lock | chat
 {%- endcomment -%}
 <svg class="nk-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
   {%- case icon -%}
@@ -34,6 +34,22 @@
       <path d="M3 9h11a3 3 0 10-3-3M3 15h15a3 3 0 11-3 3M3 12h8"/>
     {%- when 'zip' -%}
       <path d="M12 3v18"/><path d="M10 6h4M10 9h4M10 12h4"/><rect x="9.5" y="14" width="5" height="5" rx="1.5"/>
+    {%- when 'ear' -%}
+      <path d="M7 10a5 5 0 0110 0c0 3-2.2 4-3.2 5.4-.8 1.2-.6 3.6-2.8 3.6A3 3 0 018 16"/><path d="M10 10a2 2 0 014 0c0 1.2-1 1.6-1.5 2.2"/>
+    {%- when 'moon' -%}
+      <path d="M20 14.5A8 8 0 019.5 4a8 8 0 1010.5 10.5z"/>
+    {%- when 'drop' -%}
+      <path d="M12 3.5s6 6.4 6 10.5a6 6 0 01-12 0c0-4.1 6-10.5 6-10.5z"/><path d="M9.5 14.5a2.5 2.5 0 002.5 2.5"/>
+    {%- when 'case' -%}
+      <ellipse cx="12" cy="14" rx="8" ry="6"/><path d="M4 14h16"/><path d="M12 8V5.5a2 2 0 012-2"/>
+    {%- when 'sizes' -%}
+      <circle cx="5" cy="15" r="2"/><circle cx="10.5" cy="14" r="3"/><circle cx="17.5" cy="12.5" r="4.5"/>
+    {%- when 'wave' -%}
+      <path d="M4 10v4M8 7v10M12 4v16M16 8v8M20 11v2"/>
+    {%- when 'lock' -%}
+      <rect x="5" y="10.5" width="14" height="10" rx="2.5"/><path d="M8.5 10.5V8a3.5 3.5 0 017 0v2.5M12 14.5v2"/>
+    {%- when 'chat' -%}
+      <path d="M20 11.5a7.5 7.5 0 01-10.9 6.7L4.5 19.5l1.3-4.2A7.5 7.5 0 1120 11.5z"/><path d="M8.8 11.5h.01M12 11.5h.01M15.2 11.5h.01"/>
     {%- when 'cart' -%}
       <path d="M3 4h2.2l2.1 10.4a1.6 1.6 0 001.6 1.3h8.3a1.6 1.6 0 001.6-1.2L20.5 8H6.1"/><circle cx="9.5" cy="19.5" r="1.4"/><circle cx="17" cy="19.5" r="1.4"/>
   {%- endcase -%}

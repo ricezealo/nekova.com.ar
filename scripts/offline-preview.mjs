@@ -299,21 +299,79 @@ const orthopedicProduct = {
   type: 'Confort y descanso',
   has_only_default_variant: false,
 };
-const products = [featuredProduct, lightProduct, cushionProduct, orthopedicProduct, upcomingProduct];
+const earplugImages = ['01', '02', '03', '04', '05'].map((number, index) => ({
+  src: `/assets/product-media-tapones-${number}.jpg`,
+  url: `/assets/product-media-tapones-${number}.jpg`,
+  alt: `Tapones auditivos de silicona, imagen ${index + 1}`,
+  width: 1200,
+  height: 1200,
+}));
+const earplugMedia = earplugImages.map((preview, index) => ({
+  id: 500 + index,
+  media_type: 'image',
+  preview_image: preview,
+  alt: preview.alt,
+}));
+// Sample price for the preview only; the real price is set in Shopify.
+const earplugVariants = ['Negro', 'Blanco'].map((color, index) => ({
+  id: 56001 + index,
+  title: color,
+  price: 2490000,
+  compare_at_price: null,
+  available: true,
+  featured_image: earplugImages[index === 0 ? 0 : 2],
+  featured_media: earplugMedia[index === 0 ? 0 : 2],
+  options: [color],
+  option1: color,
+  inventory_quantity: 40,
+}));
+const earplugProduct = {
+  id: 5600,
+  handle: 'tapones-auditivos-silicona',
+  title: 'Tapones Auditivos Reutilizables de Silicona',
+  vendor: 'NEKOVA',
+  price: 2490000,
+  compare_at_price: null,
+  available: true,
+  featured_image: earplugImages[0],
+  featured_media: earplugMedia[0],
+  media: earplugMedia,
+  images: earplugImages,
+  options: ['Color'],
+  options_with_values: [{ name: 'Color', position: 1, values: ['Negro', 'Blanco'] }],
+  variants: earplugVariants,
+  selected_or_first_available_variant: earplugVariants[0],
+  description: '<p>Tapones de silicona reutilizables con anillo de sujeción, puntas en 4 tamaños (XS, S, M y L) y estuche de bolsillo. Reducción de ruido pasiva para dormir, concentrarte o viajar.</p>',
+  url: '/products/tapones-auditivos-silicona',
+  type: 'Descanso y silencio',
+  has_only_default_variant: false,
+};
+const products = [featuredProduct, lightProduct, cushionProduct, orthopedicProduct, earplugProduct, upcomingProduct];
 // One cookie per purchasable variant in the local sample cart.
 const cartLines = [
   { product: featuredProduct, variant: productVariant, image: productImages[0], cookie: 'nekova_cart' },
   { product: lightProduct, variant: lightVariant, image: lightImages[0], cookie: 'nekova_cart_k25' },
   { product: cushionProduct, variant: cushionVariant, image: cushionImages[0], cookie: 'nekova_cart_cushion' },
   ...orthopedicVariants.map((variant) => ({ product: orthopedicProduct, variant, image: variant.featured_image, cookie: `nekova_cart_${variant.id}` })),
+  ...earplugVariants.map((variant) => ({ product: earplugProduct, variant, image: variant.featured_image, cookie: `nekova_cart_${variant.id}` })),
 ];
-// Launch catalog: only the U cushion is for sale. The other sample products stay reachable by URL for template testing.
-const launchProducts = [orthopedicProduct];
+// Store catalog: the U cushion and the earplugs. The other sample products stay reachable by URL for template testing.
+// PREVIEW_SOLDOUT="Azul marino" marks the variants with that title as sold out (to test the color waitlist).
+if (process.env.PREVIEW_SOLDOUT) {
+  products.forEach((item) => item.variants?.forEach((variant) => {
+    if (variant.title === process.env.PREVIEW_SOLDOUT) variant.available = false;
+  }));
+}
+// PREVIEW_ALL_PRODUCTS=1 adds the other sample products, to test the home with a larger catalog.
+const launchProducts = process.env.PREVIEW_ALL_PRODUCTS
+  ? [orthopedicProduct, earplugProduct, cushionProduct, lightProduct, featuredProduct]
+  : [orthopedicProduct, earplugProduct];
 const collection = { id: 1, handle: 'all', title: 'Todos los productos', description: '<p>Productos de ejemplo para la vista local.</p>', products: launchProducts, all_products_count: launchProducts.length, products_count: launchProducts.length, url: '/collections/all', image };
 const menuItems = [
-  { title: 'Inicio', url: '/' },
-  { title: 'Casa y trabajo', url: '/collections/all', links: [{ title: 'Todos los objetos', url: '/collections/all', links: [] }] },
-  { title: 'Contacto', url: '/pages/contact' },
+  { title: 'Cojín ergonómico', url: '/products/cojin-ortopedico-u', links: [] },
+  { title: 'Tapones auditivos', url: '/products/tapones-auditivos-silicona', links: [] },
+  { title: 'Sobre Nekova', url: '/pages/sobre-nekova', links: [] },
+  { title: 'Contacto', url: '/pages/contact', links: [] },
 ];
 const menu = { links: menuItems };
 const emptyCart = { items: [], item_count: 0, total_price: 0, cart_level_discount_applications: [], note: '', empty: true };
@@ -367,7 +425,7 @@ function colorValue(hex) {
 const engine = new Liquid({
   root: [join(root, 'snippets'), join(root, 'sections'), join(root, 'layout')],
   // Like Shopify, snippets rendered with {% render %} can read settings, shop and routes.
-  globals: { settings: { ...themeSettings, color_schemes: colors }, shop, routes },
+  globals: { settings: { ...themeSettings, color_schemes: colors }, shop, routes, all_products: Object.fromEntries(products.map((item) => [item.handle, item])) },
   extname: '.liquid',
   strictFilters: false,
   strictVariables: false,
@@ -508,7 +566,8 @@ async function renderSection(id, definition, context, groupClass = '') {
     schemaClass = '';
   }
   const source = normalizeLiquid(rawSource);
-  let html = await engine.parseAndRender(source, globals);
+  // Like Shopify, snippets rendered from a section can read that section (e.g. the header menu snippets).
+  let html = await engine.parseAndRender(source, globals, { globals: { ...engine.options.globals, section } });
   if (definition.type === 'main-product' && !html.includes('<img')) {
     html = html.replace('<div class="grid__item product__media-wrapper">', `<div class="grid__item product__media-wrapper"><img src="${previewImage}" alt="${image.alt}" style="width:100%;height:auto">`);
   }
@@ -535,6 +594,7 @@ function templateFor(pathname) {
   if (pathname.startsWith('/collections/')) return ['collection', collection];
   if (pathname === '/cart') return ['cart', null];
   if (pathname === '/pages/sobre-nekova') return ['page.about', { title: 'Sobre Nekova', content: '' }];
+  if (pathname === '/pages/arrepentimiento') return ['page.arrepentimiento', { title: 'Botón de arrepentimiento', content: '' }];
   if (pathname.startsWith('/pages/')) return [pathname === '/pages/contact' ? 'page.contact' : 'page', { title: pathname.endsWith('/contact') ? 'Contacto' : 'Pagina de ejemplo', content: '<p>Contenido de pagina de ejemplo para la vista offline.</p>' }];
   if (pathname.startsWith('/blogs/')) return ['blog', { title: 'Novedades', articles: [] }];
   if (pathname.startsWith('/articles/')) return ['article', { title: 'Articulo de ejemplo', content: '<p>Contenido de articulo.</p>', image }];
@@ -659,6 +719,32 @@ createServer(async (request, response) => {
       Number.parseInt(request.headers.cookie?.match(new RegExp(`(?:^|;\\s*)${cookie}=(\\d+)`))?.[1] || '0', 10),
       0,
     ), 99));
+    if (request.method === 'POST' && url.pathname === '/cart/add.js') {
+      let body = '';
+      for await (const chunk of request) {
+        body += chunk;
+        if (body.length > 8192) {
+          response.writeHead(413).end('Payload too large');
+          return;
+        }
+      }
+      let items = [];
+      try {
+        items = JSON.parse(body).items || [];
+      } catch {
+        items = [];
+      }
+      const lines = items.map(({ id, quantity }) => ({ index: cartLines.findIndex(({ variant }) => String(id) === String(variant.id)), quantity: Number(quantity || 1) }));
+      if (!lines.length || lines.some(({ index, quantity }) => index < 0 || !Number.isSafeInteger(quantity) || quantity < 1 || quantity > 10)) {
+        response.writeHead(422, { 'content-type': 'application/json' }).end(JSON.stringify({ status: 422, description: 'Variante o cantidad inválida' }));
+        return;
+      }
+      response.writeHead(200, {
+        'content-type': 'application/json',
+        'set-cookie': lines.map(({ index, quantity }) => `${cartLines[index].cookie}=${Math.min(cartCounts[index] + quantity, 99)}; Path=/; Max-Age=604800; SameSite=Lax; HttpOnly`),
+      }).end(JSON.stringify({ items }));
+      return;
+    }
     if (request.method === 'POST' && url.pathname === '/cart/add') {
       let body = '';
       for await (const chunk of request) {
@@ -695,7 +781,10 @@ createServer(async (request, response) => {
       const form = new URLSearchParams(body);
       const email = form.get('contact[email]')?.trim().toLowerCase();
       const tagValue = form.get('contact[tags]') || '';
-      const taggedProduct = products.find((item) => !item.available && tagValue.split(',').map((tag) => tag.trim()).includes(`back-in-stock-${item.handle}`));
+      const tags = tagValue.split(',').map((tag) => tag.trim());
+      // Whole product sold out, or a sold-out variant (tag back-in-stock-<handle>-<variant>).
+      const taggedProduct = products.find((item) => tags.includes(`back-in-stock-${item.handle}`)
+        && (!item.available || tags.some((tag) => tag.startsWith(`back-in-stock-${item.handle}-`))));
       const acceptedNotification = form.get('contact[accepts_marketing]') === 'true';
       if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email) || !taggedProduct || !acceptedNotification) {
         response.writeHead(400, { 'content-type': 'text/plain; charset=utf-8' }).end('Ingresá un email válido y aceptá recibir el aviso de disponibilidad.');

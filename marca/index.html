@@ -1,0 +1,195 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Nekova · kit de marca</title>
+<link rel="icon" href="../assets/nekova-mark.svg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Nunito+Sans:wght@400;700;800&family=Poppins:wght@600&display=swap" rel="stylesheet">
+<style>
+  :root { --accent: #2f5bff; --accent-soft: #eaf0ff; --ink: #14161a; --muted: #5b6270; --panel: #f3f5f9; --line: rgba(20, 22, 26, .1); --white: #fff; }
+  * { box-sizing: border-box; }
+  body { background: var(--white); color: var(--ink); font: 400 15px/1.6 'Nunito Sans', system-ui, sans-serif; margin: 0; }
+  .shell { margin: 0 auto; max-width: 1180px; padding: 0 32px; }
+  h1, h2, h3 { font-family: Poppins, system-ui, sans-serif; font-weight: 600; letter-spacing: -.02em; line-height: 1.15; margin: 0; }
+  h1 { font-size: clamp(30px, 4vw, 44px); }
+  h2 { font-size: clamp(24px, 3vw, 32px); }
+  h3 { font-size: 18px; }
+  p { margin: 0; }
+  code { background: var(--panel); border-radius: 6px; font-size: 13px; padding: 2px 6px; }
+  .eyebrow { align-items: center; color: var(--accent); display: flex; font-size: 12px; font-weight: 800; gap: 10px; letter-spacing: .14em; margin-bottom: 14px; text-transform: uppercase; }
+  .eyebrow::before { background: currentColor; border-radius: 2px; content: ''; height: 2px; width: 24px; }
+  .muted { color: var(--muted); }
+  header { border-bottom: 1px solid var(--line); padding: 28px 0; }
+  header img { display: block; height: 32px; }
+  section { padding: 64px 0; }
+  .intro { display: grid; gap: 40px; grid-template-columns: 1.1fr .9fr; align-items: end; }
+  .intro p { font-size: 17px; }
+  .grid { display: grid; gap: 16px; grid-template-columns: repeat(3, minmax(0, 1fr)); margin-top: 36px; }
+  .card { border: 1px solid var(--line); border-radius: 20px; overflow: hidden; }
+  .swatch { align-items: center; display: flex; height: 180px; justify-content: center; }
+  .swatch img.logo { width: 62%; }
+  .swatch img.mark { width: 76px; }
+  .bg-panel { background: var(--panel); }
+  .bg-ink { background: var(--ink); }
+  .bg-accent { background: var(--accent); }
+  .bg-fabric { background: #7b8287 repeating-linear-gradient(45deg, rgba(255, 255, 255, .07) 0 2px, transparent 2px 5px); }
+  .card-body { display: grid; gap: 4px; padding: 18px 20px 20px; }
+  .card-body strong { font-size: 15px; }
+  .card-body span { color: var(--muted); font-size: 14px; }
+  .colors { display: grid; gap: 16px; grid-template-columns: repeat(4, minmax(0, 1fr)); margin-top: 36px; }
+  .color { border: 1px solid var(--line); border-radius: 20px; overflow: hidden; }
+  .color div { height: 96px; }
+  .color p { padding: 14px 18px; font-size: 14px; }
+  .rules { display: grid; gap: 12px; list-style: none; margin: 32px 0 0; padding: 0; }
+  .rules li { border-bottom: 1px solid var(--line); display: flex; gap: 12px; padding-bottom: 12px; }
+  .rules li::before { color: var(--accent); content: '✓'; font-weight: 800; }
+  .rules li.no::before { color: #c94430; content: '✕'; }
+
+  .social { background: var(--accent-soft); border-top: 4px solid var(--accent); }
+  .social-head { display: grid; gap: 40px; grid-template-columns: 1.1fr .9fr; align-items: end; }
+  .social-pieces { display: grid; gap: 16px; grid-template-columns: 340px 1fr; margin-top: 36px; }
+  .piece { background: var(--white); border-radius: 20px; display: grid; gap: 14px; padding: 20px; align-content: start; }
+  .piece img { border-radius: 12px; display: block; width: 100%; }
+  .piece .meta { display: flex; flex-wrap: wrap; gap: 8px 16px; font-size: 14px; }
+  .button { align-items: center; background: var(--accent); border-radius: 12px; color: var(--white); display: inline-flex; font-weight: 700; justify-content: center; min-height: 44px; padding: 0 18px; text-decoration: none; }
+  .button:hover { background: #1f45d9; }
+  .button:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
+  .networks { display: grid; gap: 16px; grid-template-columns: repeat(4, minmax(0, 1fr)); margin-top: 16px; }
+  .network { background: var(--white); border-radius: 20px; display: grid; gap: 12px; padding: 22px; align-content: start; }
+  .network-top { align-items: center; display: flex; gap: 14px; }
+  .avatar { border: 1px solid var(--line); border-radius: 50%; flex: 0 0 auto; height: 64px; overflow: hidden; width: 64px; }
+  .avatar img { display: block; height: 100%; width: 100%; }
+  .network-top a { color: var(--muted); font-size: 13px; text-decoration: none; word-break: break-all; }
+  .network ul { display: grid; gap: 6px; list-style: none; margin: 0; padding: 0; font-size: 14px; }
+  .network li { display: grid; gap: 2px; }
+  .network li span { color: var(--muted); font-size: 13px; }
+  .tips { display: grid; gap: 16px; grid-template-columns: repeat(3, minmax(0, 1fr)); margin-top: 16px; }
+  .tip { background: var(--white); border-radius: 20px; display: grid; gap: 12px; padding: 22px; align-content: start; }
+  .tip .swatch { border-radius: 12px; height: 110px; }
+  .tip .swatch img.logo { width: 58%; }
+  .photo { background: linear-gradient(135deg, #3a3f4a, #8a8f99); }
+  footer { color: var(--muted); font-size: 13px; padding: 28px 0 40px; }
+  @media (max-width: 900px) {
+    .intro, .social-head, .social-pieces { grid-template-columns: 1fr; gap: 20px; }
+    .grid, .tips { grid-template-columns: 1fr 1fr; }
+    .networks, .colors { grid-template-columns: 1fr 1fr; }
+  }
+  @media (max-width: 560px) {
+    .shell { padding: 0 16px; }
+    section { padding: 44px 0; }
+    .grid, .tips, .networks, .colors { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+<header>
+  <div class="shell"><img src="../assets/nekova-logo.svg" alt="Nekova"></div>
+</header>
+
+<main>
+  <section>
+    <div class="shell intro">
+      <div>
+        <p class="eyebrow">Kit de marca</p>
+        <h1>Logo "Ranuras"</h1>
+      </div>
+      <p class="muted">Un cuadrado blando con dos cortes en U que dibujan la N y repiten la ranura del cojín. Formas llenas, sin líneas finas: se puede bordar y funciona en un solo color. Los cortes son transparentes, así se ve el fondo o la tela.</p>
+    </div>
+
+    <div class="shell">
+      <div class="grid">
+        <div class="card"><div class="swatch bg-panel"><img class="logo" src="../assets/nekova-logo.svg" alt=""></div><div class="card-body"><strong>nekova-logo.svg</strong><span>Logo principal. Header y fondos claros.</span></div></div>
+        <div class="card"><div class="swatch bg-ink"><img class="logo" src="../assets/nekova-logo-white.svg" alt=""></div><div class="card-body"><strong>nekova-logo-white.svg</strong><span>Footer, fondos negros o azules, fotos oscuras.</span></div></div>
+        <div class="card"><div class="swatch"><img class="logo" src="../assets/nekova-logo-ink.svg" alt=""></div><div class="card-body"><strong>nekova-logo-ink.svg</strong><span>Impresión a una tinta, empaque, documentos.</span></div></div>
+        <div class="card"><div class="swatch bg-panel"><img class="mark" src="../assets/nekova-mark.svg" alt=""></div><div class="card-body"><strong>nekova-mark.svg</strong><span>Favicon, íconos, fondos claros.</span></div></div>
+        <div class="card"><div class="swatch bg-fabric"><img class="mark" src="../assets/nekova-mark-white.svg" alt=""></div><div class="card-body"><strong>nekova-mark-white.svg</strong><span>Bordado sobre la tela de los cojines, fondos azules o negros.</span></div></div>
+        <div class="card"><div class="swatch"><img class="mark" src="../assets/nekova-mark-ink.svg" alt=""></div><div class="card-body"><strong>nekova-mark-ink.svg</strong><span>Etiqueta tejida clara, sellos, una tinta.</span></div></div>
+      </div>
+
+      <div class="colors">
+        <div class="color"><div style="background:#2f5bff"></div><p><strong>Azul cobalto</strong><br><code>#2F5BFF</code></p></div>
+        <div class="color"><div style="background:#14161a"></div><p><strong>Carbón</strong><br><code>#14161A</code></p></div>
+        <div class="color"><div style="background:#eaf0ff"></div><p><strong>Azul suave</strong><br><code>#EAF0FF</code></p></div>
+        <div class="color"><div style="background:#f3f5f9"></div><p><strong>Gris claro</strong><br><code>#F3F5F9</code></p></div>
+      </div>
+
+      <ul class="rules">
+        <li>El isotipo va siempre a la izquierda del texto.</li>
+        <li>Sobre fondos de color o fotos, usá la versión blanca.</li>
+        <li class="no">No deformar, rotar, cambiar colores ni agregar sombras.</li>
+        <li class="no">Nunca el isotipo azul sobre fondo azul.</li>
+      </ul>
+    </div>
+  </section>
+
+  <section class="social" id="redes">
+    <div class="shell social-head">
+      <div>
+        <p class="eyebrow">Redes sociales</p>
+        <h2>Qué usar en cada red</h2>
+      </div>
+      <p class="muted">La misma foto de perfil en todas las redes: el isotipo blanco sobre azul. Se reconoce aunque se vea chiquita y en círculo. El logo con texto no va como foto de perfil: en 40 px no se lee.</p>
+    </div>
+
+    <div class="shell">
+      <div class="social-pieces">
+        <div class="piece">
+          <img src="redes/nekova-perfil.png" alt="Foto de perfil: isotipo blanco sobre azul">
+          <h3>Foto de perfil</h3>
+          <div class="meta"><span>PNG · 1080 × 1080</span><span class="muted">Instagram, Facebook, TikTok, WhatsApp</span></div>
+          <a class="button" href="redes/nekova-perfil.png" download>Descargar PNG</a>
+        </div>
+        <div class="piece">
+          <img src="redes/nekova-portada-facebook.png" alt="Portada de Facebook: Tu bienestar, en los detalles, sobre fondo carbón">
+          <h3>Portada de Facebook</h3>
+          <div class="meta"><span>PNG · 1640 × 624</span><span class="muted">Fondo carbón para no repetir el azul del perfil, la frase de marca y las ranuras en U del isotipo. La frase va en el centro porque en el celular Facebook recorta los costados.</span></div>
+          <a class="button" href="redes/nekova-portada-facebook.png" download>Descargar PNG</a>
+        </div>
+      </div>
+
+      <div class="networks">
+        <div class="network">
+          <div class="network-top"><span class="avatar"><img src="redes/nekova-perfil.png" alt=""></span><div><h3>Instagram</h3><a href="https://www.instagram.com/nekova_ok/" target="_blank" rel="noopener">@nekova_ok</a></div></div>
+          <ul>
+            <li><strong>Perfil: nekova-perfil.png</strong><span>Se muestra en círculo de 110 px.</span></li>
+            <li><strong>Posts e historias: nekova-logo-white.svg</strong><span>Chico, en una esquina, sobre las fotos.</span></li>
+          </ul>
+        </div>
+        <div class="network">
+          <div class="network-top"><span class="avatar"><img src="redes/nekova-perfil.png" alt=""></span><div><h3>Facebook</h3><a href="https://www.facebook.com/profile.php?id=61590912921148" target="_blank" rel="noopener">Nekova</a></div></div>
+          <ul>
+            <li><strong>Perfil: nekova-perfil.png</strong><span>Se muestra en círculo.</span></li>
+            <li><strong>Portada: nekova-portada-facebook.png</strong><span>1640 × 624, fondo carbón.</span></li>
+          </ul>
+        </div>
+        <div class="network">
+          <div class="network-top"><span class="avatar"><img src="redes/nekova-perfil.png" alt=""></span><div><h3>TikTok</h3><a href="https://www.tiktok.com/@nekova_ok" target="_blank" rel="noopener">@nekova_ok</a></div></div>
+          <ul>
+            <li><strong>Perfil: nekova-perfil.png</strong><span>Se muestra en círculo; TikTok pide mínimo 200 × 200.</span></li>
+            <li><strong>Videos: nekova-logo-white.svg</strong><span>Al final del video, sobre fondo azul o negro.</span></li>
+          </ul>
+        </div>
+        <div class="network">
+          <div class="network-top"><span class="avatar"><img src="redes/nekova-perfil.png" alt=""></span><div><h3>WhatsApp Business</h3><a href="https://wa.me/5491149457398" target="_blank" rel="noopener">+54 9 11 4945-7398</a></div></div>
+          <ul>
+            <li><strong>Perfil: nekova-perfil.png</strong><span>La misma que en las otras redes, así el cliente reconoce la marca al escribir desde la web.</span></li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="tips">
+        <div class="tip"><div class="swatch photo"><img class="logo" src="../assets/nekova-logo-white.svg" alt=""></div><strong>Sobre fotos</strong><span class="muted">nekova-logo-white.svg, chico y en una esquina.</span></div>
+        <div class="tip"><div class="swatch bg-panel"><img class="logo" src="../assets/nekova-logo.svg" alt=""></div><strong>Sobre fondos claros</strong><span class="muted">nekova-logo.svg (isotipo azul y texto carbón).</span></div>
+        <div class="tip"><div class="swatch bg-accent"><img class="logo" src="../assets/nekova-logo-white.svg" alt=""></div><strong>Sobre azul o negro</strong><span class="muted">nekova-logo-white.svg. Nunca el isotipo azul sobre azul.</span></div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="shell">Generado con <code>node scripts/build-logo-kit.mjs</code>. Para cambiar formas o colores, editar ese script y volver a generar (no tocar los SVG a mano).</div>
+</footer>
+</body>
+</html>

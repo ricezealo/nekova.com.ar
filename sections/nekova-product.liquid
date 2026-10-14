@@ -9,17 +9,14 @@
     assign discount_percent = original_price | minus: current_price | times: 100.0 | divided_by: original_price | round
   endif
 
-  assign is_u_cushion = false
-  if featured_product.handle == 'cojin-ortopedico-u'
-    assign is_u_cushion = true
-  endif
-
-  assign product_video = ''
-  assign product_video_poster = ''
-  if is_u_cushion
-    assign product_video = 'cojin-ortopedico.mp4'
-    assign product_video_poster = 'product-media-cojin-ortopedico-poster.jpg'
-  endif
+  # Products with their own content. Add new products here and in the content block below.
+  assign content_key = ''
+  case featured_product.handle
+    when 'cojin-ortopedico-u'
+      assign content_key = 'cojin'
+    when 'tapones-auditivos-silicona'
+      assign content_key = 'tapones'
+  endcase
 
   assign has_variant_choice = false
   if featured_product.has_only_default_variant == false and featured_product.variants.size > 1
@@ -29,16 +26,144 @@
   assign stock_form_id = 'NkStockForm-' | append: section.id
 -%}
 
+{%- comment -%}
+  Content per product. Lists use "||" between items and "::" between fields.
+  Any field left empty hides its block, so a product without its own content falls back to Shopify data.
+{%- endcomment -%}
+{%- assign nk_gallery = '' -%}
+{%- assign nk_gallery_alt = featured_product.title -%}
+{%- assign nk_variant_images = '' -%}
+{%- assign nk_tagline = 'Ergonomía y bienestar' -%}
+{%- assign nk_lead = '' -%}
+{%- assign nk_checks = '' -%}
+{%- assign nk_details = '' -%}
+{%- assign nk_specs = '' -%}
+{%- assign nk_uses_title = '' -%}
+{%- assign nk_how_title = '' -%}
+{%- assign nk_benefits_title = '' -%}
+{%- assign nk_video = '' -%}
+{%- assign nk_compare_title = '' -%}
+{%- assign nk_specs_title = '' -%}
+{%- assign nk_faq = '' -%}
+{%- assign nk_cta_title = 'Sumalo a tu día a día' -%}
+{%- comment -%} Returns: 10-day right of withdrawal; products that cannot be returned once opened override these. {%- endcomment -%}
+{%- assign nk_assure_extra = '' -%}
+{%- assign nk_combo_handle = '' -%}
+{%- capture nk_returns_assure -%}<strong>Probalo tranquilo:</strong> si no te convence, tenés 10 días para devolverlo.{%- endcapture -%}
+{%- capture nk_returns_text -%}Tenés 10 días desde la compra para solicitar la devolución, con el producto completo y en perfecto estado. <a href="/pages/contact">Escribinos</a> para coordinarla.{%- endcapture -%}
+{%- assign nk_returns_faq_q = '¿Puedo devolverlo si no me convence?' -%}
+{%- assign nk_returns_faq_a = 'Sí. Tenés 10 días desde la compra para devolverlo, con el producto completo y en perfecto estado. Escribinos y coordinamos la devolución.' -%}
+{%- assign nk_returns_short = '10 días para devolverlo' -%}
+{%- case content_key -%}
+  {%- when 'cojin' -%}
+    {%- assign nk_gallery = 'product-media-cojin-ortopedico-01.jpg,product-media-cojin-ortopedico-02.jpg,product-media-cojin-ortopedico-03.jpg,product-media-cojin-ortopedico-04.jpg,product-media-cojin-ortopedico-05.jpg,product-media-cojin-ortopedico-06.jpg,product-media-cojin-ortopedico-07.jpg,product-media-cojin-ortopedico-08.jpg,product-media-cojin-ortopedico-09.jpg,product-media-cojin-ortopedico-10.jpg,product-media-cojin-ortopedico-11.jpg,product-media-cojin-ortopedico-12.jpg' -%}
+    {%- assign nk_gallery_alt = 'Cojín ergonómico en U' -%}
+    {%- assign nk_variant_images = 'azul=product-media-cojin-ortopedico-02.jpg;*=product-media-cojin-ortopedico-01.jpg' -%}
+    {%- assign nk_combo_handle = 'tapones-auditivos-silicona' -%}
+    {%- assign nk_tagline = 'Comodidad para tus horas sentado.' -%}
+    {%- assign nk_lead = 'Espuma viscoelástica, ranura en U y funda transpirable. Para la oficina, el auto o tu casa.' -%}
+    {%- assign nk_checks = 'Espuma viscoelástica de recuperación lenta||Ranura en U que deja libre la zona del coxis||Funda transpirable y extraíble' -%}
+    {%- capture nk_details -%}Un cojín de asiento con forma ergonómica: los laterales elevados envuelven la cadera, el frente en arco acompaña la base de los muslos y la parte trasera, más alta, da apoyo a la espalda baja. La ranura en U deja libre la zona del coxis y el canal central favorece la circulación de aire.{%- endcapture -%}
+    {%- assign nk_specs = 'Medidas::48 × 38 × 12 cm||Relleno::Espuma viscoelástica de recuperación lenta||Recuperación::3 a 5 segundos||Diseño::Ranura en U, laterales elevados y frente en arco||Funda::Malla transpirable, extraíble con cierre||Colores::Gris y azul marino||Uso::Oficina, auto, hogar y viajes' -%}
+
+    {%- assign nk_uses_eyebrow = 'Para tu día a día' -%}
+    {%- assign nk_uses_title = 'Pensado para las horas que pasás <span class="nk-hl">sentado</span>' -%}
+    {%- assign nk_uses_lead = 'En el escritorio, en el auto o leyendo en casa: un apoyo cómodo se nota al final del día.' -%}
+    {%- assign nk_uses_shape = 'portrait' -%}
+    {%- capture nk_uses -%}product-media-cojin-ortopedico-vida-01.jpg::Mujer trabajando en su escritorio sentada sobre el cojín en U::Home office::Largas jornadas frente a la compu, con más comodidad.||product-media-cojin-ortopedico-vida-02.jpg::Persona sentada sobre el cojín en el asiento del auto::En el auto::Trayectos diarios o viajes largos, con un apoyo estable.||product-media-cojin-ortopedico-vida-03.jpg::Mujer sentada cómodamente sobre el cojín en una silla de escritorio::Estudio y lectura::Para las horas de clase, de lectura o de videollamadas.{%- endcapture -%}
+
+    {%- assign nk_how_eyebrow = 'Cómo funciona' -%}
+    {%- assign nk_how_title = 'Tres zonas, <span class="nk-hl">un solo apoyo</span>' -%}
+    {%- assign nk_how_lead = 'Cada parte del cojín cumple una función para que te sientes más cómodo.' -%}
+    {%- assign nk_how_image = 'product-media-cojin-ortopedico-04.jpg' -%}
+    {%- assign nk_how_alt = 'Zonas del cojín: A laterales, B zona trasera y C canal central' -%}
+    {%- assign nk_how = 'A::Laterales elevados::Envuelven la cadera y los muslos para un apoyo más estable.||B::Zona trasera de apoyo::Más alta, acompaña la espalda baja cuando te sentás.||C::Ranura en U y canal de aire::Deja libre la zona del coxis y favorece la ventilación.' -%}
+
+    {%- assign nk_benefits_eyebrow = 'Detalles que se notan' -%}
+    {%- assign nk_benefits_title = 'Diseñado para tu <span class="nk-hl">comodidad</span>' -%}
+    {%- assign nk_benefits_lead = 'Materiales y formas pensados para el uso de todos los días.' -%}
+    {%- assign nk_benefits = 'foam::Espuma viscoelástica::Se adapta a tu forma y recupera la suya en 3 a 5 segundos.||slot::Ranura en U::Su recorte central deja libre la zona del coxis.||sides::Laterales elevados::Envuelven la cadera y los muslos para que no te deslices.||arc::Frente en arco::Acompaña la base de los muslos con una transición suave.||wind::Funda transpirable::Malla con canal central de ventilación para mantenerlo fresco.||zip::Funda con cierre::Se retira fácilmente para lavarla por separado.' -%}
+
+    {%- assign nk_video = 'cojin-ortopedico.mp4' -%}
+    {%- assign nk_video_poster = 'product-media-cojin-ortopedico-poster.jpg' -%}
+    {%- assign nk_video_lead = 'La funda, el núcleo de espuma y cómo se usa en la oficina y en el auto.' -%}
+    {%- assign nk_video_details = 'product-media-cojin-ortopedico-detalle-espuma.jpg::Mano presionando el núcleo de espuma viscoelástica::Núcleo de espuma viscoelástica||product-media-cojin-ortopedico-detalle-funda.jpg::Manos abriendo el cierre de la funda del cojín::Funda con cierre, fácil de lavar' -%}
+
+    {%- assign nk_compare_title = 'Un cojín común vs. <span class="nk-hl">Nekova</span>' -%}
+    {%- assign nk_compare_them = 'Cojín común' -%}
+    {%- assign nk_compare = 'Laterales elevados que envuelven la cadera::no||Ranura en U para la zona del coxis::no||Espuma viscoelástica de recuperación lenta::a veces||Canal central de ventilación::no||Funda transpirable con cierre::a veces' -%}
+
+    {%- assign nk_specs_title = 'Todo lo que tenés que <span class="nk-hl">saber</span>' -%}
+    {%- assign nk_specs_lead = 'Antes de comprar, verificá que el asiento de tu silla o de tu auto tenga al menos 48 × 38 cm.' -%}
+    {%- assign nk_specs_image = 'product-media-cojin-ortopedico-03.jpg' -%}
+    {%- assign nk_specs_alt = 'El cojín en sus dos colores: gris y azul marino' -%}
+
+    {%- capture nk_faq -%}¿Qué medidas tiene?::Mide 48 × 38 × 12 cm. Antes de comprar, verificá que el asiento de tu silla o de tu auto tenga al menos ese ancho y esa profundidad.||¿Cómo se limpia?::La funda tiene cierre: retirala y lavala por separado. Recomendamos no mojar el núcleo de espuma viscoelástica.||¿En qué colores está disponible?::En gris y en azul marino. Elegí el color antes de agregarlo al carrito.{%- endcapture -%}
+    {%- assign nk_cta_title = 'Sentate más cómodo desde hoy' -%}
+
+  {%- when 'tapones' -%}
+    {%- assign nk_gallery = 'product-media-tapones-01.jpg,product-media-tapones-02.jpg,product-media-tapones-03.jpg,product-media-tapones-04.jpg,product-media-tapones-05.jpg' -%}
+    {%- assign nk_gallery_alt = 'Tapones auditivos de silicona' -%}
+    {%- assign nk_variant_images = 'blanco=product-media-tapones-03.jpg;*=product-media-tapones-01.jpg' -%}
+    {%- assign nk_tagline = 'Silencio a tu medida.' -%}
+    {%- assign nk_combo_handle = 'cojin-ortopedico-u' -%}
+    {%- capture nk_assure_extra -%}<strong>4 tamaños de puntas</strong> para encontrar tu calce.{%- endcapture -%}
+    {%- capture nk_returns_assure -%}<strong>10 días para devolverlos sin abrir.</strong> Por higiene, una vez abiertos no se aceptan devoluciones.{%- endcapture -%}
+    {%- capture nk_returns_text -%}Tenés 10 días desde la compra para devolverlos, siempre que estén en su envase cerrado y sin uso. Por razones de higiene, una vez abiertos no se aceptan devoluciones. Si llegan con una falla de fábrica, te los cambiamos aunque estén abiertos. <a href="/pages/contact">Escribinos</a> para coordinarlo.{%- endcapture -%}
+    {%- assign nk_returns_faq_q = '¿Puedo devolverlos?' -%}
+    {%- assign nk_returns_faq_a = 'Sí, dentro de los 10 días desde la compra y con el envase cerrado y sin uso. Por higiene, una vez abiertos no se aceptan devoluciones, salvo que tengan una falla de fábrica: en ese caso te los cambiamos. Escribinos y coordinamos.' -%}
+    {%- assign nk_returns_short = '10 días para devolverlos sin abrir' -%}
+    {%- assign nk_lead = 'Silicona suave, 4 tamaños de puntas y estuche de bolsillo. Para dormir, concentrarte o viajar.' -%}
+    {%- assign nk_checks = 'Silicona suave y reutilizable||4 tamaños de puntas: XS, S, M y L||Estuche de bolsillo con aro' -%}
+    {%- capture nk_details -%}Tapones de silicona con anillo de sujeción y puntas intercambiables. Se colocan en el oído y reducen el ruido del ambiente de forma pasiva, sin batería ni cables. Elegís la punta que mejor te calce entre cuatro tamaños y los guardás en su estuche cuando no los usás. Se lavan con agua y se pueden reutilizar.{%- endcapture -%}
+    {%- assign nk_specs = 'Material::Silicona suave (de grado alimenticio, según el fabricante)||Medidas::2,05 × 1,6 × 1,5 cm||Puntas::4 tamaños: XS, S, M y L||Incluye::2 tapones, puntas de repuesto y estuche con aro||Funcionamiento::Reducción de ruido pasiva, sin batería||Limpieza::Lavables con agua, reutilizables||Colores::Negro y blanco||Uso::Dormir, estudiar, trabajar, viajar y recitales' -%}
+
+    {%- assign nk_uses_eyebrow = 'Para cada momento' -%}
+    {%- assign nk_uses_title = 'Silencio cuando lo <span class="nk-hl">necesitás</span>' -%}
+    {%- assign nk_uses_lead = 'Para dormir sin ruidos, concentrarte en lo tuyo o disfrutar un recital sin aturdirte.' -%}
+    {%- assign nk_uses_shape = 'landscape' -%}
+    {%- capture nk_uses -%}product-media-tapones-vida-01.jpg::Mujer durmiendo tranquila en su cama::Dormir::Bajá el ruido de la calle o de los ronquidos y descansá tranquilo.||product-media-tapones-vida-02.jpg::Mujer concentrada trabajando en su computadora::Concentrarte::En la oficina, estudiando o en casa: menos distracciones.||product-media-tapones-vida-03.jpg::Público en un recital con luces en el escenario::Música y salidas::Recitales y salidas con un volumen más llevadero.{%- endcapture -%}
+
+    {%- assign nk_how_eyebrow = 'Cómo se usan' -%}
+    {%- assign nk_how_title = 'Así de <span class="nk-hl">simple</span>' -%}
+    {%- assign nk_how_lead = 'Tres pasos para encontrar tu calce y usarlos cuando quieras.' -%}
+    {%- assign nk_how_image = 'product-media-tapones-04.jpg' -%}
+    {%- assign nk_how_alt = 'Par de tapones de silicona con su anillo de sujeción' -%}
+    {%- assign nk_how = '1::Elegí tu punta::Probá los cuatro tamaños y quedate con el que te resulte cómodo y firme.||2::Colocalos::Introducí la punta con suavidad y acomodá el anillo en la oreja para que quede firme.||3::Guardalos::Después de usarlos, lavalos con agua y guardalos secos en su estuche.' -%}
+
+    {%- assign nk_benefits_eyebrow = 'Detalles que se notan' -%}
+    {%- assign nk_benefits_title = 'Pensados para tu <span class="nk-hl">descanso</span>' -%}
+    {%- assign nk_benefits_lead = 'Pequeños, suaves y fáciles de llevar a todos lados.' -%}
+    {%- assign nk_benefits = 'sizes::4 tamaños de puntas::Encontrá el calce justo para tu oído.||ear::Silicona suave::Cómodos para usar durante varias horas.||wave::Reducción pasiva::Bajan el ruido sin batería ni cables.||drop::Lavables y reutilizables::Se limpian con agua: no hace falta tirarlos.||case::Estuche de bolsillo::Con aro para llevarlos en las llaves o la mochila.||moon::Livianos y discretos::Pensados para dormir, estudiar o viajar.' -%}
+
+    {%- assign nk_compare_title = 'Tapones de espuma vs. <span class="nk-hl">Nekova</span>' -%}
+    {%- assign nk_compare_them = 'Tapones de espuma' -%}
+    {%- assign nk_compare = 'Reutilizables::no||Lavables con agua::no||4 tamaños para elegir el calce::no||Estuche para guardarlos::a veces||Silicona suave y duradera::no' -%}
+
+    {%- assign nk_specs_title = 'Todo lo que tenés que <span class="nk-hl">saber</span>' -%}
+    {%- assign nk_specs_lead = 'Medidas pensadas para un calce cómodo y discreto: 2,05 × 1,6 × 1,5 cm.' -%}
+    {%- assign nk_specs_image = 'product-media-tapones-01.jpg' -%}
+    {%- assign nk_specs_alt = 'Tapones con puntas en cuatro tamaños y estuche' -%}
+
+    {%- capture nk_faq -%}¿Cuánto ruido reducen?::Reducen el ruido del ambiente de forma pasiva, ideal para dormir, concentrarte o ir a un recital. No son un elemento de protección auditiva certificado: si trabajás expuesto a ruido intenso, usá protección certificada.||¿Qué tamaño de punta elijo?::Vienen 4 tamaños (XS, S, M y L). Empezá por el M y cambiá a uno más chico o más grande hasta que te quede cómodo y firme.||¿Cómo se limpian?::Lavalos con agua tibia y, si querés, un poco de jabón neutro. Dejalos secar bien antes de guardarlos en el estuche.||¿Son de uso personal?::Sí. Por higiene, cada persona debería usar su propio par.{%- endcapture -%}
+    {%- assign nk_cta_title = 'Menos ruido, más descanso' -%}
+{%- endcase -%}
+{%- if nk_lead == blank -%}
+  {%- assign nk_lead = featured_product.description | strip_html | truncatewords: 26 -%}
+{%- endif -%}
+{%- assign nk_tagline = section.settings.launch_heading | default: nk_tagline -%}
+
 {{ 'premium-product-landing.js' | asset_url | script_tag }}
 
 <section class="nk-product" data-premium-product aria-labelledby="NkTitle-{{ section.id }}">
   <div class="nk-shell">
     <div class="nk-main" id="NkBuy-{{ section.id }}">
       <div class="nk-gallery" id="NkGallery-{{ section.id }}" data-premium-gallery>
+        {%- assign gallery_files = nk_gallery | split: ',' -%}
         <div class="nk-gallery-main premium-gallery-main">
           <button class="nk-gallery-open" type="button" aria-label="Ampliar imagen del producto" data-gallery-open>
-            {%- if is_u_cushion -%}
-              <img src="{{ 'product-media-cojin-ortopedico-01.jpg' | asset_url }}" alt="Cojín ergonómico en U de espuma viscoelástica, color gris" width="1200" height="1200" fetchpriority="high" data-premium-main-image>
+            {%- if gallery_files.size > 0 -%}
+              <img src="{{ gallery_files.first | asset_url }}" alt="{{ nk_gallery_alt | escape }}" width="1200" height="1200" fetchpriority="high" data-premium-main-image>
             {%- elsif featured_product.featured_image -%}
               <img src="{{ featured_product.featured_image | image_url: width: 1600 }}" alt="{{ featured_product.featured_image.alt | default: featured_product.title | escape }}" fetchpriority="high" data-premium-main-image>
             {%- endif -%}
@@ -48,10 +173,9 @@
           {%- if has_discount -%}<span class="nk-badge">-{{ discount_percent }}%</span>{%- endif -%}
         </div>
         <div class="nk-gallery-thumbs" aria-label="Galería del producto">
-          {%- if is_u_cushion -%}
-            {%- assign gallery_images = 'product-media-cojin-ortopedico-01.jpg,product-media-cojin-ortopedico-02.jpg,product-media-cojin-ortopedico-03.jpg,product-media-cojin-ortopedico-04.jpg,product-media-cojin-ortopedico-05.jpg,product-media-cojin-ortopedico-06.jpg,product-media-cojin-ortopedico-07.jpg,product-media-cojin-ortopedico-08.jpg,product-media-cojin-ortopedico-09.jpg,product-media-cojin-ortopedico-10.jpg,product-media-cojin-ortopedico-11.jpg,product-media-cojin-ortopedico-12.jpg' | split: ',' -%}
-            {%- for image_file in gallery_images -%}
-              <button class="{% if forloop.first %}is-active{% endif %}" type="button" aria-label="Ver imagen {{ forloop.index }}" aria-pressed="{% if forloop.first %}true{% else %}false{% endif %}" data-premium-image="{{ image_file | asset_url }}" data-premium-alt="Cojín ergonómico en U, imagen {{ forloop.index }}">
+          {%- if gallery_files.size > 0 -%}
+            {%- for image_file in gallery_files -%}
+              <button class="{% if forloop.first %}is-active{% endif %}" type="button" aria-label="Ver imagen {{ forloop.index }}" aria-pressed="{% if forloop.first %}true{% else %}false{% endif %}" data-premium-image="{{ image_file | asset_url }}" data-premium-alt="{{ nk_gallery_alt | escape }}, imagen {{ forloop.index }}">
                 <img src="{{ image_file | asset_url }}" alt="" width="1200" height="1200" loading="lazy">
               </button>
             {%- endfor -%}
@@ -77,20 +201,9 @@
       </div>
 
       <div class="nk-buy">
-        {%- if section.settings.launch_heading != blank -%}
-          <p class="nk-tagline">{{ section.settings.launch_heading }}</p>
-        {%- else -%}
-          <p class="nk-tagline">Ergonomía y bienestar</p>
-        {%- endif -%}
+        <p class="nk-tagline">{{ nk_tagline }}</p>
         <h1 class="nk-title" id="NkTitle-{{ section.id }}">{{ featured_product.title | escape }}</h1>
-        <p class="nk-lead">
-          {%- if is_u_cushion -%}
-            Espuma viscoelástica, ranura en U y funda transpirable. Para la oficina, el auto o tu casa.
-          {%- else -%}
-            {{ featured_product.description | strip_html | truncatewords: 26 }}
-          {%- endif -%}
-        </p>
-
+        <p class="nk-lead">{{ nk_lead }}</p>
         <div class="nk-price" aria-label="Precio del producto">
           <span class="nk-price-current">{{ current_price | money_without_trailing_zeros }}</span>
           {%- if has_discount -%}
@@ -127,13 +240,17 @@
                   {%- for variant in featured_product.variants -%}
                     {%- liquid
                       assign variant_image = ''
-                      if is_u_cushion
+                      if nk_variant_images != blank
+                        # "keyword=file;...;*=file": first keyword contained in the variant name wins, * is the default.
                         assign variant_title_handle = variant.title | handleize
-                        if variant_title_handle contains 'azul'
-                          assign variant_image = 'product-media-cojin-ortopedico-02.jpg' | asset_url
-                        else
-                          assign variant_image = 'product-media-cojin-ortopedico-01.jpg' | asset_url
-                        endif
+                        assign variant_image_rules = nk_variant_images | split: ';'
+                        for rule in variant_image_rules
+                          assign rule_parts = rule | split: '='
+                          if rule_parts[0] == '*' or variant_title_handle contains rule_parts[0]
+                            assign variant_image = rule_parts[1] | asset_url
+                            break
+                          endif
+                        endfor
                       elsif variant.featured_media
                         assign variant_image = variant.featured_media | image_url: width: 1800
                       endif
@@ -216,6 +333,64 @@
               <button class="nk-button nk-button--cart" type="submit" name="add">{% render 'nekova-icon', icon: 'cart' %}<span>Agregar al carrito</span></button>
             </div>
           {% endform %}
+
+          {%- comment -%} Waitlist for sold-out variants while others are available. {%- endcomment -%}
+          {%- liquid
+            assign soldout_count = 0
+            for variant in featured_product.variants
+              unless variant.available
+                assign soldout_count = soldout_count | plus: 1
+              endunless
+            endfor
+          -%}
+          {%- if soldout_count > 0 -%}
+            <details class="nk-waitlist"{% if stock_notification_registered %} open{% endif %}>
+              <summary>¿Querés otro color? Avisame cuando llegue</summary>
+              {% form 'customer', id: 'NkWaitlistForm', class: 'nk-stock-form premium-stock-form nk-waitlist-form' %}
+                {%- if form.posted_successfully? or stock_notification_registered -%}
+                  <p class="nk-stock-success" role="status">¡Listo! Te vamos a avisar cuando vuelva a estar disponible.</p>
+                {%- else -%}
+                  <label for="NkWaitlistVariant-{{ section.id }}">Color</label>
+                  <select id="NkWaitlistVariant-{{ section.id }}" name="contact[tags]">
+                    {%- for variant in featured_product.variants -%}
+                      {%- unless variant.available -%}
+                        <option value="back-in-stock, back-in-stock-{{ featured_product.handle }}, back-in-stock-{{ featured_product.handle }}-{{ variant.title | handleize }}">{{ variant.title | escape }}</option>
+                      {%- endunless -%}
+                    {%- endfor -%}
+                  </select>
+                  <label class="visually-hidden" for="NkWaitlistEmail-{{ section.id }}">Tu correo electrónico</label>
+                  <div class="nk-stock-row">
+                    <input id="NkWaitlistEmail-{{ section.id }}" type="email" name="contact[email]" autocomplete="email" placeholder="nombre@correo.com" required>
+                    <button type="submit" class="nk-button">Avisarme</button>
+                  </div>
+                  <label class="nk-stock-consent" for="NkWaitlistConsent-{{ section.id }}">
+                    <input id="NkWaitlistConsent-{{ section.id }}" type="checkbox" name="contact[accepts_marketing]" value="true" required>
+                    <span>Acepto recibir por email un aviso cuando este color esté disponible.</span>
+                  </label>
+                {%- endif -%}
+              {% endform %}
+            </details>
+          {%- endif -%}
+
+          {%- comment -%} Combo: adds the current variant plus a complementary product (discount configured in Shopify). {%- endcomment -%}
+          {%- if nk_combo_handle != blank -%}
+            {%- assign combo_product = all_products[nk_combo_handle] -%}
+            {%- if combo_product != blank and combo_product.available and combo_product.handle != featured_product.handle -%}
+              <div class="nk-combo" data-nk-combo>
+                {%- if combo_product.featured_image -%}
+                  <span class="nk-combo-media"><img src="{{ combo_product.featured_image | image_url: width: 240 }}" alt="" width="120" height="120" loading="lazy"></span>
+                {%- endif -%}
+                <div class="nk-combo-body">
+                  <span class="nk-combo-eyebrow">{{ section.settings.combo_heading }}</span>
+                  <strong>{{ combo_product.title | escape }}</strong>
+                  <span class="nk-combo-price">+ {{ combo_product.price | money_without_trailing_zeros }}</span>
+                  {%- if section.settings.combo_note != blank -%}<span class="nk-combo-note">{{ section.settings.combo_note }}</span>{%- endif -%}
+                </div>
+                <button type="button" class="nk-combo-button" data-nk-combo-add data-combo-variant="{{ combo_product.selected_or_first_available_variant.id }}">Agregar los dos</button>
+                <p class="nk-combo-error" data-nk-combo-error role="alert" hidden>No pudimos agregar los productos. Probá de nuevo.</p>
+              </div>
+            {%- endif -%}
+          {%- endif -%}
         {%- elsif featured_product != blank -%}
           <div class="nk-stock">
             <p class="nk-stock-status">Próximamente</p>
@@ -243,18 +418,26 @@
         {%- endif -%}
 
         <ul class="nk-assure" role="list">
-          <li>{% render 'nekova-icon', icon: 'return' %}<span><strong>Probalo tranquilo:</strong> si no te convence, tenés 10 días para devolverlo.</span></li>
-          <li>{% render 'nekova-icon', icon: 'shield' %}<span><strong>60 días de garantía</strong> y atención directa por WhatsApp.</span></li>
+          {%- if nk_assure_extra != blank -%}
+            <li>{% render 'nekova-icon', icon: 'sizes' %}<span>{{ nk_assure_extra }}</span></li>
+          {%- endif -%}
+          <li>{% render 'nekova-icon', icon: 'return' %}<span>{{ nk_returns_assure }}</span></li>
+          {%- assign free_shipping_threshold = settings.nekova_free_shipping_threshold | default: 0 -%}
+          {%- if free_shipping_threshold > 0 -%}
+            <li>{% render 'nekova-icon', icon: 'truck' %}<span><strong>Envío gratis</strong> en compras desde {{ free_shipping_threshold | times: 100 | money_without_trailing_zeros }}.</span></li>
+          {%- endif -%}
+          <li>{% render 'nekova-icon', icon: 'chat' %}<span><strong>Atención por WhatsApp</strong> antes y después de comprar.</span></li>
           {%- if section.settings.shipping_note != blank -%}
             <li>{% render 'nekova-icon', icon: 'truck' %}<span>{{ section.settings.shipping_note }}</span></li>
           {%- endif -%}
         </ul>
 
-        {%- if is_u_cushion -%}
+        {%- if nk_checks != blank -%}
           <ul class="nk-checks">
-            <li>{% render 'nekova-icon', icon: 'check' %} Espuma viscoelástica de recuperación lenta</li>
-            <li>{% render 'nekova-icon', icon: 'check' %} Ranura en U que deja libre la zona del coxis</li>
-            <li>{% render 'nekova-icon', icon: 'check' %} Funda transpirable y extraíble</li>
+            {%- assign check_items = nk_checks | split: '||' -%}
+            {%- for item in check_items -%}
+              <li>{% render 'nekova-icon', icon: 'check' %} {{ item }}</li>
+            {%- endfor -%}
           </ul>
         {%- endif -%}
 
@@ -262,25 +445,24 @@
           <details>
             <summary>Detalles del producto</summary>
             <div class="nk-accordion-body">
-              {%- if is_u_cushion -%}
-                <p>Un cojín de asiento con forma ergonómica: los laterales elevados envuelven la cadera, el frente en arco acompaña la base de los muslos y la parte trasera, más alta, da apoyo a la espalda baja. La ranura en U deja libre la zona del coxis y el canal central favorece la circulación de aire.</p>
+              {%- if nk_details != blank -%}
+                <p>{{ nk_details }}</p>
               {%- else -%}
                 <div class="rte">{{ featured_product.description }}</div>
               {%- endif -%}
             </div>
           </details>
-          {%- if is_u_cushion or featured_product.metafields.custom.specifications != blank -%}
+          {%- if nk_specs != blank or featured_product.metafields.custom.specifications != blank -%}
             <details>
               <summary>Medidas y materiales</summary>
               <div class="nk-accordion-body">
-                {%- if is_u_cushion -%}
+                {%- if nk_specs != blank -%}
                   <dl class="nk-specs">
-                    <div><dt>Medidas</dt><dd>48 × 38 × 12 cm</dd></div>
-                    <div><dt>Relleno</dt><dd>Espuma viscoelástica de recuperación lenta (3 a 5 s)</dd></div>
-                    <div><dt>Funda</dt><dd>Malla transpirable, extraíble con cierre</dd></div>
-                    <div><dt>Diseño</dt><dd>Ranura en U, laterales elevados y frente en arco</dd></div>
-                    <div><dt>Colores</dt><dd>Gris y azul marino</dd></div>
-                    <div><dt>Uso</dt><dd>Oficina, auto, hogar y viajes</dd></div>
+                    {%- assign spec_rows = nk_specs | split: '||' -%}
+                    {%- for row in spec_rows -%}
+                      {%- assign cells = row | split: '::' -%}
+                      <div><dt>{{ cells[0] }}</dt><dd>{{ cells[1] }}</dd></div>
+                    {%- endfor -%}
                   </dl>
                 {%- else -%}
                   <div class="rte">{{ featured_product.metafields.custom.specifications | metafield_tag }}</div>
@@ -289,10 +471,10 @@
             </details>
           {%- endif -%}
           <details>
-            <summary>Envío, garantía y devoluciones</summary>
+            <summary>Envío y devoluciones</summary>
             <div class="nk-accordion-body">
-              <p>Las compras realizadas antes de las 13 h se despachan ese mismo día; después de ese horario, dentro de las 24 h. El costo y el plazo de envío se calculan según tu destino y los ves en el checkout antes de pagar.</p>
-              <p>Tenés 60 días de garantía y 10 días desde la compra para solicitar la devolución, con el producto completo y en perfecto estado. <a href="/pages/contact">Escribinos</a> para coordinarla.</p>
+              <p>Las compras realizadas en días hábiles antes de las 13:00 hs se despachan ese mismo día; si comprás después de ese horario, un fin de semana o un feriado, el día hábil siguiente. El costo y el plazo de envío se calculan según tu destino y los ves en el checkout antes de pagar.</p>
+              <p>{{ nk_returns_text }}</p>
             </div>
           </details>
         </div>
@@ -300,89 +482,93 @@
     </div>
   </div>
 
-  {%- if is_u_cushion -%}
+  {%- if nk_uses_title != blank -%}
     <section class="nk-section nk-section--panel" aria-labelledby="NkUses-{{ section.id }}">
       <div class="nk-shell">
         <div class="nk-head nk-head--split">
           <div>
-            <p class="nk-eyebrow">Para tu día a día</p>
-            <h2 id="NkUses-{{ section.id }}">Pensado para las horas que pasás <span class="nk-hl">sentado</span></h2>
+            <p class="nk-eyebrow">{{ nk_uses_eyebrow }}</p>
+            <h2 id="NkUses-{{ section.id }}">{{ nk_uses_title }}</h2>
           </div>
-          <p class="nk-head-lead">En el escritorio, en el auto o leyendo en casa: un apoyo cómodo se nota al final del día.</p>
+          <p class="nk-head-lead">{{ nk_uses_lead }}</p>
         </div>
-        <div class="nk-uses" data-nk-autoplay="3000">
-          <figure>
-            <img src="{{ 'product-media-cojin-ortopedico-vida-01.jpg' | asset_url }}" alt="Mujer trabajando en su escritorio sentada sobre el cojín en U" width="900" height="1125" loading="lazy">
-            <figcaption><span class="nk-num">01</span><strong>Home office</strong>Largas jornadas frente a la compu, con más comodidad.</figcaption>
-          </figure>
-          <figure>
-            <img src="{{ 'product-media-cojin-ortopedico-vida-02.jpg' | asset_url }}" alt="Persona sentada sobre el cojín en el asiento del auto" width="900" height="1125" loading="lazy">
-            <figcaption><span class="nk-num">02</span><strong>En el auto</strong>Trayectos diarios o viajes largos, con un apoyo estable.</figcaption>
-          </figure>
-          <figure>
-            <img src="{{ 'product-media-cojin-ortopedico-vida-03.jpg' | asset_url }}" alt="Mujer sentada cómodamente sobre el cojín en una silla de escritorio" width="900" height="1125" loading="lazy">
-            <figcaption><span class="nk-num">03</span><strong>Estudio y lectura</strong>Para las horas de clase, de lectura o de videollamadas.</figcaption>
-          </figure>
+        <div class="nk-uses{% if nk_uses_shape == 'landscape' %} nk-uses--landscape{% endif %}" data-nk-autoplay="3000">
+          {%- assign use_items = nk_uses | split: '||' -%}
+          {%- for item in use_items -%}
+            {%- assign cells = item | split: '::' -%}
+            <figure>
+              <img src="{{ cells[0] | asset_url }}" alt="{{ cells[1] }}" width="900" height="{% if nk_uses_shape == 'landscape' %}600{% else %}1125{% endif %}" loading="lazy">
+              <figcaption><span class="nk-num">{{ forloop.index | prepend: '0' | slice: -2, 2 }}</span><strong>{{ cells[2] }}</strong>{{ cells[3] }}</figcaption>
+            </figure>
+          {%- endfor -%}
         </div>
       </div>
     </section>
+  {%- endif -%}
 
+  {%- if nk_how_title != blank -%}
     <section class="nk-section nk-section--dark" aria-labelledby="NkHow-{{ section.id }}">
       <div class="nk-shell nk-split">
         <div class="nk-how-media">
-          <img src="{{ 'product-media-cojin-ortopedico-04.jpg' | asset_url }}" alt="Zonas del cojín: A laterales, B zona trasera y C canal central" width="1200" height="1200" loading="lazy">
+          <img src="{{ nk_how_image | asset_url }}" alt="{{ nk_how_alt }}" width="1200" height="1200" loading="lazy">
         </div>
         <div>
-          <p class="nk-eyebrow">Cómo funciona</p>
-          <h2 id="NkHow-{{ section.id }}">Tres zonas, <span class="nk-hl">un solo apoyo</span></h2>
-          <p class="nk-head-lead">Cada parte del cojín cumple una función para que te sientes más cómodo.</p>
+          <p class="nk-eyebrow">{{ nk_how_eyebrow }}</p>
+          <h2 id="NkHow-{{ section.id }}">{{ nk_how_title }}</h2>
+          <p class="nk-head-lead">{{ nk_how_lead }}</p>
           <ol class="nk-zones">
-            <li><span aria-hidden="true">A</span><div><strong>Laterales elevados</strong>Envuelven la cadera y los muslos para un apoyo más estable.</div></li>
-            <li><span aria-hidden="true">B</span><div><strong>Zona trasera de apoyo</strong>Más alta, acompaña la espalda baja cuando te sentás.</div></li>
-            <li><span aria-hidden="true">C</span><div><strong>Ranura en U y canal de aire</strong>Deja libre la zona del coxis y favorece la ventilación.</div></li>
+            {%- assign how_items = nk_how | split: '||' -%}
+            {%- for item in how_items -%}
+              {%- assign cells = item | split: '::' -%}
+              <li><span aria-hidden="true">{{ cells[0] }}</span><div><strong>{{ cells[1] }}</strong>{{ cells[2] }}</div></li>
+            {%- endfor -%}
           </ol>
         </div>
       </div>
     </section>
+  {%- endif -%}
 
+  {%- if nk_benefits_title != blank -%}
     <section class="nk-section" aria-labelledby="NkBenefits-{{ section.id }}">
       <div class="nk-shell">
         <div class="nk-head nk-head--split">
           <div>
-            <p class="nk-eyebrow">Detalles que se notan</p>
-            <h2 id="NkBenefits-{{ section.id }}">Diseñado para tu <span class="nk-hl">comodidad</span></h2>
+            <p class="nk-eyebrow">{{ nk_benefits_eyebrow }}</p>
+            <h2 id="NkBenefits-{{ section.id }}">{{ nk_benefits_title }}</h2>
           </div>
-          <p class="nk-head-lead">Materiales y formas pensados para el uso de todos los días.</p>
+          <p class="nk-head-lead">{{ nk_benefits_lead }}</p>
         </div>
         <ul class="nk-benefits" role="list">
-          <li><span class="nk-benefit-icon">{% render 'nekova-icon', icon: 'foam' %}</span><strong>Espuma viscoelástica</strong><p>Se adapta a tu forma y recupera la suya en 3 a 5 segundos.</p></li>
-          <li><span class="nk-benefit-icon">{% render 'nekova-icon', icon: 'slot' %}</span><strong>Ranura en U</strong><p>Su recorte central deja libre la zona del coxis.</p></li>
-          <li><span class="nk-benefit-icon">{% render 'nekova-icon', icon: 'sides' %}</span><strong>Laterales elevados</strong><p>Envuelven la cadera y los muslos para que no te deslices.</p></li>
-          <li><span class="nk-benefit-icon">{% render 'nekova-icon', icon: 'arc' %}</span><strong>Frente en arco</strong><p>Acompaña la base de los muslos con una transición suave.</p></li>
-          <li><span class="nk-benefit-icon">{% render 'nekova-icon', icon: 'wind' %}</span><strong>Funda transpirable</strong><p>Malla con canal central de ventilación para mantenerlo fresco.</p></li>
-          <li><span class="nk-benefit-icon">{% render 'nekova-icon', icon: 'zip' %}</span><strong>Funda con cierre</strong><p>Se retira fácilmente para lavarla por separado.</p></li>
+          {%- assign benefit_items = nk_benefits | split: '||' -%}
+          {%- for item in benefit_items -%}
+            {%- assign cells = item | split: '::' -%}
+            <li><span class="nk-benefit-icon">{% render 'nekova-icon', icon: cells[0] %}</span><strong>{{ cells[1] }}</strong><p>{{ cells[2] }}</p></li>
+          {%- endfor -%}
         </ul>
       </div>
     </section>
   {%- endif -%}
 
-  {%- if product_video != blank -%}
+  {%- if nk_video != blank -%}
     <section class="nk-section nk-section--soft" aria-labelledby="NkVideo-{{ section.id }}">
       <div class="nk-shell nk-split nk-split--video">
         <div>
           <p class="nk-eyebrow">En detalle</p>
           <h2 id="NkVideo-{{ section.id }}">Miralo de <span class="nk-hl">cerca</span></h2>
-          <p class="nk-head-lead">La funda, el núcleo de espuma y cómo se usa en la oficina y en el auto.</p>
-          {%- if is_u_cushion -%}
+          <p class="nk-head-lead">{{ nk_video_lead }}</p>
+          {%- if nk_video_details != blank -%}
             <div class="nk-details">
-              <figure><img src="{{ 'product-media-cojin-ortopedico-detalle-espuma.jpg' | asset_url }}" alt="Mano presionando el núcleo de espuma viscoelástica" width="900" height="1125" loading="lazy"><figcaption>Núcleo de espuma viscoelástica</figcaption></figure>
-              <figure><img src="{{ 'product-media-cojin-ortopedico-detalle-funda.jpg' | asset_url }}" alt="Manos abriendo el cierre de la funda del cojín" width="900" height="1125" loading="lazy"><figcaption>Funda con cierre, fácil de lavar</figcaption></figure>
+              {%- assign detail_items = nk_video_details | split: '||' -%}
+              {%- for item in detail_items -%}
+                {%- assign cells = item | split: '::' -%}
+                <figure><img src="{{ cells[0] | asset_url }}" alt="{{ cells[1] }}" width="900" height="1125" loading="lazy"><figcaption>{{ cells[2] }}</figcaption></figure>
+              {%- endfor -%}
             </div>
           {%- endif -%}
         </div>
         <div class="nk-video-frame">
-          <video controls playsinline preload="metadata" poster="{{ product_video_poster | asset_url }}" aria-label="Video de {{ featured_product.title | escape }}">
-            <source src="{{ product_video | asset_url }}" type="video/mp4">
+          <video controls playsinline preload="metadata" poster="{{ nk_video_poster | asset_url }}" aria-label="Video de {{ featured_product.title | escape }}">
+            <source src="{{ nk_video | asset_url }}" type="video/mp4">
             Tu navegador no puede reproducir este video.
           </video>
         </div>
@@ -390,22 +576,22 @@
     </section>
   {%- endif -%}
 
-  {%- if is_u_cushion -%}
+  {%- if nk_compare_title != blank -%}
     <section class="nk-section" aria-labelledby="NkCompare-{{ section.id }}">
       <div class="nk-shell">
         <div class="nk-head nk-head--center">
           <p class="nk-eyebrow">La diferencia</p>
-          <h2 id="NkCompare-{{ section.id }}">Un cojín común vs. <span class="nk-hl">Nekova</span></h2>
+          <h2 id="NkCompare-{{ section.id }}">{{ nk_compare_title }}</h2>
         </div>
-        <div class="nk-compare" role="table" aria-label="Comparación entre un cojín común y el cojín Nekova">
+        <div class="nk-compare" role="table" aria-label="Comparación con {{ nk_compare_them | downcase }}">
           <div class="nk-compare-row nk-compare-head" role="row">
             <span role="columnheader"><span class="visually-hidden">Característica</span></span>
-            <span role="columnheader">Cojín común</span>
+            <span role="columnheader">{{ nk_compare_them }}</span>
             <span role="columnheader" class="nk-compare-us"><img src="{{ 'nekova-mark-white.svg' | asset_url }}" alt="" width="22" height="22"><span class="nk-compare-brand">Nekova</span></span>
           </div>
-          {%- assign compare_rows = 'Laterales elevados que envuelven la cadera|no,Ranura en U para la zona del coxis|no,Espuma viscoelástica de recuperación lenta|a veces,Canal central de ventilación|no,Funda transpirable con cierre|a veces,60 días de garantía|depende' | split: ',' -%}
+          {%- assign compare_rows = nk_compare | split: '||' -%}
           {%- for row in compare_rows -%}
-            {%- assign cells = row | split: '|' -%}
+            {%- assign cells = row | split: '::' -%}
             <div class="nk-compare-row" role="row">
               <span role="rowheader">{{ cells[0] }}</span>
               <span role="cell" class="nk-compare-them">
@@ -417,25 +603,75 @@
         </div>
       </div>
     </section>
+  {%- endif -%}
 
+  {%- if nk_specs_title != blank -%}
     <section class="nk-section nk-section--panel" aria-labelledby="NkSpecs-{{ section.id }}">
       <div class="nk-shell nk-split nk-split--specs">
         <div>
           <p class="nk-eyebrow">Ficha técnica</p>
-          <h2 id="NkSpecs-{{ section.id }}">Todo lo que tenés que <span class="nk-hl">saber</span></h2>
-          <p class="nk-head-lead">Antes de comprar, verificá que el asiento de tu silla o de tu auto tenga al menos 48 × 38 cm.</p>
-          <img class="nk-specs-image" src="{{ 'product-media-cojin-ortopedico-03.jpg' | asset_url }}" alt="El cojín en sus dos colores: gris y azul marino" width="1200" height="1200" loading="lazy">
+          <h2 id="NkSpecs-{{ section.id }}">{{ nk_specs_title }}</h2>
+          <p class="nk-head-lead">{{ nk_specs_lead }}</p>
+          <img class="nk-specs-image" src="{{ nk_specs_image | asset_url }}" alt="{{ nk_specs_alt }}" width="1200" height="1200" loading="lazy">
         </div>
         <dl class="nk-spec-table">
-          <div><dt>Medidas</dt><dd>48 × 38 × 12 cm</dd></div>
-          <div><dt>Relleno</dt><dd>Espuma viscoelástica de recuperación lenta</dd></div>
-          <div><dt>Recuperación</dt><dd>3 a 5 segundos</dd></div>
-          <div><dt>Diseño</dt><dd>Ranura en U, laterales elevados y frente en arco</dd></div>
-          <div><dt>Funda</dt><dd>Malla transpirable, extraíble con cierre</dd></div>
-          <div><dt>Colores</dt><dd>Gris y azul marino</dd></div>
-          <div><dt>Uso</dt><dd>Oficina, auto, hogar y viajes</dd></div>
-          <div><dt>Garantía</dt><dd>60 días</dd></div>
+          {%- assign spec_rows = nk_specs | split: '||' -%}
+          {%- for row in spec_rows -%}
+            {%- assign cells = row | split: '::' -%}
+            <div><dt>{{ cells[0] }}</dt><dd>{{ cells[1] }}</dd></div>
+          {%- endfor -%}
         </dl>
+      </div>
+    </section>
+  {%- endif -%}
+
+  {%- liquid
+    # Cross-sell: other products of the store catalog (collection "all").
+    assign other_products = ''
+    assign other_count = 0
+    for candidate in collections.all.products limit: 4
+      if candidate.id != featured_product.id
+        assign other_count = other_count | plus: 1
+      endif
+    endfor
+  -%}
+  {%- if other_count > 0 -%}
+    <section class="nk-section nk-section--panel" aria-labelledby="NkMore-{{ section.id }}">
+      <div class="nk-shell">
+        <div class="nk-head nk-head--split">
+          <div>
+            <p class="nk-eyebrow">Completá tu bienestar</p>
+            <h2 id="NkMore-{{ section.id }}">También te puede <span class="nk-hl">interesar</span></h2>
+          </div>
+          <p class="nk-head-lead">Productos pensados para que trabajes, viajes y descanses más cómodo.</p>
+        </div>
+        <ul class="nk-more" role="list">
+          {%- for candidate in collections.all.products limit: 4 -%}
+            {%- if candidate.id == featured_product.id -%}{%- continue -%}{%- endif -%}
+            {%- liquid
+              assign more_image = ''
+              case candidate.handle
+                when 'cojin-ortopedico-u'
+                  assign more_image = 'product-media-cojin-ortopedico-01.jpg' | asset_url
+                when 'tapones-auditivos-silicona'
+                  assign more_image = 'product-media-tapones-01.jpg' | asset_url
+              endcase
+              if more_image == blank and candidate.featured_image
+                assign more_image = candidate.featured_image | image_url: width: 900
+              endif
+            -%}
+            <li>
+              <a class="nk-more-card" href="{{ candidate.url }}">
+                {%- if more_image != blank -%}<span class="nk-more-media"><img src="{{ more_image }}" alt="" width="900" height="900" loading="lazy"></span>{%- endif -%}
+                <span class="nk-more-body">
+                  <strong>{{ candidate.title | escape }}</strong>
+                  <span class="nk-more-price">{{ candidate.price | money_without_trailing_zeros }}</span>
+                  <span class="nk-more-link">Ver producto {% render 'nekova-icon', icon: 'arrow-right' %}</span>
+                </span>
+              </a>
+            </li>
+          {%- endfor -%}
+        </ul>
       </div>
     </section>
   {%- endif -%}
@@ -459,19 +695,20 @@
         <p class="nk-head-lead">¿Tenés otra duda? <a href="/pages/contact">Escribinos</a> y te ayudamos.</p>
       </div>
       <div class="nk-faq-list">
-        {%- if is_u_cushion -%}
-          <details><summary>¿Qué medidas tiene?</summary><p>Mide 48 × 38 × 12 cm. Antes de comprar, verificá que el asiento de tu silla o de tu auto tenga al menos ese ancho y esa profundidad.</p></details>
-          <details><summary>¿Cómo se limpia?</summary><p>La funda tiene cierre: retirala y lavala por separado. Recomendamos no mojar el núcleo de espuma viscoelástica.</p></details>
-          <details><summary>¿En qué colores está disponible?</summary><p>En gris y en azul marino. Elegí el color antes de agregarlo al carrito.</p></details>
+        {%- if nk_faq != blank -%}
+          {%- assign faq_items = nk_faq | split: '||' -%}
+          {%- for item in faq_items -%}
+            {%- assign cells = item | split: '::' -%}
+            <details><summary>{{ cells[0] }}</summary><p>{{ cells[1] }}</p></details>
+          {%- endfor -%}
         {%- endif -%}
-        <details><summary>¿Cuándo se despacha mi pedido?</summary><p>Las compras realizadas antes de las 13:00 se despachan ese mismo día; después de ese horario, dentro de las 24 horas. El plazo de entrega depende del destino y del operador logístico.</p></details>
+        <details><summary>¿Cuándo se despacha mi pedido?</summary><p>Las compras realizadas en días hábiles antes de las 13:00 hs se despachan ese mismo día. Si comprás después de ese horario, un fin de semana o un feriado, tu pedido sale el día hábil siguiente. El plazo de entrega depende del destino y del operador logístico.</p></details>
         <details><summary>¿Cuánto cuesta el envío?</summary><p>El costo y la estimación de entrega se calculan según tu destino y se muestran en el checkout, antes de confirmar la compra.</p></details>
-        <details><summary>¿Qué garantía tiene?</summary><p>60 días de garantía. Si necesitás asistencia, escribinos desde la <a href="/pages/contact">página de contacto</a> con tu número de pedido.</p></details>
-        <details><summary>¿Puedo devolverlo si no me convence?</summary><p>Sí. Tenés 10 días desde la compra para devolverlo, con el producto completo y en perfecto estado. Escribinos y coordinamos la devolución.</p></details>
+        <details><summary>{{ nk_returns_faq_q }}</summary><p>{{ nk_returns_faq_a }}</p></details>
         <details><summary>¿Cómo me comunico con ustedes?</summary><p>
           {%- assign faq_whatsapp_digits = settings.nekova_whatsapp | remove: ' ' | remove: '+' | remove: '-' | remove: '(' | remove: ')' | remove: '.' -%}
           {%- assign faq_email = settings.nekova_email | default: shop.email -%}
-          {%- if settings.nekova_whatsapp != blank -%}Por WhatsApp al <a href="https://wa.me/{{ faq_whatsapp_digits }}" target="_blank" rel="noopener">{{ settings.nekova_whatsapp | escape }}</a>{%- if faq_email != blank -%}, por email a <a href="mailto:{{ faq_email }}">{{ faq_email }}</a>{%- endif -%} o desde la <a href="/pages/contact">página de contacto</a>. Te respondemos a la brevedad.{%- else -%}Escribinos desde la <a href="/pages/contact">página de contacto</a> y te respondemos a la brevedad.{%- endif -%}
+          {%- if settings.nekova_whatsapp != blank -%}Por WhatsApp al <a href="https://wa.me/{{ faq_whatsapp_digits }}" target="_blank" rel="noopener">{{ settings.nekova_whatsapp | escape }}</a>{%- if faq_email != blank -%}, por email a <a href="mailto:{{ faq_email }}">{{ faq_email }}</a>{%- endif %} o desde la <a href="/pages/contact">página de contacto</a>. Te respondemos a la brevedad.{%- else -%}Escribinos desde la <a href="/pages/contact">página de contacto</a> y te respondemos a la brevedad.{%- endif -%}
         </p></details>
         <details><summary>¿Qué medios de pago puedo usar?</summary><p>En el checkout vas a ver los medios de pago disponibles y las opciones de cuotas cuando correspondan.</p></details>
       </div>
@@ -481,14 +718,14 @@
   {%- if featured_product != blank -%}
     <div class="nk-cta-band">
       <div class="nk-shell nk-cta">
-        {%- if is_u_cushion -%}
-          <img src="{{ 'product-media-cojin-ortopedico-01.jpg' | asset_url }}" alt="" width="1200" height="1200" loading="lazy">
+        {%- if gallery_files.size > 0 -%}
+          <img src="{{ gallery_files.first | asset_url }}" alt="" width="1200" height="1200" loading="lazy">
         {%- elsif featured_product.featured_image -%}
           <img src="{{ featured_product.featured_image | image_url: width: 600 }}" alt="" loading="lazy">
         {%- endif -%}
         <div>
-          <h2>Sentate más cómodo desde hoy</h2>
-          <p>{{ current_price | money_without_trailing_zeros }} · 60 días de garantía · Despacho en el día</p>
+          <h2>{{ nk_cta_title }}</h2>
+          <p>{{ current_price | money_without_trailing_zeros }} · Despacho en el día · {{ nk_returns_short }}</p>
         </div>
         <a class="nk-button nk-button--light" href="#NkBuy-{{ section.id }}">{% if featured_product.available %}Comprar ahora{% else %}Avisarme{% endif %}</a>
       </div>
@@ -700,6 +937,39 @@
   .nk-split--faq { align-items: start; grid-template-columns: minmax(0, .8fr) minmax(0, 1.2fr); }
   .nk-split--faq > div:first-child { position: sticky; top: 12rem; }
   .nk-faq-list details:first-child { border-top: 1px solid var(--nk-line); }
+  .nk-uses--landscape img { aspect-ratio: 3 / 2; }
+  .nk-more { display: grid; gap: 2rem; grid-template-columns: repeat(auto-fill, minmax(min(100%, 34rem), 1fr)); list-style: none; margin: 0; padding: 0; }
+  .nk-more-card { align-items: center; background: var(--nekova-surface); border: 1px solid var(--nk-line); border-radius: var(--nekova-radius-lg); color: var(--nk-ink); display: grid; gap: 2rem; grid-template-columns: 12rem 1fr; padding: 1.6rem; text-decoration: none; transition: border-color .2s, box-shadow .2s; }
+  .nk-product a.nk-more-card { color: var(--nk-ink); text-decoration: none; }
+  .nk-more-card:hover { border-color: var(--nk-accent); box-shadow: var(--nekova-shadow); }
+  .nk-more-media { aspect-ratio: 1; background: var(--nk-panel); border-radius: var(--nekova-radius); display: block; overflow: hidden; }
+  .nk-more-media img { display: block; height: 100%; mix-blend-mode: multiply; object-fit: contain; width: 100%; }
+  .nk-more-body { display: grid; gap: .6rem; }
+  .nk-more-body strong { font-family: var(--nekova-font-heading); font-size: 1.8rem; font-weight: var(--font-heading-weight); line-height: 1.25; }
+  .nk-more-price { font-size: 1.6rem; font-weight: 700; }
+  .nk-more-link { align-items: center; color: var(--nk-accent); display: inline-flex; font-size: 1.4rem; font-weight: 700; gap: .6rem; }
+  .nk-more-link svg { height: 1.8rem; width: 1.8rem; }
+  .nk-waitlist { border-top: 1px solid var(--nk-line); margin-top: 1.6rem; padding-top: 1.2rem; }
+  .nk-waitlist summary { color: var(--nk-accent); cursor: pointer; font-size: 1.4rem; font-weight: 700; list-style: none; }
+  .nk-waitlist summary::-webkit-details-marker { display: none; }
+  .nk-waitlist summary::after { content: ' +'; }
+  .nk-waitlist[open] summary::after { content: ' −'; }
+  .nk-waitlist-form { display: grid; gap: .8rem; margin-top: 1.2rem; }
+  .nk-waitlist-form > label:first-child { font-size: 1.3rem; font-weight: 700; }
+  .nk-waitlist-form select { background: var(--nekova-surface); border: 1px solid var(--nekova-line-strong); border-radius: 1.2rem; color: var(--nk-ink); font: inherit; padding: 1.1rem 1.4rem; }
+  .nk-combo { align-items: center; border: 1px solid var(--nk-line); border-radius: var(--nekova-radius); display: grid; gap: 1.4rem; grid-template-columns: 7.2rem 1fr auto; margin-top: 1.6rem; padding: 1.2rem; }
+  .nk-combo-media { aspect-ratio: 1; background: var(--nk-panel); border-radius: var(--nekova-radius-sm); display: block; overflow: hidden; }
+  .nk-combo-media img { display: block; height: 100%; mix-blend-mode: multiply; object-fit: contain; width: 100%; }
+  .nk-combo-body { display: grid; gap: .2rem; min-width: 0; }
+  .nk-combo-eyebrow { color: var(--nk-accent); font-size: 1.2rem; font-weight: 800; letter-spacing: .1em; text-transform: uppercase; }
+  .nk-combo-body strong { font-size: 1.45rem; line-height: 1.3; }
+  .nk-combo-price { font-size: 1.4rem; font-weight: 700; }
+  .nk-combo-note { color: var(--nekova-warm); font-size: 1.3rem; font-weight: 700; }
+  .nk-combo-button { background: var(--nekova-surface); border: 1px solid var(--nk-accent); border-radius: 1.2rem; color: var(--nk-accent); cursor: pointer; font: inherit; font-size: 1.4rem; font-weight: 700; min-height: 4.4rem; padding: 0 1.6rem; transition: background .2s, color .2s; white-space: nowrap; }
+  .nk-combo-button:hover { background: var(--nk-accent); color: var(--nekova-on-accent); }
+  .nk-combo-button[aria-busy='true'] { opacity: .6; pointer-events: none; }
+  .nk-combo-button:focus-visible, .nk-waitlist summary:focus-visible { outline: 2px solid var(--nk-accent); outline-offset: 3px; }
+  .nk-combo-error { color: var(--nekova-warm); font-size: 1.3rem; grid-column: 1 / -1; margin: 0; }
   .nk-cta-band { background: var(--nk-accent); color: var(--nekova-on-accent); }
   .nk-cta .nk-button { border-radius: 0; }
   .nk-cta { align-items: center; display: grid; gap: 3rem; grid-template-columns: 12rem 1fr auto; padding-bottom: 4.8rem; padding-top: 4.8rem; }
@@ -725,6 +995,9 @@
     .nk-cta .nk-button { grid-column: 1 / -1; }
   }
   @media screen and (max-width: 600px) {
+    .nk-combo { grid-template-columns: 6rem 1fr; }
+    .nk-combo-button { grid-column: 1 / -1; width: 100%; }
+    .nk-more-card { gap: 1.4rem; grid-template-columns: 9rem 1fr; padding: 1.2rem; }
     .nk-compare-brand { clip: rect(0 0 0 0); height: 1px; overflow: hidden; position: absolute; white-space: nowrap; width: 1px; }
     .nk-compare-head .nk-compare-us img { height: 2.8rem; width: 2.8rem; }
     .nk-qty { flex-basis: 11.2rem; }
@@ -765,6 +1038,19 @@
   "tag": "div",
   "class": "nekova-product-section",
   "settings": [
+    {
+      "type": "text",
+      "id": "combo_heading",
+      "label": "Combo: antetítulo",
+      "default": "Completá tu compra",
+      "info": "Debajo del botón de compra se ofrece el producto complementario (cojín ↔ tapones) con un botón para agregar los dos."
+    },
+    {
+      "type": "text",
+      "id": "combo_note",
+      "label": "Combo: beneficio",
+      "info": "Opcional. Ej.: 10% OFF llevando los dos. El descuento se crea en Shopify → Descuentos (automático)."
+    },
     {
       "type": "product",
       "id": "product",
