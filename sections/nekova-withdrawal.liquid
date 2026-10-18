@@ -10,7 +10,7 @@
       <div class="nk-withdrawal-lead">{{ section.settings.intro }}</div>
       <ol class="nk-withdrawal-steps" role="list">
         <li><span>1</span><p><strong>Completá el formulario</strong> con tus datos y el número de pedido. No necesitás tener cuenta ni explicar el motivo.</p></li>
-        <li><span>2</span><p><strong>Dentro de las 24 hs</strong> te enviamos por email un código de identificación de tu solicitud.</p></li>
+        <li><span>2</span><p><strong>Dentro de las 24hs</strong> te enviamos por email un código de identificación de tu solicitud.</p></li>
         <li><span>3</span><p><strong>Coordinamos la devolución</strong> del producto. Los costos de envío de la devolución quedan a nuestro cargo.</p></li>
         <li><span>4</span><p><strong>Te reintegramos el pago</strong> por el mismo medio que usaste para comprar.</p></li>
       </ol>
@@ -23,7 +23,7 @@
       <h2>Solicitud de arrepentimiento</h2>
       {%- form 'contact', id: 'NkWithdrawalForm', class: 'nk-withdrawal-form' -%}
         {%- if form.posted_successfully? -%}
-          <p class="nk-withdrawal-success" role="status">Recibimos tu solicitud. Dentro de las 24 hs te enviamos por email el código de identificación y los pasos para la devolución.</p>
+          <p class="nk-withdrawal-success" role="status">Recibimos tu solicitud. Dentro de las 24hs te enviamos por email el código de identificación y los pasos para la devolución.</p>
         {%- else -%}
           {%- if form.errors -%}
             <p class="nk-withdrawal-error" role="alert">Revisá los datos marcados e intentá nuevamente.</p>

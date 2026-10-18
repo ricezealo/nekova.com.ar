@@ -18,7 +18,7 @@ Si compraste en nekova.com.ar, tenés derecho a revocar la compra dentro de los 
 
 **Qué pasa después:**
 
-1. Dentro de las **24 hs** te enviamos por email un **código de identificación** de tu solicitud.
+1. Dentro de las **24hs** te enviamos por email un **código de identificación** de tu solicitud.
 2. Coordinamos la devolución del producto. **Los costos de envío de la devolución quedan a nuestro cargo.**
 3. Cuando recibimos el producto, te reintegramos el total pagado **por el mismo medio de pago**, dentro de los [X] días hábiles.
 
@@ -30,7 +30,7 @@ Por razones de higiene, los productos que se usan en contacto directo con el cue
 
 ## 3. Productos con fallas
 
-Si un producto llega dañado o con una falla de fábrica, escribinos dentro de las **48 hs** de recibido, con fotos del producto y del embalaje. Lo cambiamos por uno nuevo o te reintegramos el dinero, según prefieras, sin costo para vos. Este derecho rige aunque el producto esté abierto y no reemplaza la garantía legal que establece la Ley de Defensa del Consumidor.
+Si un producto llega dañado o con una falla de fábrica, escribinos dentro de las **48hs** de recibido, con fotos del producto y del embalaje. Lo cambiamos por uno nuevo o te reintegramos el dinero, según prefieras, sin costo para vos. Este derecho rige aunque el producto esté abierto y no reemplaza la garantía legal que establece la Ley de Defensa del Consumidor.
 
 ## 4. Cambios
 

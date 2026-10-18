@@ -35,7 +35,7 @@
         "announcement-details": {
           "type": "announcement",
           "settings": {
-            "text": "Despacho en el día comprando antes de las 13:00 hs",
+            "text": "Despacho en el día comprando antes de las 13:00hs",
             "text_alignment": "center",
             "color_scheme": "scheme-4",
             "link": ""
@@ -76,7 +76,7 @@
           "settings": {
             "icon": "truck",
             "title": "Despacho en el día",
-            "text": "antes de las 13:00 hs, días hábiles"
+            "text": "antes de las 13:00hs, días hábiles"
           }
         },
         "trust-returns": {

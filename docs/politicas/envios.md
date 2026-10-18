@@ -7,7 +7,7 @@
 
 ## Despacho
 
-- Las compras realizadas en **días hábiles antes de las 13:00 hs** se despachan ese mismo día.
+- Las compras realizadas en **días hábiles antes de las 13:00hs** se despachan ese mismo día.
 - Si comprás después de ese horario, un fin de semana o un feriado, tu pedido sale el **día hábil siguiente**.
 - Te enviamos por email el número de seguimiento cuando el pedido sale.
 
@@ -24,7 +24,7 @@ Los plazos dependen del operador logístico y pueden extenderse en fechas de alt
 
 ## Al recibir tu pedido
 
-- Revisá el paquete al recibirlo. Si llega dañado, sacale fotos al embalaje y al producto y escribinos dentro de las **48 hs**.
+- Revisá el paquete al recibirlo. Si llega dañado, sacale fotos al embalaje y al producto y escribinos dentro de las **48hs**.
 - Si no vas a estar en el domicilio, el operador deja aviso o intenta una nueva entrega según sus condiciones.
 
 ## Datos de entrega
