@@ -47,7 +47,7 @@
   assign stock_form_id = 'BackInStockForm-' | append: section.id
 -%}
 
-{{ 'premium-product-landing.js' | asset_url | script_tag }}
+<script src="{{ 'premium-product-landing.js' | asset_url }}" defer="defer"></script>
 
 <section class="premium-landing section-{{ section.id }}" aria-labelledby="PremiumTitle-{{ section.id }}">
   <div class="premium-shell">

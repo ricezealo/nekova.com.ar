@@ -153,7 +153,7 @@
 {%- endif -%}
 {%- assign nk_tagline = section.settings.launch_heading | default: nk_tagline -%}
 
-{{ 'premium-product-landing.js' | asset_url | script_tag }}
+<script src="{{ 'premium-product-landing.js' | asset_url }}" defer="defer"></script>
 
 <section class="nk-product" data-premium-product aria-labelledby="NkTitle-{{ section.id }}">
   <div class="nk-shell">

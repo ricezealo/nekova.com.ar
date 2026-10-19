@@ -2,7 +2,7 @@
 {%- assign featured_products = featured_collection.products -%}
 {%- assign displayed_product_count = featured_products.size | at_most: section.settings.products_to_show -%}
 
-{{ 'home-product-showcase.js' | asset_url | script_tag }}
+<script src="{{ 'home-product-showcase.js' | asset_url }}" defer="defer"></script>
 
 <section class="nekova-home" aria-labelledby="NekovaHomeTitle-{{ section.id }}">
   <div class="nekova-home-shell">
