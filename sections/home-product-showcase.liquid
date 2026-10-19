@@ -1,0 +1,394 @@
+{%- assign featured_collection = section.settings.collection -%}
+{%- assign featured_products = featured_collection.products -%}
+{%- assign displayed_product_count = featured_products.size | at_most: section.settings.products_to_show -%}
+
+{{ 'home-product-showcase.js' | asset_url | script_tag }}
+
+<section class="nekova-home" aria-labelledby="NekovaHomeTitle-{{ section.id }}">
+  <div class="nekova-home-shell">
+    <div class="nekova-home-hero">
+      <div class="nekova-home-hero-content">
+        <div>
+          <p class="premium-edition">OBJETOS CON INTENCIÓN &nbsp; / &nbsp; PARA TODOS TUS ESPACIOS</p>
+          <h1 id="NekovaHomeTitle-{{ section.id }}">Una mejor forma<br>de habitar <em>tus días.</em></h1>
+        </div>
+        <p>Objetos funcionales para trabajar, descansar y disfrutar más cada espacio de tu casa.</p>
+      </div>
+      <a class="nekova-home-scroll" href="#NekovaProducts-{{ section.id }}">DESCUBRIR LA COLECCIÓN <span aria-hidden="true">↓</span></a>
+    </div>
+
+    <div class="nekova-home-trust" aria-label="Información de compra">
+      <div><span aria-hidden="true">01</span><p><strong>60 días de garantía</strong><small>Asistencia para tu compra</small></p></div>
+      <div><span aria-hidden="true">02</span><p><strong>Despacho claro</strong><small>Mismo día antes de las 13 h; después, en 24 h</small></p></div>
+      <div><span aria-hidden="true">03</span><p><strong>10 días para solicitar devolución</strong><small>Desde la compra, con el producto completo y en perfecto estado</small></p></div>
+      <div><span aria-hidden="true">04</span><p><strong>Envío y pago transparentes</strong><small>Costos y medios en el checkout</small></p></div>
+    </div>
+
+    <div class="nekova-home-collection" id="NekovaProducts-{{ section.id }}">
+      <div class="nekova-home-section-heading">
+        <div>
+          <p class="premium-eyebrow"><span></span> SELECCIÓN NEKOVA</p>
+          <h2>{{ section.settings.collection_heading | escape }}</h2>
+        </div>
+        <span class="nekova-home-count" data-home-product-count aria-live="polite">{{ displayed_product_count }} OBJETO{% if displayed_product_count != 1 %}S{% endif %}</span>
+      </div>
+      <nav class="nekova-home-categories" aria-label="Explorar productos por espacio">
+        <p>Encontrá lo que acompaña tu rutina</p>
+        <div data-home-product-filters role="group" aria-label="Filtrar productos">
+          <button type="button" data-home-product-filter="all" aria-pressed="true">Todos los objetos</button>
+          <button type="button" data-home-product-filter="home-work" aria-pressed="false">Casa y trabajo</button>
+          <button type="button" data-home-product-filter="comfort" aria-pressed="false">Confort y descanso</button>
+        </div>
+      </nav>
+      <div class="nekova-home-product-grid">
+        {% for product in featured_products limit: section.settings.products_to_show %}
+          {%- assign product_discount = product.compare_at_price | minus: product.price -%}
+          {%- assign product_handle_downcase = product.handle | downcase -%}
+          {%- assign product_type_downcase = product.type | downcase -%}
+          {%- assign product_category = 'home-work' -%}
+          {%- if product_handle_downcase contains 'cojin' or product_handle_downcase contains 'almohada' or product_type_downcase contains 'cojin' or product_type_downcase contains 'almohada' or product_type_downcase contains 'descanso' or product.tags contains 'confort' or product.tags contains 'cojines' or product.tags contains 'almohadas' -%}
+            {%- assign product_category = 'comfort' -%}
+          {%- endif -%}
+          <article class="nekova-home-product" data-home-product-category="{{ product_category }}">
+            <div class="nekova-home-product-image" data-home-image-carousel>
+              <a class="nekova-home-product-image-link" href="{{ product.url }}" aria-label="Ver {{ product.title | escape }}">
+              {% if product.handle == 'lampara-video-portatil-k25-rgb' %}
+                <img src="{{ 'product-media-k25-video-light-02.jpg' | asset_url }}" alt="Mini lámpara de video portátil K25 RGB de 25 W" loading="lazy">
+              {% elsif product.handle == 'cojin-ergonomico-doble-capa' %}
+                <img src="{{ 'product-media-cojin-ergonomico-07.jpg' | asset_url }}" alt="Cojín ergonómico de doble capa con malla transpirable y ranura central en U" loading="lazy">
+              {% elsif product.handle == 'cojin-ortopedico-u' %}
+                <img src="{{ 'product-media-cojin-ortopedico-01.jpg' | asset_url }}" alt="Cojín ortopédico en U de espuma viscoelástica, color gris" loading="lazy">
+              {% elsif product.featured_image %}
+                {{ product.featured_image | image_url: width: 1000 | image_tag: alt: product.featured_image.alt, loading: 'lazy' }}
+              {% endif %}
+              </a>
+              <div class="nekova-home-image-controls" aria-label="Galería de imágenes de {{ product.title | escape }}">
+                <button class="nekova-home-image-control" type="button" data-carousel-previous aria-label="Ver imagen anterior de {{ product.title | escape }}" disabled>
+                  <span aria-hidden="true">←</span>
+                </button>
+                <button class="nekova-home-image-control" type="button" data-carousel-next aria-label="Ver imagen siguiente de {{ product.title | escape }}">
+                  <span aria-hidden="true">→</span>
+                </button>
+              </div>
+              {% if product.handle == 'lampara-video-portatil-k25-rgb' %}
+                <span class="nekova-home-rotation-images" hidden>
+                  {% assign light_gallery_images = 'product-media-k25-video-light-02.jpg,product-media-k25-video-light-03.jpg,product-media-k25-video-light-04.jpg,product-media-k25-video-light-05.jpg,product-media-k25-video-light-main.jpg,product-media-k25-video-light-07.jpg,product-media-k25-video-light-08.jpg,product-media-k25-video-light-09.jpg,product-media-k25-video-light-10.jpg,product-media-k25-video-light-11.jpg,product-media-k25-video-light-12.jpg,product-media-k25-video-light-13.jpg,product-media-k25-video-light-14.jpg,product-media-k25-video-light-15.jpg,product-media-k25-video-light-16.jpg' | split: ',' %}
+                  {% for image_file in light_gallery_images limit: 3 %}
+                    <span data-carousel-image="{{ image_file | asset_url }}" data-carousel-alt="Lámpara de video K25 RGB, imagen {{ forloop.index }}"></span>
+                  {% endfor %}
+                </span>
+              {% elsif product.handle == 'cojin-ergonomico-doble-capa' %}
+                <span class="nekova-home-rotation-images" hidden>
+                  {% assign cushion_gallery_images = 'product-media-cojin-ergonomico-07.jpg,product-media-cojin-ergonomico-01.jpg,product-media-cojin-ergonomico-02.jpg,product-media-cojin-ergonomico-03.jpg,product-media-cojin-ergonomico-04.jpg,product-media-cojin-ergonomico-05.jpg,product-media-cojin-ergonomico-06.jpg,product-media-cojin-ergonomico-08.jpg' | split: ',' %}
+                  {% for image_file in cushion_gallery_images limit: 3 %}
+                    <span data-carousel-image="{{ image_file | asset_url }}" data-carousel-alt="Cojín ergonómico de doble capa, imagen {{ forloop.index }}"></span>
+                  {% endfor %}
+                </span>
+              {% elsif product.handle == 'cojin-ortopedico-u' %}
+                <span class="nekova-home-rotation-images" hidden>
+                  {% assign orthopedic_gallery_images = 'product-media-cojin-ortopedico-01.jpg,product-media-cojin-ortopedico-02.jpg,product-media-cojin-ortopedico-03.jpg' | split: ',' %}
+                  {% for image_file in orthopedic_gallery_images %}
+                    <span data-carousel-image="{{ image_file | asset_url }}" data-carousel-alt="Cojín ortopédico en U, imagen {{ forloop.index }}"></span>
+                  {% endfor %}
+                </span>
+              {% elsif product.media.size > 0 %}
+                <span class="nekova-home-rotation-images" hidden>
+                  {% assign carousel_image_count = 0 %}
+                  {% for media in product.media %}
+                    {% if media.media_type == 'image' %}
+                      <span data-carousel-image="{{ media.preview_image | image_url: width: 1000 }}" data-carousel-alt="{{ media.alt | default: product.title | escape }}"></span>
+                      {% assign carousel_image_count = carousel_image_count | plus: 1 %}
+                      {% if carousel_image_count == 3 %}{% break %}{% endif %}
+                    {% endif %}
+                  {% endfor %}
+                </span>
+              {% endif %}
+              {% if product_discount > 0 %}
+                <span class="nekova-home-badge">{{ product_discount | times: 100.0 | divided_by: product.compare_at_price | round }}% OFF</span>
+              {% endif %}
+              {% unless product.available %}
+                <span class="nekova-home-coming-soon-ribbon" aria-label="Próximamente">Próximamente</span>
+              {% endunless %}
+              <a class="nekova-home-card-arrow" href="{{ product.url }}" aria-label="Ver detalles de {{ product.title | escape }}" aria-hidden="true" tabindex="-1">↗</a>
+            </div>
+            <div class="nekova-home-product-meta">
+              <div>
+                <p>{{ product.type | default: 'HOGAR Y OFICINA' | upcase }}</p>
+                <h3><a href="{{ product.url }}">{{ product.title | escape }}</a></h3>
+              </div>
+              <div class="nekova-home-card-price">
+                {% if product.compare_at_price > product.price %}<s>{{ product.compare_at_price | money_without_trailing_zeros }}</s>{% endif %}
+                <span>{{ product.price | money_without_trailing_zeros }} <small>ARS</small></span>
+              </div>
+            </div>
+            <p class="nekova-home-product-description">{% if product.handle == 'atril-madera-giratorio-360' %}Soporte plegable y ajustable para laptop, libros y tabletas, con giro 360° y ranura de almacenamiento.{% elsif product.handle == 'lampara-video-portatil-k25-rgb' %}Luz RGB portátil de 25 W para fotografía, video, streaming y creación de contenido.{% elsif product.handle == 'cojin-ergonomico-doble-capa' %}Confort de doble capa, ranura ergonómica en U y funda transpirable extraíble.{% elsif product.handle == 'cojin-ortopedico-u' %}Espuma viscoelástica, ranura en U para el coxis y laterales elevados que envuelven la cadera.{% else %}{{ product.description | strip_html | truncatewords: 20 }}{% endif %}</p>
+            <a class="nekova-home-product-link" href="{{ product.url }}">Ver detalles <span aria-hidden="true">→</span></a>
+          </article>
+        {% else %}
+          <p class="nekova-home-empty">Elegí una colección desde el editor del tema para mostrar tus productos.</p>
+        {% endfor %}
+      </div>
+      <p class="nekova-home-filter-empty" data-home-filter-empty hidden>No hay productos de esta categoría en la selección actual. Explorá todos los objetos o volvé pronto para ver novedades.</p>
+    </div>
+
+    <div class="nekova-home-spaces">
+      <div>
+        <p class="premium-eyebrow"><span></span> PARA CADA MOMENTO</p>
+        <h2>Tu espacio,<br><em>a tu manera.</em></h2>
+      </div>
+      <div class="nekova-home-space-links">
+        <a href="#NekovaProducts-{{ section.id }}" data-home-category-link="home-work">
+          <span>01 / CASA Y TRABAJO</span>
+          <strong>Ideas para trabajar y disfrutar tu casa.</strong>
+          <span aria-hidden="true">↗</span>
+        </a>
+        <a href="#NekovaProducts-{{ section.id }}" data-home-category-link="comfort">
+          <span>02 / CONFORT Y DESCANSO</span>
+          <strong>Cojines y almohadas para acompañar tu día.</strong>
+          <span aria-hidden="true">↗</span>
+        </a>
+      </div>
+    </div>
+
+    <div class="nekova-home-journal">
+      <div class="nekova-home-journal-heading">
+        <p class="premium-eyebrow"><span></span> IDEAS PARA TUS ESPACIOS</p>
+        <h2>Novedades que<br><em>inspiran.</em></h2>
+      </div>
+      <div class="nekova-home-journal-content">
+        {% if section.settings.blog != blank and section.settings.blog.articles.size > 0 %}
+          {% for article in section.settings.blog.articles limit: 2 %}
+            <a class="nekova-home-journal-link" href="{{ article.url }}">
+              <span>{{ article.published_at | date: '%d.%m.%Y' }}</span>
+              <strong>{{ article.title | escape }}</strong>
+              <span aria-hidden="true">↗</span>
+            </a>
+          {% endfor %}
+        {% else %}
+          <p>Ideas, guías y nuevos objetos para hacer de cada espacio un lugar mejor.</p>
+          <span class="nekova-home-coming-soon">PRÓXIMAMENTE · EL JOURNAL NEKOVA</span>
+        {% endif %}
+      </div>
+    </div>
+
+    <section class="nekova-home-faq" aria-labelledby="NekovaFaqTitle-{{ section.id }}">
+      <div class="nekova-home-faq-heading">
+        <p class="premium-eyebrow"><span></span> INFORMACIÓN IMPORTANTE</p>
+        <h2 id="NekovaFaqTitle-{{ section.id }}">Comprar con<br><em>tranquilidad.</em></h2>
+        <p>Todo lo que necesitás saber antes y después de elegir tu próximo objeto.</p>
+      </div>
+      <div class="nekova-home-faq-list">
+        <details>
+          <summary>¿Cómo puedo comprar?</summary>
+          <p>Elegí el producto, agregalo al carrito y seguí los pasos del checkout para completar tus datos, elegir envío y confirmar el pago.</p>
+        </details>
+        <details>
+          <summary>¿Qué garantía tienen los productos?</summary>
+          <p>Los productos cuentan con 60 días de garantía. Si necesitás asistencia, escribinos desde la <a href="/pages/contact">página de contacto</a> e incluí tu número de pedido y una descripción del inconveniente.</p>
+        </details>
+        <details>
+          <summary>¿Puedo devolver mi compra?</summary>
+          <p>Podés solicitar la devolución dentro de los 10 días desde la compra para pedir el reintegro. El producto debe estar en perfectas condiciones y completo, sin faltantes. Contactanos para coordinar la devolución.</p>
+        </details>
+        <details>
+          <summary>¿Cuándo se despacha mi pedido?</summary>
+          <p>Las compras realizadas antes de las 13:00 se despachan ese mismo día. Las compras realizadas después de ese horario se despachan dentro de las 24 horas. El plazo de entrega depende del destino y del operador logístico.</p>
+        </details>
+        <details>
+          <summary>¿Cuánto cuesta y cuánto demora el envío?</summary>
+          <p>El costo y la estimación de entrega se calculan según tu destino y se muestran durante el checkout, antes de confirmar la compra.</p>
+        </details>
+        <details>
+          <summary>¿Qué medios de pago puedo usar?</summary>
+          <p>En el checkout vas a ver los medios de pago disponibles para tu compra, junto con las opciones de cuotas cuando correspondan.</p>
+        </details>
+      </div>
+    </section>
+
+    <section class="nekova-home-contact" aria-labelledby="NekovaContactTitle-{{ section.id }}">
+      <div>
+        <p class="premium-eyebrow"><span></span> ESTAMOS PARA AYUDARTE</p>
+        <h2 id="NekovaContactTitle-{{ section.id }}">¿Tenés alguna<br><em>pregunta?</em></h2>
+        <p>Escribinos. Nuestro equipo puede ayudarte con tu compra, un pedido o cualquiera de nuestros productos.</p>
+      </div>
+      <a href="/pages/contact">Contactar a Nekova <span aria-hidden="true">↗</span></a>
+    </section>
+  </div>
+</section>
+
+{% style %}
+  .nekova-home {
+    --premium-bg: var(--nekova-bg);
+    --premium-panel: var(--nekova-panel);
+    --premium-ink: var(--nekova-ink);
+    --premium-muted: var(--nekova-muted);
+    --premium-accent: var(--nekova-accent);
+    --premium-line: var(--nekova-line);
+    --premium-media: var(--nekova-surface);
+    background: var(--premium-bg);
+    color: var(--premium-ink);
+    font-family: var(--nekova-font-body);
+    padding: 0 0 9rem;
+  }
+  .nekova-home * { box-sizing: border-box; }
+  .nekova-home-shell { margin: 0 auto; max-width: 1440px; padding: 0 5.5%; }
+  .nekova-home-hero { min-height: 65vh; padding: 9rem 0 5rem; position: relative; }
+  .nekova-home-hero-content { align-items: end; display: grid; gap: 8%; grid-template-columns: 1fr .45fr; margin-top: 6rem; }
+  .nekova-home-hero h1, .nekova-home-journal h2 { color: var(--premium-ink); font: 400 clamp(5rem, 8vw, 10rem)/.98 var(--nekova-font-heading); letter-spacing: -.05em; margin: 1.8rem 0; }
+  .nekova-home-hero h1 em, .nekova-home-journal h2 em { color: var(--premium-accent); }
+  .nekova-home-hero-content > p { color: var(--premium-muted); font-size: 1.7rem; line-height: 1.8; margin: 0 0 1.6rem; max-width: 37rem; }
+  .nekova-home-scroll { bottom: 3rem; color: var(--premium-accent); font-size: 1.2rem; letter-spacing: .16em; position: absolute; text-decoration: none; }
+  .nekova-home-scroll span { margin-left: 1.2rem; }
+  .nekova-home-trust { background: var(--nekova-panel); color: var(--nekova-ink); display: grid; gap: 1px; grid-template-columns: repeat(4, 1fr); }
+  .nekova-home-trust > div { align-items: flex-start; background: var(--nekova-panel); display: flex; gap: 1.2rem; min-height: 10rem; padding: 2rem 1.7rem; }
+  .nekova-home-trust > div > span { color: var(--nekova-accent); font-size: 1.2rem; letter-spacing: .1em; }
+  .nekova-home-trust p { margin: 0; }
+  .nekova-home-trust strong, .nekova-home-trust small { display: block; }
+  .nekova-home-trust strong { font: 400 1.7rem/1.35 var(--nekova-font-heading); }
+  .nekova-home-trust small { color: var(--nekova-muted); font-size: 1.3rem; line-height: 1.5; margin-top: .55rem; }
+  .nekova-home-collection { border-top: 1px solid var(--premium-line); padding: 6rem 0 8rem; }
+  .nekova-home-section-heading { align-items: end; display: flex; justify-content: space-between; margin-bottom: 3rem; }
+  .nekova-home-section-heading h2 { color: var(--premium-ink); font: 400 clamp(3.5rem, 5vw, 5.8rem)/1 var(--nekova-font-heading); margin: 1.5rem 0 0; }
+  .nekova-home-count { color: var(--premium-muted); font-size: 1.2rem; letter-spacing: .14em; padding-bottom: .7rem; }
+  .nekova-home-categories { align-items: center; display: flex; flex-wrap: wrap; gap: 1.2rem 2.5rem; justify-content: space-between; margin-bottom: 2.5rem; }
+  .nekova-home-categories > p { color: var(--premium-muted); font-size: 1.4rem; margin: 0; }
+  .nekova-home-categories > div { display: flex; flex-wrap: wrap; gap: .7rem; }
+  .nekova-home-categories button { background: transparent; border: 1px solid var(--nekova-line-strong); border-radius: 999px; color: var(--premium-ink); cursor: pointer; font: inherit; font-size: 1.3rem; min-height: 4.2rem; padding: .8rem 1.5rem; transition: background .2s, border-color .2s, color .2s; }
+  .nekova-home-categories button:hover, .nekova-home-categories button[aria-pressed='true'] { background: var(--nekova-panel); border-color: var(--nekova-panel); color: var(--nekova-ink); }
+  .nekova-home-categories button:focus-visible, .nekova-home-space-links a:focus-visible { outline: 2px solid var(--premium-accent); outline-offset: 3px; }
+  .nekova-home-product-grid { display: grid; gap: 2.5rem; grid-template-columns: repeat(3, minmax(0, 1fr)); }
+  .nekova-home-product-image { display: block; overflow: hidden; position: relative; touch-action: pan-y; }
+  .nekova-home-product-image-link { display: block; }
+  .nekova-home-coming-soon-ribbon { background: var(--premium-accent); color: var(--nekova-on-accent); font-size: 1.3rem; font-weight: 700; left: -12%; letter-spacing: .15em; padding: 1.3rem 0; pointer-events: none; position: absolute; text-align: center; text-transform: uppercase; top: 43%; transform: rotate(-32deg); width: 124%; z-index: 2; }
+  .nekova-home-product-image-link > img { aspect-ratio: 4 / 5; box-sizing: border-box; display: block; object-fit: contain; padding: 3%; transition: transform .5s; width: 100%; }
+  .nekova-home-product-image, .nekova-home-product-image-link > img { background: var(--premium-media); }
+  .nekova-home-product-image:hover .nekova-home-product-image-link > img { transform: scale(1.035); }
+  .nekova-home-image-controls { align-items: stretch; display: flex; inset: 0; justify-content: space-between; pointer-events: none; position: absolute; z-index: 3; }
+  .nekova-home-image-control { align-items: center; background: linear-gradient(90deg, rgba(var(--nekova-ink-rgb), .4), rgba(var(--nekova-ink-rgb), 0)); border: 0; color: var(--premium-ink); cursor: pointer; display: flex; justify-content: center; padding: 0; pointer-events: auto; transition: background .2s, color .2s, opacity .2s; width: 4.2rem; }
+  .nekova-home-image-control:hover:not(:disabled) { color: #fff; }
+  .nekova-home-image-control:focus-visible { outline: 2px solid var(--premium-accent); outline-offset: -3px; }
+  .nekova-home-image-control:disabled { cursor: default; opacity: .35; }
+  .nekova-home-image-control span { font-size: 2.1rem; line-height: 1; text-shadow: 0 1px 8px rgba(0, 0, 0, .5); }
+  .nekova-home-image-control[data-carousel-previous] { box-shadow: inset -1px 0 rgba(255, 255, 255, .12); }
+  .nekova-home-image-control[data-carousel-next] { background: linear-gradient(270deg, rgba(var(--nekova-ink-rgb), .4), rgba(var(--nekova-ink-rgb), 0)); box-shadow: inset 1px 0 rgba(255, 255, 255, .12); }
+  .nekova-home-badge { background: var(--premium-accent); color: var(--nekova-on-accent); font-size: 1.15rem; letter-spacing: .1em; padding: .8rem 1rem; position: absolute; right: 1.3rem; top: 1.3rem; }
+  .nekova-home-card-arrow { align-items: center; background: var(--premium-bg); border-radius: 50%; bottom: 1.2rem; color: var(--premium-ink); display: flex; height: 3.5rem; justify-content: center; position: absolute; right: 1.2rem; width: 3.5rem; }
+  .nekova-home-product-meta { align-items: start; display: flex; gap: 1.2rem; justify-content: space-between; padding-top: 1.5rem; }
+  .nekova-home-product-meta p { color: var(--premium-accent); font-size: 1.15rem; letter-spacing: .14em; margin: 0 0 .7rem; }
+  .nekova-home-product-meta h3 { font: 400 2.1rem/1.25 var(--nekova-font-heading); margin: 0; }
+  .nekova-home-product-meta h3 a { color: var(--premium-ink); text-decoration: none; }
+  .nekova-home-card-price { display: flex; flex-direction: column; font-size: 1.4rem; gap: .3rem; text-align: right; white-space: nowrap; }
+  .nekova-home-card-price s { color: var(--premium-muted); }
+  .nekova-home-card-price span { color: var(--premium-ink); }
+  .nekova-home-card-price small { color: var(--premium-muted); font-size: 1.1rem; }
+  .nekova-home-product-description { color: var(--premium-muted); font-size: 1.4rem; line-height: 1.7; margin: 1rem 0; }
+  .nekova-home-product-link { border-bottom: 1px solid var(--premium-accent); color: var(--premium-accent); display: inline-flex; font-size: 1.3rem; gap: 1rem; padding: .5rem 0; text-decoration: none; }
+  .nekova-home-empty { color: var(--premium-muted); grid-column: 1 / -1; }
+  .nekova-home-filter-empty { border: 1px solid var(--premium-line); color: var(--premium-muted); line-height: 1.7; margin: 2rem 0 0; padding: 1.8rem; }
+  .nekova-home-spaces { align-items: center; background: var(--nekova-panel); color: var(--nekova-ink); display: grid; gap: 8%; grid-template-columns: .7fr 1.3fr; margin: 0 -5.5% 7rem; padding: 5.5rem 5.5%; }
+  .nekova-home-spaces { --premium-accent: var(--nekova-accent); }
+  .nekova-home-spaces h2 { color: var(--nekova-ink); font: 400 clamp(3.5rem, 5vw, 5.8rem)/1 var(--nekova-font-heading); letter-spacing: -.04em; margin: 1.5rem 0 0; }
+  .nekova-home-spaces h2 em { color: var(--nekova-accent); }
+  .nekova-home-space-links { display: grid; grid-template-columns: 1fr 1fr; }
+  .nekova-home-space-links a { border-bottom: 1px solid var(--nekova-line); border-top: 1px solid var(--nekova-line); color: var(--nekova-ink); display: grid; gap: 1rem; grid-template-columns: 1fr auto; padding: 1.8rem 1.4rem; text-decoration: none; }
+  .nekova-home-space-links a + a { border-left: 1px solid var(--nekova-line); }
+  .nekova-home-space-links a > span:first-child { color: var(--nekova-muted); font-size: 1.15rem; grid-column: 1 / -1; letter-spacing: .1em; }
+  .nekova-home-space-links strong { font: 400 2rem/1.35 var(--nekova-font-heading); }
+  .nekova-home-space-links a > span:last-child { color: var(--nekova-accent); font-size: 1.8rem; }
+  .nekova-home-journal { border-top: 1px solid var(--premium-line); display: grid; gap: 10%; grid-template-columns: .8fr 1fr; padding: 7rem 0 2rem; }
+  .nekova-home-journal h2 { font-size: clamp(4rem, 6vw, 7rem); margin-bottom: 0; }
+  .nekova-home-journal-content { align-self: center; }
+  .nekova-home-journal-content > p { color: var(--premium-muted); font-size: 1.6rem; line-height: 1.8; max-width: 42rem; }
+  .nekova-home-journal-link { align-items: center; border-bottom: 1px solid var(--premium-line); color: var(--premium-ink); display: grid; gap: 1.5rem; grid-template-columns: 9rem 1fr auto; padding: 1.8rem 0; text-decoration: none; }
+  .nekova-home-journal-link span:first-child { color: var(--premium-muted); font-size: 1.2rem; }
+  .nekova-home-journal-link strong { font: 400 1.9rem var(--nekova-font-heading); }
+  .nekova-home-journal-link span:last-child { color: var(--premium-accent); }
+  .nekova-home-coming-soon { color: var(--premium-accent); font-size: 1.2rem; letter-spacing: .14em; }
+  .nekova-home-faq { border-top: 1px solid var(--premium-line); display: grid; gap: 8%; grid-template-columns: .75fr 1.25fr; padding: 7rem 0; }
+  .nekova-home-faq-heading { align-self: start; }
+  .nekova-home-faq h2, .nekova-home-contact h2 { color: var(--premium-ink); font: 400 clamp(4rem, 6vw, 7rem)/1 var(--nekova-font-heading); margin: 1.8rem 0; }
+  .nekova-home-faq h2 em, .nekova-home-contact h2 em { color: var(--premium-accent); }
+  .nekova-home-faq-heading > p:last-child, .nekova-home-contact > div > p:last-child { color: var(--premium-muted); font-size: 1.5rem; line-height: 1.8; max-width: 37rem; }
+  .nekova-home-faq-list details { border-bottom: 1px solid var(--premium-line); padding: 1.7rem 0; }
+  .nekova-home-faq-list summary { color: var(--premium-ink); cursor: pointer; font: 400 1.9rem/1.4 var(--nekova-font-heading); list-style: none; }
+  .nekova-home-faq-list summary::-webkit-details-marker { display: none; }
+  .nekova-home-faq-list summary::after { color: var(--premium-accent); content: '+'; float: right; font: 400 2rem var(--nekova-font-body); }
+  .nekova-home-faq-list details[open] summary::after { content: '−'; }
+  .nekova-home-faq-list details > p { color: var(--premium-muted); font-size: 1.5rem; line-height: 1.8; max-width: 58rem; }
+  .nekova-home-faq-list details > p a { color: var(--premium-accent); }
+  .nekova-home-contact { align-items: end; background: var(--premium-panel); display: flex; gap: 3rem; justify-content: space-between; margin-top: 2rem; padding: 5rem; }
+  .nekova-home-contact h2 { margin-bottom: 1rem; }
+  .nekova-home-contact a { align-items: center; background: var(--premium-accent); color: var(--nekova-on-accent); display: inline-flex; flex: 0 0 auto; font-size: 1.4rem; font-weight: 600; gap: 2rem; justify-content: space-between; min-width: 22rem; padding: 1.5rem 1.8rem; text-decoration: none; }
+  .nekova-home-contact a span { font-size: 1.6rem; }
+  @media screen and (max-width: 800px) {
+    .nekova-home-shell { padding: 0 2.2rem; }
+    .nekova-home-hero { min-height: 56vh; padding-top: 6rem; }
+    .nekova-home-hero-content { gap: 2rem; grid-template-columns: 1fr; margin-top: 4rem; }
+    .nekova-home-hero-content > p { max-width: 55rem; }
+    .nekova-home-scroll { bottom: 2rem; }
+    .nekova-home-trust { grid-template-columns: repeat(2, 1fr); }
+    .nekova-home-trust > div { min-height: 8.5rem; }
+    .nekova-home-product-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .nekova-home-spaces { gap: 2.5rem; grid-template-columns: 1fr; margin: 0 -2.2rem 5rem; padding: 4rem 2.2rem; }
+    .nekova-home-journal, .nekova-home-faq { gap: 3rem; grid-template-columns: 1fr; }
+    .nekova-home-contact { align-items: start; flex-direction: column; padding: 3rem; }
+  }
+  @media screen and (max-width: 540px) {
+    .nekova-home-shell { padding: 0 1.8rem; }
+    .nekova-home-hero { min-height: 59vh; padding-top: 4rem; }
+    .nekova-home-hero h1 { font-size: clamp(4.7rem, 16vw, 7rem); }
+    .nekova-home-trust > div { gap: .8rem; padding: 1.4rem 1rem; }
+    .nekova-home-trust strong { font-size: 1.5rem; }
+    .nekova-home-trust small { font-size: 1.2rem; }
+    .nekova-home-section-heading { align-items: start; flex-direction: column; gap: 1.5rem; }
+    .nekova-home-categories { align-items: flex-start; flex-direction: column; }
+    .nekova-home-categories > div { flex-wrap: nowrap; max-width: 100%; overflow-x: auto; padding: .3rem .2rem .8rem; }
+    .nekova-home-categories button { flex: 0 0 auto; }
+    .nekova-home-product-grid { gap: 2.5rem 1.2rem; grid-template-columns: 1fr; }
+    .nekova-home-spaces { margin: 0 -1.8rem 4rem; padding: 3rem 1.8rem; }
+    .nekova-home-space-links { grid-template-columns: 1fr; }
+    .nekova-home-space-links a + a { border-left: 0; border-top: 0; }
+    .nekova-home-product-meta h3 { font-size: 1.9rem; }
+    .nekova-home-journal-link { gap: .8rem; grid-template-columns: 6.5rem 1fr auto; }
+    .nekova-home-contact { padding: 2.2rem; }
+    .nekova-home-contact a { min-width: 0; width: 100%; }
+  }
+{% endstyle %}
+
+{% schema %}
+{
+  "name": "Nekova · inicio",
+  "settings": [
+    {
+      "type": "collection",
+      "id": "collection",
+      "label": "Colección destacada"
+    },
+    {
+      "type": "range",
+      "id": "products_to_show",
+      "min": 1,
+      "max": 12,
+      "step": 1,
+      "default": 6,
+      "label": "Productos a mostrar"
+    },
+    {
+      "type": "text",
+      "id": "collection_heading",
+      "label": "Título de la colección",
+      "default": "Objetos que elevan lo cotidiano."
+    },
+    {
+      "type": "blog",
+      "id": "blog",
+      "label": "Blog de novedades"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Nekova · inicio"
+    }
+  ]
+}
+{% endschema %}

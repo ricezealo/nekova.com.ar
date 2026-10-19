@@ -1,0 +1,132 @@
+{%- liquid
+  assign contact_email = settings.nekova_email | default: shop.email
+-%}
+
+<section class="nk-withdrawal" aria-labelledby="NkWithdrawalTitle-{{ section.id }}">
+  <div class="nk-withdrawal-shell nk-withdrawal-grid">
+    <div>
+      <p class="nk-withdrawal-eyebrow">Botón de arrepentimiento</p>
+      <h1 id="NkWithdrawalTitle-{{ section.id }}">{{ section.settings.heading }}</h1>
+      <div class="nk-withdrawal-lead">{{ section.settings.intro }}</div>
+      <ol class="nk-withdrawal-steps" role="list">
+        <li><span>1</span><p><strong>Completá el formulario</strong> con tus datos y el número de pedido. No necesitás tener cuenta ni explicar el motivo.</p></li>
+        <li><span>2</span><p><strong>Dentro de las 24hs</strong> te enviamos por email un código de identificación de tu solicitud.</p></li>
+        <li><span>3</span><p><strong>Coordinamos la devolución</strong> del producto. Los costos de envío de la devolución quedan a nuestro cargo.</p></li>
+        <li><span>4</span><p><strong>Te reintegramos el pago</strong> por el mismo medio que usaste para comprar.</p></li>
+      </ol>
+      {%- if section.settings.note != blank -%}
+        <div class="nk-withdrawal-note">{{ section.settings.note }}</div>
+      {%- endif -%}
+    </div>
+
+    <div class="nk-withdrawal-card">
+      <h2>Solicitud de arrepentimiento</h2>
+      {%- form 'contact', id: 'NkWithdrawalForm', class: 'nk-withdrawal-form' -%}
+        {%- if form.posted_successfully? -%}
+          <p class="nk-withdrawal-success" role="status">Recibimos tu solicitud. Dentro de las 24hs te enviamos por email el código de identificación y los pasos para la devolución.</p>
+        {%- else -%}
+          {%- if form.errors -%}
+            <p class="nk-withdrawal-error" role="alert">Revisá los datos marcados e intentá nuevamente.</p>
+          {%- endif -%}
+          <input type="hidden" name="contact[Tipo de consulta]" value="Arrepentimiento de compra">
+          <label for="NkWithdrawalName">Nombre y apellido *</label>
+          <input id="NkWithdrawalName" type="text" name="contact[Nombre y apellido]" autocomplete="name" required>
+          <label for="NkWithdrawalEmail">Email *</label>
+          <input id="NkWithdrawalEmail" type="email" name="contact[email]" autocomplete="email" required>
+          <label for="NkWithdrawalPhone">Teléfono</label>
+          <input id="NkWithdrawalPhone" type="tel" name="contact[Teléfono]" autocomplete="tel">
+          <div class="nk-withdrawal-row">
+            <div>
+              <label for="NkWithdrawalOrder">Número de pedido *</label>
+              <input id="NkWithdrawalOrder" type="text" name="contact[Número de pedido]" placeholder="#1001" required>
+            </div>
+            <div>
+              <label for="NkWithdrawalDate">Fecha de compra *</label>
+              <input id="NkWithdrawalDate" type="date" name="contact[Fecha de compra]" required>
+            </div>
+          </div>
+          <label for="NkWithdrawalProducts">Productos que querés devolver *</label>
+          <input id="NkWithdrawalProducts" type="text" name="contact[Productos]" required>
+          <label for="NkWithdrawalComments">Comentarios (opcional)</label>
+          <textarea id="NkWithdrawalComments" name="contact[body]" rows="4"></textarea>
+          <button type="submit" class="nk-withdrawal-button">Enviar solicitud</button>
+          {%- if contact_email != blank -%}
+            <p class="nk-withdrawal-alt">También podés escribirnos a <a href="mailto:{{ contact_email }}">{{ contact_email }}</a>.</p>
+          {%- endif -%}
+        {%- endif -%}
+      {%- endform -%}
+    </div>
+  </div>
+</section>
+
+{% style %}
+  .nk-withdrawal { background: var(--nekova-bg); color: var(--nekova-ink); font-family: var(--nekova-font-body); padding: 7rem 0 9rem; }
+  .nk-withdrawal * { box-sizing: border-box; }
+  .nk-withdrawal-shell { margin: 0 auto; max-width: 1280px; padding: 0 5rem; }
+  .nk-withdrawal-grid { align-items: start; display: grid; gap: 6rem; grid-template-columns: minmax(0, 1fr) minmax(0, .9fr); }
+  .nk-withdrawal-eyebrow { align-items: center; color: var(--nekova-accent); display: flex; font-size: 1.25rem; font-weight: 800; gap: 1rem; letter-spacing: .14em; margin: 0 0 1.6rem; text-transform: uppercase; }
+  .nk-withdrawal-eyebrow::before { background: currentColor; border-radius: 2px; content: ''; height: 2px; width: 2.4rem; }
+  .nk-withdrawal h1, .nk-withdrawal h2 { color: var(--nekova-ink); font-family: var(--nekova-font-heading); font-weight: var(--font-heading-weight); letter-spacing: -.02em; line-height: 1.12; margin: 0; }
+  .nk-withdrawal h1 { font-size: clamp(3.2rem, 4vw, 4.8rem); }
+  .nk-withdrawal h2 { font-size: 2.2rem; margin-bottom: 2rem; }
+  .nk-withdrawal-lead { color: var(--nekova-muted); font-size: 1.7rem; line-height: 1.65; margin-top: 2rem; }
+  .nk-withdrawal-lead p { margin: 0 0 1.2rem; }
+  .nk-withdrawal-steps { display: grid; gap: 1.6rem; list-style: none; margin: 3.2rem 0 0; padding: 0; }
+  .nk-withdrawal-steps li { align-items: flex-start; display: flex; gap: 1.6rem; }
+  .nk-withdrawal-steps span { align-items: center; background: var(--nekova-accent-soft); border-radius: 50%; color: var(--nekova-accent); display: flex; flex: 0 0 auto; font-family: var(--nekova-font-heading); font-size: 1.5rem; font-weight: var(--font-heading-weight); height: 3.6rem; justify-content: center; width: 3.6rem; }
+  .nk-withdrawal-steps p { color: var(--nekova-muted); font-size: 1.55rem; line-height: 1.6; margin: .6rem 0 0; }
+  .nk-withdrawal-steps strong { color: var(--nekova-ink); }
+  .nk-withdrawal-note { background: var(--nekova-panel); border-radius: var(--nekova-radius); color: var(--nekova-muted); font-size: 1.45rem; line-height: 1.6; margin-top: 3.2rem; padding: 2rem 2.4rem; }
+  .nk-withdrawal-note p { margin: 0 0 .8rem; }
+  .nk-withdrawal-note p:last-child { margin: 0; }
+  .nk-withdrawal-card { background: var(--nekova-panel); border-radius: var(--nekova-radius-lg); padding: 3.6rem; }
+  .nk-withdrawal-form { display: grid; gap: .6rem; }
+  .nk-withdrawal-form label { font-size: 1.35rem; font-weight: 700; margin-top: 1rem; }
+  .nk-withdrawal-form input, .nk-withdrawal-form textarea { background: var(--nekova-surface); border: 1px solid var(--nekova-line-strong); border-radius: 1rem; color: var(--nekova-ink); font: inherit; font-size: 1.5rem; padding: 1.2rem 1.4rem; width: 100%; }
+  .nk-withdrawal-form input:focus-visible, .nk-withdrawal-form textarea:focus-visible, .nk-withdrawal-button:focus-visible { outline: 2px solid var(--nekova-accent); outline-offset: 2px; }
+  .nk-withdrawal-row { display: grid; gap: 1.2rem; grid-template-columns: 1fr 1fr; }
+  .nk-withdrawal-row > div { display: grid; gap: .6rem; }
+  .nk-withdrawal-button { background: var(--nekova-accent); border: 0; border-radius: 1.2rem; color: var(--nekova-on-accent); cursor: pointer; font: inherit; font-size: 1.6rem; font-weight: 700; margin-top: 2rem; min-height: 5.4rem; transition: background .2s; }
+  .nk-withdrawal-button:hover { background: var(--nekova-accent-strong); }
+  .nk-withdrawal-alt { color: var(--nekova-muted); font-size: 1.35rem; margin: 1.2rem 0 0; }
+  .nk-withdrawal-alt a { color: var(--nekova-accent); }
+  .nk-withdrawal-success { color: var(--nekova-accent); font-size: 1.6rem; font-weight: 700; line-height: 1.6; margin: 0; }
+  .nk-withdrawal-error { color: var(--nekova-warm); font-weight: 700; margin: 0; }
+  @media screen and (max-width: 990px) {
+    .nk-withdrawal-shell { padding: 0 2.4rem; }
+    .nk-withdrawal-grid { gap: 4rem; grid-template-columns: 1fr; }
+  }
+  @media screen and (max-width: 600px) {
+    .nk-withdrawal { padding: 4.8rem 0 6rem; }
+    .nk-withdrawal-shell { padding: 0 1.6rem; }
+    .nk-withdrawal-card { padding: 2.4rem 2rem; }
+    .nk-withdrawal-row { grid-template-columns: 1fr; }
+  }
+{% endstyle %}
+
+{% schema %}
+{
+  "name": "Nekova · arrepentimiento",
+  "class": "nekova-withdrawal-section",
+  "settings": [
+    {
+      "type": "inline_richtext",
+      "id": "heading",
+      "label": "Título",
+      "default": "Arrepentimiento de compra"
+    },
+    {
+      "type": "richtext",
+      "id": "intro",
+      "label": "Texto",
+      "default": "<p>Si compraste en Nekova, tenés derecho a revocar la compra dentro de los 10 días corridos desde que recibiste el producto o desde la compra, lo que ocurra último, sin dar explicaciones y sin costo (Ley 24.240, art. 34, y Resolución 424/2020).</p>"
+    },
+    {
+      "type": "richtext",
+      "id": "note",
+      "label": "Aclaraciones",
+      "default": "<p>El producto tiene que estar completo y en el mismo estado en que lo recibiste. Los productos de uso personal, como los tapones auditivos, se aceptan solo con el envase cerrado y sin uso, como se informa en su página.</p>"
+    }
+  ]
+}
+{% endschema %}

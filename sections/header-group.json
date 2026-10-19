@@ -1,0 +1,121 @@
+{
+  "name": "t:sections.header.name",
+  "type": "header",
+  "sections": {
+    "announcement-bar": {
+      "type": "announcement-bar",
+      "settings": {
+        "color_scheme": "scheme-4",
+        "show_line_separator": false,
+        "show_social": false,
+        "auto_rotate": true,
+        "change_slides_speed": 5,
+        "enable_country_selector": false,
+        "enable_language_selector": false
+      },
+      "blocks": {
+        "announcement-guarantee": {
+          "type": "announcement",
+          "settings": {
+            "text": "10 días para devolverlo si no te convence",
+            "text_alignment": "center",
+            "color_scheme": "scheme-4",
+            "link": ""
+          }
+        },
+        "announcement-shipping": {
+          "type": "announcement",
+          "settings": {
+            "text": "Conocé el costo de envío antes de pagar",
+            "text_alignment": "center",
+            "color_scheme": "scheme-4",
+            "link": ""
+          }
+        },
+        "announcement-details": {
+          "type": "announcement",
+          "settings": {
+            "text": "Despacho en el día comprando antes de las 13:00hs",
+            "text_alignment": "center",
+            "color_scheme": "scheme-4",
+            "link": ""
+          }
+        }
+      },
+      "block_order": [
+        "announcement-guarantee",
+        "announcement-shipping",
+        "announcement-details"
+      ],
+      "disabled": true
+    },
+    "header": {
+      "type": "header",
+      "settings": {
+        "color_scheme": "scheme-1",
+        "menu_color_scheme": "scheme-1",
+        "logo_position": "middle-left",
+        "menu": "main-menu",
+        "menu_type_desktop": "dropdown",
+        "sticky_header_type": "always",
+        "show_line_separator": true,
+        "enable_country_selector": true,
+        "enable_language_selector": true,
+        "mobile_logo_position": "center",
+        "margin_bottom": 0,
+        "padding_top": 20,
+        "padding_bottom": 20,
+        "show_search": false
+      }
+    },
+    "trust-bar": {
+      "type": "nekova-trust-bar",
+      "blocks": {
+        "trust-dispatch": {
+          "type": "item",
+          "settings": {
+            "icon": "truck",
+            "title": "Despacho en el día",
+            "text": "antes de las 13:00hs, días hábiles"
+          }
+        },
+        "trust-returns": {
+          "type": "item",
+          "settings": {
+            "icon": "return",
+            "title": "10 días",
+            "text": "para devolverlo"
+          }
+        },
+        "trust-payment": {
+          "type": "item",
+          "settings": {
+            "icon": "lock",
+            "title": "Pago seguro",
+            "text": "con checkout protegido"
+          }
+        },
+        "trust-contact": {
+          "type": "item",
+          "settings": {
+            "icon": "chat",
+            "title": "Atención por WhatsApp",
+            "text": ""
+          }
+        }
+      },
+      "block_order": [
+        "trust-dispatch",
+        "trust-returns",
+        "trust-payment",
+        "trust-contact"
+      ],
+      "settings": {}
+    }
+  },
+  "order": [
+    "announcement-bar",
+    "header",
+    "trust-bar"
+  ]
+}

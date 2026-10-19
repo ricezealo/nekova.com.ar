@@ -1,0 +1,25 @@
+{%- comment -%}
+  Floating WhatsApp button (all pages). Uses theme settings "Nekova · contacto".
+{%- endcomment -%}
+{%- if settings.nekova_whatsapp != blank and settings.nekova_whatsapp_float -%}
+  {%- liquid
+    assign whatsapp_digits = settings.nekova_whatsapp | remove: ' ' | remove: '+' | remove: '-' | remove: '(' | remove: ')' | remove: '.'
+    assign whatsapp_message = settings.nekova_whatsapp_message | default: 'Hola Nekova, tengo una consulta.'
+  -%}
+  <a class="nk-whatsapp" href="https://wa.me/{{ whatsapp_digits }}?text={{ whatsapp_message | url_encode }}" target="_blank" rel="noopener" aria-label="Escribinos por WhatsApp (se abre en otra pestaña)">
+    <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M20.2 11.7a8.1 8.1 0 0 1-12 7.1l-4.4 1.1 1.2-4.3a8.1 8.1 0 1 1 15.2-3.9Z" fill="none" stroke="currentColor" stroke-linejoin="round" stroke-width="1.7"/><path d="M8.4 7.7c-.3 0-.6.1-.8.4-.3.3-.9.9-.9 2.1s.9 2.4 1 2.6c.1.2 1.8 2.9 4.4 3.9 2.2.9 2.7.7 3.2.7.5-.1 1.6-.7 1.8-1.3.2-.6.2-1.1.1-1.2-.1-.1-.3-.2-.6-.4l-1.8-.9c-.2-.1-.4-.1-.6.2l-.8 1c-.2.2-.3.2-.6.1-.3-.1-1.2-.4-2.2-1.3-.8-.7-1.3-1.5-1.5-1.8-.2-.3 0-.4.1-.6l.4-.5c.1-.2.2-.3.3-.5.1-.2 0-.4 0-.5l-.8-1.8c-.2-.5-.4-.5-.7-.5Z" fill="currentColor"/></svg>
+    <span class="nk-whatsapp-label">¿Dudas? Escribinos</span>
+  </a>
+  <style>
+    .nk-whatsapp { align-items: center; background: #0f7d70; border-radius: 999px; bottom: 2rem; box-shadow: 0 .8rem 2.4rem rgba(0, 0, 0, .18); color: #fff; display: flex; font: 700 1.4rem var(--nekova-font-body); gap: .8rem; padding: 1.2rem 1.8rem 1.2rem 1.4rem; position: fixed; right: 2rem; text-decoration: none; transition: transform .2s, box-shadow .2s; z-index: 50; }
+    .nk-whatsapp:hover { box-shadow: 0 1.2rem 3rem rgba(0, 0, 0, .24); color: #fff; transform: translateY(-2px); }
+    .nk-whatsapp:focus-visible { outline: 3px solid var(--nekova-accent); outline-offset: 3px; }
+    .nk-whatsapp svg { height: 2.6rem; width: 2.6rem; }
+    @media screen and (max-width: 749px) {
+      .nk-whatsapp { bottom: 1.6rem; padding: 1.3rem; right: 1.6rem; }
+      .nk-whatsapp-label { display: none; }
+      .nk-whatsapp svg { height: 2.8rem; width: 2.8rem; }
+    }
+    @media print { .nk-whatsapp { display: none; } }
+  </style>
+{%- endif -%}
