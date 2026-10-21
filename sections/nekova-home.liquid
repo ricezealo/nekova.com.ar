@@ -183,6 +183,26 @@
     window.addEventListener('resize', update);
     window.addEventListener('load', update);
     update();
+
+    if (behavior === 'auto') return;
+    let paused = false;
+    let visible = false;
+    const advance = () => {
+      if (paused || !visible || nav.hidden) return;
+      const atEnd = track.scrollLeft >= track.scrollWidth - track.clientWidth - 2;
+      track.scrollTo({ left: atEnd ? 0 : track.scrollLeft + step(), behavior });
+    };
+    setInterval(advance, 3500);
+    carousel.addEventListener('mouseenter', () => { paused = true; });
+    carousel.addEventListener('mouseleave', () => { paused = false; });
+    carousel.addEventListener('focusin', () => { paused = true; });
+    carousel.addEventListener('focusout', () => { paused = false; });
+    track.addEventListener('touchstart', () => { paused = true; }, { passive: true });
+    if ('IntersectionObserver' in window) {
+      new IntersectionObserver((entries) => { visible = entries[0].isIntersecting; }).observe(carousel);
+    } else {
+      visible = true;
+    }
   });
 </script>
 
