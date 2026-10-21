@@ -372,7 +372,7 @@ const insoleVariants = ['Negro', 'Gris', 'Naranja'].flatMap((color, c) => ['35 a
 const insoleProduct = {
   id: 5700,
   handle: 'plantillas-multitalle',
-  title: 'Plantillas de Espuma PU Multi-talle',
+  title: 'Plantillas Nekova Confort',
   vendor: 'NEKOVA',
   price: 1700000,
   compare_at_price: null,
