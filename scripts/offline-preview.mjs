@@ -6,9 +6,11 @@ import { Liquid } from 'liquidjs';
 
 const root = process.cwd();
 const port = Number(process.env.PORT || 4173);
-const locale = JSON.parse(readFileSync(join(root, 'locales/es.json'), 'utf8'));
-const settingsData = JSON.parse(readFileSync(join(root, 'config/settings_data.json'), 'utf8'));
-const settingsSchema = JSON.parse(readFileSync(join(root, 'config/settings_schema.json'), 'utf8'));
+// Shopify prepends a /* … */ notice to the JSON files it writes back to the repo.
+const readJson = (file) => JSON.parse(readFileSync(file, 'utf8').replace(/^﻿?\s*\/\*[\s\S]*?\*\/\s*/, ''));
+const locale = readJson(join(root, 'locales/es.json'));
+const settingsData = readJson(join(root, 'config/settings_data.json'));
+const settingsSchema = readJson(join(root, 'config/settings_schema.json'));
 const settingDefaults = Object.fromEntries(settingsSchema.flatMap((group) => group.settings || [])
   .filter((setting) => Object.hasOwn(setting, 'default'))
   .map((setting) => [setting.id, setting.default]));
@@ -346,7 +348,49 @@ const earplugProduct = {
   type: 'Descanso y silencio',
   has_only_default_variant: false,
 };
-const products = [featuredProduct, lightProduct, cushionProduct, orthopedicProduct, earplugProduct, upcomingProduct];
+const insoleImages = ['08', '01', '05', '06', '07', '10'].map((number, index) => ({
+  src: `/assets/product-media-plantillas-${number}.jpg`,
+  url: `/assets/product-media-plantillas-${number}.jpg`,
+  alt: `Plantillas multi-talle, imagen ${index + 1}`,
+  width: 1200,
+  height: 1200,
+}));
+const insoleMedia = insoleImages.map((preview, index) => ({ id: 700 + index, media_type: 'image', preview_image: preview, alt: preview.alt }));
+const insoleVariants = ['Negro', 'Gris', 'Naranja'].flatMap((color, c) => ['35 al 40', '41 al 46'].map((size, t) => ({
+  id: 57001 + c * 2 + t,
+  title: `${color} / ${size}`,
+  price: 1700000,
+  compare_at_price: null,
+  available: true,
+  featured_image: insoleImages[0],
+  featured_media: insoleMedia[0],
+  options: [color, size],
+  option1: color,
+  option2: size,
+  inventory_quantity: 20,
+})));
+const insoleProduct = {
+  id: 5700,
+  handle: 'plantillas-multitalle',
+  title: 'Plantillas de Espuma PU Multi-talle',
+  vendor: 'NEKOVA',
+  price: 1700000,
+  compare_at_price: null,
+  available: true,
+  featured_image: insoleImages[0],
+  featured_media: insoleMedia[0],
+  media: insoleMedia,
+  images: insoleImages,
+  options: ['Color', 'Talle'],
+  options_with_values: [{ name: 'Color', position: 1, values: ['Negro', 'Gris', 'Naranja'] }, { name: 'Talle', position: 2, values: ['35 al 40', '41 al 46'] }],
+  variants: insoleVariants,
+  selected_or_first_available_variant: insoleVariants[0],
+  description: '<p>Plantillas de espuma PU multi-talle, recortables. Se venden por par.</p>',
+  url: '/products/plantillas-multitalle',
+  type: 'Confort al caminar',
+  has_only_default_variant: false,
+};
+const products = [featuredProduct, lightProduct, cushionProduct, orthopedicProduct, earplugProduct, insoleProduct, upcomingProduct];
 // One cookie per purchasable variant in the local sample cart.
 const cartLines = [
   { product: featuredProduct, variant: productVariant, image: productImages[0], cookie: 'nekova_cart' },
@@ -354,6 +398,7 @@ const cartLines = [
   { product: cushionProduct, variant: cushionVariant, image: cushionImages[0], cookie: 'nekova_cart_cushion' },
   ...orthopedicVariants.map((variant) => ({ product: orthopedicProduct, variant, image: variant.featured_image, cookie: `nekova_cart_${variant.id}` })),
   ...earplugVariants.map((variant) => ({ product: earplugProduct, variant, image: variant.featured_image, cookie: `nekova_cart_${variant.id}` })),
+  ...insoleVariants.map((variant) => ({ product: insoleProduct, variant, image: variant.featured_image, cookie: `nekova_cart_${variant.id}` })),
 ];
 // Store catalog: the U cushion and the earplugs. The other sample products stay reachable by URL for template testing.
 // PREVIEW_SOLDOUT="Azul marino" marks the variants with that title as sold out (to test the color waitlist).
@@ -365,11 +410,12 @@ if (process.env.PREVIEW_SOLDOUT) {
 // PREVIEW_ALL_PRODUCTS=1 adds the other sample products, to test the home with a larger catalog.
 const launchProducts = process.env.PREVIEW_ALL_PRODUCTS
   ? [orthopedicProduct, earplugProduct, cushionProduct, lightProduct, featuredProduct]
-  : [orthopedicProduct, earplugProduct];
+  : [orthopedicProduct, earplugProduct, insoleProduct];
 const collection = { id: 1, handle: 'all', title: 'Todos los productos', description: '<p>Productos de ejemplo para la vista local.</p>', products: launchProducts, all_products_count: launchProducts.length, products_count: launchProducts.length, url: '/collections/all', image };
 const menuItems = [
   { title: 'Cojín ergonómico', url: '/products/cojin-ortopedico-u', links: [] },
   { title: 'Tapones auditivos', url: '/products/tapones-auditivos-silicona', links: [] },
+  { title: 'Plantillas', url: '/products/plantillas-multitalle', links: [] },
   { title: 'Sobre Nekova', url: '/pages/sobre-nekova', links: [] },
   { title: 'Contacto', url: '/pages/contact', links: [] },
 ];
@@ -578,7 +624,7 @@ async function renderSection(id, definition, context, groupClass = '') {
 async function renderGroup(fileName, context) {
   const file = join(root, 'sections', `${fileName}.json`);
   if (!existsSync(file)) return '';
-  const group = JSON.parse(readFileSync(file, 'utf8'));
+  const group = readJson(file);
   const output = [];
   for (const id of group.order || []) {
     const groupClass = group.type ? `shopify-section-group-${group.type}-group` : '';
@@ -680,7 +726,7 @@ async function renderPage(pathname, cartCounts = [], stockNotificationRegistered
   if (!existsSync(templatePath)) {
     return `<!doctype html><meta charset="utf-8"><h1>Plantilla no disponible</h1><p>No existe templates/${templateName}.json en este tema.</p><a href="/">Volver al inicio</a>`;
   }
-  const template = JSON.parse(readFileSync(templatePath, 'utf8'));
+  const template = readJson(templatePath);
   const settings = { ...themeSettings, color_schemes: colors };
   const context = {
     settings, shop, routes, cart: createCart(cartCounts), products, collections: { all: collection, frontpage: collection },

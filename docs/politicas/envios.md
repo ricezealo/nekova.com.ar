@@ -3,7 +3,7 @@
 > Texto para pegar en Shopify → Configuración → Políticas → Política de envío.
 > Completá lo que está entre [corchetes] con los datos de tu logística.
 
-**Última actualización:** [FECHA]
+**Última actualización:** 19/10/2026
 
 ## Despacho
 

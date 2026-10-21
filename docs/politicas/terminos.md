@@ -3,7 +3,7 @@
 > Texto para pegar en Shopify → Configuración → Políticas → Términos del servicio.
 > Completá lo que está entre [corchetes] y hacelo revisar por tu abogado o contador antes de publicarlo.
 
-**Última actualización:** [FECHA]
+**Última actualización:** 19/10/2026
 
 ## 1. Quiénes somos
 

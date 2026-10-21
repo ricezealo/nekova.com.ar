@@ -287,3 +287,66 @@ document.querySelectorAll('[data-nk-combo]').forEach((combo) => {
     }
   });
 });
+
+// Multi-option picker (e.g. Color + Talle): resolves the variant from the selected values.
+document.querySelectorAll('[data-nk-multi-picker]').forEach((picker) => {
+  if (picker.dataset.multiInitialized === 'true') return;
+  picker.dataset.multiInitialized = 'true';
+  const variants = JSON.parse(picker.querySelector('[data-nk-variants]').textContent);
+  const idInput = picker.querySelector('input[name="id"]');
+  const status = picker.querySelector('[data-nk-multi-status]');
+  const form = picker.closest('form');
+  const submit = form?.querySelector('button[name="add"]');
+  const submitLabel = submit?.querySelector('span');
+  const submitText = submitLabel?.textContent;
+  const gallery = picker.closest('[data-premium-product]')?.querySelector('[data-premium-gallery]');
+  const groups = [...picker.querySelectorAll('[data-nk-option]')];
+
+  const update = (updateUrl) => {
+    const selected = groups.map((group) => group.querySelector('input:checked')?.value);
+    groups.forEach((group, index) => {
+      const label = group.querySelector('[data-nk-option-label]');
+      if (label) label.textContent = selected[index] || '';
+    });
+    const variant = variants.find((item) => item.options.every((value, index) => value === selected[index]));
+    const available = Boolean(variant && variant.available);
+    if (variant) idInput.value = variant.id;
+    if (status) status.hidden = available;
+    if (submit) {
+      submit.disabled = !available;
+      if (submitLabel) submitLabel.textContent = available ? submitText : 'Sin stock';
+    }
+    if (variant && variant.image && gallery && updateUrl) {
+      gallery.dispatchEvent(new CustomEvent('premium:show-image', { detail: { src: variant.image } }));
+    }
+    if (variant && updateUrl) {
+      const url = new URL(window.location.href);
+      url.searchParams.set('variant', variant.id);
+      window.history.replaceState(window.history.state, '', url);
+    }
+  };
+  picker.addEventListener('change', () => update(true));
+  update(false);
+});
+
+// Quantity tiers: choosing a tier sets the quantity; the highlighted tier follows the quantity.
+document.querySelectorAll('[data-nk-tiers]').forEach((tiers) => {
+  if (tiers.dataset.tiersInitialized === 'true') return;
+  tiers.dataset.tiersInitialized = 'true';
+  const buttons = [...tiers.querySelectorAll('[data-nk-tier]')];
+  const qty = tiers.closest('[data-premium-product]')?.querySelector('[data-nk-qty] input');
+  const highlight = () => {
+    const value = Number(qty?.value) || 1;
+    const active = buttons.filter((button) => Number(button.dataset.nkTier) <= value).pop();
+    buttons.forEach((button) => button.setAttribute('aria-pressed', String(button === active)));
+  };
+  buttons.forEach((button) => button.addEventListener('click', () => {
+    if (!qty) return;
+    qty.value = button.dataset.nkTier;
+    qty.dispatchEvent(new Event('change', { bubbles: true }));
+    highlight();
+  }));
+  qty?.addEventListener('change', highlight);
+  qty?.closest('[data-nk-qty]')?.addEventListener('click', () => setTimeout(highlight));
+  highlight();
+});

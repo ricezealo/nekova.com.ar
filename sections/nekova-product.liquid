@@ -16,12 +16,18 @@
       assign content_key = 'cojin'
     when 'tapones-auditivos-silicona'
       assign content_key = 'tapones'
+    when 'plantillas-multitalle'
+      assign content_key = 'plantillas'
   endcase
 
   assign has_variant_choice = false
   if featured_product.has_only_default_variant == false and featured_product.variants.size > 1
     assign has_variant_choice = true
     assign variant_option_name = featured_product.options.first | default: 'Variante'
+  endif
+  assign has_multi_options = false
+  if has_variant_choice and featured_product.options.size > 1
+    assign has_multi_options = true
   endif
   assign stock_form_id = 'NkStockForm-' | append: section.id
 -%}
@@ -49,6 +55,7 @@
 {%- comment -%} Returns: 10-day right of withdrawal; products that cannot be returned once opened override these. {%- endcomment -%}
 {%- assign nk_assure_extra = '' -%}
 {%- assign nk_combo_handle = '' -%}
+{%- assign nk_tiers = '' -%}
 {%- capture nk_returns_assure -%}<strong>Probalo tranquilo:</strong> si no te convence, tenés 10 días para devolverlo.{%- endcapture -%}
 {%- capture nk_returns_text -%}Tenés 10 días desde la compra para solicitar la devolución, con el producto completo y en perfecto estado. <a href="/pages/contact">Escribinos</a> para coordinarla.{%- endcapture -%}
 {%- assign nk_returns_faq_q = '¿Puedo devolverlo si no me convence?' -%}
@@ -147,6 +154,46 @@
 
     {%- capture nk_faq -%}¿Cuánto ruido reducen?::Reducen el ruido del ambiente de forma pasiva, ideal para dormir, concentrarte o ir a un recital. No son un elemento de protección auditiva certificado: si trabajás expuesto a ruido intenso, usá protección certificada.||¿Qué tamaño de punta elijo?::Vienen 4 tamaños (XS, S, M y L). Empezá por el M y cambiá a uno más chico o más grande hasta que te quede cómodo y firme.||¿Cómo se limpian?::Lavalos con agua tibia y, si querés, un poco de jabón neutro. Dejalos secar bien antes de guardarlos en el estuche.||¿Son de uso personal?::Sí. Por higiene, cada persona debería usar su propio par.{%- endcapture -%}
     {%- assign nk_cta_title = 'Menos ruido, más descanso' -%}
+
+  {%- when 'plantillas' -%}
+    {%- assign nk_gallery = 'product-media-plantillas-08.jpg,product-media-plantillas-01.jpg,product-media-plantillas-05.jpg,product-media-plantillas-06.jpg,product-media-plantillas-07.jpg,product-media-plantillas-10.jpg' -%}
+    {%- assign nk_gallery_alt = 'Plantillas de espuma PU multi-talle' -%}
+    {%- assign nk_tagline = 'Comodidad en cada paso.' -%}
+    {%- assign nk_tiers = '1::1 par::17000||2::2 pares::15000||3::3 o más::12000' -%}
+    {%- capture nk_assure_extra -%}<strong>Multi-talle:</strong> dos rangos que se recortan a tu número.{%- endcapture -%}
+    {%- capture nk_returns_assure -%}<strong>10 días para devolverlas sin usar ni recortar.</strong> Una vez recortadas o usadas no se aceptan devoluciones.{%- endcapture -%}
+    {%- capture nk_returns_text -%}Tenés 10 días desde la compra para devolverlas, siempre que estén sin usar, sin recortar y en su envase. Por higiene y porque se adaptan a tu talle, una vez recortadas o usadas no se aceptan devoluciones. Si llegan con una falla de fábrica, te las cambiamos. <a href="/pages/contact">Escribinos</a> para coordinarlo.{%- endcapture -%}
+    {%- assign nk_returns_faq_q = '¿Puedo devolverlas?' -%}
+    {%- assign nk_returns_faq_a = 'Sí, dentro de los 10 días desde la compra, sin usar, sin recortar y en su envase. Una vez recortadas o usadas no se aceptan devoluciones, salvo que tengan una falla de fábrica: en ese caso te las cambiamos. Escribinos y coordinamos.' -%}
+    {%- assign nk_returns_short = '10 días para devolverlas sin usar' -%}
+    {%- assign nk_lead = 'Espuma PU que amortigua, talón en U y superficie transpirable. Multi-talle: se recortan a tu medida.' -%}
+    {%- assign nk_checks = 'Espuma PU que vuelve a su forma||Multi-talle: 35 al 40 y 41 al 46, recortables||Capa textil transpirable con zonas perforadas' -%}
+    {%- capture nk_details -%}Plantillas de espuma PU con capa textil de confort y zonas perforadas para que el pie respire. El talón en forma de U lo contiene para una pisada más estable y los relieves acompañan la planta del pie. Vienen en dos rangos de talle (35 al 40 y 41 al 46) y se recortan con una tijera siguiendo la línea de tu número. Unisex, para zapatillas y calzado de uso diario. Se venden por par.{%- endcapture -%}
+    {%- assign nk_specs = 'Material::Espuma PU con capa textil||Talles::35 al 40 y 41 al 46, recortables||Diseño::Talón en U, relieves y zonas perforadas||Colores::Negro, gris y naranja||Uso::Zapatillas y calzado de uso diario||Presentación::Par (pie izquierdo y derecho), unisex' -%}
+
+    {%- assign nk_how_eyebrow = 'Guía de talles' -%}
+    {%- assign nk_how_title = 'Tu talle, <span class="nk-hl">a tu medida</span>' -%}
+    {%- assign nk_how_lead = 'Dos rangos que se recortan siguiendo la línea de tu número.' -%}
+    {%- assign nk_how_image = 'product-media-plantillas-10.jpg' -%}
+    {%- assign nk_how_alt = 'Guía de talles: rangos 35 al 40 y 41 al 46, recortables por la línea de cada número' -%}
+    {%- assign nk_how = '1::Elegí tu rango::35 al 40 o 41 al 46, según el número que calzás.||2::Buscá la línea de tu talle::Cada número tiene su contorno marcado en la plantilla.||3::Recortá y colocalas::Con una tijera, siguiendo la línea. Si tu calzado tiene plantilla, sacala primero.' -%}
+
+    {%- assign nk_benefits_eyebrow = 'Detalles que se notan' -%}
+    {%- assign nk_benefits_title = 'Comodidad en cada <span class="nk-hl">paso</span>' -%}
+    {%- assign nk_benefits_lead = 'Para caminar, entrenar o pasar muchas horas de pie.' -%}
+    {%- assign nk_benefits = 'foam::Espuma PU::Amortigua cada paso y vuelve a su forma.||arc::Talón en U::Contiene el talón para una pisada más estable.||wind::Transpirables::Capa textil y zonas perforadas para que el pie respire.||sizes::Multi-talle::Dos rangos que se recortan a tu número.||check::Unisex::Para zapatillas y calzado de uso diario.||drop::Tres colores::Negro, gris y naranja.' -%}
+
+    {%- assign nk_compare_title = 'Plantilla común vs. <span class="nk-hl">Nekova</span>' -%}
+    {%- assign nk_compare_them = 'Plantilla común' -%}
+    {%- assign nk_compare = 'Espuma PU que vuelve a su forma::a veces||Talón en U::no||Zonas perforadas transpirables::a veces||Multi-talle recortable::no' -%}
+
+    {%- assign nk_specs_title = 'Todo lo que tenés que <span class="nk-hl">saber</span>' -%}
+    {%- assign nk_specs_lead = 'Se venden por par. Elegí el color y el rango de talle; después las recortás a tu número.' -%}
+    {%- assign nk_specs_image = 'product-media-plantillas-01.jpg' -%}
+    {%- assign nk_specs_alt = 'Plantillas en negro, gris y naranja' -%}
+
+    {%- capture nk_faq -%}¿Qué talle elijo?::Si calzás del 35 al 40, elegí el rango 35 al 40; si calzás del 41 al 46, el 41 al 46. Después las recortás por la línea de tu número.||¿Cómo las recorto?::Cada plantilla tiene marcado el contorno de cada talle. Recortá con una tijera siguiendo la línea de tu número. Te recomendamos probarlas en el calzado antes de recortar todo el contorno.||¿Sirven para cualquier calzado?::Están pensadas para zapatillas y calzado de uso diario. Si tu calzado ya trae plantilla, sacala antes de colocarlas.||¿Hay descuento llevando más de un par?::Sí: 2 pares a $15.000 cada uno y 3 o más a $12.000 cada uno. Podés combinar colores y talles; el descuento se aplica solo en el carrito.||¿Cómo se limpian?::A mano, con agua tibia y jabón neutro. Dejalas secar a la sombra antes de volver a usarlas.{%- endcapture -%}
+    {%- assign nk_cta_title = 'Cada paso, más cómodo' -%}
 {%- endcase -%}
 {%- if nk_lead == blank -%}
   {%- assign nk_lead = featured_product.description | strip_html | truncatewords: 26 -%}
@@ -211,6 +258,23 @@
             <span class="nk-price-off">{{ discount_percent }}% OFF</span>
           {%- endif -%}
         </div>
+        {%- if nk_tiers != blank -%}
+          <div class="nk-tiers" data-nk-tiers>
+            <p class="nk-tiers-title">Llevá más, pagá menos</p>
+            <div class="nk-tiers-options">
+              {%- assign tier_rows = nk_tiers | split: '||' -%}
+              {%- for tier in tier_rows -%}
+                {%- assign cells = tier | split: '::' -%}
+                {%- assign tier_cents = cells[2] | times: 100 -%}
+                <button type="button" class="nk-tier" data-nk-tier="{{ cells[0] }}" aria-pressed="{% if forloop.first %}true{% else %}false{% endif %}">
+                  <strong>{{ cells[1] }}</strong>
+                  <span>{{ tier_cents | money_without_trailing_zeros }}{% if cells[0] != '1' %} c/u{% endif %}</span>
+                </button>
+              {%- endfor -%}
+            </div>
+            <p class="nk-tiers-note">Podés combinar colores y talles. El descuento se aplica en el carrito.</p>
+          </div>
+        {%- endif -%}
         {%- if section.settings.payment_note != blank or shop.enabled_payment_types.size > 0 -%}
           <div class="nk-pay">
             {%- if section.settings.payment_note != blank -%}
@@ -228,7 +292,67 @@
 
         {%- if featured_product != blank and featured_product.available -%}
           {% form 'product', featured_product, class: 'nk-buy-form' %}
-            {%- if has_variant_choice -%}
+            {%- if has_multi_options -%}
+              {%- comment -%} Several options (e.g. Color + Talle): one group per option, the JS resolves the variant. {%- endcomment -%}
+              {%- capture nk_variants_json -%}[{%- for v in featured_product.variants -%}
+                {%- liquid
+                  assign v_image = ''
+                  if nk_variant_images != blank
+                    assign v_title_handle = v.title | handleize
+                    assign v_rules = nk_variant_images | split: ';'
+                    for rule in v_rules
+                      assign rule_parts = rule | split: '='
+                      if rule_parts[0] == '*' or v_title_handle contains rule_parts[0]
+                        assign v_image = rule_parts[1] | asset_url
+                        break
+                      endif
+                    endfor
+                  elsif v.featured_media
+                    assign v_image = v.featured_media | image_url: width: 1800
+                  endif
+                -%}
+                {"id":{{ v.id }},"available":{{ v.available }},"title":{{ v.title | json }},"options":{{ v.options | json }},"image":{{ v_image | json }}}{% unless forloop.last %},{% endunless %}
+              {%- endfor -%}]{%- endcapture -%}
+              <div class="nk-multi" data-nk-multi-picker>
+                <script type="application/json" data-nk-variants>{{ nk_variants_json }}</script>
+                <input type="hidden" name="id" value="{{ selected_variant.id }}">
+                {%- for option in featured_product.options_with_values -%}
+                  {%- assign option_index = forloop.index0 -%}
+                  {%- assign option_handle = option.name | handleize -%}
+                  {%- assign option_is_color = false -%}
+                  {%- if option_handle == 'color' or option_handle == 'colour' or option_handle == 'colores' -%}
+                    {%- assign option_is_color = true -%}
+                  {%- endif -%}
+                  <fieldset class="nk-variants{% if option_is_color %} nk-variants--swatches{% endif %}" data-nk-option="{{ option_index }}">
+                    <legend>{{ option.name | escape }}: <strong data-nk-option-label>{{ selected_variant.options[option_index] | escape }}</strong></legend>
+                    <div class="nk-variant-options">
+                      {%- for value in option.values -%}
+                        {%- assign value_name = value.name | default: value -%}
+                        {%- assign value_hex = '' -%}
+                        {%- if option_is_color -%}
+                          {%- assign value_hex = value.swatch.color -%}
+                          {%- if value_hex == blank -%}
+                            {%- capture value_hex -%}{% render 'nekova-color-hex', name: value_name %}{%- endcapture -%}
+                            {%- assign value_hex = value_hex | strip -%}
+                          {%- endif -%}
+                        {%- endif -%}
+                        <label class="nk-variant-option">
+                          <input type="radio" name="nk-option-{{ section.id }}-{{ option_index }}" value="{{ value_name | escape }}"{% if value_name == selected_variant.options[option_index] %} checked{% endif %}>
+                          {%- if value_hex != blank -%}
+                            <span class="nk-swatch" style="background-color: {{ value_hex }};" aria-hidden="true"></span>
+                            <span class="nk-tooltip">{{ value_name | escape }}</span>
+                            <span class="visually-hidden">{{ value_name | escape }}</span>
+                          {%- else -%}
+                            <span class="nk-pill">{{ value_name | escape }}</span>
+                          {%- endif -%}
+                        </label>
+                      {%- endfor -%}
+                    </div>
+                  </fieldset>
+                {%- endfor -%}
+                <p class="nk-multi-status" data-nk-multi-status role="status" hidden>Esta combinación no está disponible por ahora.</p>
+              </div>
+            {%- elsif has_variant_choice -%}
               {%- assign variant_option_handle = variant_option_name | handleize -%}
               {%- assign is_color_option = false -%}
               {%- if variant_option_handle == 'color' or variant_option_handle == 'colour' or variant_option_handle == 'colores' -%}
@@ -295,6 +419,8 @@
                               assign swatch_color = '#4d6b4a'
                             when 'rojo'
                               assign swatch_color = '#a83232'
+                            when 'naranja'
+                              assign swatch_color = '#f26a1b'
                             when 'rosa'
                               assign swatch_color = '#d8a1a8'
                           endcase
@@ -970,6 +1096,19 @@
   .nk-combo-button[aria-busy='true'] { opacity: .6; pointer-events: none; }
   .nk-combo-button:focus-visible, .nk-waitlist summary:focus-visible { outline: 2px solid var(--nk-accent); outline-offset: 3px; }
   .nk-combo-error { color: var(--nekova-warm); font-size: 1.3rem; grid-column: 1 / -1; margin: 0; }
+  .nk-multi { display: grid; gap: 1.8rem; margin-bottom: 2.4rem; }
+  .nk-multi .nk-variants { margin: 0; }
+  .nk-multi-status { color: var(--nekova-warm); font-size: 1.4rem; font-weight: 700; margin: 0; }
+  .nk-tiers { background: var(--nekova-accent-soft); border-radius: var(--nekova-radius); margin-bottom: 2rem; padding: 1.6rem; }
+  .nk-tiers-title { color: var(--nk-accent); font-size: 1.3rem; font-weight: 800; letter-spacing: .1em; margin: 0 0 1.2rem; text-transform: uppercase; }
+  .nk-tiers-options { display: grid; gap: .8rem; grid-template-columns: repeat(3, minmax(0, 1fr)); }
+  .nk-tier { background: var(--nekova-surface); border: 1.5px solid transparent; border-radius: 1.2rem; color: var(--nk-ink); cursor: pointer; display: grid; font: inherit; gap: .2rem; padding: 1rem .8rem; text-align: center; transition: border-color .2s; }
+  .nk-tier strong { font-size: 1.4rem; }
+  .nk-tier span { color: var(--nk-muted); font-size: 1.35rem; font-weight: 700; }
+  .nk-tier[aria-pressed='true'] { border-color: var(--nk-accent); }
+  .nk-tier[aria-pressed='true'] span { color: var(--nk-accent); }
+  .nk-tier:focus-visible { outline: 2px solid var(--nk-accent); outline-offset: 2px; }
+  .nk-tiers-note { color: var(--nk-muted); font-size: 1.3rem; margin: 1rem 0 0; }
   .nk-cta-band { background: var(--nk-accent); color: var(--nekova-on-accent); }
   .nk-cta .nk-button { border-radius: 0; }
   .nk-cta { align-items: center; display: grid; gap: 3rem; grid-template-columns: 12rem 1fr auto; padding-bottom: 4.8rem; padding-top: 4.8rem; }

@@ -3,7 +3,7 @@
 > Texto para pegar en Shopify → Configuración → Políticas → Política de reembolso.
 > Completá lo que está entre [corchetes] y hacelo revisar por tu abogado o contador antes de publicarlo.
 
-**Última actualización:** [FECHA]
+**Última actualización:** 19/10/2026
 
 En Nekova queremos que compres con tranquilidad. Esta política explica cómo arrepentirte de una compra, cómo devolver un producto y qué hacer si llega con una falla.
 
@@ -20,7 +20,7 @@ Si compraste en nekova.com.ar, tenés derecho a revocar la compra dentro de los 
 
 1. Dentro de las **24hs** te enviamos por email un **código de identificación** de tu solicitud.
 2. Coordinamos la devolución del producto. **Los costos de envío de la devolución quedan a nuestro cargo.**
-3. Cuando recibimos el producto, te reintegramos el total pagado **por el mismo medio de pago**, dentro de los [X] días hábiles.
+3. Cuando recibimos el producto, te reintegramos el total pagado **por el mismo medio de pago**, dentro de los 10 días hábiles.
 
 El producto tiene que estar completo, con sus accesorios y en el mismo estado en que lo recibiste.
 

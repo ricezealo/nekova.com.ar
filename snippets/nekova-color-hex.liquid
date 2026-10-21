@@ -1,0 +1,39 @@
+{%- comment -%}
+  Prints the hex color for a variant color name (empty when unknown). Keep in sync with nekova-color-dot.
+  @param {string} name - Color name, e.g. "Azul marino".
+{%- endcomment -%}
+{%- liquid
+  assign hex = ''
+  assign hex_handle = name | handleize
+  case hex_handle
+    when 'gris'
+      assign hex = '#7b8287'
+    when 'gris-claro'
+      assign hex = '#b8bdc1'
+    when 'gris-oscuro'
+      assign hex = '#4b4f53'
+    when 'azul-marino'
+      assign hex = '#252b5c'
+    when 'azul'
+      assign hex = '#2f4f8a'
+    when 'celeste'
+      assign hex = '#8fb8d8'
+    when 'negro'
+      assign hex = '#1d1d1b'
+    when 'blanco'
+      assign hex = '#f4f3ef'
+    when 'beige', 'crema'
+      assign hex = '#d9c7a7'
+    when 'naranja'
+      assign hex = '#f26a1b'
+    when 'verde', 'verde-menta'
+      assign hex = '#9fd8c4'
+    when 'lila', 'violeta'
+      assign hex = '#b9a8e6'
+    when 'rosa'
+      assign hex = '#d8a1a8'
+    when 'rojo'
+      assign hex = '#a83232'
+  endcase
+  echo hex
+-%}
