@@ -43,15 +43,17 @@ Las fechas usan los días que quedaron libres en el calendario del cojín (que y
 
 | # | Fecha | Archivos, en este orden |
 |---|---|---|
-| 18 | Miércoles 28/10/2026 | `18-plantillas-1.png`, `-2`, `-3`, `-4` |
+| 18 | Domingo 25/10/2026 | `18-plantillas-1.png`, `-2`, `-3`, `-4` |
+| 21 | Domingo 01/11/2026 | `21-cambiar-plantillas-1.png`, `-2`, `-3`, `-4` |
 | 19 | Martes 03/11/2026 | `19-negro-gris-naranja.png` |
 | 20 | Jueves 05/11/2026 | `20-multitalle-1.png`, `-2`, `-3` |
-| 21 | Sábado 07/11/2026 | `21-cambiar-plantillas-1.png`, `-2`, `-3`, `-4` |
-| 22 | Lunes 09/11/2026 | `22-por-dentro-1.png`, `-2`, `-3` |
-| 23 | Miércoles 11/11/2026 | `23-comun-vs-nekova-1.png`, `-2` |
-| 24 | Viernes 13/11/2026 | `24-tu-dia-1.png`, `-2` |
-| 25 | Lunes 16/11/2026 | `25-dudas-plantillas-1.png`, `-2` |
-| 26 | Miércoles 18/11/2026 | `26-mas-pares.png` |
+| 22 | Sábado 07/11/2026 | `22-por-dentro-1.png`, `-2`, `-3` |
+| 23 | Lunes 09/11/2026 | `23-comun-vs-nekova-1.png`, `-2` |
+| 24 | Martes 10/11/2026 | `24-tu-dia-1.png`, `-2` |
+| 25 | Miércoles 11/11/2026 | `25-dudas-plantillas-1.png`, `-2` |
+| 26 | Jueves 12/11/2026 | `26-mas-pares.png` |
+
+> **Calendario aplicado el 21/10/2026** (ya programado en Business Suite, 20:00hs, Instagram + Facebook, con texto alternativo en cada imagen). Se ajustó el original porque el 28/10 ya estaba ocupado por "¿Gris o azul marino?" del cojín y el cierre llegaba recién el 18/11: ahora las plantillas usan los días libres del calendario del cojín (25/10, 1/11, 3/11, 5/11) y desde el 7/11 siguen a diario, con lo que hay una publicación por día del 21/10 al 12/11. La 21 (tip de valor) se adelantó antes de la encuesta de color para que la encuesta no quede a días de la del cojín.
 
 ## Pasos para cada publicación
 
@@ -65,7 +67,7 @@ Las fechas usan los días que quedaron libres en el calendario del cojín (que y
 
 ---
 
-## Publicación 18 · Miércoles 28/10 · Presentación
+## Publicación 18 · Domingo 25/10 · Presentación
 
 Archivos: `18-plantillas-1.png` a `18-plantillas-4.png`
 
@@ -129,7 +131,7 @@ Texto alternativo:
 2. "Guía de talles: rango 35 al 40 y rango 41 al 46, recortables por la línea de cada número."
 3. "Consejo: probalas antes de recortar todo."
 
-## Publicación 21 · Sábado 07/11 · 3 señales para cambiarlas (valor)
+## Publicación 21 · Domingo 01/11 · 3 señales para cambiarlas (valor)
 
 Archivos: `21-cambiar-plantillas-1.png` a `21-cambiar-plantillas-4.png`
 
@@ -152,7 +154,7 @@ Texto alternativo:
 3. "Señal 2: se deformaron."
 4. "Señal 3: el olor no se va."
 
-## Publicación 22 · Lunes 09/11 · Por dentro
+## Publicación 22 · Sábado 07/11 · Por dentro
 
 Archivos: `22-por-dentro-1.png` a `22-por-dentro-3.png`
 
@@ -174,7 +176,7 @@ Texto alternativo:
 2. "Talón en U que contiene el talón para una pisada más estable."
 3. "Plantilla flexionándose: amortiguación que vuelve a su forma."
 
-## Publicación 23 · Miércoles 11/11 · Común vs. Nekova
+## Publicación 23 · Lunes 09/11 · Común vs. Nekova
 
 Archivos: `23-comun-vs-nekova-1.png`, `23-comun-vs-nekova-2.png`
 
@@ -192,7 +194,7 @@ Texto alternativo:
 1. "Plantilla flexionándose con el título No todas las plantillas son iguales."
 2. "Tabla comparativa entre una plantilla común y la plantilla Nekova."
 
-## Publicación 24 · Viernes 13/11 · Para tu día a día
+## Publicación 24 · Martes 10/11 · Para tu día a día
 
 Archivos: `24-tu-dia-1.png`, `24-tu-dia-2.png`
 
@@ -210,7 +212,7 @@ Texto alternativo:
 1. "Plantillas negra y naranja junto a una raqueta: caminar, entrenar o estar de pie."
 2. "Tres usos: para caminar, para trabajar de pie y para entrenar."
 
-## Publicación 25 · Lunes 16/11 · 3 dudas resueltas
+## Publicación 25 · Miércoles 11/11 · 3 dudas resueltas
 
 Archivos: `25-dudas-plantillas-1.png`, `25-dudas-plantillas-2.png`
 
@@ -230,7 +232,7 @@ Texto alternativo:
 1. "Plantilla negra vista de arriba y de abajo, con el título 3 dudas, resueltas."
 2. "Respuestas: cómo se limpian, para qué calzado sirven y cómo devolverlas."
 
-## Publicación 26 · Miércoles 18/11 · Más pares, mejor precio
+## Publicación 26 · Jueves 12/11 · Más pares, mejor precio
 
 Archivo: `26-mas-pares.png`
 

@@ -431,7 +431,7 @@ Estamos preparando el lanzamiento de nuestros primeros cojines ergonómicos, en 
 
 Imágenes en `marca/instagram/12-…` a `17-…`. Sin promesas de envío, cuotas ni salud; datos tomados de la ficha del sitio. **Los tapones quedan fuera por ahora** (se importan más adelante): la publicación 5 del 28/10 se movió a Borradores.
 
-### Publicación 12 · Mar 20/10 · "¿Gris o azul marino?" (`12-gris-o-azul.png`)
+### Publicación 12 · Mié 28/10 · "¿Gris o azul marino?" (`12-gris-o-azul.png`)
 ```
 ¿Gris o azul marino? 🤔
 
@@ -511,26 +511,55 @@ Alt: "Frase de marca: Pequeños cambios. Días más cómodos."
 
 ---
 
-## Calendario programado en Business Suite (verificado 18/10/2026, 20:00hs, FB + IG)
+## Calendario programado en Business Suite (verificado 21/10/2026, todas 20:00hs, FB + IG)
 
-| Fecha | Publicación |
-|---|---|
-| Dom 18/10 | 8 · "No todos los almohadones son iguales" |
-| Lun 19/10 | 1 · "Hola, somos Nekova" |
-| Mar 20/10 | 12 · ¿Gris o azul marino? *(a programar)* |
-| Mié 21/10 | 2 · "¿Qué es Nekova?" |
-| Jue 22/10 | 13 · Espuma viscoelástica *(a programar)* |
-| Vie 23/10 | 3 · "Si pasás muchas horas sentado…" (cojín) |
-| Sáb 24/10 | 14 · Viajes largos en auto *(a programar)* |
-| Lun 26/10 | 10 · "¿El cojín entra en tu silla?" |
-| Mar 27/10 | 15 · ¿Qué es la ergonomía? *(a programar)* |
-| Mié 28/10 | — (la de tapones pasó a Borradores) |
-| Jue 29/10 | 16 · ¿Cómo es tu lugar de trabajo? *(a programar)* |
-| Vie 30/10 | 6 · "¿Vecinos, tránsito o ronquidos?" (la placa 5 muestra los tapones) |
-| Sáb 31/10 | 17 · Pequeños cambios *(a programar)* |
-| Lun 2/11 | 7 · "Así funciona comprar en Nekova" |
-| Mié 4/11 | 11 · "3 dudas sobre el cojín, resueltas" |
-| Vie 6/11 | 9 · "Ya casi estamos listos" |
+| Fecha | Publicación | Estado |
+|---|---|---|
+| Dom 18/10 | 8 · "No todos los almohadones son iguales" | Publicada |
+| Lun 19/10 | 1 · "Hola, somos Nekova" | Publicada |
+| Mar 20/10 | — | Sin publicación (la 12 pasó al 28/10) |
+| Mié 21/10 | 2 · "¿Qué es Nekova?" | Programada |
+| Jue 22/10 | 13 · Espuma viscoelástica | Programada |
+| Vie 23/10 | 3 · "Si pasás muchas horas sentado…" | Programada |
+| Sáb 24/10 | 14 · Viajes largos en auto | Programada |
+| Dom 25/10 | 18 · Plantillas: presentación | Programada |
+| Lun 26/10 | 10 · "¿El cojín entra en tu silla?" | Programada |
+| Mar 27/10 | 15 · ¿Qué es la ergonomía? | Programada |
+| Mié 28/10 | 12 · ¿Gris o azul marino? | Programada |
+| Jue 29/10 | 16 · ¿Cómo es tu lugar de trabajo? | Programada |
+| Vie 30/10 | 6 · "¿Vecinos, tránsito o ronquidos?" (4 placas, sin la de tapones) | Reprogramada |
+| Sáb 31/10 | 17 · Pequeños cambios | Programada |
+| Dom 1/11 | 21 · Plantillas: 3 señales para cambiarlas | Programada |
+| Lun 2/11 | 7 · "Así funciona comprar" (placa 2 y texto sin "despacho en el día") | Reprogramada |
+| Mar 3/11 | 19 · Plantillas: ¿negro, gris o naranja? | Programada |
+| Mié 4/11 | 11 · "3 dudas sobre el cojín, resueltas" | Programada |
+| Jue 5/11 | 20 · Plantillas: multi-talle | Programada |
+| Vie 6/11 | 9 · "Ya casi estamos listos" | Programada |
+| Sáb 7/11 | 22 · Plantillas: por dentro | Programada |
+| Lun 9/11 | 23 · Plantillas: común vs. Nekova | Programada |
+| Mar 10/11 | 24 · Plantillas: para tu día | Programada |
+| Mié 11/11 | 25 · Plantillas: 3 dudas resueltas | Programada |
+| Jue 12/11 | 26 · Plantillas: más pares, mejor precio | Programada |
+
+Textos e imágenes de las plantillas: `docs/instagram-plantillas-encargo.md`.
+
+En Borradores quedaron las versiones viejas de la 5 (tapones), la 6 (5 placas) y la 7 (con "despacho en el día"). En la lista de Programadas aparecen como "Error al publicar", pero no se publican.
+
+Texto nuevo de la publicación 7 (placa 2 ahora dice "Envío a domicilio · Ves el costo del envío antes de pagar."):
+```
+Así funciona comprar en Nekova 🛒
+
+📦 Envío a domicilio: ves el costo antes de pagar
+🔒 Pago seguro
+↩️ 10 días para devolverlo si no te convence
+💬 Atención al cliente por WhatsApp
+
+¿Tenés alguna duda? Escribinos, te respondemos nosotros.
+
+#nekova #comprasonline #tiendaonline #argentina
+```
+
+Historias publicadas el 21/10 (FB + IG) para armar destacadas: `historia-cojin-1`, `historia-cojin-2` y `historia-devoluciones`.
 
 ### Publicación 10 · Lun 26/10 · "¿El cojín entra en tu silla?" (`10-entra-en-tu-silla.png`)
 ```
