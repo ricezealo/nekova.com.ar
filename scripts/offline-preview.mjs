@@ -348,7 +348,7 @@ const earplugProduct = {
   type: 'Descanso y silencio',
   has_only_default_variant: false,
 };
-const insoleImages = ['00', 'negro', 'gris', 'naranja', '08', '05', '06', '07', '10'].map((number, index) => ({
+const insoleImages = ['00', '01', 'negro', 'gris', 'naranja', '08', '05', '06', '07', '10'].map((number, index) => ({
   src: `/assets/product-media-plantillas-${number}.jpg`,
   url: `/assets/product-media-plantillas-${number}.jpg`,
   alt: `Plantillas multi-talle, imagen ${index + 1}`,
