@@ -1,5 +1,7 @@
 # Encargo: cargar pesos de productos y tarifas de envío por peso en Shopify (Nekova)
 
+> **Estado final:** la configuración real quedó distinta de lo que supone este brief (tarifas por zona que ya existían, pasadas a condición por peso). Ver [shopify-envios-estado.md](shopify-envios-estado.md).
+
 Este archivo es el brief completo. No hace falta otro contexto.
 
 ## Contexto
