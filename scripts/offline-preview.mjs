@@ -641,6 +641,7 @@ function templateFor(pathname) {
   if (pathname === '/cart') return ['cart', null];
   if (pathname === '/pages/sobre-nekova') return ['page.about', { title: 'Sobre Nekova', content: '' }];
   if (pathname === '/pages/arrepentimiento') return ['page.arrepentimiento', { title: 'Botón de arrepentimiento', content: '' }];
+  if (pathname === '/pages/lista-de-lanzamiento') return ['page.lista', { title: 'Lista de lanzamiento', content: '' }];
   if (pathname.startsWith('/pages/')) return [pathname === '/pages/contact' ? 'page.contact' : 'page', { title: pathname.endsWith('/contact') ? 'Contacto' : 'Pagina de ejemplo', content: '<p>Contenido de pagina de ejemplo para la vista offline.</p>' }];
   if (pathname.startsWith('/blogs/')) return ['blog', { title: 'Novedades', articles: [] }];
   if (pathname.startsWith('/articles/')) return ['article', { title: 'Articulo de ejemplo', content: '<p>Contenido de articulo.</p>', image }];

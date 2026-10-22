@@ -1,0 +1,24 @@
+{
+  "sections": {
+    "lista": {
+      "type": "nekova-launch-list",
+      "settings": {
+        "sold_out": false,
+        "discount_percent": 15,
+        "max_uses": 30,
+        "valid_from": "11/11",
+        "valid_to": "18/11",
+        "tag": "lista-lanzamiento",
+        "eyebrow": "Lista de lanzamiento",
+        "heading": "Tu cojín con 15% OFF, <em>antes que nadie</em>",
+        "intro": "<p>Nuestro primer lote de cojines ergonómicos en U llega en pocos días y son pocas unidades. Anotate y recibí un código de descuento para usar el día del lanzamiento.</p>",
+        "sold_out_heading": "Se agotaron los <em>cupones</em>",
+        "sold_out_text": "<p>Ya se usaron todos los códigos del primer lote. Sumate igual a la lista: te avisamos primero de la próxima tanda y de los nuevos productos.</p>",
+        "conditions": "<p>15% de descuento sobre el precio del cojín ergonómico en U, con el código que enviamos por email a quienes se anotan en esta lista. Válido del 11/11/2026 al 18/11/2026 o hasta agotar 30 usos, lo que ocurra primero. Un uso por cliente; el código solo funciona con el email con el que te anotaste. No se combina con otras promociones. Sujeto a disponibilidad de stock. No incluye el costo de envío.</p>"
+      }
+    }
+  },
+  "order": [
+    "lista"
+  ]
+}

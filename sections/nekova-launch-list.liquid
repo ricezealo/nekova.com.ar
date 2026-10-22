@@ -1,0 +1,230 @@
+{%- liquid
+  assign list_product = section.settings.product
+  if list_product == blank
+    assign list_product = all_products['cojin-ortopedico-u']
+  endif
+  assign percent = section.settings.discount_percent | default: 15
+  assign price_factor = 100 | minus: percent
+  assign list_price = list_product.price | times: price_factor | divided_by: 100
+  assign sold_out = section.settings.sold_out
+-%}
+
+<section class="nk-list" aria-labelledby="NkListTitle-{{ section.id }}">
+  <div class="nk-list-shell nk-list-grid">
+    <div class="nk-list-copy">
+      <p class="nk-list-eyebrow">{{ section.settings.eyebrow }}</p>
+      {%- if sold_out -%}
+        <h1 id="NkListTitle-{{ section.id }}">{{ section.settings.sold_out_heading }}</h1>
+        <div class="nk-list-lead">{{ section.settings.sold_out_text }}</div>
+      {%- else -%}
+        <h1 id="NkListTitle-{{ section.id }}">{{ section.settings.heading }}</h1>
+        <div class="nk-list-lead">{{ section.settings.intro }}</div>
+        {%- if list_product != blank -%}
+          <div class="nk-list-price">
+            <span class="nk-list-price-was">{{ list_product.price | money_without_trailing_zeros }}</span>
+            <strong>{{ list_price | money_without_trailing_zeros }}</strong>
+            <span class="nk-list-badge">{{ percent }}% OFF</span>
+          </div>
+          <p class="nk-list-price-note">Con tu código, en las primeras {{ section.settings.max_uses }} compras de la lista.</p>
+        {%- endif -%}
+        <ol class="nk-list-steps" role="list">
+          <li><span>1</span><p><strong>Anotate</strong> con tu email. Es gratis.</p></li>
+          <li><span>2</span><p><strong>Te llega el código al instante</strong> por email.</p></li>
+          <li><span>3</span><p><strong>Usalo desde el {{ section.settings.valid_from }}</strong>, cuando lancemos. Vale hasta el {{ section.settings.valid_to }}.</p></li>
+        </ol>
+      {%- endif -%}
+    </div>
+
+    <div class="nk-list-card">
+      <div class="nk-list-media">
+        {%- if section.settings.image != blank -%}
+          {{ section.settings.image | image_url: width: 900 | image_tag: loading: 'eager', alt: section.settings.image.alt, sizes: '(min-width: 990px) 480px, 100vw' }}
+        {%- else -%}
+          <img src="{{ 'product-media-cojin-ortopedico-01.jpg' | asset_url }}" alt="Cojín ergonómico en U de Nekova" width="1200" height="1200" loading="eager">
+        {%- endif -%}
+      </div>
+
+      {%- form 'customer', id: 'NkListForm', class: 'nk-list-form' -%}
+        <input type="hidden" name="contact[tags]" value="newsletter,{{ section.settings.tag | default: 'lista-lanzamiento' }}">
+        {%- if form.posted_successfully? -%}
+          <div class="nk-list-success" role="status">
+            {%- if sold_out -%}
+              <p><strong>¡Listo, ya estás anotado!</strong> Te avisamos primero cuando haya novedades.</p>
+            {%- else -%}
+              <p><strong>¡Listo, ya estás en la lista!</strong> En unos minutos te llega el código por email. Si no lo ves, revisá spam o promociones.</p>
+            {%- endif -%}
+          </div>
+        {%- else -%}
+          <h2>{% if sold_out %}Sumate a la lista{% else %}Quiero mi {{ percent }}% OFF{% endif %}</h2>
+          {%- if form.errors -%}
+            <p class="nk-list-error" role="alert" id="NkListError">Revisá el email e intentá nuevamente.</p>
+          {%- endif -%}
+          <label for="NkListName">Nombre</label>
+          <input id="NkListName" type="text" name="contact[first_name]" autocomplete="given-name">
+          <label for="NkListEmail">Email *</label>
+          <input id="NkListEmail" type="email" name="contact[email]" autocomplete="email" required{% if form.errors %} aria-invalid="true" aria-describedby="NkListError"{% endif %}>
+          <label class="nk-list-consent">
+            <input type="checkbox" name="contact[consent]" value="si" required>
+            <span>Acepto recibir emails de Nekova con el código y novedades. Me puedo dar de baja cuando quiera.</span>
+          </label>
+          <button type="submit" class="nk-list-button">{% if sold_out %}Avisarme{% else %}Quiero mi código{% endif %}</button>
+        {%- endif -%}
+      {%- endform -%}
+    </div>
+  </div>
+
+  {%- if section.settings.conditions != blank -%}
+    <div class="nk-list-shell">
+      <div class="nk-list-conditions">
+        <h2>Condiciones</h2>
+        {{ section.settings.conditions }}
+      </div>
+    </div>
+  {%- endif -%}
+</section>
+
+{% style %}
+  .nk-list { background: var(--nekova-bg); color: var(--nekova-ink); font-family: var(--nekova-font-body); padding: 7rem 0 9rem; }
+  .nk-list * { box-sizing: border-box; }
+  .nk-list-shell { margin: 0 auto; max-width: 1280px; padding: 0 5rem; }
+  .nk-list-grid { align-items: center; display: grid; gap: 6rem; grid-template-columns: minmax(0, 1fr) minmax(0, .9fr); }
+  .nk-list-eyebrow { align-items: center; color: var(--nekova-accent); display: flex; font-size: 1.25rem; font-weight: 800; gap: 1rem; letter-spacing: .14em; margin: 0 0 1.6rem; text-transform: uppercase; }
+  .nk-list-eyebrow::before { background: currentColor; border-radius: 2px; content: ''; height: 2px; width: 2.4rem; }
+  .nk-list h1, .nk-list h2 { color: var(--nekova-ink); font-family: var(--nekova-font-heading); font-weight: var(--font-heading-weight); letter-spacing: -.02em; line-height: 1.12; margin: 0; }
+  .nk-list h1 { font-size: clamp(3.2rem, 4vw, 4.8rem); }
+  .nk-list h1 em { color: var(--nekova-accent); font-style: normal; }
+  .nk-list-lead { color: var(--nekova-muted); font-size: 1.7rem; line-height: 1.65; margin-top: 2rem; }
+  .nk-list-lead p { margin: 0 0 1.2rem; }
+  .nk-list-price { align-items: baseline; display: flex; flex-wrap: wrap; gap: 1.2rem; margin-top: 2.4rem; }
+  .nk-list-price strong { font-family: var(--nekova-font-heading); font-size: 3.6rem; font-weight: var(--font-heading-weight); letter-spacing: -.02em; }
+  .nk-list-price-was { color: var(--nekova-muted); font-size: 1.8rem; text-decoration: line-through; }
+  .nk-list-badge { align-self: center; background: var(--nekova-warm); border-radius: var(--nekova-radius-pill); color: var(--nekova-on-accent); font-size: 1.3rem; font-weight: 800; padding: .5rem 1.2rem; }
+  .nk-list-price-note { color: var(--nekova-muted); font-size: 1.4rem; margin: .6rem 0 0; }
+  .nk-list-steps { display: grid; gap: 1.4rem; list-style: none; margin: 3.2rem 0 0; padding: 0; }
+  .nk-list-steps li { align-items: flex-start; display: flex; gap: 1.6rem; }
+  .nk-list-steps span { align-items: center; background: var(--nekova-accent-soft); border-radius: 50%; color: var(--nekova-accent); display: flex; flex: 0 0 auto; font-family: var(--nekova-font-heading); font-size: 1.5rem; font-weight: var(--font-heading-weight); height: 3.6rem; justify-content: center; width: 3.6rem; }
+  .nk-list-steps p { color: var(--nekova-muted); font-size: 1.55rem; line-height: 1.6; margin: .6rem 0 0; }
+  .nk-list-steps strong { color: var(--nekova-ink); }
+  .nk-list-card { background: var(--nekova-panel); border-radius: var(--nekova-radius-lg); overflow: hidden; }
+  .nk-list-media { aspect-ratio: 16 / 10; overflow: hidden; }
+  .nk-list-media img { display: block; height: 100%; mix-blend-mode: multiply; object-fit: contain; padding: 4%; width: 100%; }
+  .nk-list-form { background: var(--nekova-surface); border-radius: var(--nekova-radius-lg); display: grid; gap: .6rem; margin: 0 1.6rem 1.6rem; padding: 3rem; }
+  .nk-list-form h2 { font-size: 2.2rem; margin-bottom: .8rem; }
+  .nk-list-form label { font-size: 1.35rem; font-weight: 700; margin-top: 1rem; }
+  .nk-list-form input[type="text"], .nk-list-form input[type="email"] { background: var(--nekova-surface); border: 1px solid var(--nekova-line-strong); border-radius: 1rem; color: var(--nekova-ink); font: inherit; font-size: 1.5rem; padding: 1.2rem 1.4rem; width: 100%; }
+  .nk-list-form .nk-list-consent { align-items: flex-start; color: var(--nekova-muted); display: flex; font-size: 1.3rem; font-weight: 400; gap: 1rem; line-height: 1.5; margin-top: 1.4rem; }
+  .nk-list-consent input { accent-color: var(--nekova-accent); flex: 0 0 auto; height: 1.8rem; margin: .1rem 0 0; width: 1.8rem; }
+  .nk-list-form input:focus-visible, .nk-list-button:focus-visible { outline: 2px solid var(--nekova-accent); outline-offset: 2px; }
+  .nk-list-button { background: var(--nekova-accent); border: 0; border-radius: 1.2rem; color: var(--nekova-on-accent); cursor: pointer; font: inherit; font-size: 1.6rem; font-weight: 700; margin-top: 1.6rem; min-height: 5.4rem; transition: background .2s; }
+  .nk-list-button:hover { background: var(--nekova-accent-strong); }
+  .nk-list-success p { color: var(--nekova-ink); font-size: 1.6rem; line-height: 1.6; margin: 0; }
+  .nk-list-success strong { color: var(--nekova-accent); display: block; font-size: 2rem; margin-bottom: .6rem; }
+  .nk-list-error { color: var(--nekova-warm); font-weight: 700; margin: 0; }
+  .nk-list-conditions { border-top: 1px solid var(--nekova-line); color: var(--nekova-muted); font-size: 1.35rem; line-height: 1.6; margin-top: 6rem; padding-top: 3rem; }
+  .nk-list-conditions h2 { font-size: 1.6rem; margin-bottom: 1rem; }
+  .nk-list-conditions p, .nk-list-conditions ul { margin: 0 0 .8rem; }
+  @media screen and (max-width: 990px) {
+    .nk-list-shell { padding: 0 2.4rem; }
+    .nk-list-grid { gap: 4rem; grid-template-columns: 1fr; }
+  }
+  @media screen and (max-width: 600px) {
+    .nk-list { padding: 4.8rem 0 6rem; }
+    .nk-list-shell { padding: 0 1.6rem; }
+    .nk-list-form { margin: 0 1rem 1rem; padding: 2.4rem 2rem; }
+  }
+{% endstyle %}
+
+{% schema %}
+{
+  "name": "Nekova · lista lanzamiento",
+  "class": "nekova-launch-list-section",
+  "settings": [
+    {
+      "type": "checkbox",
+      "id": "sold_out",
+      "label": "Cupones agotados",
+      "info": "Activalo cuando se usen todos los códigos: la página deja de ofrecer el descuento y solo suma gente a la lista.",
+      "default": false
+    },
+    {
+      "type": "product",
+      "id": "product",
+      "label": "Producto (para mostrar el precio)",
+      "info": "Vacío = cojín ergonómico."
+    },
+    {
+      "type": "image_picker",
+      "id": "image",
+      "label": "Imagen",
+      "info": "Vacío = foto del cojín."
+    },
+    {
+      "type": "number",
+      "id": "discount_percent",
+      "label": "Descuento (%)",
+      "default": 15
+    },
+    {
+      "type": "number",
+      "id": "max_uses",
+      "label": "Cantidad de cupones",
+      "default": 30
+    },
+    {
+      "type": "text",
+      "id": "valid_from",
+      "label": "Válido desde",
+      "default": "11/11"
+    },
+    {
+      "type": "text",
+      "id": "valid_to",
+      "label": "Válido hasta",
+      "default": "18/11"
+    },
+    {
+      "type": "text",
+      "id": "tag",
+      "label": "Etiqueta del cliente",
+      "info": "La usa la automatización de Shopify para mandar el código.",
+      "default": "lista-lanzamiento"
+    },
+    {
+      "type": "text",
+      "id": "eyebrow",
+      "label": "Antetítulo",
+      "default": "Lista de lanzamiento"
+    },
+    {
+      "type": "inline_richtext",
+      "id": "heading",
+      "label": "Título",
+      "default": "Tu cojín con 15% OFF, <em>antes que nadie</em>"
+    },
+    {
+      "type": "richtext",
+      "id": "intro",
+      "label": "Texto",
+      "default": "<p>Nuestro primer lote de cojines ergonómicos en U llega en pocos días y son pocas unidades. Anotate y recibí un código de descuento para usar el día del lanzamiento.</p>"
+    },
+    {
+      "type": "inline_richtext",
+      "id": "sold_out_heading",
+      "label": "Título con cupones agotados",
+      "default": "Se agotaron los <em>cupones</em>"
+    },
+    {
+      "type": "richtext",
+      "id": "sold_out_text",
+      "label": "Texto con cupones agotados",
+      "default": "<p>Ya se usaron todos los códigos del primer lote. Sumate igual a la lista: te avisamos primero de la próxima tanda y de los nuevos productos.</p>"
+    },
+    {
+      "type": "richtext",
+      "id": "conditions",
+      "label": "Condiciones",
+      "default": "<p>15% de descuento sobre el precio del cojín ergonómico en U, con el código que enviamos por email a quienes se anotan en esta lista. Válido del 11/11/2026 al 18/11/2026 o hasta agotar 30 usos, lo que ocurra primero. Un uso por cliente; el código solo funciona con el email con el que te anotaste. No se combina con otras promociones. Sujeto a disponibilidad de stock. No incluye el costo de envío.</p>"
+    }
+  ]
+}
+{% endschema %}
