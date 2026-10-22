@@ -36,9 +36,9 @@ El dueño prefiere **bolsas de envío** (polietileno) siempre que se pueda: plan
 
 | Paquete | Medidas | Peso vacío | Para |
 |---|---|---|---|
-| **Nekova · Bolsa chica** (predeterminado) | 35 × 45 cm | 0,02 kg | 1 a 3 pares de plantillas, tapones o las dos cosas |
-| Nekova · Bolsa mediana | 40 × 50 cm | 0,03 kg | 4 a 6 pares de plantillas |
-| Nekova · Bolsa cojín | 60 × 70 cm (80 a 100 micrones) | 0,05 kg | 1 cojín, solo o con productos chicos |
+| **Nekova · Bolsa chica** (predeterminado) | 35 × 45 × 4 cm | 0,02 kg | 1 a 3 pares de plantillas, tapones o las dos cosas |
+| Nekova · Bolsa mediana | 40 × 50 × 8 cm | 0,03 kg | 4 a 6 pares de plantillas |
+| Nekova · Bolsa cojín | 60 × 70 × 14 cm (80 a 100 micrones) | 0,05 kg | 1 cojín, solo o con productos chicos |
 | Cojín (caja) | 45 × 40 × 15 cm | 0,2 kg | 2 cojines o más |
 
 - Shopify suma el peso del paquete **predeterminado** a todos los pedidos: tiene que ser uno liviano. Con la caja "Cojín" de 0,8 kg como predeterminada, 2 pares de plantillas pagaban la tarifa del cojín.
