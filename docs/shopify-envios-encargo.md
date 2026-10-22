@@ -9,6 +9,28 @@ Este archivo es el brief completo. No hace falta otro contexto.
 - **Objetivo:** que los pedidos de hasta 1 kg (plantillas y tapones) paguen la tarifa chica de Correo Argentino y que cualquier pedido con un cojín siga pagando la tarifa actual. Todo **en un solo perfil de envío**, con tarifas según el peso del pedido. Así, si alguien compra cojín + plantillas, paga **un solo envío**.
 - **No crear un perfil de envío aparte** para las plantillas: cuando el carrito mezcla productos de dos perfiles, Shopify suma las dos tarifas y el cliente pagaría dos envíos.
 
+## Tarifas de Correo Argentino que se usan (referencia)
+
+Correo Argentino cobra por **zona** según la provincia de destino. Saliendo de Buenos Aires, las zonas son las siguientes (tabla oficial "Lógica de zonas" de MiCorreo/Paq.Ar):
+
+| Zona | Destinos |
+|---|---|
+| **Zona 1** | Mismo AMBA: CABA y Gran Buenos Aires (códigos postales 1000 a 1893) |
+| **Zona 2** | Buenos Aires (resto de la provincia), Córdoba, Entre Ríos, La Pampa, Santa Fe |
+| **Zona 3** | Catamarca, Chaco, Corrientes, Formosa, La Rioja, Mendoza, Misiones, Neuquén, Río Negro, San Juan, San Luis, Santiago del Estero, Tucumán |
+| **Zona 4** | Chubut, Jujuy, Salta, Santa Cruz, Tierra del Fuego |
+
+Precio de lista de MiCorreo para un paquete de **hasta 1 kg** (octubre de 2026, con IVA):
+
+| Zona | Clásico a sucursal | Clásico a domicilio |
+|---|---|---|
+| Zona 1 (AMBA) | ~$5.400 (estimado) | ~$8.500 (estimado) |
+| Zona 2 | $6.739 | $10.227 |
+| Zona 3 | $7.415 | $11.140 |
+| Zona 4 | $7.745 | $11.221 |
+
+**Decisión del dueño:** cobrar **una sola tarifa para todo el país** en pedidos de hasta 1 kg: **$7.800 a sucursal** y **$11.300 a domicilio**. Cubren la zona más cara (zona 4), así ningún envío sale a pérdida. Esta tabla es solo de referencia: **no crear zonas nuevas en Shopify** por provincia.
+
 ## Paso 0 · Relevar antes de tocar nada
 
 Entrar a **Shopify → Configuración → Envío y entrega → Perfil general** (Envío) y anotar exactamente lo que hay:
@@ -122,6 +144,7 @@ Dejar un resumen con:
 
 ### Nota para el dueño (no es parte del encargo)
 
-- $7.800 y $11.300 salen de las tarifas de lista de MiCorreo para 1 kg saliendo de Buenos Aires (octubre de 2026), redondeadas al valor de la zona más cara (Salta, Ushuaia). Antes de que Claude Desktop las cargue, conviene cotizar en MiCorreo un paquete de 30 × 12 × 8 cm y 0,5 kg a Salta. Si da distinto, cambiar los dos precios de este archivo.
+- $7.800 y $11.300 salen de las tarifas de lista de MiCorreo para 1 kg saliendo de Buenos Aires (octubre de 2026), redondeadas al valor de la zona más cara (zona 4). Las zonas salen de la tabla oficial de Paq.Ar de enero de 2025: la lógica de zonas no cambió, pero los precios sí, así que los de la zona 1 son una estimación a partir de esa tabla actualizada al aumento de las otras zonas.
+- En AMBA (zona 1) el envío real cuesta ~$2.400 a $2.800 menos que lo que se cobra. Si más adelante se quiere ajustar, se puede crear en Shopify una zona "Ciudad Autónoma de Buenos Aires" con tarifas más bajas. Shopify no separa el Gran Buenos Aires del resto de la provincia, así que el GBA seguiría con la tarifa general.
 - Los pesos son estimados con embalaje. Cuando llegue la mercadería, pesar un cojín y un par de plantillas embalados y corregir si hace falta.
 - Si después se conecta una app de Correo Argentino que cotice en vivo, hay que cargar también las medidas de la caja: el cojín se cobra por volumen.
