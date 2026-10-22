@@ -30,15 +30,22 @@ Tarifas por **peso** del pedido (productos + paquete predeterminado), plazo 1 a 
 
 **El cojín tiene que pesar siempre más de 1 kg cargado** (con el paquete), si no pagaría la tarifa chica.
 
-## Paquetes
+## Paquetes y embalaje
 
-| Paquete | Medidas | Peso vacío |
-|---|---|---|
-| **Nekova · Paquete chico** (predeterminado) | 30 × 12 × 8 cm | 0,05 kg |
-| Cojín | 45 × 40 × 15 cm | 0,2 kg |
-| Nekova · Sobre | 32 × 22 cm | 0,02 kg |
+El dueño prefiere **bolsas de envío** (polietileno) siempre que se pueda: plantillas, tapones y también un cojín solo. La caja queda para 2 cojines o más.
 
-Shopify suma el peso del paquete **predeterminado** a todos los pedidos: tiene que ser uno liviano. Con "Cojín" de 0,8 kg como predeterminado, 2 pares de plantillas pagaban la tarifa del cojín.
+| Paquete | Medidas | Peso vacío | Para |
+|---|---|---|---|
+| **Nekova · Bolsa chica** (predeterminado) | 35 × 45 cm | 0,02 kg | 1 a 3 pares de plantillas, tapones o las dos cosas |
+| Nekova · Bolsa mediana | 40 × 50 cm | 0,03 kg | 4 a 6 pares de plantillas |
+| Nekova · Bolsa cojín | 60 × 70 cm (80 a 100 micrones) | 0,05 kg | 1 cojín, solo o con productos chicos |
+| Cojín (caja) | 45 × 40 × 15 cm | 0,2 kg | 2 cojines o más |
+
+- Shopify suma el peso del paquete **predeterminado** a todos los pedidos: tiene que ser uno liviano. Con la caja "Cojín" de 0,8 kg como predeterminada, 2 pares de plantillas pagaban la tarifa del cojín.
+- Los paquetes no cambian lo que paga el cliente (las tarifas son fijas por peso); sirven de referencia al despachar.
+- Al cargar el envío en MiCorreo, declarar las medidas de la bolsa **llena** (ej. plantillas 35 × 25 × 4 cm). El cojín se cobra por volumen igual en bolsa que en caja.
+- Cada par de plantillas va en su envoltorio individual dentro de la bolsa, así se puede devolver "en su envase".
+- 2 o 3 cojines siempre tienen envío gratis (más de $95.000): cotizar en MiCorreo una caja grande vs. un envío por cojín y despachar el más barato.
 
 ## Pendiente
 
