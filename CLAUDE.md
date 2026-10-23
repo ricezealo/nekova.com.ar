@@ -95,7 +95,7 @@ Hablar de **comodidad, apoyo y descanso**; no prometer resultados de salud ("ali
 - CSS dentro de la sección en `{% style %}`, una regla por línea.
 - JS: `querySelectorAll(...).forEach`, hooks por `data-*`, guardas `dataset.*Initialized`. Sin dependencias.
 - Accesibilidad: `aria-label` en español en controles, `aria-hidden` en íconos, `:focus-visible` con outline de acento.
-- Schemas: nombres "Nekova · …", labels en español.
+- Schemas: nombres "Nekova · …" de **25 caracteres como máximo** (si no, la sincronización con GitHub rechaza la sección en silencio, y con ella las plantillas que la usan; un archivo rechazado solo se vuelve a leer cuando cambia en un commit nuevo), labels en español. Para comprobar que algo llegó a la tienda: `/?section_id=<sección>` responde 200 y `/pages/contact?view=<plantilla>` la muestra.
 - Precios con `money_without_trailing_zeros`.
 - Liquid: para inicializar variables vacías usar `assign x = ''` (no `= blank`, que la vista previa no trata como vacío).
 - Archivos con CRLF (`core.autocrlf=true`): al editar con scripts, respetar los finales de línea.
