@@ -26,6 +26,7 @@
             <span class="nk-list-badge">{{ percent }}% OFF</span>
           </div>
           <p class="nk-list-price-note">Con tu código, en las primeras {{ section.settings.max_uses }} compras de la lista.</p>
+          <a class="nk-list-jump" href="#NkListForm">Quiero mi código</a>
         {%- endif -%}
         <ol class="nk-list-steps" role="list">
           <li><span>1</span><p><strong>Anotate</strong> con tu email. Es gratis.</p></li>
@@ -100,11 +101,13 @@
   .nk-list-price-was { color: var(--nekova-muted); font-size: 1.8rem; text-decoration: line-through; }
   .nk-list-badge { align-self: center; background: var(--nekova-warm); border-radius: var(--nekova-radius-pill); color: var(--nekova-on-accent); font-size: 1.3rem; font-weight: 800; padding: .5rem 1.2rem; }
   .nk-list-price-note { color: var(--nekova-muted); font-size: 1.4rem; margin: .6rem 0 0; }
+  .nk-list-jump { display: none; }
   .nk-list-steps { display: grid; gap: 1.4rem; list-style: none; margin: 3.2rem 0 0; padding: 0; }
   .nk-list-steps li { align-items: flex-start; display: flex; gap: 1.6rem; }
   .nk-list-steps span { align-items: center; background: var(--nekova-accent-soft); border-radius: 50%; color: var(--nekova-accent); display: flex; flex: 0 0 auto; font-family: var(--nekova-font-heading); font-size: 1.5rem; font-weight: var(--font-heading-weight); height: 3.6rem; justify-content: center; width: 3.6rem; }
   .nk-list-steps p { color: var(--nekova-muted); font-size: 1.55rem; line-height: 1.6; margin: .6rem 0 0; }
   .nk-list-steps strong { color: var(--nekova-ink); }
+  .nk-list-form { scroll-margin-top: 9rem; }
   .nk-list-card { background: var(--nekova-panel); border-radius: var(--nekova-radius-lg); overflow: hidden; }
   .nk-list-media { aspect-ratio: 16 / 10; overflow: hidden; }
   .nk-list-media img { display: block; height: 100%; mix-blend-mode: multiply; object-fit: contain; padding: 4%; width: 100%; }
@@ -125,12 +128,15 @@
   .nk-list-conditions p, .nk-list-conditions ul { margin: 0 0 .8rem; }
   @media screen and (max-width: 990px) {
     .nk-list-shell { padding: 0 2.4rem; }
-    .nk-list-grid { gap: 4rem; grid-template-columns: 1fr; }
+    .nk-list-grid { gap: 4rem; grid-template-columns: minmax(0, 1fr); }
   }
   @media screen and (max-width: 600px) {
     .nk-list { padding: 4.8rem 0 6rem; }
     .nk-list-shell { padding: 0 1.6rem; }
     .nk-list-form { margin: 0 1rem 1rem; padding: 2.4rem 2rem; }
+    .nk-list-media { aspect-ratio: 2 / 1; }
+    .nk-list-jump { align-items: center; background: var(--nekova-accent); border-radius: 1.2rem; color: var(--nekova-on-accent); display: flex; font-size: 1.6rem; font-weight: 700; justify-content: center; margin-top: 2rem; min-height: 5.2rem; text-decoration: none; }
+    .nk-list-jump:focus-visible { outline: 2px solid var(--nekova-accent); outline-offset: 2px; }
   }
 {% endstyle %}
 
