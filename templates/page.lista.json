@@ -1,3 +1,6 @@
+/*
+ * Lista de lanzamiento: página /pages/lista-de-lanzamiento (plantilla "lista").
+ */
 {
   "sections": {
     "lista": {
