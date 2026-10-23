@@ -116,7 +116,7 @@ Enviar un email de prueba antes de programar.
 
 ## Paso 6 · Campaña en Meta Ads (dejarla EN PAUSA)
 
-En **Meta Ads Manager**, en la **cuenta publicitaria de Nekova que termina en 803** (verificar el ID antes de crear nada; si no aparece, parar y avisar), crear la campaña y **dejar todo en pausa / borrador**. El dueño la revisa y la activa.
+En **Meta Ads Manager**, en la **cuenta publicitaria de Nekova, ID `2492377254519803`** (verificar el ID antes de crear nada; si no aparece, parar y avisar), crear la campaña y **dejar todo en pausa / borrador**. El dueño la revisa y la activa.
 
 ### Campaña
 - **Nombre:** `Nekova · Lista lanzamiento cojín · nov 2026`
