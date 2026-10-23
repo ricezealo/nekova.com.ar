@@ -14,7 +14,7 @@ Si compraste en nekova.com.ar, tenés derecho a revocar la compra dentro de los 
 **Cómo pedirlo:**
 
 - Desde el **Botón de arrepentimiento** del sitio: [nekova.com.ar/pages/arrepentimiento](https://nekova.com.ar/pages/arrepentimiento). No necesitás tener cuenta.
-- O escribiéndonos a **info@nekova.com.ar** o por WhatsApp al **+54 9 11 4945-7398**.
+- O escribiéndonos a **info@nekova.com.ar** o por WhatsApp al **+54 9 11 7812-4323**.
 
 **Qué pasa después:**
 
@@ -39,7 +39,7 @@ Si querés otro color o modelo, gestionamos la devolución según el punto 1 y h
 ## 5. Contacto
 
 - Email: info@nekova.com.ar
-- WhatsApp: +54 9 11 4945-7398
+- WhatsApp: +54 9 11 7812-4323
 - [RAZÓN SOCIAL] · CUIT [CUIT] · [DOMICILIO]
 
 Si tu reclamo no se resuelve, podés acudir a la Ventanilla Única Federal de Defensa del Consumidor: [argentina.gob.ar/produccion/defensadelconsumidor/formulario](https://www.argentina.gob.ar/produccion/defensadelconsumidor/formulario).

@@ -319,7 +319,7 @@ Muy pronto en nekova.com.ar (link en la bio) ✨
 
 **Placa 4:** fondo blanco, ícono de flecha de vuelta, título "10 días para devolverlo", texto "Si no te convence, podés arrepentirte desde el botón de arrepentimiento de la web."
 
-**Placa 5:** fondo gris claro, ícono de globo de chat, título "Atención al cliente", texto "Escribinos por WhatsApp al +54 9 11 4945-7398 o a info@nekova.com.ar."
+**Placa 5:** fondo gris claro, ícono de globo de chat, título "Atención al cliente", texto "Escribinos por WhatsApp al +54 9 11 7812-4323 o a info@nekova.com.ar."
 
 **Texto:**
 ```

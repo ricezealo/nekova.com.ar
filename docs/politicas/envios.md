@@ -33,4 +33,4 @@ Verificá la dirección antes de pagar. Si la dirección es incorrecta o está i
 
 ## Contacto
 
-info@nekova.com.ar · WhatsApp +54 9 11 4945-7398
+info@nekova.com.ar · WhatsApp +54 9 11 7812-4323

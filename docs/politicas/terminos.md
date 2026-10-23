@@ -7,7 +7,7 @@
 
 ## 1. Quiénes somos
 
-Este sitio (nekova.com.ar) es operado por **[RAZÓN SOCIAL / NOMBRE Y APELLIDO]**, CUIT **[CUIT]**, con domicilio en **[DOMICILIO]** ("Nekova"). Contacto: info@nekova.com.ar · WhatsApp +54 9 11 4945-7398.
+Este sitio (nekova.com.ar) es operado por **[RAZÓN SOCIAL / NOMBRE Y APELLIDO]**, CUIT **[CUIT]**, con domicilio en **[DOMICILIO]** ("Nekova"). Contacto: info@nekova.com.ar · WhatsApp +54 9 11 7812-4323.
 
 ## 2. Aceptación
 
