@@ -7,7 +7,8 @@ Este archivo es el brief completo. No hace falta otro contexto.
 - **Nekova** (nekova.com.ar, Shopify, Argentina) lanza su primer lote del **Cojín Ergonómico en U** el **11/11/2026**. Precio: **$79.000**. Son 40 unidades.
 - Antes del lanzamiento se arma una **lista**: la gente deja su email en una página de la web y recibe al instante un código de **15% OFF** (`LISTA15`), que vale del **11/11 al 18/11** y solo para las **primeras 30 compras**.
 - Flujo: anuncio en Meta → página `/pages/lista-de-lanzamiento` → la persona deja su email → Shopify la guarda con la etiqueta `lista-lanzamiento` → automatización: email con el código → 11/11: email "¡Ya llegó!".
-- El tema ya tiene la página hecha (sección "Nekova · lista lanzamiento", plantilla `page.lista`). Solo hay que crear la página en Shopify.
+- El tema ya tiene la página hecha (sección "Nekova · lista lanzamiento", plantilla `page.lista`) y **ya está publicado**: la rama `main` del repositorio está conectada al tema activo de la tienda. Solo hay que crear la página en Shopify. Si al elegir la plantilla no aparece "lista", parar y avisar.
+- La dirección del producto es `/products/cojin-ortopedico-u`. La palabra "ortopédico" solo está en el link, no en el texto visible: **no cambiar el identificador del producto** (el tema lo usa para armar la ficha y la home).
 - Tono: español rioplatense con voseo. **No escribir** afirmaciones de salud ("ortopédico", "alivia el dolor", "corrige la postura"): hablar de comodidad y apoyo. **No mencionar garantía.**
 
 ## Paso 1 · Crear la página
@@ -115,22 +116,22 @@ Enviar un email de prueba antes de programar.
 
 ## Paso 6 · Campaña en Meta Ads (dejarla EN PAUSA)
 
-En **Meta Ads Manager** (cuenta publicitaria de Nekova), crear la campaña y **dejar todo en pausa / borrador**. El dueño la revisa y la activa.
+En **Meta Ads Manager**, en la **cuenta publicitaria de Nekova que termina en 803** (verificar el ID antes de crear nada; si no aparece, parar y avisar), crear la campaña y **dejar todo en pausa / borrador**. El dueño la revisa y la activa.
 
 ### Campaña
 - **Nombre:** `Nekova · Lista lanzamiento cojín · nov 2026`
 - **Objetivo:** **Tráfico** (el píxel todavía no registra suscripciones como evento; si Meta ofrece el evento "Suscribirse" o "Cliente potencial" del sitio, usar **Clientes potenciales** con ese evento y avisarlo en el resumen).
 - **Presupuesto de la campaña (Advantage):** diario. **Lo decidís vos** con tu guía/skill de Meta Ads (ver "Cómo definir el presupuesto", abajo).
-- **Fechas:** del **24/10/2026** al **10/11/2026 23:59**.
+- **Fechas:** inicio **24/10/2026** (si al crearla esa fecha ya pasó, poner el día siguiente; igual queda en pausa hasta que el dueño la active) y fin **10/11/2026 23:59**.
 
 ### Cómo definir el presupuesto
 
 El dueño delega en vos esta decisión: **elegí el presupuesto diario usando la guía/skill de campañas de Meta Ads que ya tenés** (libros, recomendaciones y estrategias). No uses un número genérico: justificalo con esa guía y con estos datos del negocio:
 
-- **Margen por cojín con el cupón:** precio 9.000 − 15% = 7.150. Después de costo puesto (~0.400) y comisiones e impuestos (~.900, calculadas sobre el precio de lista), quedan **~.900 por venta antes de publicidad**.
+- **Margen por cojín con el cupón:** precio $79.000 − 15% = $67.150. Después de costo puesto (~$50.400) y comisiones e impuestos (~$9.900, calculadas sobre el precio de lista), quedan **~$6.900 por venta antes de publicidad**.
 - **Cupos:** 30 compras con descuento (40 cojines en total). Cada compra con cupón requiere un suscriptor; con una conversión de la lista de 5 a 10%, hacen falta **300 a 600 suscriptores** para llenar los 30 cupos.
-- **Costo máximo razonable por suscriptor:** **50 a 00**.
-- **Duración:** del 24/10 al 10/11 (18 días), con **2 conjuntos** (AMBA e Interior) y 4 anuncios cada uno; el presupuesto es de campaña (Advantage), así que Meta lo reparte.
+- **Costo máximo razonable por suscriptor:** **$350 a $700**.
+- **Duración:** desde que el dueño la active (idealmente el 24/10) hasta el 10/11 (unos 18 días), con **2 conjuntos** (AMBA e Interior) y 4 anuncios cada uno; el presupuesto es de campaña (Advantage), así que Meta lo reparte.
 - Necesita alcanzar la **fase de aprendizaje** de Meta y dejar datos para comparar conjuntos y anuncios.
 - Es la **primera campaña** de la marca: cuenta y píxel sin historial.
 
