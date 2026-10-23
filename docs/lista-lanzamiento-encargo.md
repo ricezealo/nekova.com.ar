@@ -120,8 +120,21 @@ En **Meta Ads Manager** (cuenta publicitaria de Nekova), crear la campaña y **d
 ### Campaña
 - **Nombre:** `Nekova · Lista lanzamiento cojín · nov 2026`
 - **Objetivo:** **Tráfico** (el píxel todavía no registra suscripciones como evento; si Meta ofrece el evento "Suscribirse" o "Cliente potencial" del sitio, usar **Clientes potenciales** con ese evento y avisarlo en el resumen).
-- **Presupuesto de la campaña (Advantage):** diario, **[PRESUPUESTO DIARIO EN ARS — lo completa el dueño]**.
+- **Presupuesto de la campaña (Advantage):** diario. **Lo decidís vos** con tu guía/skill de Meta Ads (ver "Cómo definir el presupuesto", abajo).
 - **Fechas:** del **24/10/2026** al **10/11/2026 23:59**.
+
+### Cómo definir el presupuesto
+
+El dueño delega en vos esta decisión: **elegí el presupuesto diario usando la guía/skill de campañas de Meta Ads que ya tenés** (libros, recomendaciones y estrategias). No uses un número genérico: justificalo con esa guía y con estos datos del negocio:
+
+- **Margen por cojín con el cupón:** precio 9.000 − 15% = 7.150. Después de costo puesto (~0.400) y comisiones e impuestos (~.900, calculadas sobre el precio de lista), quedan **~.900 por venta antes de publicidad**.
+- **Cupos:** 30 compras con descuento (40 cojines en total). Cada compra con cupón requiere un suscriptor; con una conversión de la lista de 5 a 10%, hacen falta **300 a 600 suscriptores** para llenar los 30 cupos.
+- **Costo máximo razonable por suscriptor:** **50 a 00**.
+- **Duración:** del 24/10 al 10/11 (18 días), con **2 conjuntos** (AMBA e Interior) y 4 anuncios cada uno; el presupuesto es de campaña (Advantage), así que Meta lo reparte.
+- Necesita alcanzar la **fase de aprendizaje** de Meta y dejar datos para comparar conjuntos y anuncios.
+- Es la **primera campaña** de la marca: cuenta y píxel sin historial.
+
+En el resumen final, dejá el número elegido y una explicación corta: qué principios de tu guía usaste, cuánto suma en total en los 18 días, cuántos suscriptores esperás y con qué costo por suscriptor, y en qué momento conviene revisarlo (por ejemplo, a los 3 o 4 días) y con qué criterio subirlo, bajarlo o cortar anuncios. **Cargalo en la campaña, pero dejala en pausa**: el dueño lo aprueba antes de activarla.
 
 ### Conjuntos de anuncios (2)
 
@@ -166,6 +179,7 @@ Dejar un resumen con:
 - Configuración del código `LISTA15` (captura).
 - Estado de la automatización (activa, con su condición) y del email del 11/11 (programado, fecha y hora).
 - Estructura de la campaña de Meta en pausa, con capturas.
+- **El presupuesto diario elegido**, con su justificación según tu guía de Meta Ads, el total estimado de la campaña y los criterios para revisarlo.
 - Cualquier problema o cosa que haya quedado sin hacer.
 
 ---
@@ -173,7 +187,7 @@ Dejar un resumen con:
 ### Para el dueño (no es parte del encargo)
 
 **Antes de que Claude Desktop arranque**
-- Completar el presupuesto diario en el Paso 6. Referencia: con 15% OFF te quedan ~$6.900 por cojín antes de publicidad, así que cada suscriptor debería costar **$350 a $700** como máximo. Mirarlo a los 3 o 4 días y cortar los anuncios que estén muy por encima.
+- El presupuesto diario lo propone Claude Desktop con su guía de Meta Ads (Paso 6) y queda cargado con la campaña en pausa: revisá su propuesta y el total de los 18 días antes de activarla. Referencia: cada suscriptor no debería costar más de **$350 a $700**. Mirarlo a los 3 o 4 días y cortar los anuncios que estén muy por encima.
 - El tema (con la página nueva) tiene que estar publicado: se sube con `main`.
 
 **Mientras corre (24/10 al 10/11)**
