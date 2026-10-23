@@ -7,7 +7,7 @@ Este archivo es el brief completo. No hace falta otro contexto.
 - **Nekova** (nekova.com.ar, Shopify, Argentina) lanza su primer lote del **Cojín Ergonómico en U** el **11/11/2026**. Precio: **$79.000**. Son 40 unidades.
 - Antes del lanzamiento se arma una **lista**: la gente deja su email en una página de la web y recibe al instante un código de **15% OFF** (`LISTA15`), que vale del **11/11 al 18/11** y solo para las **primeras 30 compras**.
 - Flujo: anuncio en Meta → página `/pages/lista-de-lanzamiento` → la persona deja su email → Shopify la guarda con la etiqueta `lista-lanzamiento` → automatización: email con el código → 11/11: email "¡Ya llegó!".
-- El tema ya tiene la página hecha (sección "Nekova · lista lanzamiento", plantilla `page.lista`) y **ya está publicado**: la rama `main` del repositorio está conectada al tema activo de la tienda. Solo hay que crear la página en Shopify. Si al elegir la plantilla no aparece "lista", parar y avisar.
+- El tema ya tiene la página hecha (sección "Nekova · lista", plantilla `page.lista`) y **ya está publicado**: la rama `main` del repositorio está conectada al tema activo de la tienda. Solo hay que crear la página en Shopify. Si al elegir la plantilla no aparece "lista", parar y avisar.
 - La dirección del producto es `/products/cojin-ortopedico-u`. La palabra "ortopédico" solo está en el link, no en el texto visible: **no cambiar el identificador del producto** (el tema lo usa para armar la ficha y la home).
 - Tono: español rioplatense con voseo. **No escribir** afirmaciones de salud ("ortopédico", "alivia el dolor", "corrige la postura"): hablar de comodidad y apoyo. **No mencionar garantía.**
 
