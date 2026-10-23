@@ -48,6 +48,7 @@
 {%- assign nk_how_title = '' -%}
 {%- assign nk_benefits_title = '' -%}
 {%- assign nk_video = '' -%}
+{%- assign nk_video_shape = '' -%}
 {%- assign nk_compare_title = '' -%}
 {%- assign nk_specs_title = '' -%}
 {%- assign nk_faq = '' -%}
@@ -194,6 +195,10 @@
     {%- assign nk_specs_alt = 'Plantillas en negro, gris y naranja' -%}
 
     {%- capture nk_faq -%}¿Qué talle elijo?::Si calzás del 35 al 40, elegí el rango 35 al 40; si calzás del 41 al 46, el 41 al 46. Después las recortás por la línea de tu número.||¿Cómo las recorto?::Cada plantilla tiene marcado el contorno de cada talle. Recortá con una tijera siguiendo la línea de tu número. Te recomendamos probarlas en el calzado antes de recortar todo el contorno.||¿Sirven para cualquier calzado?::Están pensadas para zapatillas y calzado de uso diario. Si tu calzado ya trae plantilla, sacala antes de colocarlas.||¿Hay descuento llevando más de un par?::Sí: 2 pares a $15.000 cada uno y 3 o más a $12.000 cada uno. Podés combinar colores y talles; el descuento se aplica solo en el carrito.||¿Cómo se limpian?::A mano, con agua tibia y jabón neutro. Dejalas secar a la sombra antes de volver a usarlas.{%- endcapture -%}
+    {%- assign nk_video = 'plantillas.mp4' -%}
+    {%- assign nk_video_shape = 'square' -%}
+    {%- assign nk_video_poster = 'product-media-plantillas-poster.jpg' -%}
+    {%- assign nk_video_lead = 'Cómo son por dentro, cómo se flexionan y cómo dejan respirar el pie.' -%}
     {%- assign nk_cta_title = 'Cada paso, más cómodo' -%}
 {%- endcase -%}
 {%- if nk_lead == blank -%}
@@ -693,7 +698,7 @@
             </div>
           {%- endif -%}
         </div>
-        <div class="nk-video-frame">
+        <div class="nk-video-frame{% if nk_video_shape == 'square' %} nk-video-frame--square{% endif %}">
           <video controls playsinline preload="metadata" poster="{{ nk_video_poster | asset_url }}" aria-label="Video de {{ featured_product.title | escape }}">
             <source src="{{ nk_video | asset_url }}" type="video/mp4">
             Tu navegador no puede reproducir este video.
@@ -1035,6 +1040,7 @@
   .nk-split--video { grid-template-columns: minmax(0, .85fr) minmax(0, 1.15fr); }
   .nk-video-frame { background: var(--nekova-surface); border-radius: var(--nekova-radius-lg); box-shadow: var(--nekova-shadow); overflow: hidden; }
   .nk-video-frame video { aspect-ratio: 16 / 9; display: block; height: auto; object-fit: cover; width: 100%; }
+  .nk-video-frame--square video { aspect-ratio: 1; }
   .nk-details { display: grid; gap: 1.6rem; grid-template-columns: 1fr 1fr; margin-top: 3.2rem; max-width: 44rem; }
   .nk-details figure { margin: 0; }
   .nk-details img { aspect-ratio: 1; border-radius: var(--nekova-radius); display: block; height: auto; object-fit: cover; width: 100%; }
