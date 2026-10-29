@@ -348,7 +348,7 @@ const earplugProduct = {
   type: 'Descanso y silencio',
   has_only_default_variant: false,
 };
-const insoleImages = ['00', '01', 'negro', 'gris', 'naranja', '08', '05', '06', '07', '10'].map((number, index) => ({
+const insoleImages = ['00', '01', 'negro', 'gris', 'naranja', '05', '06', '07', '10'].map((number, index) => ({
   src: `/assets/product-media-plantillas-${number}.jpg`,
   url: `/assets/product-media-plantillas-${number}.jpg`,
   alt: `Plantillas multi-talle, imagen ${index + 1}`,
@@ -390,7 +390,48 @@ const insoleProduct = {
   type: 'Confort al caminar',
   has_only_default_variant: false,
 };
-const products = [featuredProduct, lightProduct, cushionProduct, orthopedicProduct, earplugProduct, insoleProduct, upcomingProduct];
+const pillowImages = ['01', '02', '03', '04', '05', '06', '07'].map((number, index) => ({
+  src: `/assets/product-media-almohada-${number}.jpg`,
+  url: `/assets/product-media-almohada-${number}.jpg`,
+  alt: `Almohada ergonómica mariposa, imagen ${index + 1}`,
+  width: 1200,
+  height: 1200,
+}));
+const pillowMedia = pillowImages.map((preview, index) => ({ id: 800 + index, media_type: 'image', preview_image: preview, alt: preview.alt }));
+const pillowVariant = {
+  id: 58001,
+  title: 'Default Title',
+  price: 8200000,
+  compare_at_price: null,
+  available: true,
+  featured_image: pillowImages[0],
+  featured_media: pillowMedia[0],
+  options: ['Default Title'],
+  option1: 'Default Title',
+  inventory_quantity: 20,
+};
+const pillowProduct = {
+  id: 5800,
+  handle: 'almohada-ergonomica-mariposa',
+  title: 'Almohada Ergonómica Mariposa de Espuma Viscoelástica',
+  vendor: 'NEKOVA',
+  price: 8200000,
+  compare_at_price: null,
+  available: true,
+  featured_image: pillowImages[0],
+  featured_media: pillowMedia[0],
+  media: pillowMedia,
+  images: pillowImages,
+  options: ['Title'],
+  options_with_values: [{ name: 'Title', position: 1, values: ['Default Title'] }],
+  variants: [pillowVariant],
+  selected_or_first_available_variant: pillowVariant,
+  description: '<p>Almohada de espuma viscoelástica con contorno de mariposa, para dormir de costado o boca arriba.</p>',
+  url: '/products/almohada-ergonomica-mariposa',
+  type: 'Descanso y apoyo',
+  has_only_default_variant: true,
+};
+const products = [featuredProduct, lightProduct, cushionProduct, orthopedicProduct, earplugProduct, insoleProduct, pillowProduct, upcomingProduct];
 // One cookie per purchasable variant in the local sample cart.
 const cartLines = [
   { product: featuredProduct, variant: productVariant, image: productImages[0], cookie: 'nekova_cart' },
@@ -399,6 +440,7 @@ const cartLines = [
   ...orthopedicVariants.map((variant) => ({ product: orthopedicProduct, variant, image: variant.featured_image, cookie: `nekova_cart_${variant.id}` })),
   ...earplugVariants.map((variant) => ({ product: earplugProduct, variant, image: variant.featured_image, cookie: `nekova_cart_${variant.id}` })),
   ...insoleVariants.map((variant) => ({ product: insoleProduct, variant, image: variant.featured_image, cookie: `nekova_cart_${variant.id}` })),
+  { product: pillowProduct, variant: pillowVariant, image: pillowImages[0], cookie: 'nekova_cart_pillow' },
 ];
 // Store catalog: the U cushion and the earplugs. The other sample products stay reachable by URL for template testing.
 // PREVIEW_SOLDOUT="Azul marino" marks the variants with that title as sold out (to test the color waitlist).
@@ -410,12 +452,13 @@ if (process.env.PREVIEW_SOLDOUT) {
 // PREVIEW_ALL_PRODUCTS=1 adds the other sample products, to test the home with a larger catalog.
 const launchProducts = process.env.PREVIEW_ALL_PRODUCTS
   ? [orthopedicProduct, earplugProduct, cushionProduct, lightProduct, featuredProduct]
-  : [orthopedicProduct, earplugProduct, insoleProduct];
+  : [orthopedicProduct, earplugProduct, insoleProduct, pillowProduct];
 const collection = { id: 1, handle: 'all', title: 'Todos los productos', description: '<p>Productos de ejemplo para la vista local.</p>', products: launchProducts, all_products_count: launchProducts.length, products_count: launchProducts.length, url: '/collections/all', image };
 const menuItems = [
   { title: 'Cojín ergonómico', url: '/products/cojin-ortopedico-u', links: [] },
   { title: 'Tapones auditivos', url: '/products/tapones-auditivos-silicona', links: [] },
   { title: 'Plantillas', url: '/products/plantillas-multitalle', links: [] },
+  { title: 'Almohada', url: '/products/almohada-ergonomica-mariposa', links: [] },
   { title: 'Sobre Nekova', url: '/pages/sobre-nekova', links: [] },
   { title: 'Contacto', url: '/pages/contact', links: [] },
 ];

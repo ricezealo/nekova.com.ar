@@ -18,6 +18,8 @@
       assign content_key = 'tapones'
     when 'plantillas-multitalle'
       assign content_key = 'plantillas'
+    when 'almohada-ergonomica-mariposa'
+      assign content_key = 'almohada'
   endcase
 
   assign has_variant_choice = false
@@ -200,6 +202,56 @@
     {%- assign nk_video_poster = 'product-media-plantillas-poster.jpg' -%}
     {%- assign nk_video_lead = 'Cómo son por dentro, cómo se flexionan y cómo dejan respirar el pie.' -%}
     {%- assign nk_cta_title = 'Cada paso, más cómodo' -%}
+  {%- when 'almohada' -%}
+    {%- assign nk_gallery = 'product-media-almohada-01.jpg,product-media-almohada-02.jpg,product-media-almohada-03.jpg,product-media-almohada-04.jpg,product-media-almohada-05.jpg,product-media-almohada-06.jpg,product-media-almohada-07.jpg' -%}
+    {%- assign nk_gallery_alt = 'Almohada ergonómica mariposa de espuma viscoelástica' -%}
+    {%- assign nk_tagline = 'Descanso cómodo, en cualquier postura.' -%}
+    {%- assign nk_lead = 'Espuma viscoelástica con contorno de mariposa: apoyo para la cabeza y el cuello, de costado o boca arriba.' -%}
+    {%- assign nk_checks = 'Espuma viscoelástica que se adapta y recupera su forma||Contorno mariposa para dormir de costado o boca arriba||Funda suave y transpirable' -%}
+    {%- capture nk_assure_extra -%}<strong>Llega enrollada y al vacío.</strong> Al abrirla recupera su forma.{%- endcapture -%}
+    {%- capture nk_returns_assure -%}<strong>10 días para devolverla sin abrir.</strong> Llega envasada al vacío: por higiene, una vez abierta no se aceptan devoluciones.{%- endcapture -%}
+    {%- capture nk_returns_text -%}Tenés 10 días desde la compra para devolverla, siempre que esté en su envase al vacío, cerrado y sin uso. Por razones de higiene, una vez abierta no se aceptan devoluciones. Si llega con una falla de fábrica, te la cambiamos aunque esté abierta. <a href="/pages/contact">Escribinos</a> para coordinarlo.{%- endcapture -%}
+    {%- assign nk_returns_faq_q = '¿Puedo devolverla?' -%}
+    {%- assign nk_returns_faq_a = 'Sí, dentro de los 10 días desde la compra, con el envase al vacío cerrado y sin uso. Por higiene, una vez abierta no se aceptan devoluciones, salvo que tenga una falla de fábrica: en ese caso te la cambiamos. Escribinos y coordinamos.' -%}
+    {%- assign nk_returns_short = '10 días para devolverla sin abrir' -%}
+    {%- capture nk_details -%}Una almohada de espuma viscoelástica con forma de mariposa. El hueco central recibe la cabeza, las alas laterales están pensadas para dormir de costado y el centro, para dormir boca arriba. Los recortes de los costados dejan lugar para apoyar el brazo. La funda es suave y transpirable. Llega enrollada y envasada al vacío: al abrirla recupera su forma; dejala unas horas para que se expanda del todo.{%- endcapture -%}
+    {%- assign nk_specs = 'Medidas::65 × 37,9 cm, 13,3 cm de alto||Relleno::Espuma viscoelástica||Diseño::Contorno mariposa con hueco central||Funda::Tela suave y transpirable||Color::Gris con laterales blancos||Presentación::Enrollada y envasada al vacío' -%}
+
+    {%- assign nk_uses_eyebrow = 'Para cada postura' -%}
+    {%- assign nk_uses_title = 'Pensada para cómo <span class="nk-hl">dormís</span>' -%}
+    {%- assign nk_uses_lead = 'De costado, boca arriba o cambiando de posición durante la noche.' -%}
+    {%- assign nk_uses_shape = 'portrait' -%}
+    {%- capture nk_uses -%}product-media-almohada-vida-01.jpg::Mujer durmiendo de costado sobre la almohada mariposa::De costado::Las alas laterales acompañan la cabeza y el hombro.||product-media-almohada-vida-02.jpg::Mujer durmiendo boca arriba sobre la almohada mariposa::Boca arriba::El hueco central recibe la cabeza.||product-media-almohada-vida-03.jpg::Mujer descansando abrazada a la almohada mariposa::Cuando te das vuelta::La forma de mariposa te acompaña en cada cambio de posición.{%- endcapture -%}
+
+    {%- assign nk_how_eyebrow = 'Cómo funciona' -%}
+    {%- assign nk_how_title = 'Forma de <span class="nk-hl">mariposa</span>' -%}
+    {%- assign nk_how_lead = 'Cada parte de la almohada está pensada para una forma de dormir.' -%}
+    {%- assign nk_how_image = 'product-media-almohada-02.jpg' -%}
+    {%- assign nk_how_alt = 'Zonas de la almohada: hueco para la cabeza, zonas para dormir de costado y boca arriba, lugar para el brazo y apoyo para el cuello' -%}
+    {%- assign nk_how = 'A::Hueco central::Recibe la cabeza para un apoyo más estable.||B::Alas laterales::Para dormir de costado, con lugar para el hombro.||C::Recortes para el brazo::Podés apoyar el brazo sin aplastar la almohada.' -%}
+
+    {%- assign nk_benefits_eyebrow = 'Detalles que se notan' -%}
+    {%- assign nk_benefits_title = 'Diseñada para tu <span class="nk-hl">descanso</span>' -%}
+    {%- assign nk_benefits_lead = 'Materiales y formas pensados para dormir más cómodo.' -%}
+    {%- assign nk_benefits = 'foam::Espuma viscoelástica::Se adapta a tu forma y recupera la suya.||arc::Contorno mariposa::Una zona para cada postura de dormir.||moon::De costado o boca arriba::Te acompaña aunque cambies de posición.||wind::Funda transpirable::Tela suave que deja circular el aire.||sizes::65 × 37,9 cm::Y 13,3 cm de alto.||case::Llega al vacío::Enrollada y compacta; al abrirla recupera su forma.' -%}
+
+    {%- assign nk_video = 'almohada.mp4' -%}
+    {%- assign nk_video_shape = 'square' -%}
+    {%- assign nk_video_poster = 'product-media-almohada-poster.jpg' -%}
+    {%- assign nk_video_lead = 'Así llega: enrollada y al vacío. La abrís y recupera su forma.' -%}
+    {%- assign nk_video_details = 'product-media-almohada-detalle-espuma.jpg::Núcleo de espuma viscoelástica de la almohada, sin funda::Núcleo de espuma viscoelástica||product-media-almohada-detalle-enrollada.jpg::Almohada enrollada y envasada al vacío, recién llegada::Llega enrollada y al vacío' -%}
+
+    {%- assign nk_compare_title = 'Una almohada común vs. <span class="nk-hl">Nekova</span>' -%}
+    {%- assign nk_compare_them = 'Almohada común' -%}
+    {%- assign nk_compare = 'Espuma viscoelástica que recupera su forma::a veces||Hueco central para la cabeza::no||Zonas para dormir de costado y boca arriba::no||Lugar para apoyar el brazo::no||Funda transpirable::a veces' -%}
+
+    {%- assign nk_specs_title = 'Todo lo que tenés que <span class="nk-hl">saber</span>' -%}
+    {%- assign nk_specs_lead = 'Mide 65 × 37,9 cm y 13,3 cm de alto. Llega enrollada y al vacío: dejala unas horas para que tome su forma.' -%}
+    {%- assign nk_specs_image = 'product-media-almohada-03.jpg' -%}
+    {%- assign nk_specs_alt = 'Medidas de la almohada: 65 cm de largo, 37,9 cm de ancho y 13,3 cm de alto' -%}
+
+    {%- capture nk_faq -%}¿Qué medidas tiene?::Mide 65 × 37,9 cm y 13,3 cm de alto.||¿Para qué posición sirve?::Para dormir de costado o boca arriba: tiene una zona pensada para cada postura y un hueco central para la cabeza.||¿Cómo llega?::Enrollada y envasada al vacío. Al abrirla recupera su forma en pocos minutos; te recomendamos dejarla unas horas antes de usarla para que se expanda del todo.||¿Tiene olor al abrirla?::Como toda espuma nueva, al principio puede tener un olor leve. Dejala ventilar unas horas y se va.{%- endcapture -%}
+    {%- assign nk_cta_title = 'Dormí más cómodo desde hoy' -%}
 {%- endcase -%}
 {%- if nk_lead == blank -%}
   {%- assign nk_lead = featured_product.description | strip_html | truncatewords: 26 -%}
