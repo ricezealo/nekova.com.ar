@@ -44,12 +44,13 @@
       { "type": "number", "id": "nekova_promo_percent", "label": "Descuento (%)", "default": 20 },
       { "type": "text", "id": "nekova_promo_start", "label": "Inicio (fecha y hora)", "info": "Formato 2026-11-02T00:00:00-03:00 (hora de Argentina).", "default": "2026-11-02T00:00:00-03:00" },
       { "type": "text", "id": "nekova_promo_end", "label": "Fin (fecha y hora)", "info": "Formato 2026-11-06T23:59:59-03:00.", "default": "2026-11-06T23:59:59-03:00" },
+      { "type": "text", "id": "nekova_promo_extend", "label": "Extendida desde (fecha y hora)", "info": "Opcional. Desde esta fecha el pop-up dice \"¡Extendimos…!\" hasta el fin. Formato 2026-11-05T00:00:00-03:00. Vacío: no se muestra.", "default": "" },
       { "type": "text", "id": "nekova_promo_from_label", "label": "Inicio para mostrar", "default": "lunes 2" },
       { "type": "text", "id": "nekova_promo_to_label", "label": "Fin para mostrar", "default": "viernes 6 de noviembre" },
       { "type": "checkbox", "id": "nekova_promo_announce", "label": "Anunciarla antes de que empiece", "info": "Muestra el pop-up \"Se viene\" con un formulario para avisar.", "default": true },
       { "type": "text", "id": "nekova_promo_tag", "label": "Etiqueta de quienes piden aviso", "default": "cyber-nekova" },
-      { "type": "text", "id": "nekova_promo_exclude", "label": "Productos excluidos", "info": "Identificadores separados por coma. No muestran el precio con descuento.", "default": "cojin-ortopedico-u" },
-      { "type": "text", "id": "nekova_promo_conditions", "label": "Condiciones", "default": "Válido del 2/11/2026 a las 00:00hs al 6/11/2026 a las 23:59hs o hasta agotar stock. No acumulable con otras promociones. No incluye el cojín ergonómico." }
+      { "type": "text", "id": "nekova_promo_exclude", "label": "Productos excluidos", "info": "Identificadores separados por coma. No muestran el precio con descuento.", "default": "" },
+      { "type": "text", "id": "nekova_promo_conditions", "label": "Condiciones", "default": "Válido del 2/11/2026 a las 00:00hs al 6/11/2026 a las 23:59hs o hasta agotar stock. No acumulable con otras promociones." }
     ]
   },
   {

@@ -3,6 +3,7 @@
   La fase se decide en el navegador, con las fechas de los settings, así no depende del caché de la página:
   - antes del inicio: pop-up "se viene" con formulario para avisar (tags newsletter + promo_tag);
   - entre inicio y fin: pop-up "ya aplicado", clase nekova-promo-on en <html> y precios con descuento visibles;
+  - desde "extendida desde" hasta el fin: pop-up "¡Extendimos…!" (los precios siguen con descuento);
   - después del fin: nada.
   El pop-up se muestra una vez por sesión y por fase. El descuento real es un descuento automático de Shopify.
 {%- endcomment -%}
@@ -18,6 +19,7 @@
     data-nekova-promo
     data-start="{{ settings.nekova_promo_start | escape }}"
     data-end="{{ settings.nekova_promo_end | escape }}"
+    data-extend="{{ settings.nekova_promo_extend | escape }}"
     data-announce="{% if settings.nekova_promo_announce %}true{% else %}false{% endif %}">
     <button type="button" class="nekova-promo__close" data-nekova-promo-close aria-label="Cerrar">{% render 'nekova-icon', icon: 'close' %}</button>
     <p class="nekova-promo__eyebrow">{{ promo_name }}</p>
@@ -45,6 +47,12 @@
       <h2 class="nekova-promo__title"><em>{{ promo_percent }}% OFF</em> ya aplicado en toda la tienda</h2>
       <p class="nekova-promo__text">Hasta el {{ promo_to }}. Los precios que ves ya tienen el descuento: no necesitás código.</p>
       <a class="nekova-promo__button" href="{{ routes.all_products_collection_url }}" data-nekova-promo-close>Ver productos</a>
+    </div>
+
+    <div class="nekova-promo__phase" data-nekova-promo-phase="ext" hidden>
+      <h2 class="nekova-promo__title">¡Extendimos {{ promo_name }} <em>hasta el viernes</em>!</h2>
+      <p class="nekova-promo__text">Seguís teniendo <strong>{{ promo_percent }}% OFF ya aplicado</strong> en toda la tienda hasta el {{ promo_to }} a las 23:59hs. Son los últimos días: después vuelven los precios de siempre.</p>
+      <a class="nekova-promo__button" href="{{ routes.all_products_collection_url }}" data-nekova-promo-close>Aprovechar ahora</a>
     </div>
 
     {%- if settings.nekova_promo_conditions != blank -%}
@@ -96,10 +104,11 @@
       if (Number.isNaN(start) || Number.isNaN(end)) return;
       const now = Date.now();
       let phase = 'off';
-      if (now >= start && now <= end) phase = 'on';
+      const extend = Date.parse(dialog.dataset.extend);
+      if (now >= start && now <= end) phase = !Number.isNaN(extend) && now >= extend ? 'ext' : 'on';
       else if (now < start && dialog.dataset.announce === 'true') phase = 'pre';
 
-      if (phase === 'on') {
+      if (phase === 'on' || phase === 'ext') {
         document.documentElement.classList.add('nekova-promo-on');
         document.querySelectorAll('[data-nekova-promo-price]').forEach((price) => { price.hidden = false; });
       }
