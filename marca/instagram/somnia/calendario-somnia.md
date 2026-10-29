@@ -37,6 +37,8 @@ Espuma viscoelástica, funda con cierre y lavable, y llega enrollada al vacío. 
 ## Textos
 
 ### Jue 29/10 · Reel Unboxing
+> **Este reel va con el sonido real del unboxing** (plástico y espuma; las voces del final se cortaron). No le agregues música: subilo tal cual a Instagram y a TikTok. Dura 25 s, en 9:16.
+
 ```
 Así llega la nueva Almohada Nekova Somnia 📦 Enrollada y al vacío: la sacás del envoltorio y empieza a tomar su forma.
 
