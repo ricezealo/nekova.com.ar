@@ -47,8 +47,8 @@ Probala tranquilo: tenés 10 días desde la compra para devolverla.
 - Título de la página: `Almohada Nekova Somnia de espuma viscoelástica | Nekova`
 - Metadescripción: `Almohada de espuma viscoelástica con contorno de mariposa para dormir de costado o boca arriba. 65 × 37,9 cm. Llega al vacío. Envío a todo el país.`
 
-**Multimedia:** subir estas 7 imágenes, en este orden (las usan Google, Meta y las vistas previas al compartir el link):
-`G:\Ryzen5\Documentos\GitHub\nekova.com.ar\assets\product-media-almohada-01.jpg` a `-07.jpg`.
+**Multimedia:** subir estas 6 imágenes, en este orden (las usan Google, Meta y las vistas previas al compartir el link):
+`G:\Ryzen5\Documentos\GitHub\nekova.com.ar\assets\product-media-almohada-01.jpg` a `-06.jpg`.
 Texto alternativo de la primera: `Almohada Nekova Somnia de espuma viscoelástica`.
 
 Guardar.

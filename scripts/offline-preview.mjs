@@ -390,7 +390,7 @@ const insoleProduct = {
   type: 'Confort al caminar',
   has_only_default_variant: false,
 };
-const pillowImages = ['01', '02', '03', '04', '05', '06', '07'].map((number, index) => ({
+const pillowImages = ['01', '02', '03', '04', '05', '06'].map((number, index) => ({
   src: `/assets/product-media-almohada-${number}.jpg`,
   url: `/assets/product-media-almohada-${number}.jpg`,
   alt: `Almohada Nekova Somnia, imagen ${index + 1}`,
