@@ -24,8 +24,6 @@ Desde hoy y hasta el viernes 6 de noviembre, todo Nekova tiene 20% OFF. El descu
 
 - Cojín Ergonómico en U: $79.000 → $63.200
 - Almohada Nekova Somnia: $82.000 → $65.600
-- Tapones auditivos: $24.900 → $19.920
-- Plantillas Nekova Confort: $17.000 → $13.600 el par
 
 Envío gratis en compras desde $95.000. Despacho en días hábiles y 10 días para devolverlo.
 
