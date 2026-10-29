@@ -103,7 +103,7 @@
                 </ul>
               {%- endif -%}
               <div class="nk-home-feature-foot">
-                <span class="nk-home-feature-price">{{ product_item.price | money_without_trailing_zeros }}</span>
+                <span class="nekova-promo-scope nk-home-feature-price"><span>{{ product_item.price | money_without_trailing_zeros }}</span>{% render 'nekova-promo-price', product: product_item, price: product_item.price %}</span>
                 {%- if product_item.has_only_default_variant == false -%}
                   <span class="nk-home-card-dots">
                     {%- for option in product_item.options_with_values -%}{%- assign option_handle = option.name | handleize -%}{%- if option_handle == 'color' or option_handle == 'colores' -%}{%- for value in option.values -%}{%- assign dot_name = value.name | default: value -%}{% render 'nekova-color-dot', name: dot_name %}{%- endfor -%}{%- endif -%}{%- endfor -%}

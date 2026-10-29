@@ -207,7 +207,7 @@
                 </p>
               {%- endif -%}
 
-              {% render 'price', product: card_product, price_class: '', show_compare_at_price: true %}
+              <div class="nekova-promo-scope">{% render 'price', product: card_product, price_class: '', show_compare_at_price: true %}{% render 'nekova-promo-price', product: card_product, price: card_product.price %}</div>
               {%- if card_product.quantity_price_breaks_configured? -%}
                 {% if card_product.variants_count == 1 and quick_add == 'bulk' %}
                   {% liquid

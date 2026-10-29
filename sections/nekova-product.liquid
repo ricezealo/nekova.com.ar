@@ -308,7 +308,7 @@
         <h1 class="nk-title" id="NkTitle-{{ section.id }}">{{ featured_product.title | escape }}</h1>
         <p class="nk-lead">{{ nk_lead }}</p>
         <div class="nk-price" aria-label="Precio del producto">
-          <span class="nk-price-current">{{ current_price | money_without_trailing_zeros }}</span>
+          <span class="nekova-promo-scope"><span class="nk-price-current">{{ current_price | money_without_trailing_zeros }}</span>{% render 'nekova-promo-price', product: featured_product, price: current_price %}</span>
           {%- if has_discount -%}
             <s class="nk-price-was">{{ original_price | money_without_trailing_zeros }}</s>
             <span class="nk-price-off">{{ discount_percent }}% OFF</span>
@@ -847,7 +847,7 @@
                 {%- if more_image != blank -%}<span class="nk-more-media"><img src="{{ more_image }}" alt="" width="900" height="900" loading="lazy"></span>{%- endif -%}
                 <span class="nk-more-body">
                   <strong>{{ candidate.title | escape }}</strong>
-                  <span class="nk-more-price">{{ candidate.price | money_without_trailing_zeros }}</span>
+                  <span class="nekova-promo-scope nk-more-price"><span>{{ candidate.price | money_without_trailing_zeros }}</span>{% render 'nekova-promo-price', product: candidate, price: candidate.price %}</span>
                   <span class="nk-more-link">Ver producto {% render 'nekova-icon', icon: 'arrow-right' %}</span>
                 </span>
               </a>
@@ -907,7 +907,7 @@
         {%- endif -%}
         <div>
           <h2>{{ nk_cta_title }}</h2>
-          <p>{{ current_price | money_without_trailing_zeros }} · Despacho en el día · {{ nk_returns_short }}</p>
+          <p><span class="nekova-promo-scope"><span>{{ current_price | money_without_trailing_zeros }}</span>{% render 'nekova-promo-price', product: featured_product, price: current_price %}</span> · Despacho en el día · {{ nk_returns_short }}</p>
         </div>
         <a class="nk-button nk-button--light" href="#NkBuy-{{ section.id }}">{% if featured_product.available %}Comprar ahora{% else %}Avisarme{% endif %}</a>
       </div>
@@ -968,6 +968,10 @@
   .nk-price-current { font-family: var(--nekova-font-heading); font-size: 3.2rem; font-weight: var(--font-heading-weight); }
   .nk-price-was { color: var(--nk-muted); font-size: 1.6rem; }
   .nk-price-off { color: var(--nekova-warm); font-size: 1.4rem; font-weight: 800; }
+  .nk-price .nekova-promo-scope { align-items: baseline; display: inline-flex; flex-wrap: wrap; gap: .6rem 1.2rem; }
+  .nk-price .nekova-promo-price__now { font-family: var(--nekova-font-heading); font-size: 3.2rem; font-weight: var(--font-heading-weight); }
+  html.nekova-promo-on .nk-price .nekova-promo-scope:has(.nekova-promo-price) .nk-price-current { font-size: 1.8rem; }
+  .nk-more-price .nekova-promo-price, .nk-cta-band .nekova-promo-price { margin-left: .6rem; }
 
   .nk-variants { border: 0; margin: 0 0 2.4rem; min-width: 0; padding: 0; }
   .nk-variants legend { color: var(--nk-muted); font-size: 1.4rem; margin-bottom: 1rem; padding: 0; }

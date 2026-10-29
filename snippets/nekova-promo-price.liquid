@@ -1,0 +1,30 @@
+{%- comment -%}
+  Precio con el descuento de la promoción del tema (Nekova · promoción).
+  Se renderiza oculto junto al precio normal; snippets/nekova-promo.liquid lo muestra
+  y tacha el precio normal solo mientras la promoción está vigente (según la hora del navegador).
+  El descuento real lo aplica un descuento automático de Shopify con el mismo porcentaje y las mismas fechas.
+
+  Uso: {% render 'nekova-promo-price', product: product, price: product.price %}
+{%- endcomment -%}
+{%- liquid
+  assign promo_percent = settings.nekova_promo_percent | default: 0
+  assign promo_eligible = false
+  if settings.nekova_promo_enabled and promo_percent > 0 and product != blank
+    assign promo_eligible = true
+    assign promo_excluded = settings.nekova_promo_exclude | split: ','
+    for excluded_handle in promo_excluded
+      assign excluded_handle_clean = excluded_handle | strip
+      if excluded_handle_clean == product.handle
+        assign promo_eligible = false
+      endif
+    endfor
+  endif
+-%}
+{%- if promo_eligible -%}
+  {%- assign promo_factor = 100 | minus: promo_percent -%}
+  {%- assign promo_price = price | default: product.price | times: promo_factor | divided_by: 100 -%}
+  <span class="nekova-promo-price" data-nekova-promo-price hidden>
+    <span class="nekova-promo-price__now">{{ promo_price | money_without_trailing_zeros }}</span>
+    <span class="nekova-promo-price__off">{{ promo_percent }}% OFF</span>
+  </span>
+{%- endif -%}

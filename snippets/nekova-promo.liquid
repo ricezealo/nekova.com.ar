@@ -1,0 +1,134 @@
+{%- comment -%}
+  Promoción del tema (Configuración del tema → Nekova · promoción): pop-up y precios con descuento.
+  La fase se decide en el navegador, con las fechas de los settings, así no depende del caché de la página:
+  - antes del inicio: pop-up "se viene" con formulario para avisar (tags newsletter + promo_tag);
+  - entre inicio y fin: pop-up "ya aplicado", clase nekova-promo-on en <html> y precios con descuento visibles;
+  - después del fin: nada.
+  El pop-up se muestra una vez por sesión y por fase. El descuento real es un descuento automático de Shopify.
+{%- endcomment -%}
+{%- if settings.nekova_promo_enabled and settings.nekova_promo_percent > 0 -%}
+  {%- liquid
+    assign promo_name = settings.nekova_promo_name | default: 'Cyber Nekova'
+    assign promo_percent = settings.nekova_promo_percent
+    assign promo_tag = settings.nekova_promo_tag | default: 'promo'
+    assign promo_from = settings.nekova_promo_from_label
+    assign promo_to = settings.nekova_promo_to_label
+  -%}
+  <dialog class="nekova-promo" id="NekovaPromo" aria-labelledby="NekovaPromoTitle"
+    data-nekova-promo
+    data-start="{{ settings.nekova_promo_start | escape }}"
+    data-end="{{ settings.nekova_promo_end | escape }}"
+    data-announce="{% if settings.nekova_promo_announce %}true{% else %}false{% endif %}">
+    <button type="button" class="nekova-promo__close" data-nekova-promo-close aria-label="Cerrar">{% render 'nekova-icon', icon: 'close' %}</button>
+    <p class="nekova-promo__eyebrow">{{ promo_name }}</p>
+
+    <div class="nekova-promo__phase" data-nekova-promo-phase="pre" hidden>
+      <h2 id="NekovaPromoTitle" class="nekova-promo__title">Se viene <em>{{ promo_percent }}% OFF</em> en toda la tienda</h2>
+      <p class="nekova-promo__text">Del {{ promo_from }} al {{ promo_to }}. El descuento ya va a estar aplicado en los precios, sin códigos.</p>
+      {%- form 'customer', id: 'NekovaPromoForm', class: 'nekova-promo__form' -%}
+        <input type="hidden" name="contact[tags]" value="newsletter,{{ promo_tag }}">
+        {%- if form.posted_successfully? -%}
+          <p class="nekova-promo__success" role="status" data-nekova-promo-posted>¡Listo! Te avisamos por email cuando arranque.</p>
+        {%- else -%}
+          <label class="visually-hidden" for="NekovaPromoEmail">Email</label>
+          <div class="nekova-promo__field">
+            <input id="NekovaPromoEmail" type="email" name="contact[email]" autocomplete="email" placeholder="Tu email" required{% if form.errors %} aria-invalid="true"{% endif %}>
+            <button type="submit">Avisame</button>
+          </div>
+          {%- if form.errors -%}<p class="nekova-promo__error" role="alert" data-nekova-promo-posted>Revisá el email e intentá nuevamente.</p>{%- endif -%}
+          <p class="nekova-promo__note">Te escribimos solo para avisarte de promociones y novedades. Te podés dar de baja cuando quieras.</p>
+        {%- endif -%}
+      {%- endform -%}
+    </div>
+
+    <div class="nekova-promo__phase" data-nekova-promo-phase="on" hidden>
+      <h2 class="nekova-promo__title"><em>{{ promo_percent }}% OFF</em> ya aplicado en toda la tienda</h2>
+      <p class="nekova-promo__text">Hasta el {{ promo_to }}. Los precios que ves ya tienen el descuento: no necesitás código.</p>
+      <a class="nekova-promo__button" href="{{ routes.all_products_collection_url }}" data-nekova-promo-close>Ver productos</a>
+    </div>
+
+    {%- if settings.nekova_promo_conditions != blank -%}
+      <p class="nekova-promo__conditions">{{ settings.nekova_promo_conditions }}</p>
+    {%- endif -%}
+  </dialog>
+
+  <style>
+    .nekova-promo { background: var(--nekova-surface); border: 0; border-radius: var(--nekova-radius-lg); box-shadow: 0 2.4rem 6rem rgba(0, 0, 0, .25); color: var(--nekova-ink); font-family: var(--font-body-family); max-width: 46rem; padding: 4rem 3.6rem 3.2rem; width: calc(100% - 3.2rem); }
+    .nekova-promo::backdrop { background: rgba(20, 22, 26, .55); }
+    .nekova-promo__close { align-items: center; background: transparent; border: 0; border-radius: 50%; color: var(--nekova-muted); cursor: pointer; display: flex; height: 4rem; justify-content: center; position: absolute; right: 1.2rem; top: 1.2rem; width: 4rem; }
+    .nekova-promo__close svg { height: 2rem; width: 2rem; }
+    .nekova-promo__close:focus-visible, .nekova-promo__button:focus-visible, .nekova-promo__field input:focus-visible, .nekova-promo__field button:focus-visible { outline: 2px solid var(--nekova-accent); outline-offset: 2px; }
+    .nekova-promo__eyebrow { align-items: center; color: var(--nekova-accent); display: flex; font-size: 1.3rem; font-weight: 800; gap: 1rem; letter-spacing: .14em; margin: 0 0 1.4rem; text-transform: uppercase; }
+    .nekova-promo__eyebrow::before { background: currentColor; border-radius: 2px; content: ''; height: 2px; width: 2.4rem; }
+    .nekova-promo__title { font-family: var(--font-heading-family); font-size: 3rem; font-weight: var(--font-heading-weight); letter-spacing: -.02em; line-height: 1.15; margin: 0; }
+    .nekova-promo__title em { color: var(--nekova-warm); font-style: normal; }
+    .nekova-promo__text { color: var(--nekova-muted); font-size: 1.55rem; line-height: 1.6; margin: 1.4rem 0 0; }
+    .nekova-promo__form { margin-top: 2rem; }
+    .nekova-promo__field { display: flex; gap: .8rem; }
+    .nekova-promo__field input { border: 1px solid var(--nekova-line-strong); border-radius: 1rem; flex: 1; font: inherit; font-size: 1.5rem; min-width: 0; padding: 1.2rem 1.4rem; }
+    .nekova-promo__field button, .nekova-promo__button { background: var(--nekova-accent); border: 0; border-radius: 1.2rem; color: var(--nekova-on-accent); cursor: pointer; font: inherit; font-size: 1.5rem; font-weight: 700; padding: 0 2rem; text-decoration: none; }
+    .nekova-promo__button { align-items: center; display: inline-flex; margin-top: 2.2rem; min-height: 5rem; }
+    .nekova-promo__field button:hover, .nekova-promo__button:hover { background: var(--nekova-accent-strong); }
+    .nekova-promo__note, .nekova-promo__conditions { color: var(--nekova-muted); font-size: 1.25rem; line-height: 1.5; margin: 1.2rem 0 0; }
+    .nekova-promo__conditions { border-top: 1px solid var(--nekova-line); padding-top: 1.4rem; margin-top: 2.2rem; }
+    .nekova-promo__success { color: var(--nekova-accent); font-size: 1.5rem; font-weight: 700; margin: 0; }
+    .nekova-promo__error { color: var(--nekova-warm); font-size: 1.3rem; font-weight: 700; margin: .8rem 0 0; }
+    .nekova-promo-price { align-items: baseline; display: none; flex-wrap: wrap; gap: .8rem; }
+    html.nekova-promo-on .nekova-promo-price { display: inline-flex; }
+    .nekova-promo-price__off { background: var(--nekova-warm); border-radius: var(--nekova-radius-pill); color: var(--nekova-on-accent); font-family: var(--font-body-family); font-size: 1.2rem; font-weight: 800; letter-spacing: 0; padding: .3rem .9rem; }
+    html.nekova-promo-on .nekova-promo-scope:has(.nekova-promo-price) { align-items: baseline; display: inline-flex; flex-wrap: wrap; gap: .4rem 1rem; }
+    html.nekova-promo-on .nekova-promo-scope:has(.nekova-promo-price) > :not(.nekova-promo-price) { color: var(--nekova-muted); font-size: .7em; font-weight: 600; text-decoration: line-through; }
+    @media screen and (max-width: 600px) {
+      .nekova-promo { padding: 3.6rem 2.4rem 2.4rem; }
+      .nekova-promo__title { font-size: 2.5rem; }
+      .nekova-promo__field { flex-direction: column; }
+      .nekova-promo__field button { min-height: 4.8rem; }
+    }
+  </style>
+
+  <script>
+    (() => {
+      const dialog = document.querySelector('[data-nekova-promo]');
+      if (!dialog || dialog.dataset.nekovaPromoInitialized) return;
+      dialog.dataset.nekovaPromoInitialized = 'true';
+      const start = Date.parse(dialog.dataset.start);
+      const end = Date.parse(dialog.dataset.end);
+      if (Number.isNaN(start) || Number.isNaN(end)) return;
+      const now = Date.now();
+      let phase = 'off';
+      if (now >= start && now <= end) phase = 'on';
+      else if (now < start && dialog.dataset.announce === 'true') phase = 'pre';
+
+      if (phase === 'on') {
+        document.documentElement.classList.add('nekova-promo-on');
+        document.querySelectorAll('[data-nekova-promo-price]').forEach((price) => { price.hidden = false; });
+      }
+      if (phase === 'off') return;
+
+      dialog.querySelectorAll('[data-nekova-promo-phase]').forEach((block) => {
+        block.hidden = block.dataset.nekovaPromoPhase !== phase;
+      });
+      const title = dialog.querySelector(`[data-nekova-promo-phase="${phase}"] .nekova-promo__title`);
+      if (title) {
+        dialog.querySelectorAll('.nekova-promo__title').forEach((item) => item.removeAttribute('id'));
+        title.id = 'NekovaPromoTitle';
+      }
+
+      const storageKey = `nekova-promo-${phase}-${start}`;
+      let seen = false;
+      try { seen = sessionStorage.getItem(storageKey) === '1'; } catch (error) { seen = false; }
+      const posted = phase === 'pre' && dialog.querySelector('[data-nekova-promo-posted]');
+      const close = () => { if (dialog.open) dialog.close(); };
+      dialog.querySelectorAll('[data-nekova-promo-close]').forEach((button) => button.addEventListener('click', close));
+      dialog.addEventListener('click', (event) => { if (event.target === dialog) close(); });
+      if (seen && !posted) return;
+      const open = () => {
+        if (typeof dialog.showModal !== 'function') return;
+        dialog.showModal();
+        try { sessionStorage.setItem(storageKey, '1'); } catch (error) { /* sin almacenamiento: se muestra de nuevo */ }
+      };
+      if (posted) open();
+      else setTimeout(open, 1500);
+    })();
+  </script>
+{%- endif -%}
