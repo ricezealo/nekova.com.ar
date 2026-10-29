@@ -1,11 +1,11 @@
-# Encargo: crear la Almohada Ergonómica Mariposa en Shopify
+# Encargo: crear la Almohada Nekova Somnia en Shopify
 
 Este archivo es el brief completo. No hace falta otro contexto.
 
 ## Contexto
 
 - **Nekova** (nekova.com.ar, Shopify, Argentina) suma un producto nuevo: una almohada de espuma viscoelástica con forma de mariposa.
-- **La página ya está hecha en el tema** (la sección de producto arma la galería, el video y los textos según el identificador del producto). Solo hay que **crear el producto en Shopify** con el identificador exacto `almohada-ergonomica-mariposa`. Si el identificador es otro, la página sale vacía.
+- **La página ya está hecha en el tema** (la sección de producto arma la galería, el video y los textos según el identificador del producto). Solo hay que **crear el producto en Shopify** con el identificador exacto `almohada-nekova-somnia`. Si el identificador es otro, la página sale vacía.
 - Ya hay stock: el producto se publica activo.
 - Tono: español rioplatense con voseo. **No escribir** afirmaciones de salud ("cervical", "ortopédica", "alivia el dolor", "corrige la postura", "alinea la columna"); hablar de comodidad, apoyo y descanso. **No mencionar garantía.**
 
@@ -15,7 +15,7 @@ Shopify → **Productos → Agregar producto**:
 
 | Campo | Valor |
 |---|---|
-| Título | `Almohada Ergonómica Mariposa de Espuma Viscoelástica` |
+| Título | `Almohada Nekova Somnia` |
 | Descripción | el texto de abajo |
 | Precio | **$82.000** (sin precio de comparación) |
 | Costo por artículo | vacío (lo completa el dueño) |
@@ -43,19 +43,19 @@ Probala tranquilo: tenés 10 días desde la compra para devolverla.
 ```
 
 **Publicación en motores de búsqueda** → Editar:
-- **Identificador de URL:** `almohada-ergonomica-mariposa` ⚠️ exacto.
-- Título de la página: `Almohada Ergonómica Mariposa de Espuma Viscoelástica | Nekova`
+- **Identificador de URL:** `almohada-nekova-somnia` ⚠️ exacto.
+- Título de la página: `Almohada Nekova Somnia de espuma viscoelástica | Nekova`
 - Metadescripción: `Almohada de espuma viscoelástica con contorno de mariposa para dormir de costado o boca arriba. 65 × 37,9 cm. Llega al vacío. Envío a todo el país.`
 
 **Multimedia:** subir estas 7 imágenes, en este orden (las usan Google, Meta y las vistas previas al compartir el link):
 `G:\Ryzen5\Documentos\GitHub\nekova.com.ar\assets\product-media-almohada-01.jpg` a `-07.jpg`.
-Texto alternativo de la primera: `Almohada ergonómica mariposa de espuma viscoelástica`.
+Texto alternativo de la primera: `Almohada Nekova Somnia de espuma viscoelástica`.
 
 Guardar.
 
 ## Paso 2 · Comprobar la página
 
-Abrir `https://www.nekova.com.ar/products/almohada-ergonomica-mariposa` y verificar:
+Abrir `https://www.nekova.com.ar/products/almohada-nekova-somnia` y verificar:
 - Galería con la almohada (foto con flechas de aire primero), precio $82.000 y botón "Agregar al carrito".
 - Más abajo: "Pensada para cómo dormís" (3 fotos), "Forma de mariposa", "Diseñada para tu descanso", el video del unboxing, la comparación y las preguntas frecuentes.
 - En la home (`https://www.nekova.com.ar/`) aparece como cuarto producto, con su tarjeta en el carrusel de arriba.

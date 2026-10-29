@@ -393,7 +393,7 @@ const insoleProduct = {
 const pillowImages = ['01', '02', '03', '04', '05', '06', '07'].map((number, index) => ({
   src: `/assets/product-media-almohada-${number}.jpg`,
   url: `/assets/product-media-almohada-${number}.jpg`,
-  alt: `Almohada ergonómica mariposa, imagen ${index + 1}`,
+  alt: `Almohada Nekova Somnia, imagen ${index + 1}`,
   width: 1200,
   height: 1200,
 }));
@@ -412,8 +412,8 @@ const pillowVariant = {
 };
 const pillowProduct = {
   id: 5800,
-  handle: 'almohada-ergonomica-mariposa',
-  title: 'Almohada Ergonómica Mariposa de Espuma Viscoelástica',
+  handle: 'almohada-nekova-somnia',
+  title: 'Almohada Nekova Somnia',
   vendor: 'NEKOVA',
   price: 8200000,
   compare_at_price: null,
@@ -427,7 +427,7 @@ const pillowProduct = {
   variants: [pillowVariant],
   selected_or_first_available_variant: pillowVariant,
   description: '<p>Almohada de espuma viscoelástica con contorno de mariposa, para dormir de costado o boca arriba.</p>',
-  url: '/products/almohada-ergonomica-mariposa',
+  url: '/products/almohada-nekova-somnia',
   type: 'Descanso y apoyo',
   has_only_default_variant: true,
 };
@@ -458,7 +458,7 @@ const menuItems = [
   { title: 'Cojín ergonómico', url: '/products/cojin-ortopedico-u', links: [] },
   { title: 'Tapones auditivos', url: '/products/tapones-auditivos-silicona', links: [] },
   { title: 'Plantillas', url: '/products/plantillas-multitalle', links: [] },
-  { title: 'Almohada', url: '/products/almohada-ergonomica-mariposa', links: [] },
+  { title: 'Almohada', url: '/products/almohada-nekova-somnia', links: [] },
   { title: 'Sobre Nekova', url: '/pages/sobre-nekova', links: [] },
   { title: 'Contacto', url: '/pages/contact', links: [] },
 ];
