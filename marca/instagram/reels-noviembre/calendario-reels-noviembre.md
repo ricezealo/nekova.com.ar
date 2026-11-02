@@ -23,7 +23,7 @@ Archivos en `marca/instagram/reels-noviembre/`. Todo sigue el método de *Market
 | Vie 30/10 | durante el día | Historia · Cuestionario de la espuma | `historias/h03-cuestionario.png` |
 | Sáb 31/10 | 12:30 | Reel · Común vs. Nekova | `r07-comun-vs-nekova.mp4` |
 | Dom 1/11 | 12:30 | Reel · Recortala a tu talle (plantillas) | `r05-recortala.mp4` |
-| Lun 2/11 | 12:30 | Reel · 3 señales | `r06-tres-senales.mp4` |
+| Lun 2/11 | **16:45** | Reel · 3 señales (se movió: a las 12:30 sale el post de Cyber Nekova) | `r06-tres-senales.mp4` |
 | Mar 3/11 | 12:30 | Reel · ¿Entra en tu silla? | `r08-entra-en-tu-silla.mp4` |
 | Mar 3/11 | durante el día | Historia · Lista 15% OFF (repetir) | `historias/h04-lista.png` |
 | Mié 4/11 al 10/11 | durante el día | Historia · Cuenta regresiva (una vez; después compartila) | `historias/h02-cuenta-regresiva.png` |

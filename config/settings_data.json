@@ -13,7 +13,7 @@
     "nekova_whatsapp_message": "Hola Nekova, tengo una consulta.",
     "nekova_whatsapp_float": true,
     "nekova_email": "info@nekova.com.ar",
-    "nekova_free_shipping_threshold": 95000,
+    "nekova_free_shipping_threshold": 55000,
     "nekova_promo_enabled": true,
     "nekova_promo_name": "Cyber Nekova",
     "nekova_promo_percent": 20,

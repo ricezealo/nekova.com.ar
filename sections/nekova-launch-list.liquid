@@ -25,7 +25,11 @@
             <strong>{{ list_price | money_without_trailing_zeros }}</strong>
             <span class="nk-list-badge">{{ percent }}% OFF</span>
           </div>
-          <p class="nk-list-price-note">Con tu código, en las primeras {{ section.settings.max_uses }} compras de la lista.</p>
+          {%- if section.settings.max_uses > 0 -%}
+            <p class="nk-list-price-note">Con tu código, en las primeras {{ section.settings.max_uses }} compras de la lista.</p>
+          {%- else -%}
+            <p class="nk-list-price-note">Ejemplo con el cojín. El código vale en toda la tienda, una vez por persona.</p>
+          {%- endif -%}
           <a class="nk-list-jump" href="#NkListForm">Quiero mi código</a>
         {%- endif -%}
         <ol class="nk-list-steps" role="list">
@@ -174,6 +178,7 @@
       "type": "number",
       "id": "max_uses",
       "label": "Cantidad de cupones",
+      "info": "0 = sin límite de cupones (el código vale para toda la tienda).",
       "default": 30
     },
     {

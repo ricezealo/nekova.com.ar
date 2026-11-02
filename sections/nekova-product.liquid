@@ -884,7 +884,7 @@
           {%- endfor -%}
         {%- endif -%}
         <details><summary>¿Cuándo se despacha mi pedido?</summary><p>Las compras realizadas en días hábiles antes de las 13:00hs se despachan ese mismo día. Si comprás después de ese horario, un fin de semana o un feriado, tu pedido sale el día hábil siguiente. El plazo de entrega depende del destino y del operador logístico.</p></details>
-        <details><summary>¿Cuánto cuesta el envío?</summary><p>El costo y la estimación de entrega se calculan según tu destino y se muestran en el checkout, antes de confirmar la compra.</p></details>
+        <details><summary>¿Cuánto cuesta el envío?</summary><p>{%- assign faq_free_shipping = settings.nekova_free_shipping_threshold | default: 0 -%}{%- if faq_free_shipping > 0 -%}Las compras desde {{ faq_free_shipping | times: 100 | money_without_trailing_zeros }} tienen envío gratis. {% endif -%}El costo y la estimación de entrega se calculan según tu destino y se muestran en el checkout, antes de confirmar la compra.</p></details>
         <details><summary>{{ nk_returns_faq_q }}</summary><p>{{ nk_returns_faq_a }}</p></details>
         <details><summary>¿Cómo me comunico con ustedes?</summary><p>
           {%- assign faq_whatsapp_digits = settings.nekova_whatsapp | remove: ' ' | remove: '+' | remove: '-' | remove: '(' | remove: ')' | remove: '.' -%}

@@ -12,13 +12,13 @@ Tarifas por **peso** del pedido (productos + paquete predeterminado), plazo 1 a 
 
 | Zona | Standard, 0 a 1 kg | Standard, desde 1,01 kg | Gratis |
 |---|---|---|---|
-| AMBA (2 provincias) | $7.990 | $12.990 | desde $95.000 |
-| Centro (4) | $10.490 | $16.990 | desde $95.000 |
-| Cuyo, Norte y Patagonia norte (11) | $11.490 | $18.990 | desde $95.000 |
-| Extremos (7) | $11.490 | $20.990 | desde $95.000 |
+| AMBA (2 provincias) | $7.990 | $12.990 | desde $55.000 |
+| Centro (4) | $10.490 | $16.990 | desde $55.000 |
+| Cuyo, Norte y Patagonia norte (11) | $11.490 | $18.990 | desde $55.000 |
+| Extremos (7) | $11.490 | $20.990 | desde $55.000 |
 
 - Pedidos de hasta 1 kg (plantillas, tapones o las dos cosas, hasta ~6 pares) pagan la tarifa chica. Cualquier pedido con un cojín pasa de 1 kg y paga la del cojín: un solo envío aunque lleve otros productos.
-- "Gratis" depende del precio y convive con "Standard": desde $95.000 el cliente ve las dos y elige la gratis.
+- "Gratis" depende del precio y convive con "Standard": desde $55.000 el cliente ve las dos y elige la gratis. Shopify compara con el total después de descuentos.
 
 ## Pesos por variante
 
@@ -45,7 +45,7 @@ El dueño prefiere **bolsas de envío** (polietileno) siempre que se pueda: plan
 - Los paquetes no cambian lo que paga el cliente (las tarifas son fijas por peso); sirven de referencia al despachar.
 - Al cargar el envío en MiCorreo, declarar las medidas de la bolsa **llena** (ej. plantillas 35 × 25 × 4 cm). El cojín se cobra por volumen igual en bolsa que en caja.
 - Cada par de plantillas va en su envoltorio individual dentro de la bolsa, así se puede devolver "en su envase".
-- 2 o 3 cojines siempre tienen envío gratis (más de $95.000): cotizar en MiCorreo una caja grande vs. un envío por cojín y despachar el más barato.
+- 2 o 3 cojines siempre tienen envío gratis (más de $55.000): cotizar en MiCorreo una caja grande vs. un envío por cojín y despachar el más barato.
 
 ## Pendiente
 

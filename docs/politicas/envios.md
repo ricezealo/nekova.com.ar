@@ -14,7 +14,7 @@
 ## Costo y plazos
 
 - El **costo del envío** se calcula según tu código postal y lo ves en el checkout **antes de pagar**.
-- [Si aplica: **Envío gratis** en compras desde $[MONTO] a [todo el país / domicilio / sucursal].]
+- **Envío gratis** en compras desde $55.000 a todo el país.
 - Operador logístico: [ANDREANI / CORREO ARGENTINO / OCA / ENVÍO PROPIO].
 - Plazos estimados de entrega, contados desde el despacho:
   - CABA y GBA: [X a Y] días hábiles.

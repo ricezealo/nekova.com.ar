@@ -64,7 +64,7 @@ Si Messaging permite **guardar la plantilla**, guardala como `Cyber Nekova` y us
   ```
   Desde hoy y hasta el viernes 6 de noviembre, todo Nekova tiene 20% OFF. El descuento ya está aplicado en los precios: no necesitás ningún código.
 
-  Envío gratis en compras desde $95.000. Despacho en días hábiles y 10 días para devolverlo.
+  Envío gratis en compras desde $55.000. Despacho en días hábiles y 10 días para devolverlo.
   ```
 - **Botón principal:** `Ver productos`
 - **Condiciones:** `Válido del 2/11/2026 a las 00:00hs al 6/11/2026 a las 23:59hs o hasta agotar stock. No acumulable con otras promociones.`

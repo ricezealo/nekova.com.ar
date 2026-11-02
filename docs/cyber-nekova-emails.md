@@ -25,7 +25,7 @@ Desde hoy y hasta el viernes 6 de noviembre, todo Nekova tiene 20% OFF. El descu
 - Cojín Ergonómico en U: $79.000 → $63.200
 - Almohada Nekova Somnia: $82.000 → $65.600
 
-Envío gratis en compras desde $95.000. Despacho en días hábiles y 10 días para devolverlo.
+Envío gratis en compras desde $55.000. Despacho en días hábiles y 10 días para devolverlo.
 
 Botón: Ver productos
 
