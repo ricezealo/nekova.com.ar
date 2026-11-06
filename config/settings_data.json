@@ -13,19 +13,18 @@
     "nekova_whatsapp_message": "Hola Nekova, tengo una consulta.",
     "nekova_whatsapp_float": true,
     "nekova_email": "info@nekova.com.ar",
-    "nekova_free_shipping_threshold": 55000,
     "nekova_promo_enabled": true,
     "nekova_promo_name": "Cyber Nekova",
     "nekova_promo_percent": 20,
     "nekova_promo_start": "2026-11-02T00:00:00-03:00",
     "nekova_promo_end": "2026-11-06T23:59:59-03:00",
-    "nekova_promo_extend": "2026-11-05T00:00:00-03:00",
     "nekova_promo_from_label": "lunes 2",
     "nekova_promo_to_label": "viernes 6 de noviembre",
     "nekova_promo_announce": true,
     "nekova_promo_tag": "cyber-nekova",
     "nekova_promo_exclude": "",
     "nekova_promo_conditions": "Válido del 2/11/2026 a las 00:00hs al 6/11/2026 a las 23:59hs o hasta agotar stock. No acumulable con otras promociones.",
+    "nekova_free_shipping_threshold": 55000,
     "logo_width": 210,
     "favicon": "shopify://shop_images/nekova-perfil.png",
     "type_header_font": "poppins_n6",
@@ -145,6 +144,7 @@
     "cart_drawer_collection": "",
     "cart_color_scheme": "scheme-1",
     "customer_account_menu": "customer-account-main-menu",
+    "nekova_promo_extend": "2026-11-05T00:00:00-03:00",
     "sections": {
       "main-password-header": {
         "type": "main-password-header",
@@ -160,6 +160,13 @@
       }
     },
     "content_for_index": [],
+    "blocks": {
+      "12948015482042402483": {
+        "type": "shopify://apps/mercado-pago-antifraud-plus/blocks/embed-block/b19ea721-f94a-4308-bee5-0057c043bac5",
+        "disabled": false,
+        "settings": {}
+      }
+    },
     "color_schemes": {
       "scheme-1": {
         "settings": {
