@@ -62,7 +62,7 @@ const REELS = {
       'Más comodidad,',
       'y sin gastar una fortuna.',
     ],
-    end: { title: 'Cojín Ergonómico en U', photo: 'product-media-cojin-ortopedico-01.jpg', dur: 3 },
+    end: { title: 'Cojín Ergonómico<br>en U', photo: 'product-media-cojin-ortopedico-01.jpg', dur: 3 },
     cover: { at: 10.4, video: V.camara1, title: '¿Qué <em>preferís</em>?' },
   },
 };
@@ -109,20 +109,59 @@ const shot = (name, w, h, html, transparent = true) => {
   return png;
 };
 const E = reel.end;
-// Cierre sin precio (cambia con las promos): azul de marca, foto en tarjeta, la web como llamado principal y las redes de apoyo.
-const ICON = {
-  instagram: '<svg viewBox="0 0 24 24" width="50" height="50"><rect x="3.2" y="3.2" width="17.6" height="17.6" rx="5.2" fill="none" stroke="#fff" stroke-width="1.8"/><circle cx="12" cy="12" r="4.1" fill="none" stroke="#fff" stroke-width="1.8"/><circle cx="17.2" cy="6.8" r="1.2" fill="#fff"/></svg>',
-  tiktok: '<svg viewBox="0 0 24 24" width="50" height="50"><path d="M16.8 3.5c.3 2.1 1.5 3.8 3.7 4.5v3.4a9 9 0 0 1-3.7-1.2v5.5a6.3 6.3 0 1 1-6.3-6.3c.4 0 .8 0 1.2.1v3.6a2.8 2.8 0 1 0 1.6 2.6V3.5h3.5Z" fill="#fff"/></svg>',
-  facebook: '<svg viewBox="0 0 24 24" width="50" height="50"><path d="M13.5 21v-8h2.7l.4-3.1h-3.1v-2c0-.9.3-1.5 1.6-1.5h1.7V3.6c-.3 0-1.3-.1-2.5-.1-2.5 0-4.2 1.5-4.2 4.3v2.1H7.3V13h2.8v8h3.4Z" fill="#fff"/></svg>',
+// Recorta el producto: el fondo blanco conectado a los bordes pasa a transparente.
+const cutout = (src, out) => {
+  const w = 1200, h = 1200;
+  const raw = execFileSync(FF, ['-loglevel', 'error', '-i', src, '-f', 'rawvideo', '-pix_fmt', 'rgb24', '-'], { maxBuffer: 1 << 26 });
+  const bg = new Uint8Array(w * h);
+  const stack = [];
+  for (let x = 0; x < w; x++) stack.push(x, (h - 1) * w + x);
+  for (let y = 0; y < h; y++) stack.push(y * w, y * w + w - 1);
+  while (stack.length) {
+    const p = stack.pop();
+    if (bg[p] || Math.min(raw[p * 3], raw[p * 3 + 1], raw[p * 3 + 2]) <= 232) continue;
+    bg[p] = 1;
+    const x = p % w;
+    if (x > 0) stack.push(p - 1);
+    if (x < w - 1) stack.push(p + 1);
+    if (p >= w) stack.push(p - w);
+    if (p < w * (h - 1)) stack.push(p + w);
+  }
+  const rgba = Buffer.alloc(w * h * 4);
+  let x0 = w, y0 = h, x1 = 0, y1 = 0;
+  for (let p = 0; p < w * h; p++) {
+    const x = p % w, y = (p - x) / w;
+    let a = bg[p] ? 0 : 255;
+    if (a && [p - 1, p + 1, p - w, p + w].some((q) => q >= 0 && q < w * h && bg[q])) a = 110; // borde suavizado
+    rgba[p * 4] = raw[p * 3]; rgba[p * 4 + 1] = raw[p * 3 + 1]; rgba[p * 4 + 2] = raw[p * 3 + 2]; rgba[p * 4 + 3] = a;
+    if (a) { x0 = Math.min(x0, x); x1 = Math.max(x1, x); y0 = Math.min(y0, y); y1 = Math.max(y1, y); }
+  }
+  const rawFile = join(TMP, 'cut.rgba');
+  writeFileSync(rawFile, rgba);
+  ff(['-f', 'rawvideo', '-pix_fmt', 'rgba', '-s', w + 'x' + h, '-i', rawFile, '-vf', 'crop=' + ((x1 - x0 + 1) & ~1) + ':' + ((y1 - y0 + 1) & ~1) + ':' + x0 + ':' + y0, '-frames:v', '1', out]);
 };
-const endPng = shot('end', 1080, 1920, `<div style="position:absolute;inset:0;background:#2f5bff"></div>
-<img src="${url(asset('nekova-logo-white.svg'))}" style="position:absolute;left:50%;transform:translateX(-50%);top:235px;height:72px">
-<div style="position:absolute;left:60px;right:60px;top:350px;text-align:center;font:600 84px/1.08 Poppins;letter-spacing:-.03em;color:#fff">${E.title}</div>
-<div style="position:absolute;left:90px;right:90px;top:480px;height:640px;background:#fff;border-radius:48px;overflow:hidden;display:flex;align-items:center;justify-content:center"><img src="${url(asset(E.photo))}" style="width:100%;transform:scale(1.12);mix-blend-mode:multiply"></div>
-<div style="position:absolute;left:90px;right:90px;top:1160px;height:136px;background:#fff;border-radius:28px;display:flex;align-items:center;justify-content:center;font:700 70px Poppins;letter-spacing:-.02em;color:#2f5bff">nekova.com.ar</div>
-<div style="position:absolute;left:0;right:0;top:1335px;display:flex;align-items:center;justify-content:center;gap:16px;font:800 44px 'Nunito Sans';color:#fff">${ICON.instagram}${ICON.tiktok}<span>@nekova_ok</span><span style="width:30px"></span>${ICON.facebook}<span>Nekova</span></div>`, false);
+// Cierre sin precio (cambia con las promos): azul de marca con brillo, producto recortado que entra con rebote,
+// la web como llamado principal y las redes de apoyo. Por capas, para animarlas.
+const ICON = {
+  instagram: '<svg viewBox="0 0 24 24" width="52" height="52"><rect x="3.2" y="3.2" width="17.6" height="17.6" rx="5.2" fill="none" stroke="#fff" stroke-width="1.8"/><circle cx="12" cy="12" r="4.1" fill="none" stroke="#fff" stroke-width="1.8"/><circle cx="17.2" cy="6.8" r="1.2" fill="#fff"/></svg>',
+  tiktok: '<svg viewBox="0 0 24 24" width="52" height="52"><path d="M16.8 3.5c.3 2.1 1.5 3.8 3.7 4.5v3.4a9 9 0 0 1-3.7-1.2v5.5a6.3 6.3 0 1 1-6.3-6.3c.4 0 .8 0 1.2.1v3.6a2.8 2.8 0 1 0 1.6 2.6V3.5h3.5Z" fill="#fff"/></svg>',
+  facebook: '<svg viewBox="0 0 24 24" width="52" height="52"><path d="M13.5 21v-8h2.7l.4-3.1h-3.1v-2c0-.9.3-1.5 1.6-1.5h1.7V3.6c-.3 0-1.3-.1-2.5-.1-2.5 0-4.2 1.5-4.2 4.3v2.1H7.3V13h2.8v8h3.4Z" fill="#fff"/></svg>',
+};
+const mark = readFileSync(asset('nekova-mark-white.svg'), 'utf8').replace('<svg', '<svg width="1500" height="1500"');
+const endBg = shot('endbg', 1080, 1920, `<div style="position:absolute;inset:0;background:linear-gradient(160deg,#1f45d9 0%,#2f5bff 55%,#1a36b8 100%)"></div>
+<div style="position:absolute;left:-260px;top:-140px;width:1500px;height:1500px;opacity:.09">${mark}</div>
+<div style="position:absolute;left:50%;top:790px;width:1300px;height:900px;transform:translate(-50%,-50%);border-radius:50%;background:radial-gradient(closest-side,rgba(255,255,255,.75),rgba(143,168,255,.35) 55%,rgba(47,91,255,0));filter:blur(60px)"></div>
+<img src="${url(asset('nekova-logo-white.svg'))}" style="position:absolute;left:50%;transform:translateX(-50%);top:235px;height:78px">
+<div style="position:absolute;left:50px;right:50px;top:360px;text-align:center;font:700 92px/1.05 Poppins;letter-spacing:-.035em;color:#fff">${E.title}</div>`, false);
+const endCta = shot('endcta', 1080, 1920, `<div style="position:absolute;left:90px;right:90px;top:1180px;height:140px;background:#fff;border-radius:999px;display:flex;align-items:center;justify-content:center;font:700 74px Poppins;letter-spacing:-.025em;color:#1f45d9;box-shadow:0 20px 50px rgba(0,0,0,.35)">nekova.com.ar</div>
+<div style="position:absolute;left:0;right:0;top:1356px;display:flex;align-items:center;justify-content:center;gap:16px;font:800 46px 'Nunito Sans';color:#fff">${ICON.instagram}${ICON.tiktok}<span>@nekova_ok</span><span style="width:30px"></span>${ICON.facebook}<span>Nekova</span></div>`);
+const cutPng = join(TMP, 'producto.png');
+cutout(asset(E.photo), cutPng);
+const shadowed = shot('prodshadow', 1080, 700, `<img src="${url(cutPng)}" style="position:absolute;left:40px;top:30px;width:1000px;filter:drop-shadow(0 34px 44px rgba(0,0,0,.45))">`);
 const endMp4 = join(TMP, 'end.mp4');
-ff(['-loop', '1', '-t', String(E.dur), '-i', endPng, '-vf', `fps=${FPS},scale=1080:1920,fade=in:st=0:d=0.2:c=white,format=yuv420p`, '-c:v', 'libx264', '-preset', 'veryfast', '-crf', '16', endMp4]);
+ff(['-loop', '1', '-t', String(E.dur), '-i', endBg, '-loop', '1', '-t', String(E.dur), '-i', shadowed, '-loop', '1', '-t', String(E.dur), '-i', endCta, '-filter_complex',
+  `[0:v]fps=${FPS},scale=1080:1920,setsar=1[bg];[1:v]fps=${FPS},format=rgba,scale=w='trunc(1080*(1-0.3*exp(-6*t)*cos(11*t))/2)*2':h=-2:eval=frame[p];[2:v]fps=${FPS},format=rgba,fade=in:st=0.4:d=0.25:alpha=1[c];[bg][p]overlay=x='(W-w)/2':y='920-h/2':eval=frame[a];[a][c]overlay=x=0:y='max(0,50*(1-(t-0.4)/0.25))':eval=frame,format=yuv420p[v]`,
+  '-map', '[v]', '-t', String(E.dur), '-c:v', 'libx264', '-preset', 'veryfast', '-crf', '16', endMp4]);
 parts.push(endMp4);
 const total = bodyDur + E.dur;
 
