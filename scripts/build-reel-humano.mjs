@@ -1,5 +1,5 @@
 // Arma reels verticales (1080 × 1920) a partir de las grabaciones de marca/instagram/Reel humano/
-// (no están en el repo: pesan 830 MB). Salida en marca/instagram/reels-humano/.
+// (no están en el repo: pesan 830 MB). Salida en marca/instagram/reels-joaco-edicion/.
 // Uso: FFMPEG=ruta/ffmpeg.exe node scripts/build-reel-humano.mjs 01
 // transcripcion.json (en la carpeta de salida) tiene las palabras con sus tiempos (Whisper). Los bordes no son exactos:
 // conviene cortar mirando la energía del audio y volver a transcribir el video final. Ver REELS para definir un video nuevo.
@@ -11,7 +11,7 @@ import { pathToFileURL } from 'node:url';
 
 const ROOT = resolve(import.meta.dirname, '..');
 const RAW = join(ROOT, 'marca', 'instagram', 'Reel humano');
-const OUT = join(ROOT, 'marca', 'instagram', 'reels-humano');
+const OUT = join(ROOT, 'marca', 'instagram', 'reels-joaco-edicion');
 const FF = process.env.FFMPEG || 'ffmpeg';
 const WORDS = JSON.parse(readFileSync(process.env.WORDS || join(OUT, 'transcripcion.json'), 'utf8'));
 const CHROME = ['C:/Program Files/Google/Chrome/Application/chrome.exe', 'C:/Program Files (x86)/Microsoft/Edge/Application/msedge.exe'].find((p) => existsSync(p));
@@ -28,6 +28,8 @@ const V = {
   camara2: join(RAW, 'VID_20261105_222950315~2.mp4'),
   taburete: join(RAW, 'VID_20261105_223519636~2.mp4'),
 };
+const OLD = (n) => join(process.env.NEKOVA_VIDEOS || 'G:/Ryzen5/Descargas/Photos-1-001', `20261028_${n}.mp4`);
+const TM = 'zscale=t=linear:npl=100,format=gbrpf32le,zscale=p=bt709,tonemap=tonemap=hable:desat=0,zscale=t=bt709:m=bt709:r=tv,format=yuv420p';
 const A = { problema: join(RAW, 'jueves, 10 h 54 min p.m..m4a'), solucion: join(RAW, 'jueves, 10 h 59 min p.m. (1).m4a') };
 // Clave de cada fuente de voz en la transcripción.
 const KEY = { [V.camara1]: 'a2', [V.camara2]: 'a3', [A.problema]: 'a0', [A.solucion]: 'a1' };
@@ -62,7 +64,7 @@ const REELS = {
       'Más comodidad,',
       'y sin gastar una fortuna.',
     ],
-    end: { title: 'Cojín Ergonómico<br>en U', photo: 'product-media-cojin-ortopedico-01.jpg', dur: 3 },
+    end: { title: 'Cojín Ergonómico<br>en U', photo: 'product-media-cojin-ortopedico-01.jpg', dur: 3, theme: 'dark' },
     cover: { at: 10.4, video: V.camara1, title: '¿Qué <em>preferís</em>?' },
   },
   '02': {
@@ -113,6 +115,50 @@ const REELS = {
     end: { title: 'Cojín Ergonómico<br>en U', photo: 'product-media-cojin-ortopedico-01.jpg', dur: 3, theme: 'dark' },
     cover: { at: 60.0, video: V.trabajando, title: '¿Pasás <em>horas sentado</em>?' },
   },
+  '05': {
+    name: '05-silla-cara-vs-cojin',
+    segments: [
+      { video: V.camara2, at: 0.95, voice: { src: V.camara2, from: 0.95, to: 1.75 }, move: 'push' },
+      { video: V.camara2, at: 2.45, voice: { src: V.camara2, from: 2.45, to: 4.9 }, move: 'push', whoosh: true },
+      { video: V.trabajando, at: 39.3, voice: { src: V.camara2, from: 4.9, to: 6.18 }, focus: { x: 0.1, y: 0.75, z: 1.25 }, move: 'push', whoosh: true, badge: [{ text: 'Opción 1: silla nueva', y: 300 }] },
+      { video: V.camara2, at: 6.28, voice: { src: V.camara2, from: 6.28, to: 7.62 }, move: 'push', whoosh: true },
+      { video: V.taburete, at: 2.0, voice: { src: V.camara2, from: 8.5, to: 10.0 }, move: 'still', whoosh: true, flash: true, badge: [{ text: 'Opción 2: cojín', y: 300, warm: true }] },
+      { dur: 2.4, move: 'still', text: '¿Cuál <b>elegís</b>?', textHigh: true, whoosh: true, flash: true, split: [{ video: V.trabajando, at: 39.6, w: 1500, y: 0.72 }, { video: V.taburete, at: 3.0, y: 0.72 }], badge: [{ text: 'Silla nueva', y: 300 }, { text: 'Cojín', y: 990, warm: true }] },
+    ],
+    captions: ['¿Qué preferís?', 'Gastarte cientos y cientos', 'de miles de pesos', 'en una silla como esta,', 'o por muchísimo menos,', 'convertir cualquiera en una.'],
+    end: { title: 'Cojín Ergonómico<br>en U', photo: 'product-media-cojin-ortopedico-01.jpg', dur: 3, theme: 'dark' },
+    cover: { at: 4.4, video: V.taburete, title: '¿Silla nueva<br>o <em>cojín</em>?' },
+  },
+  '06': {
+    name: '06-del-paquete-a-tu-silla',
+    segments: [
+      { video: OLD('153220'), hdr: true, natural: true, at: 5.2, dur: 2.4, text: 'Llegó <b>el cojín</b>', focus: { x: 0.95, y: 0.5, z: 1.5 }, move: 'push' },
+      { video: OLD('153220'), hdr: true, natural: true, at: 14.0, dur: 3.0, text: 'Lo sacás <b>de la bolsa</b>', focus: { x: 0.95, y: 0.5, z: 1.5 }, move: 'still', whoosh: true },
+      { video: OLD('153220'), hdr: true, natural: true, at: 24.6, dur: 1.8, text: 'Y toma <b>su forma</b>', focus: { x: 0.95, y: 0.5, z: 1.25 }, move: 'push', whoosh: true, flash: true },
+      { video: OLD('153624'), hdr: true, at: 4.6, dur: 1.5, text: 'Malla <b>transpirable</b>', move: 'push', whoosh: true },
+      { video: OLD('154107'), hdr: true, at: 5.6, dur: 1.9, text: 'Funda <b>con cierre</b>', move: 'push', whoosh: true },
+      { video: OLD('154152'), hdr: true, at: 25.2, dur: 1.5, text: 'Espuma <b>viscoelástica</b>', move: 'still', whoosh: true },
+      { video: OLD('154152'), hdr: true, at: 36.6, dur: 1.9, text: 'Se adapta <b>a tu forma</b>', move: 'push', whoosh: true },
+      { video: OLD('155819'), hdr: true, at: 3.4, dur: 1.7, text: 'A <b>tu silla</b>', move: 'still', whoosh: true },
+      { video: OLD('160119'), hdr: true, at: 10.5, dur: 2.2, text: 'Listo. <b>A trabajar.</b>', move: 'push', whoosh: true },
+    ],
+    captions: [],
+    end: { title: 'Cojín Ergonómico<br>en U', photo: 'product-media-cojin-ortopedico-01.jpg', dur: 3, theme: 'dark' },
+    cover: { at: 15.5, video: OLD('153220'), hdr: true, title: 'Del paquete<br>a <em>tu silla</em>' },
+  },
+  '07': {
+    name: '07-tu-silla-antes-y-despues',
+    segments: [
+      { video: OLD('155819'), hdr: true, at: 0, dur: 1.1, text: '<b>Antes</b>', move: 'push' },
+      { video: OLD('155819'), hdr: true, at: 1.1, dur: 2.0, text: 'Sumale <b>el cojín</b>', move: 'push', whoosh: true },
+      { video: OLD('155819'), hdr: true, at: 4.9, dur: 1.4, text: '<b>Después</b>', move: 'still', whoosh: true, flash: true },
+      { video: OLD('160119'), hdr: true, at: 4.2, dur: 2.2, text: 'Misma <b>silla.</b>', move: 'push', whoosh: true },
+      { video: OLD('160119'), hdr: true, at: 11.0, dur: 2.4, text: 'Más <b>cómoda.</b>', move: 'push', whoosh: true },
+    ],
+    captions: [],
+    end: { title: 'Cojín Ergonómico<br>en U', photo: 'product-media-cojin-ortopedico-01.jpg', dur: 3, theme: 'dark' },
+    cover: { at: 5.2, video: OLD('155819'), hdr: true, title: 'Tu silla,<br><em>antes y después</em>' },
+  },
 };
 
 const reel = REELS[process.argv[2] || '01'];
@@ -123,7 +169,7 @@ mkdirSync(TMP, { recursive: true });
 
 // ---------- Video de cada tramo ----------
 let t = 0;
-const voiceClips = [], whooshes = [], timed = [], parts = [], textEvents = [];
+const naturalClips = [], voiceClips = [], whooshes = [], timed = [], parts = [], textEvents = [];
 reel.segments.forEach((seg, i) => {
   const voiceDur = seg.voice ? seg.voice.to - seg.voice.from : 0;
   const dur = seg.voice ? voiceDur + (seg.hold || 0) : seg.dur;
@@ -133,14 +179,20 @@ reel.segments.forEach((seg, i) => {
   const fx = seg.focus?.x ?? 0.5, fy = seg.focus?.y ?? 0.5;
   const fade = seg.flash ? `,fade=in:st=0:d=0.14:c=white` : '';
   const out = join(TMP, `seg${i}.mp4`);
-  ff(['-ss', String(seg.at), '-t', String(dur + 0.2), '-i', seg.video, '-vf',
-    `fps=${FPS},scale=${seg.focus ? '2160:3840' : '1620:2880'},eq=saturation=1.06:contrast=1.04,zoompan=z='${z}':x='(iw-iw/zoom)*${fx}':y='(ih-ih/zoom)*${fy}':d=1:s=1080x1920:fps=${FPS}${fade},format=yuv420p`,
+  if (seg.split) {
+    const half = (o, label) => `[${label}:v]fps=${FPS},scale=${o.w || 1080}:-2,eq=saturation=1.06:contrast=1.04,crop=1080:958:0:'(ih-958)*${o.y}'[h${label}]`;
+    ff(['-ss', String(seg.split[0].at), '-t', String(dur + 0.2), '-i', seg.split[0].video, '-ss', String(seg.split[1].at), '-t', String(dur + 0.2), '-i', seg.split[1].video, '-filter_complex',
+      `${half(seg.split[0], 0)};${half(seg.split[1], 1)};[h0]pad=1080:962:0:0:white[top];[top][h1]vstack,format=yuv420p[v]`,
+      '-map', '[v]', '-frames:v', String(n), '-an', '-c:v', 'libx264', '-preset', 'veryfast', '-crf', '16', out]);
+  } else ff(['-ss', String(seg.at), '-t', String(dur + 0.2), '-i', seg.video, '-vf',
+    `fps=${FPS},${seg.hdr ? TM + ',' : ''}scale=${seg.focus ? '2160:3840' : '1620:2880'}:force_original_aspect_ratio=increase,crop=${seg.focus ? '2160:3840' : '1620:2880'},${seg.hdr ? '' : 'eq=saturation=1.06:contrast=1.04,'}zoompan=z='${z}':x='(iw-iw/zoom)*${fx}':y='(ih-ih/zoom)*${fy}':d=1:s=1080x1920:fps=${FPS}${fade},format=yuv420p`,
     '-frames:v', String(n), '-an', '-c:v', 'libx264', '-preset', 'veryfast', '-crf', '16', out]);
   parts.push(out);
   const dt = n / FPS;
   if (seg.voice) voiceClips.push({ ...seg.voice, start: t, dur: Math.min(voiceDur, dt) });
   if (seg.text) textEvents.push({ text: seg.text, high: seg.textHigh, start: t + 0.01, end: t + dt - 0.02 });
   if (seg.whoosh) whooshes.push(t);
+  if (seg.natural) naturalClips.push({ src: seg.video, from: seg.at, start: t, dur: dt });
   // Palabras de este tramo, en tiempo de salida.
   for (const w of seg.voice ? WORDS[KEY[seg.voice.src]].chunks : []) {
     const [a, b] = w.timestamp;
@@ -222,6 +274,13 @@ ff(['-loop', '1', '-t', String(E.dur), '-i', endBg, '-loop', '1', '-t', String(E
 parts.push(endMp4);
 const total = bodyDur + E.dur;
 
+reel.segments.forEach((seg, i) => {
+  if (!seg.badge) return;
+  const png = shot(`badge${i}`, 1080, 1920, seg.badge.map((b) => `<div style="position:absolute;left:50%;transform:translateX(-50%);top:${b.y}px;white-space:nowrap;background:${b.warm ? '#c94430' : '#fff'};color:${b.warm ? '#fff' : '#14161a'};border-radius:18px;padding:14px 30px;font:700 50px Poppins;letter-spacing:-.02em;box-shadow:0 10px 30px rgba(0,0,0,.35)">${b.text}</div>`).join(''));
+  const out = join(TMP, `seg${i}b.mp4`);
+  ff(['-i', parts[i], '-i', png, '-filter_complex', '[0:v][1:v]overlay,format=yuv420p', '-an', '-c:v', 'libx264', '-preset', 'veryfast', '-crf', '16', out]);
+  parts[i] = out;
+});
 const list = join(TMP, 'list.txt');
 writeFileSync(list, parts.map((p) => `file '${p.replace(/\\/g, '/')}'`).join('\n'));
 const silent = join(TMP, 'silent.mp4');
@@ -301,7 +360,22 @@ const kick = 'sin(2*PI*58*t)*exp(-9*mod(t,0.6))*0.22';
 const pluck = hasVoice ? '' : '+sin(2*PI*(220+110*mod(floor(t/0.3),3))*t)*exp(-10*mod(t,0.3))*0.14';
 ff(['-f', 'lavfi', '-i', `aevalsrc='${pad}+${kick}${pluck}':d=${total}:s=44100`, '-af', `lowpass=f=${hasVoice ? 1100 : 2600},afade=t=in:d=0.6,afade=t=out:st=${Math.max(total - 1.2, 0)}:d=1.2,aformat=channel_layouts=stereo`, music]);
 
-const mixes = !hasVoice ? { '': ['-i', music, '-i', wMix, '-filter_complex', '[0:a]volume=1.3[m];[m][1:a]amix=inputs=2:normalize=0,alimiter=limit=0.89[a]', '-map', '[a]'] } : {
+// Sonido real de las tomas: limpio, más fuerte (son tomas muy bajas) y sin voces (elegir tramos sin voz).
+let naturalMix = null;
+if (naturalClips.length) {
+  const clips = naturalClips.map((c, i) => {
+    const out = join(TMP, `n${i}.wav`);
+    ff(['-i', c.src, '-vn', '-af', `atrim=${c.from}:${c.from + c.dur},asetpts=PTS-STARTPTS,highpass=f=150,afftdn=nr=14:nf=-48,volume=16dB,alimiter=limit=0.7,afade=t=in:d=0.04,afade=t=out:st=${Math.max(c.dur - 0.08, 0)}:d=0.08,aresample=44100,aformat=channel_layouts=stereo`, out]);
+    return out;
+  });
+  naturalMix = join(TMP, 'natural.wav');
+  ff([...clips.flatMap((c) => ['-i', c]), '-filter_complex', `${naturalClips.map((c, i) => `[${i}:a]adelay=${Math.round(c.start * 1000)}|${Math.round(c.start * 1000)}[n${i}]`).join(';')};${clips.map((_, i) => `[n${i}]`).join('')}amix=inputs=${clips.length}:normalize=0,apad=whole_dur=${total}[a]`, '-map', '[a]', naturalMix]);
+}
+const musicOnly = ['-i', music, '-i', wMix, '-filter_complex', '[0:a]volume=1.3[m];[m][1:a]amix=inputs=2:normalize=0,alimiter=limit=0.89[a]', '-map', '[a]'];
+const mixes = !hasVoice ? (naturalMix ? {
+  '': ['-i', naturalMix, '-i', music, '-i', wMix, '-filter_complex', '[1:a]volume=0.55[m];[0:a][m][2:a]amix=inputs=3:normalize=0,alimiter=limit=0.89[a]', '-map', '[a]'],
+  '-solo-musica': musicOnly,
+} : { '': musicOnly }) : {
   '': ['-i', voiceMix, '-i', wMix, '-i', music, '-filter_complex', '[2:a]volume=0.5[m];[m][0:a]sidechaincompress=threshold=0.03:ratio=6:attack=20:release=300[md];[0:a][1:a][md]amix=inputs=3:normalize=0,alimiter=limit=0.89[a]', '-map', '[a]'],
   '-solo-voz': ['-i', voiceMix, '-i', wMix, '-filter_complex', '[0:a][1:a]amix=inputs=2:normalize=0,alimiter=limit=0.89[a]', '-map', '[a]'],
 };
@@ -322,5 +396,5 @@ for (const [suffix, args] of Object.entries(mixes)) {
 // ---------- Portada ----------
 const c = reel.cover;
 const coverTitle = shot('covertxt', 1080, 1920, `<img src="${url(asset('nekova-logo-white.svg'))}" style="position:absolute;left:90px;top:230px;height:60px;filter:drop-shadow(0 3px 10px rgba(0,0,0,.55))"><div style="position:absolute;left:70px;right:70px;top:340px;text-align:center;font:700 130px/1.05 Poppins;letter-spacing:-.03em;color:#fff;paint-order:stroke fill;-webkit-text-stroke:14px #14161a">${c.title.replace('<em>', '<em style="font-style:normal;color:#8fa8ff">')}</div>`);
-ff(['-ss', String(c.at), '-i', c.video, '-i', coverTitle, '-filter_complex', '[0:v]scale=1080:1920,eq=saturation=1.06:contrast=1.04[b];[b][1:v]overlay', '-frames:v', '1', '-q:v', '2', join(OUT, `${reel.name}-portada.jpg`)]);
+ff(['-ss', String(c.at), '-i', c.video, '-i', coverTitle, '-filter_complex', `[0:v]${c.hdr ? TM + ',' : ''}scale=1080:1920:force_original_aspect_ratio=increase,crop=1080:1920${c.hdr ? '' : ',eq=saturation=1.06:contrast=1.04'}[b];[b][1:v]overlay`, '-frames:v', '1', '-q:v', '2', join(OUT, `${reel.name}-portada.jpg`)]);
 console.log(`total ${total.toFixed(2)} s`);
