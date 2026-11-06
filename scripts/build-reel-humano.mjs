@@ -100,15 +100,16 @@ const REELS = {
   '04': {
     name: '04-pasas-horas-sentado',
     segments: [
-      { video: V.trabajando, at: 56.0, dur: 2.2, text: '¿Pasás <b>horas sentado</b>?', move: 'push' },
-      { video: V.trabajando, at: 5.0, voice: { src: A.solucion, from: 3.67, to: 4.85, wordsFrom: 3.8 }, focus: { x: 0.95, y: 0.5, z: 2 }, move: 'still', whoosh: true },
-      { video: V.trabajando, at: 8.0, voice: { src: A.solucion, from: 4.85, to: 5.62 }, focus: { x: 0.98, y: 0.3, z: 2.2 }, move: 'still', whoosh: true },
-      { video: V.trabajando, at: 10.0, voice: { src: A.solucion, from: 5.62, to: 6.1 }, focus: { x: 0.95, y: 0.72, z: 2.4 }, move: 'still', whoosh: true },
-      { video: V.trabajando, at: 63.0, voice: { src: A.solucion, from: 6.1, to: 7.6 }, move: 'push', whoosh: true },
-      { video: V.producto, at: 38.2, voice: { src: A.solucion, from: 7.7, to: 8.68 }, move: 'still', whoosh: true, flash: true },
+      { video: V.trabajando, at: 56.0, voice: { src: A.problema, from: 6.19, to: 9.15, wordsFrom: 6.4 }, move: 'push' },
+      { video: V.trabajando, at: 5.0, dur: 0.75, text: '<b>Trabajando</b>', focus: { x: 0.95, y: 0.5, z: 2 }, move: 'still', whoosh: true },
+      { video: V.trabajando, at: 8.0, dur: 0.75, text: '<b>Estudiando</b>', focus: { x: 0.98, y: 0.3, z: 2.2 }, move: 'still', whoosh: true },
+      { video: V.trabajando, at: 10.0, dur: 0.75, text: '<b>Jugando</b>', focus: { x: 0.95, y: 0.72, z: 2.4 }, move: 'still', whoosh: true },
+      { video: V.trabajando, at: 63.0, dur: 0.85, text: '<b>Home office</b>', move: 'still', whoosh: true },
+      { video: V.taburete, at: 2.0, voice: { src: A.solucion, from: 0.55, to: 2.72 }, move: 'still', whoosh: true, flash: true },
+      { video: V.producto, at: 38.2, voice: { src: A.solucion, from: 7.7, to: 8.68 }, move: 'still', whoosh: true },
       { video: V.camara2, at: 8.4, voice: { src: A.solucion, from: 10.06, to: 11.95 }, move: 'push', whoosh: true },
     ],
-    captions: ['Quienes trabajan,', 'estudian,', 'juegan', 'o hacen home office.', 'Más comodidad,', 'y sin gastar una fortuna.'],
+    captions: ['Pasar horas sentados', 'sin el soporte adecuado.', 'Por eso, este nuevo', 'producto de Nekova', 'Más comodidad,', 'y sin gastar una fortuna.'],
     end: { title: 'Cojín Ergonómico<br>en U', photo: 'product-media-cojin-ortopedico-01.jpg', dur: 3, theme: 'dark' },
     cover: { at: 60.0, video: V.trabajando, title: '¿Pasás <em>horas sentado</em>?' },
   },
@@ -138,7 +139,7 @@ reel.segments.forEach((seg, i) => {
   parts.push(out);
   const dt = n / FPS;
   if (seg.voice) voiceClips.push({ ...seg.voice, start: t, dur: Math.min(voiceDur, dt) });
-  if (seg.text) textEvents.push({ text: seg.text, high: seg.textHigh, start: t + 0.12, end: t + dt - 0.05 });
+  if (seg.text) textEvents.push({ text: seg.text, high: seg.textHigh, start: t + 0.01, end: t + dt - 0.02 });
   if (seg.whoosh) whooshes.push(t);
   // Palabras de este tramo, en tiempo de salida.
   for (const w of seg.voice ? WORDS[KEY[seg.voice.src]].chunks : []) {
