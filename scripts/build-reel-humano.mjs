@@ -97,6 +97,21 @@ const REELS = {
     end: { title: 'Cojín Ergonómico<br>en U', photo: 'product-media-cojin-ortopedico-01.jpg', dur: 3, theme: 'dark' },
     cover: { at: 23.5, video: V.producto, title: '¿Qué tiene <em>adentro</em>?' },
   },
+  '04': {
+    name: '04-pasas-horas-sentado',
+    segments: [
+      { video: V.trabajando, at: 56.0, dur: 2.2, text: '¿Pasás <b>horas sentado</b>?', move: 'push' },
+      { video: V.trabajando, at: 5.0, voice: { src: A.solucion, from: 3.67, to: 4.85, wordsFrom: 3.8 }, focus: { x: 0.95, y: 0.5, z: 2 }, move: 'still', whoosh: true },
+      { video: V.trabajando, at: 8.0, voice: { src: A.solucion, from: 4.85, to: 5.62 }, focus: { x: 0.98, y: 0.3, z: 2.2 }, move: 'still', whoosh: true },
+      { video: V.trabajando, at: 10.0, voice: { src: A.solucion, from: 5.62, to: 6.1 }, focus: { x: 0.95, y: 0.72, z: 2.4 }, move: 'still', whoosh: true },
+      { video: V.trabajando, at: 63.0, voice: { src: A.solucion, from: 6.1, to: 7.6 }, move: 'push', whoosh: true },
+      { video: V.producto, at: 38.2, voice: { src: A.solucion, from: 7.7, to: 8.68 }, move: 'still', whoosh: true, flash: true },
+      { video: V.camara2, at: 8.4, voice: { src: A.solucion, from: 10.06, to: 11.95 }, move: 'push', whoosh: true },
+    ],
+    captions: ['Quienes trabajan,', 'estudian,', 'juegan', 'o hacen home office.', 'Más comodidad,', 'y sin gastar una fortuna.'],
+    end: { title: 'Cojín Ergonómico<br>en U', photo: 'product-media-cojin-ortopedico-01.jpg', dur: 3, theme: 'dark' },
+    cover: { at: 60.0, video: V.trabajando, title: '¿Pasás <em>horas sentado</em>?' },
+  },
 };
 
 const reel = REELS[process.argv[2] || '01'];
@@ -112,11 +127,13 @@ reel.segments.forEach((seg, i) => {
   const voiceDur = seg.voice ? seg.voice.to - seg.voice.from : 0;
   const dur = seg.voice ? voiceDur + (seg.hold || 0) : seg.dur;
   const n = Math.round(dur * FPS);
-  const z = seg.move === 'pull' ? MOVE.pull() : MOVE[seg.move](n);
+  const k = seg.focus?.z || 1;
+  const z = `(${seg.move === 'pull' ? MOVE.pull() : MOVE[seg.move](n)})*${k}`;
+  const fx = seg.focus?.x ?? 0.5, fy = seg.focus?.y ?? 0.5;
   const fade = seg.flash ? `,fade=in:st=0:d=0.14:c=white` : '';
   const out = join(TMP, `seg${i}.mp4`);
   ff(['-ss', String(seg.at), '-t', String(dur + 0.2), '-i', seg.video, '-vf',
-    `fps=${FPS},scale=1620:2880,eq=saturation=1.06:contrast=1.04,zoompan=z='${z}':x='iw/2-(iw/zoom/2)':y='ih/2-(ih/zoom/2)':d=1:s=1080x1920:fps=${FPS}${fade},format=yuv420p`,
+    `fps=${FPS},scale=${seg.focus ? '2160:3840' : '1620:2880'},eq=saturation=1.06:contrast=1.04,zoompan=z='${z}':x='(iw-iw/zoom)*${fx}':y='(ih-ih/zoom)*${fy}':d=1:s=1080x1920:fps=${FPS}${fade},format=yuv420p`,
     '-frames:v', String(n), '-an', '-c:v', 'libx264', '-preset', 'veryfast', '-crf', '16', out]);
   parts.push(out);
   const dt = n / FPS;
@@ -126,7 +143,7 @@ reel.segments.forEach((seg, i) => {
   // Palabras de este tramo, en tiempo de salida.
   for (const w of seg.voice ? WORDS[KEY[seg.voice.src]].chunks : []) {
     const [a, b] = w.timestamp;
-    if (a >= seg.voice.from - 0.02 && a < seg.voice.to - 0.02) timed.push({ text: w.text.trim(), start: t + a - seg.voice.from, end: t + Math.min(b ?? a + 0.3, seg.voice.to) - seg.voice.from });
+    if (a >= (seg.voice.wordsFrom ?? seg.voice.from - 0.02) && a < seg.voice.to - 0.02) timed.push({ text: w.text.trim(), start: t + a - seg.voice.from, end: t + Math.min(b ?? a + 0.3, seg.voice.to) - seg.voice.from });
   }
   t += dt;
 });
@@ -192,14 +209,14 @@ const endBg = shot('endbg', 1080, 1920, `<div style="position:absolute;inset:0;b
 <div style="position:absolute;left:50%;top:790px;width:1300px;height:900px;transform:translate(-50%,-50%);border-radius:50%;background:${theme.glow};filter:blur(60px)"></div>
 <img src="${url(asset('nekova-logo-white.svg'))}" style="position:absolute;left:50%;transform:translateX(-50%);top:235px;height:78px">
 <div style="position:absolute;left:50px;right:50px;top:360px;text-align:center;font:700 92px/1.05 Poppins;letter-spacing:-.035em;color:#fff">${E.title}</div>`, false);
-const endCta = shot('endcta', 1080, 1920, `<div style="position:absolute;left:90px;right:90px;top:1180px;height:140px;background:#fff;border-radius:999px;display:flex;align-items:center;justify-content:center;font:700 74px Poppins;letter-spacing:-.025em;color:#1f45d9;box-shadow:0 20px 50px rgba(0,0,0,.35)">nekova.com.ar</div>
-<div style="position:absolute;left:0;right:0;top:1356px;display:flex;align-items:center;justify-content:center;gap:16px;font:800 46px 'Nunito Sans';color:#fff">${ICON.instagram}${ICON.tiktok}<span>@nekova_ok</span><span style="width:30px"></span>${ICON.facebook}<span>Nekova</span></div>`);
+const endCta = shot('endcta', 1080, 1920, `<div style="position:absolute;left:90px;right:90px;top:1110px;height:136px;background:#fff;border-radius:999px;display:flex;align-items:center;justify-content:center;font:700 74px Poppins;letter-spacing:-.025em;color:#1f45d9;box-shadow:0 20px 50px rgba(0,0,0,.35)">nekova.com.ar</div>
+<div style="position:absolute;left:0;right:0;top:1272px;display:flex;justify-content:center"><div style="display:grid;grid-template-columns:52px auto;align-items:center;gap:4px 16px;font:800 44px/1.2 'Nunito Sans';color:#fff">${ICON.facebook}<span>Nekova</span>${ICON.instagram}<span>@nekova_ok</span>${ICON.tiktok}<span>@nekova_ok</span></div></div>`);
 const cutPng = join(TMP, 'producto.png');
 cutout(asset(E.photo), cutPng);
 const shadowed = shot('prodshadow', 1080, 700, `<img src="${url(cutPng)}" style="position:absolute;left:40px;top:30px;width:1000px;filter:drop-shadow(0 34px 44px rgba(0,0,0,.45))">`);
 const endMp4 = join(TMP, 'end.mp4');
 ff(['-loop', '1', '-t', String(E.dur), '-i', endBg, '-loop', '1', '-t', String(E.dur), '-i', shadowed, '-loop', '1', '-t', String(E.dur), '-i', endCta, '-filter_complex',
-  `[0:v]fps=${FPS},scale=1080:1920,setsar=1[bg];[1:v]fps=${FPS},format=rgba,scale=w='trunc(1080*(1-0.3*exp(-6*t)*cos(11*t))/2)*2':h=-2:eval=frame[p];[2:v]fps=${FPS},format=rgba,fade=in:st=0.4:d=0.25:alpha=1[c];[bg][p]overlay=x='(W-w)/2':y='920-h/2':eval=frame[a];[a][c]overlay=x=0:y='max(0,50*(1-(t-0.4)/0.25))':eval=frame,format=yuv420p[v]`,
+  `[0:v]fps=${FPS},scale=1080:1920,setsar=1[bg];[1:v]fps=${FPS},format=rgba,scale=w='trunc(1080*(1-0.3*exp(-6*t)*cos(11*t))/2)*2':h=-2:eval=frame[p];[2:v]fps=${FPS},format=rgba,fade=in:st=0.4:d=0.25:alpha=1[c];[bg][p]overlay=x='(W-w)/2':y='860-h/2':eval=frame[a];[a][c]overlay=x=0:y='max(0,50*(1-(t-0.4)/0.25))':eval=frame,format=yuv420p[v]`,
   '-map', '[v]', '-t', String(E.dur), '-c:v', 'libx264', '-preset', 'veryfast', '-crf', '16', endMp4]);
 parts.push(endMp4);
 const total = bodyDur + E.dur;
@@ -254,9 +271,15 @@ ff(['-f', 'concat', '-safe', '0', '-i', capList, '-vf', `fps=${FPS},format=rgba`
 
 // ---------- Audio ----------
 const hasVoice = voiceClips.length > 0;
-const voices = voiceClips.map((c, i) => {
+const merged = [];
+for (const c of voiceClips) {
+  const last = merged[merged.length - 1];
+  if (last && last.src === c.src && Math.abs(last.from + last.dur - c.from) < 0.03 && Math.abs(last.start + last.dur - c.start) < 0.08) last.dur = c.from + c.dur - last.from;
+  else merged.push({ ...c });
+}
+const voices = merged.map((c, i) => {
   const out = join(TMP, `v${i}.wav`);
-  ff(['-i', c.src, '-vn', '-af', `atrim=${c.from}:${c.from + c.dur},asetpts=PTS-STARTPTS,highpass=f=80,loudnorm=I=-16:TP=-2:LRA=9,afade=t=in:d=0.02,afade=t=out:st=${Math.max(c.dur - 0.05, 0)}:d=0.05,aresample=44100,aformat=channel_layouts=stereo`, out]);
+  ff(['-i', c.src, '-vn', '-af', `atrim=${c.from}:${c.from + c.dur},asetpts=PTS-STARTPTS,highpass=f=80,loudnorm=I=-16:TP=-2:LRA=9,afade=t=in:d=0.008,afade=t=out:st=${Math.max(c.dur - 0.05, 0)}:d=0.05,aresample=44100,aformat=channel_layouts=stereo`, out]);
   return { file: out, start: c.start };
 });
 const voiceInputs = voices.flatMap((v) => ['-i', v.file]);
