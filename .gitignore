@@ -10,3 +10,5 @@ Thumbs.db
 .shopify
 node_modules
 *.zip
+# Grabaciones crudas de reels (830 MB, GitHub no las acepta)
+marca/instagram/Reel humano/
