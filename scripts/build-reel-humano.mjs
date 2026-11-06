@@ -82,6 +82,21 @@ const REELS = {
     end: { title: 'Cojín Ergonómico<br>en U', photo: 'product-media-cojin-ortopedico-01.jpg', dur: 3, theme: 'dark' },
     cover: { at: 40.2, video: V.trabajando, title: 'El problema no es <em>la silla</em>' },
   },
+  '03': {
+    name: '03-que-tiene-adentro',
+    segments: [
+      { video: V.producto, at: 1.0, dur: 2.4, text: '¿Qué tiene <b>adentro</b>?', move: 'push' },
+      { video: V.producto, at: 6.5, dur: 2.0, text: 'Malla <b>transpirable</b>', move: 'push', whoosh: true },
+      { video: V.producto, at: 11.5, dur: 2.2, text: 'Ranura <b>en U</b>', move: 'push', whoosh: true },
+      { video: V.producto, at: 18.0, dur: 2.2, text: 'Funda con <b>cierre</b>', move: 'push', whoosh: true },
+      { video: V.producto, at: 21.6, dur: 3.0, text: '<b>Espuma</b> viscoelástica', textHigh: true, move: 'pull', whoosh: true, flash: true },
+      { video: V.producto, at: 30.0, dur: 1.8, text: 'Laterales <b>elevados</b>', move: 'push', whoosh: true },
+      { video: V.producto, at: 35.6, dur: 2.6, text: 'Para <b>tu silla</b>', move: 'still', whoosh: true },
+    ],
+    captions: [],
+    end: { title: 'Cojín Ergonómico<br>en U', photo: 'product-media-cojin-ortopedico-01.jpg', dur: 3, theme: 'dark' },
+    cover: { at: 23.5, video: V.producto, title: '¿Qué tiene <em>adentro</em>?' },
+  },
 };
 
 const reel = REELS[process.argv[2] || '01'];
@@ -92,10 +107,10 @@ mkdirSync(TMP, { recursive: true });
 
 // ---------- Video de cada tramo ----------
 let t = 0;
-const voiceClips = [], whooshes = [], timed = [], parts = [];
+const voiceClips = [], whooshes = [], timed = [], parts = [], textEvents = [];
 reel.segments.forEach((seg, i) => {
-  const voiceDur = seg.voice.to - seg.voice.from;
-  const dur = voiceDur + (seg.hold || 0);
+  const voiceDur = seg.voice ? seg.voice.to - seg.voice.from : 0;
+  const dur = seg.voice ? voiceDur + (seg.hold || 0) : seg.dur;
   const n = Math.round(dur * FPS);
   const z = seg.move === 'pull' ? MOVE.pull() : MOVE[seg.move](n);
   const fade = seg.flash ? `,fade=in:st=0:d=0.14:c=white` : '';
@@ -105,10 +120,11 @@ reel.segments.forEach((seg, i) => {
     '-frames:v', String(n), '-an', '-c:v', 'libx264', '-preset', 'veryfast', '-crf', '16', out]);
   parts.push(out);
   const dt = n / FPS;
-  voiceClips.push({ ...seg.voice, start: t, dur: Math.min(voiceDur, dt) });
+  if (seg.voice) voiceClips.push({ ...seg.voice, start: t, dur: Math.min(voiceDur, dt) });
+  if (seg.text) textEvents.push({ text: seg.text, high: seg.textHigh, start: t + 0.12, end: t + dt - 0.05 });
   if (seg.whoosh) whooshes.push(t);
   // Palabras de este tramo, en tiempo de salida.
-  for (const w of WORDS[KEY[seg.voice.src]].chunks) {
+  for (const w of seg.voice ? WORDS[KEY[seg.voice.src]].chunks : []) {
     const [a, b] = w.timestamp;
     if (a >= seg.voice.from - 0.02 && a < seg.voice.to - 0.02) timed.push({ text: w.text.trim(), start: t + a - seg.voice.from, end: t + Math.min(b ?? a + 0.3, seg.voice.to) - seg.voice.from });
   }
@@ -194,9 +210,11 @@ const silent = join(TMP, 'silent.mp4');
 ff(['-f', 'concat', '-safe', '0', '-i', list, '-c', 'copy', silent]);
 
 // ---------- Subtítulos palabra por palabra ----------
-const CAP_W = 1080, CAP_H = 420, CAP_Y = 1150;
-const capPng = (group, active, id) => shot(`cap${id}`, CAP_W, CAP_H, `<div style="position:absolute;left:70px;right:70px;top:0;height:${CAP_H}px;display:flex;flex-wrap:wrap;align-content:center;justify-content:center;gap:6px 18px;font:700 76px/1.18 Poppins;letter-spacing:-.02em;color:#fff;text-align:center;paint-order:stroke fill;-webkit-text-stroke:10px #14161a">
+const CAP_W = 1080, CAP_H = 950, CAP_Y = 620, BOX_H = 420, BOX_LOW = 530, BOX_HIGH = 60;
+const capPng = (group, active, id) => shot(`cap${id}`, CAP_W, CAP_H, `<div style="position:absolute;left:70px;right:70px;top:${BOX_LOW}px;height:${BOX_H}px;display:flex;flex-wrap:wrap;align-content:center;justify-content:center;gap:6px 18px;font:700 76px/1.18 Poppins;letter-spacing:-.02em;color:#fff;text-align:center;paint-order:stroke fill;-webkit-text-stroke:10px #14161a">
 ${group.map((w, i) => `<span style="${i === active ? 'background:#2f5bff;-webkit-text-stroke:0;border-radius:18px;padding:0 16px;' : ''}">${w}</span>`).join('')}</div>`);
+const textPng = (text, id, high) => shot(`txt${id}`, CAP_W, CAP_H, `<div style="position:absolute;left:60px;right:60px;top:${high ? BOX_HIGH : BOX_LOW}px;height:${BOX_H}px;display:flex;align-items:center;justify-content:center;text-align:center;font:700 92px/1.15 Poppins;letter-spacing:-.025em;color:#fff;paint-order:stroke fill;-webkit-text-stroke:12px #14161a">
+<span>${text.replace(/<b>/g, '<b style="font-weight:700;background:#2f5bff;-webkit-text-stroke:0;border-radius:20px;padding:0 20px;-webkit-box-decoration-break:clone;box-decoration-break:clone">')}</span></div>`);
 const blank = shot('blank', CAP_W, CAP_H, '');
 const norm = (s) => s.toLowerCase().normalize('NFD').replace(/[^a-zñ]/g, '').replace(/necova/, 'nekova');
 const groups = reel.captions.map((g) => g.split(' '));
@@ -213,6 +231,8 @@ groups.forEach((g) => {
   });
 });
 if (wi !== timed.length) console.warn(`Sobran palabras: ${timed.slice(wi).map((x) => x.text).join(' ')}`);
+textEvents.forEach((e, i) => events.push({ ...e, png: textPng(e.text, i, e.high) }));
+events.sort((a, b) => a.start - b.start);
 let prev = 0, idx = 0;
 const conc = ['ffconcat version 1.0'];
 const add = (png, dur) => { if (dur > 0.001) { conc.push(`file '${png.replace(/\\/g, '/')}'`, `duration ${dur.toFixed(3)}`); } };
@@ -221,7 +241,7 @@ events.forEach((e, k) => {
   const next = events[k + 1];
   // Se mantiene hasta la palabra siguiente si la pausa es corta.
   const until = next && next.start - e.end < 0.45 ? next.start : e.end + 0.15;
-  const png = capPng(e.group, e.i, idx++);
+  const png = e.png || capPng(e.group, e.i, idx++);
   add(png, until - Math.max(e.start, prev));
   prev = until;
 });
@@ -233,6 +253,7 @@ const capsMov = join(TMP, 'caps.mov');
 ff(['-f', 'concat', '-safe', '0', '-i', capList, '-vf', `fps=${FPS},format=rgba`, '-c:v', 'png', capsMov]);
 
 // ---------- Audio ----------
+const hasVoice = voiceClips.length > 0;
 const voices = voiceClips.map((c, i) => {
   const out = join(TMP, `v${i}.wav`);
   ff(['-i', c.src, '-vn', '-af', `atrim=${c.from}:${c.from + c.dur},asetpts=PTS-STARTPTS,highpass=f=80,loudnorm=I=-16:TP=-2:LRA=9,afade=t=in:d=0.02,afade=t=out:st=${Math.max(c.dur - 0.05, 0)}:d=0.05,aresample=44100,aformat=channel_layouts=stereo`, out]);
@@ -241,7 +262,7 @@ const voices = voiceClips.map((c, i) => {
 const voiceInputs = voices.flatMap((v) => ['-i', v.file]);
 const delays = voices.map((v, i) => `[${i}:a]adelay=${Math.round(v.start * 1000)}|${Math.round(v.start * 1000)}[v${i}]`).join(';');
 const voiceMix = join(TMP, 'voice.wav');
-ff([...voiceInputs, '-filter_complex', `${delays};${voices.map((_, i) => `[v${i}]`).join('')}amix=inputs=${voices.length}:normalize=0:duration=longest,apad=whole_dur=${total}[a]`, '-map', '[a]', voiceMix]);
+if (hasVoice) ff([...voiceInputs, '-filter_complex', `${delays};${voices.map((_, i) => `[v${i}]`).join('')}amix=inputs=${voices.length}:normalize=0:duration=longest,apad=whole_dur=${total}[a]`, '-map', '[a]', voiceMix]);
 
 // Golpes de transición (ruido filtrado) y una base musical sintetizada, original y sin licencias de terceros.
 const whooshFile = join(TMP, 'whoosh.wav');
@@ -252,9 +273,11 @@ const music = join(TMP, 'music.wav');
 const chord = (f1, f2, f3) => `(sin(2*PI*${f1}*t)+0.7*sin(2*PI*${f2}*t)+0.5*sin(2*PI*${f3}*t))`;
 const pad = `if(lt(mod(t,8),4),${chord(110, 164.81, 220)},${chord(87.31, 130.81, 174.61)})*(0.7+0.3*sin(2*PI*0.25*t))*0.09`;
 const kick = 'sin(2*PI*58*t)*exp(-9*mod(t,0.6))*0.22';
-ff(['-f', 'lavfi', '-i', `aevalsrc='${pad}+${kick}':d=${total}:s=44100`, '-af', `lowpass=f=1100,afade=t=in:d=0.6,afade=t=out:st=${Math.max(total - 1.2, 0)}:d=1.2,aformat=channel_layouts=stereo`, music]);
+// Sin voz, la música lleva el ritmo: se suma un arpegio suave.
+const pluck = hasVoice ? '' : '+sin(2*PI*(220+110*mod(floor(t/0.3),3))*t)*exp(-10*mod(t,0.3))*0.14';
+ff(['-f', 'lavfi', '-i', `aevalsrc='${pad}+${kick}${pluck}':d=${total}:s=44100`, '-af', `lowpass=f=${hasVoice ? 1100 : 2600},afade=t=in:d=0.6,afade=t=out:st=${Math.max(total - 1.2, 0)}:d=1.2,aformat=channel_layouts=stereo`, music]);
 
-const mixes = {
+const mixes = !hasVoice ? { '': ['-i', music, '-i', wMix, '-filter_complex', '[0:a]volume=1.3[m];[m][1:a]amix=inputs=2:normalize=0,alimiter=limit=0.89[a]', '-map', '[a]'] } : {
   '': ['-i', voiceMix, '-i', wMix, '-i', music, '-filter_complex', '[2:a]volume=0.5[m];[m][0:a]sidechaincompress=threshold=0.03:ratio=6:attack=20:release=300[md];[0:a][1:a][md]amix=inputs=3:normalize=0,alimiter=limit=0.89[a]', '-map', '[a]'],
   '-solo-voz': ['-i', voiceMix, '-i', wMix, '-filter_complex', '[0:a][1:a]amix=inputs=2:normalize=0,alimiter=limit=0.89[a]', '-map', '[a]'],
 };
