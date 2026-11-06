@@ -65,6 +65,23 @@ const REELS = {
     end: { title: 'Cojín Ergonómico<br>en U', photo: 'product-media-cojin-ortopedico-01.jpg', dur: 3 },
     cover: { at: 10.4, video: V.camara1, title: '¿Qué <em>preferís</em>?' },
   },
+  '02': {
+    name: '02-el-problema-no-es-la-silla',
+    segments: [
+      { video: V.trabajando, at: 0.5, voice: { src: A.problema, from: 0.4, to: 3.5 }, move: 'push' },
+      { video: V.trabajando, at: 39.3, voice: { src: A.problema, from: 3.6, to: 6.1 }, move: 'push', whoosh: true },
+      { video: V.producto, at: 22.2, voice: { src: A.problema, from: 6.1, to: 9.15 }, move: 'push', whoosh: true },
+      { video: V.trabajando, at: 42.5, voice: { src: A.solucion, from: 7.7, to: 8.68 }, hold: 0.9, move: 'still', whoosh: true },
+      { video: V.trabajando, at: 46.0, voice: { src: A.solucion, from: 10.06, to: 11.95 }, move: 'push', whoosh: true },
+    ],
+    captions: [
+      'La mayoría piensa que', 'necesita una silla nueva,', 'pero muchas veces', 'el problema no es la silla,', 'es pasar horas sentados', 'sin el soporte adecuado.',
+      'Más comodidad,',
+      'y sin gastar una fortuna.',
+    ],
+    end: { title: 'Cojín Ergonómico<br>en U', photo: 'product-media-cojin-ortopedico-01.jpg', dur: 3, theme: 'dark' },
+    cover: { at: 40.2, video: V.trabajando, title: 'El problema no es <em>la silla</em>' },
+  },
 };
 
 const reel = REELS[process.argv[2] || '01'];
@@ -77,7 +94,8 @@ mkdirSync(TMP, { recursive: true });
 let t = 0;
 const voiceClips = [], whooshes = [], timed = [], parts = [];
 reel.segments.forEach((seg, i) => {
-  const dur = seg.voice.to - seg.voice.from;
+  const voiceDur = seg.voice.to - seg.voice.from;
+  const dur = voiceDur + (seg.hold || 0);
   const n = Math.round(dur * FPS);
   const z = seg.move === 'pull' ? MOVE.pull() : MOVE[seg.move](n);
   const fade = seg.flash ? `,fade=in:st=0:d=0.14:c=white` : '';
@@ -87,7 +105,7 @@ reel.segments.forEach((seg, i) => {
     '-frames:v', String(n), '-an', '-c:v', 'libx264', '-preset', 'veryfast', '-crf', '16', out]);
   parts.push(out);
   const dt = n / FPS;
-  voiceClips.push({ ...seg.voice, start: t, dur: dt });
+  voiceClips.push({ ...seg.voice, start: t, dur: Math.min(voiceDur, dt) });
   if (seg.whoosh) whooshes.push(t);
   // Palabras de este tramo, en tiempo de salida.
   for (const w of WORDS[KEY[seg.voice.src]].chunks) {
@@ -147,10 +165,15 @@ const ICON = {
   tiktok: '<svg viewBox="0 0 24 24" width="52" height="52"><path d="M16.8 3.5c.3 2.1 1.5 3.8 3.7 4.5v3.4a9 9 0 0 1-3.7-1.2v5.5a6.3 6.3 0 1 1-6.3-6.3c.4 0 .8 0 1.2.1v3.6a2.8 2.8 0 1 0 1.6 2.6V3.5h3.5Z" fill="#fff"/></svg>',
   facebook: '<svg viewBox="0 0 24 24" width="52" height="52"><path d="M13.5 21v-8h2.7l.4-3.1h-3.1v-2c0-.9.3-1.5 1.6-1.5h1.7V3.6c-.3 0-1.3-.1-2.5-.1-2.5 0-4.2 1.5-4.2 4.3v2.1H7.3V13h2.8v8h3.4Z" fill="#fff"/></svg>',
 };
+const THEMES = {
+  blue: { bg: 'linear-gradient(160deg,#1f45d9 0%,#2f5bff 55%,#1a36b8 100%)', glow: 'radial-gradient(closest-side,rgba(255,255,255,.75),rgba(143,168,255,.35) 55%,rgba(47,91,255,0))' },
+  dark: { bg: 'linear-gradient(165deg,#14161a 0%,#141c3f 55%,#14161a 100%)', glow: 'radial-gradient(closest-side,rgba(47,91,255,.95),rgba(47,91,255,.35) 55%,rgba(47,91,255,0))' },
+};
+const theme = THEMES[E.theme || 'blue'];
 const mark = readFileSync(asset('nekova-mark-white.svg'), 'utf8').replace('<svg', '<svg width="1500" height="1500"');
-const endBg = shot('endbg', 1080, 1920, `<div style="position:absolute;inset:0;background:linear-gradient(160deg,#1f45d9 0%,#2f5bff 55%,#1a36b8 100%)"></div>
+const endBg = shot('endbg', 1080, 1920, `<div style="position:absolute;inset:0;background:${theme.bg}"></div>
 <div style="position:absolute;left:-260px;top:-140px;width:1500px;height:1500px;opacity:.09">${mark}</div>
-<div style="position:absolute;left:50%;top:790px;width:1300px;height:900px;transform:translate(-50%,-50%);border-radius:50%;background:radial-gradient(closest-side,rgba(255,255,255,.75),rgba(143,168,255,.35) 55%,rgba(47,91,255,0));filter:blur(60px)"></div>
+<div style="position:absolute;left:50%;top:790px;width:1300px;height:900px;transform:translate(-50%,-50%);border-radius:50%;background:${theme.glow};filter:blur(60px)"></div>
 <img src="${url(asset('nekova-logo-white.svg'))}" style="position:absolute;left:50%;transform:translateX(-50%);top:235px;height:78px">
 <div style="position:absolute;left:50px;right:50px;top:360px;text-align:center;font:700 92px/1.05 Poppins;letter-spacing:-.035em;color:#fff">${E.title}</div>`, false);
 const endCta = shot('endcta', 1080, 1920, `<div style="position:absolute;left:90px;right:90px;top:1180px;height:140px;background:#fff;border-radius:999px;display:flex;align-items:center;justify-content:center;font:700 74px Poppins;letter-spacing:-.025em;color:#1f45d9;box-shadow:0 20px 50px rgba(0,0,0,.35)">nekova.com.ar</div>
