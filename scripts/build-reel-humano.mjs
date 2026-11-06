@@ -62,7 +62,7 @@ const REELS = {
       'Más comodidad,',
       'y sin gastar una fortuna.',
     ],
-    end: { title: 'Cojín Ergonómico <em>en U</em>', price: '$79.000', cta: 'Comprá en nekova.com.ar', photo: 'product-media-cojin-ortopedico-01.jpg', dur: 2.6 },
+    end: { title: 'Cojín Ergonómico en U', photo: 'product-media-cojin-ortopedico-01.jpg', dur: 3 },
     cover: { at: 10.4, video: V.camara1, title: '¿Qué <em>preferís</em>?' },
   },
 };
@@ -109,12 +109,18 @@ const shot = (name, w, h, html, transparent = true) => {
   return png;
 };
 const E = reel.end;
-const endPng = shot('end', 1080, 1920, `<div style="position:absolute;inset:0;background:#f3f5f9"></div>
-<img src="${url(asset('nekova-logo.svg'))}" style="position:absolute;left:90px;top:230px;height:58px">
-<div style="position:absolute;left:90px;right:90px;top:360px;font:600 96px/1.05 Poppins;letter-spacing:-.03em;color:#14161a">${E.title.replace('<em>', '<em style="font-style:normal;color:#2f5bff">')}</div>
-<div style="position:absolute;left:60px;right:60px;top:610px;height:640px;background:#fff;border-radius:40px;display:flex;align-items:center;justify-content:center;overflow:hidden"><img src="${url(asset(E.photo))}" style="width:90%;mix-blend-mode:multiply"></div>
-<div style="position:absolute;left:90px;top:1290px;font:700 110px Poppins;letter-spacing:-.03em;color:#14161a">${E.price}</div>
-<div style="position:absolute;left:90px;right:90px;top:1440px;height:110px;background:#2f5bff;color:#fff;border-radius:24px;display:flex;align-items:center;justify-content:center;font:800 44px 'Nunito Sans'">${E.cta}</div>`, false);
+// Cierre sin precio (cambia con las promos): azul de marca, foto en tarjeta, la web como llamado principal y las redes de apoyo.
+const ICON = {
+  instagram: '<svg viewBox="0 0 24 24" width="50" height="50"><rect x="3.2" y="3.2" width="17.6" height="17.6" rx="5.2" fill="none" stroke="#fff" stroke-width="1.8"/><circle cx="12" cy="12" r="4.1" fill="none" stroke="#fff" stroke-width="1.8"/><circle cx="17.2" cy="6.8" r="1.2" fill="#fff"/></svg>',
+  tiktok: '<svg viewBox="0 0 24 24" width="50" height="50"><path d="M16.8 3.5c.3 2.1 1.5 3.8 3.7 4.5v3.4a9 9 0 0 1-3.7-1.2v5.5a6.3 6.3 0 1 1-6.3-6.3c.4 0 .8 0 1.2.1v3.6a2.8 2.8 0 1 0 1.6 2.6V3.5h3.5Z" fill="#fff"/></svg>',
+  facebook: '<svg viewBox="0 0 24 24" width="50" height="50"><path d="M13.5 21v-8h2.7l.4-3.1h-3.1v-2c0-.9.3-1.5 1.6-1.5h1.7V3.6c-.3 0-1.3-.1-2.5-.1-2.5 0-4.2 1.5-4.2 4.3v2.1H7.3V13h2.8v8h3.4Z" fill="#fff"/></svg>',
+};
+const endPng = shot('end', 1080, 1920, `<div style="position:absolute;inset:0;background:#2f5bff"></div>
+<img src="${url(asset('nekova-logo-white.svg'))}" style="position:absolute;left:50%;transform:translateX(-50%);top:235px;height:72px">
+<div style="position:absolute;left:60px;right:60px;top:350px;text-align:center;font:600 84px/1.08 Poppins;letter-spacing:-.03em;color:#fff">${E.title}</div>
+<div style="position:absolute;left:90px;right:90px;top:480px;height:640px;background:#fff;border-radius:48px;overflow:hidden;display:flex;align-items:center;justify-content:center"><img src="${url(asset(E.photo))}" style="width:100%;transform:scale(1.12);mix-blend-mode:multiply"></div>
+<div style="position:absolute;left:90px;right:90px;top:1160px;height:136px;background:#fff;border-radius:28px;display:flex;align-items:center;justify-content:center;font:700 70px Poppins;letter-spacing:-.02em;color:#2f5bff">nekova.com.ar</div>
+<div style="position:absolute;left:0;right:0;top:1335px;display:flex;align-items:center;justify-content:center;gap:16px;font:800 44px 'Nunito Sans';color:#fff">${ICON.instagram}${ICON.tiktok}<span>@nekova_ok</span><span style="width:30px"></span>${ICON.facebook}<span>Nekova</span></div>`, false);
 const endMp4 = join(TMP, 'end.mp4');
 ff(['-loop', '1', '-t', String(E.dur), '-i', endPng, '-vf', `fps=${FPS},scale=1080:1920,fade=in:st=0:d=0.2:c=white,format=yuv420p`, '-c:v', 'libx264', '-preset', 'veryfast', '-crf', '16', endMp4]);
 parts.push(endMp4);
