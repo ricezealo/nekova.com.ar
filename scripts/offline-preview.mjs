@@ -464,7 +464,7 @@ const menuItems = [
 ];
 const menu = { links: menuItems };
 const emptyCart = { items: [], item_count: 0, total_price: 0, cart_level_discount_applications: [], note: '', empty: true };
-const shop = { name: 'Nekova (vista local)', currency: 'ARS', money_format: '${{amount}}' };
+const shop = { name: 'Nekova (vista local)', currency: 'ARS', money_format: '${{amount}}', enabled_payment_types: ['american_express', 'diners_club', 'master', 'visa'] };
 const routes = { root_url: '/', cart_url: '/cart', cart_add_url: '/cart/add', cart_change_url: '/cart/change', cart_update_url: '/cart/update', search_url: '/search', account_login_url: '/account/login', account_register_url: '/account/register', all_products_collection_url: '/collections/all' };
 
 function createCart(counts = []) {
@@ -559,6 +559,9 @@ const handleize = (value) => String(value ?? '').normalize('NFD').replace(/[̀-�
   .replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '');
 engine.registerFilter('handleize', handleize);
 engine.registerFilter('handle', handleize);
+// Íconos de pago de muestra (en Shopify son los SVG oficiales).
+const PAY = { american_express: ['#1f72cd', 'AMEX'], diners_club: ['#fff', 'Diners'], master: ['#252525', 'MC'], visa: ['#1434cb', 'VISA'], maestro: ['#fff', 'Maestro'] };
+engine.registerFilter('payment_type_svg_tag', (type) => { const [bg, label] = PAY[type] || ['#fff', type]; const fg = bg === '#fff' ? '#14161a' : '#fff'; return `<svg viewBox="0 0 38 24" width="38" height="24"><rect x=".5" y=".5" width="37" height="23" rx="3" fill="${bg}" stroke="#d0d4dc"/><text x="19" y="15.5" font-size="7" font-weight="700" font-family="sans-serif" text-anchor="middle" fill="${fg}">${label}</text></svg>`; });
 engine.registerFilter('stylesheet_tag', (href) => `<link rel="stylesheet" href="${href}">`);
 engine.registerFilter('script_tag', (src) => `<script src="${src}" defer></script>`);
 engine.registerFilter('font_face', () => '');

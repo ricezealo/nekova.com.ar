@@ -313,6 +313,11 @@
             <span class="nk-price-off">{{ discount_percent }}% OFF</span>
           {%- endif -%}
         </div>
+        {%- assign transfer_percent = settings.nekova_transfer_percent | default: 0 -%}
+        {%- if transfer_percent > 0 -%}
+          {%- assign transfer_price = 100 | minus: transfer_percent | times: current_price | divided_by: 100 -%}
+          <p class="nk-transfer"><span><strong>{{ transfer_price | money_without_trailing_zeros }}</strong> con transferencia bancaria ({{ transfer_percent }}% OFF)</span></p>
+        {%- endif -%}
         {%- if nk_tiers != blank -%}
           <div class="nk-tiers" data-nk-tiers>
             <p class="nk-tiers-title">Llevá más, pagá menos</p>
@@ -330,8 +335,18 @@
             <p class="nk-tiers-note">Podés combinar colores y talles. El descuento se aplica en el carrito.</p>
           </div>
         {%- endif -%}
-        {%- if section.settings.payment_note != blank or shop.enabled_payment_types.size > 0 -%}
+        {%- assign installments = settings.nekova_installments_count | default: 0 -%}
+        {%- if section.settings.payment_note != blank or shop.enabled_payment_types.size > 0 or installments > 0 -%}
           <div class="nk-pay">
+            {%- if installments > 0 -%}
+              {%- assign installments_min = settings.nekova_installments_min | default: 0 | times: 100 -%}
+              {%- if current_price >= installments_min -%}
+                {%- assign installment_price = current_price | times: 1.0 | divided_by: installments | divided_by: 100 | ceil | times: 100 -%}
+                <p class="nk-pay-note">{% render 'nekova-icon', icon: 'card' %}<span>Hasta {{ installments }} cuotas sin interés de {{ installment_price | money_without_trailing_zeros }}</span></p>
+              {%- else -%}
+                <p class="nk-pay-note">{% render 'nekova-icon', icon: 'card' %}<span>Hasta {{ installments }} cuotas sin interés en compras desde {{ installments_min | money_without_trailing_zeros }}</span></p>
+              {%- endif -%}
+            {%- endif -%}
             {%- if section.settings.payment_note != blank -%}
               <p class="nk-pay-note">{% render 'nekova-icon', icon: 'card' %}<span>{{ section.settings.payment_note }}</span></p>
             {%- endif -%}
@@ -340,6 +355,12 @@
                 {%- for type in shop.enabled_payment_types -%}
                   <li>{{ type | payment_type_svg_tag: class: 'icon icon--full-color' }}</li>
                 {%- endfor -%}
+                {%- if settings.nekova_show_mercadopago -%}
+                  {%- unless shop.enabled_payment_types contains 'maestro' -%}
+                    <li>{{ 'maestro' | payment_type_svg_tag: class: 'icon icon--full-color' }}</li>
+                  {%- endunless -%}
+                  <li class="nk-pay-chip">Mercado Pago</li>
+                {%- endif -%}
               </ul>
             {%- endif -%}
           </div>
@@ -1028,6 +1049,10 @@
   .nk-pay-note svg { color: var(--nk-accent); height: 2.2rem; width: 2.2rem; }
   .nk-pay-icons { display: flex; flex-wrap: wrap; gap: .6rem; list-style: none; margin: 0; padding: 0; }
   .nk-pay-icons svg { display: block; height: 2.4rem; width: auto; }
+  .nk-pay-chip { align-items: center; background: var(--nekova-surface); border: 1px solid var(--nekova-line-strong); border-radius: .3rem; color: var(--nk-ink); display: flex; font-size: 1.2rem; font-weight: 800; height: 2.4rem; padding: 0 .8rem; white-space: nowrap; }
+  .nk-transfer { color: var(--nk-muted); font-size: 1.5rem; margin: -1.6rem 0 2.4rem; }
+  .nk-transfer strong { color: var(--nk-accent); font-size: 1.7rem; font-weight: 800; }
+  html.nekova-promo-on .nk-transfer { display: none; }
   .nk-assure { background: var(--nekova-accent-soft); border-radius: 1.2rem; display: grid; gap: 1rem; list-style: none; margin: 1.6rem 0 0; padding: 1.6rem 1.8rem; }
   .nk-assure li { align-items: flex-start; color: var(--nk-ink); display: flex; font-size: 1.4rem; gap: 1rem; line-height: 1.5; }
   .nk-assure svg { color: var(--nk-accent); flex: 0 0 auto; height: 2.2rem; margin-top: -.1rem; width: 2.2rem; }
