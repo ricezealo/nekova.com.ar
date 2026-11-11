@@ -12,3 +12,7 @@ node_modules
 *.zip
 # Grabaciones crudas de reels (830 MB, GitHub no las acepta)
 marca/instagram/Reel humano/
+
+# Anuncios de Meta (no se suben nunca a GitHub)
+marca/anuncios/meta/
+marca/instagram/anuncios/*-sin-precio*
