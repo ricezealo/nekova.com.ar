@@ -13,11 +13,7 @@
     "nekova_whatsapp_message": "Hola Nekova, tengo una consulta.",
     "nekova_whatsapp_float": true,
     "nekova_email": "info@nekova.com.ar",
-    "nekova_transfer_percent": 10,
-    "nekova_installments_count": 3,
-    "nekova_installments_min": 50000,
-    "nekova_show_mercadopago": true,
-    "nekova_promo_enabled": true,
+    "nekova_promo_enabled": false,
     "nekova_promo_name": "Cyber Nekova",
     "nekova_promo_percent": 20,
     "nekova_promo_start": "2026-11-02T00:00:00-03:00",
@@ -148,6 +144,10 @@
     "cart_drawer_collection": "",
     "cart_color_scheme": "scheme-1",
     "customer_account_menu": "customer-account-main-menu",
+    "nekova_transfer_percent": 10,
+    "nekova_installments_count": 3,
+    "nekova_installments_min": 50000,
+    "nekova_show_mercadopago": true,
     "nekova_promo_extend": "2026-11-05T00:00:00-03:00",
     "sections": {
       "main-password-header": {
