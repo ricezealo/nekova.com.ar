@@ -452,11 +452,10 @@ if (process.env.PREVIEW_SOLDOUT) {
 // PREVIEW_ALL_PRODUCTS=1 adds the other sample products, to test the home with a larger catalog.
 const launchProducts = process.env.PREVIEW_ALL_PRODUCTS
   ? [orthopedicProduct, earplugProduct, cushionProduct, lightProduct, featuredProduct]
-  : [orthopedicProduct, earplugProduct, insoleProduct, pillowProduct];
+  : [orthopedicProduct, insoleProduct, pillowProduct];
 const collection = { id: 1, handle: 'all', title: 'Todos los productos', description: '<p>Productos de ejemplo para la vista local.</p>', products: launchProducts, all_products_count: launchProducts.length, products_count: launchProducts.length, url: '/collections/all', image };
 const menuItems = [
   { title: 'Cojín ergonómico', url: '/products/cojin-ortopedico-u', links: [] },
-  { title: 'Tapones auditivos', url: '/products/tapones-auditivos-silicona', links: [] },
   { title: 'Plantillas', url: '/products/plantillas-multitalle', links: [] },
   { title: 'Almohada', url: '/products/almohada-nekova-somnia', links: [] },
   { title: 'Sobre Nekova', url: '/pages/sobre-nekova', links: [] },

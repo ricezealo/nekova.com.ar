@@ -17,12 +17,11 @@ Al navegar o comprar en el sitio aceptás estos términos. Si no estás de acuer
 
 - Describimos los productos con la mayor precisión posible. Los colores pueden variar levemente según la pantalla.
 - Los productos de Nekova son artículos de **comodidad y bienestar**. No son productos médicos ni reemplazan el consejo de un profesional de la salud.
-- Los tapones auditivos reducen el ruido ambiente de forma pasiva y **no son un elemento de protección auditiva certificado**.
 
 ## 4. Precios y pago
 
 - Los precios están expresados en **pesos argentinos** y son precios finales [con IVA incluido, si corresponde].
-- Los medios de pago y las cuotas disponibles se muestran en el checkout. El pago se procesa a través de [MERCADO PAGO / PASARELA], de forma segura.
+- Los medios de pago y las cuotas disponibles se muestran en el checkout. El pago con tarjeta o Mercado Pago se procesa a través de **Mercado Pago**, de forma segura. Hasta 3 cuotas sin interés en compras desde $50.000. También podés pagar por **transferencia bancaria con 10% OFF**: el descuento se aplica al confirmar el pedido y te pasamos el total final por WhatsApp.
 - Nekova puede modificar precios y promociones en cualquier momento. El precio que vale es el vigente al confirmar la compra.
 
 ## 5. Stock y confirmación

@@ -24,9 +24,9 @@ Si compraste en nekova.com.ar, tenés derecho a revocar la compra dentro de los 
 
 El producto tiene que estar completo, con sus accesorios y en el mismo estado en que lo recibiste.
 
-## 2. Productos de uso personal (tapones auditivos)
+## 2. Productos de uso personal (plantillas)
 
-Por razones de higiene, los productos que se usan en contacto directo con el cuerpo, como los **tapones auditivos**, se aceptan solo con el **envase cerrado y sin uso**. Una vez abiertos no pueden devolverse, salvo que tengan una falla de fábrica (ver punto 3). Esta condición se informa en la página de cada producto antes de la compra (Código Civil y Comercial, art. 1116).
+Por razones de higiene, los productos que se usan en contacto directo con el cuerpo, como las **plantillas**, se aceptan solo **sin usar ni recortar**. Una vez usadas o recortadas no pueden devolverse, salvo que tengan una falla de fábrica (ver punto 3). Esta condición se informa en la página de cada producto antes de la compra (Código Civil y Comercial, art. 1116).
 
 ## 3. Productos con fallas
 
