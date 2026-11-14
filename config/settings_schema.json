@@ -90,6 +90,32 @@
         "label": "Mostrar Mercado Pago y Maestro en los medios de pago",
         "info": "Shopify no los lista solos porque llegan por la app de Mercado Pago Checkout Pro.",
         "default": true
+      },
+      {
+        "type": "text",
+        "id": "nekova_delivery_carrier",
+        "label": "Correo de los envíos",
+        "info": "Se muestra en la ficha y en las preguntas frecuentes. Vacío = no se nombra.",
+        "default": "Correo Argentino"
+      },
+      {
+        "type": "number",
+        "id": "nekova_delivery_min",
+        "label": "Entrega: días hábiles (mínimo)",
+        "default": 1
+      },
+      {
+        "type": "number",
+        "id": "nekova_delivery_max",
+        "label": "Entrega: días hábiles (máximo)",
+        "info": "Vacío = no se muestra el plazo de entrega.",
+        "default": 3
+      },
+      {
+        "type": "text",
+        "id": "nekova_holidays",
+        "label": "Feriados (sin despacho)",
+        "info": "Fechas dd/mm/aaaa separadas por coma. La ficha las saltea al calcular cuándo sale y cuándo llega el pedido."
       }
     ]
   },

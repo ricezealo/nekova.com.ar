@@ -350,3 +350,68 @@ document.querySelectorAll('[data-nk-tiers]').forEach((tiers) => {
   qty?.closest('[data-nk-qty]')?.addEventListener('click', () => setTimeout(highlight));
   highlight();
 });
+
+// Own-footage loops: play muted only while visible; with reduced motion they stay still and show controls.
+document.querySelectorAll('[data-nk-loop]').forEach((video) => {
+  if (video.dataset.loopInitialized === 'true') return;
+  video.dataset.loopInitialized = 'true';
+  if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+    video.controls = true;
+    return;
+  }
+  new IntersectionObserver((entries) => {
+    if (entries[0].isIntersecting) {
+      if (video.preload === 'none') video.preload = 'auto';
+      video.play().catch(() => { video.controls = true; });
+    } else {
+      video.pause();
+    }
+  }, { threshold: 0.4 }).observe(video);
+});
+
+// Dispatch and delivery estimate in Argentina time (business days, skipping the holidays set in the theme).
+document.querySelectorAll('[data-nk-dispatch]').forEach((el) => {
+  if (el.dataset.dispatchInitialized === 'true') return;
+  el.dataset.dispatchInitialized = 'true';
+  const zone = 'America/Argentina/Buenos_Aires';
+  const parts = Object.fromEntries(new Intl.DateTimeFormat('en-CA', {
+    timeZone: zone, year: 'numeric', month: '2-digit', day: '2-digit', hour: '2-digit', minute: '2-digit', hourCycle: 'h23',
+  }).formatToParts(new Date()).map((part) => [part.type, part.value]));
+  const today = new Date(Date.UTC(Number(parts.year), Number(parts.month) - 1, Number(parts.day)));
+  const minutes = Number(parts.hour) * 60 + Number(parts.minute);
+  const cutoff = (Number(el.dataset.cutoff) || 13) * 60;
+  const holidays = new Set((el.dataset.holidays || '').split(',').map((value) => {
+    const [d, m, y] = value.trim().split('/').map(Number);
+    return d && m && y ? Date.UTC(y, m - 1, d) : null;
+  }).filter(Boolean));
+  const isBusiness = (date) => date.getUTCDay() !== 0 && date.getUTCDay() !== 6 && !holidays.has(date.getTime());
+  const addBusiness = (date, count) => {
+    const next = new Date(date);
+    let left = count;
+    while (left > 0) {
+      next.setUTCDate(next.getUTCDate() + 1);
+      if (isBusiness(next)) left -= 1;
+    }
+    return next;
+  };
+  const sameDay = isBusiness(today) && minutes < cutoff;
+  const dispatch = sameDay ? today : addBusiness(today, 1);
+  const first = addBusiness(dispatch, Number(el.dataset.min) || 1);
+  const last = addBusiness(dispatch, Number(el.dataset.max) || 3);
+  const format = (date) => `${new Intl.DateTimeFormat('es-AR', { timeZone: 'UTC', weekday: 'long' }).format(date)} ${date.getUTCDate()}/${date.getUTCMonth() + 1}`;
+  const tomorrow = new Date(today);
+  tomorrow.setUTCDate(tomorrow.getUTCDate() + 1);
+  let when;
+  if (sameDay) {
+    const left = cutoff - minutes;
+    const hours = Math.floor(left / 60);
+    const mins = left % 60;
+    when = `Pedilo en los próximos <b>${hours ? `${hours} h ` : ''}${mins} min</b> y sale hoy.`;
+  } else if (dispatch.getTime() === tomorrow.getTime()) {
+    when = 'Pedilo hoy y sale <b>mañana</b>.';
+  } else {
+    when = `Pedilo hoy y sale el <b>${format(dispatch)}</b>.`;
+  }
+  el.innerHTML = `${when} Llega aprox. entre el ${format(first)} y el ${format(last)}.`;
+  el.hidden = false;
+});

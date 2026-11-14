@@ -51,6 +51,10 @@
 {%- assign nk_benefits_title = '' -%}
 {%- assign nk_video = '' -%}
 {%- assign nk_video_shape = '' -%}
+{%- comment -%} Own footage: silent loops (file::poster::title::text) and reels with sound (file::poster::title::text). {%- endcomment -%}
+{%- assign nk_real = '' -%}
+{%- assign nk_reels = '' -%}
+{%- assign nk_moments = '' -%}
 {%- assign nk_compare_title = '' -%}
 {%- assign nk_specs_title = '' -%}
 {%- assign nk_faq = '' -%}
@@ -66,26 +70,31 @@
 {%- assign nk_returns_short = '10 días para devolverlo' -%}
 {%- case content_key -%}
   {%- when 'cojin' -%}
-    {%- assign nk_gallery = 'product-media-cojin-ortopedico-01.jpg,product-media-cojin-ortopedico-02.jpg,product-media-cojin-ortopedico-03.jpg,product-media-cojin-ortopedico-04.jpg,product-media-cojin-ortopedico-05.jpg,product-media-cojin-ortopedico-06.jpg,product-media-cojin-ortopedico-07.jpg,product-media-cojin-ortopedico-08.jpg,product-media-cojin-ortopedico-09.jpg,product-media-cojin-ortopedico-10.jpg,product-media-cojin-ortopedico-11.jpg,product-media-cojin-ortopedico-12.jpg' -%}
-    {%- assign nk_gallery_alt = 'Cojín ergonómico en U' -%}
+    {%- comment -%} Product on white (gris, azul), then own photos (real-*: frames of our own footage). {%- endcomment -%}
+    {%- assign nk_gallery = 'product-media-cojin-ortopedico-01.jpg,product-media-cojin-ortopedico-02.jpg,product-media-cojin-ortopedico-real-01.jpg,product-media-cojin-ortopedico-real-02.jpg,product-media-cojin-ortopedico-real-04.jpg,product-media-cojin-ortopedico-real-03.jpg,product-media-cojin-ortopedico-real-05.jpg,product-media-cojin-ortopedico-03.jpg' -%}
+    {%- assign nk_gallery_alt = 'Almohadón ergonómico en U' -%}
     {%- assign nk_variant_images = 'azul=product-media-cojin-ortopedico-02.jpg;*=product-media-cojin-ortopedico-01.jpg' -%}
+    {%- capture nk_real -%}cojin-real-silla.mp4::cojin-real-silla-poster.jpg::Lo apoyás y te sentás::Entra en sillas de escritorio y gamer. No hace falta ajustar nada.||cojin-real-espuma.mp4::cojin-real-espuma-poster.jpg::La espuma vuelve a su forma::Presionás, se adapta y en unos segundos recupera su forma.||cojin-real-funda.mp4::cojin-real-funda-poster.jpg::Funda con cierre::La sacás en un minuto para lavarla por separado.{%- endcapture -%}
+    {%- comment -%} Moments: illustrative scenes (AI or from the manufacturer), always shown with the note (never as real customers). {%- endcomment -%}
+    {%- capture nk_moments -%}product-media-cojin-ortopedico-momento-oficina.jpg::Mujer trabajando en la compu en una oficina con puestos de trabajo, sentada sobre el almohadón::En la oficina||product-media-cojin-ortopedico-momento-silla-ruedas.jpg::Hombre en silla de ruedas trabajando en su escritorio, sentado sobre el almohadón::En silla de ruedas||product-media-cojin-ortopedico-momento-colectivo.jpg::Chofer de colectivo manejando, sentado sobre el almohadón::Al volante todo el día||product-media-cojin-ortopedico-momento-auto.jpg::El almohadón apoyado en el asiento de un auto::En el auto||product-media-cojin-ortopedico-momento-gamer.jpg::Joven jugando videojuegos en una silla gamer, sentado sobre el almohadón::Sesiones de juego||product-media-cojin-ortopedico-momento-casa.jpg::Mujer mayor trabajando en la compu en su casa, sentada sobre el almohadón en una silla de madera::En la silla de casa{%- endcapture -%}
+    {%- capture nk_reels -%}cojin-reel-del-paquete.mp4::cojin-reel-del-paquete-poster.jpg::Del paquete a tu silla::Así llega y así queda, sin cortes ni efectos.||cojin-reel-adentro.mp4::cojin-reel-adentro-poster.jpg::¿Qué tiene adentro?::Abrimos la funda y te mostramos la espuma por dentro.{%- endcapture -%}
     {%- assign nk_tagline = 'Comodidad para tus horas sentado.' -%}
     {%- assign nk_lead = 'Espuma viscoelástica, ranura en U y funda transpirable. Para la oficina, el auto o tu casa.' -%}
     {%- assign nk_checks = 'Espuma viscoelástica de recuperación lenta||Ranura en U que deja libre la zona del coxis||Funda transpirable y extraíble' -%}
-    {%- capture nk_details -%}Un cojín de asiento con forma ergonómica: los laterales elevados envuelven la cadera, el frente en arco acompaña la base de los muslos y la parte trasera, más alta, da apoyo a la espalda baja. La ranura en U deja libre la zona del coxis y el canal central favorece la circulación de aire.{%- endcapture -%}
+    {%- capture nk_details -%}Un almohadón de asiento con forma ergonómica: los laterales elevados envuelven la cadera, el frente en arco acompaña la base de los muslos y la parte trasera, más alta, da apoyo a la espalda baja. La ranura en U deja libre la zona del coxis y el canal central favorece la circulación de aire.{%- endcapture -%}
     {%- assign nk_specs = 'Medidas::48 × 38 × 12 cm||Relleno::Espuma viscoelástica de recuperación lenta||Recuperación::3 a 5 segundos||Diseño::Ranura en U, laterales elevados y frente en arco||Funda::Malla transpirable, extraíble con cierre||Colores::Gris y azul marino||Uso::Oficina, auto, hogar y viajes' -%}
 
     {%- assign nk_uses_eyebrow = 'Para tu día a día' -%}
     {%- assign nk_uses_title = 'Pensado para las horas que pasás <span class="nk-hl">sentado</span>' -%}
-    {%- assign nk_uses_lead = 'En el escritorio, en el auto o leyendo en casa: un apoyo cómodo se nota al final del día.' -%}
+    {%- assign nk_uses_lead = 'Estas fotos las sacamos nosotros, con el mismo almohadón que te llega a tu casa.' -%}
     {%- assign nk_uses_shape = 'portrait' -%}
-    {%- capture nk_uses -%}product-media-cojin-ortopedico-vida-01.jpg::Mujer trabajando en su escritorio sentada sobre el cojín en U::Home office::Largas jornadas frente a la compu, con más comodidad.||product-media-cojin-ortopedico-vida-02.jpg::Persona sentada sobre el cojín en el asiento del auto::En el auto::Trayectos diarios o viajes largos, con un apoyo estable.||product-media-cojin-ortopedico-vida-03.jpg::Mujer sentada cómodamente sobre el cojín en una silla de escritorio::Estudio y lectura::Para las horas de clase, de lectura o de videollamadas.{%- endcapture -%}
+    {%- capture nk_uses -%}product-media-cojin-ortopedico-real-uso-01.jpg::Hombre trabajando en la compu sentado sobre el almohadón en una silla de escritorio::Horas de compu::Home office, estudio o gaming: un apoyo cómodo se nota al final del día.||product-media-cojin-ortopedico-real-uso-02.jpg::Hombre sentado sobre el almohadón en una banqueta con ruedas::Banquetas y sillas sin respaldo::Los laterales elevados te dan un apoyo estable aunque la silla sea simple.||product-media-cojin-ortopedico-real-uso-03.jpg::El almohadón gris apoyado sobre una silla de escritorio::Se acomoda en tu silla::Mide 48 × 38 cm: medí tu asiento antes de comprar.{%- endcapture -%}
 
     {%- assign nk_how_eyebrow = 'Cómo funciona' -%}
     {%- assign nk_how_title = 'Tres zonas, <span class="nk-hl">un solo apoyo</span>' -%}
-    {%- assign nk_how_lead = 'Cada parte del cojín cumple una función para que te sientes más cómodo.' -%}
-    {%- assign nk_how_image = 'product-media-cojin-ortopedico-04.jpg' -%}
-    {%- assign nk_how_alt = 'Zonas del cojín: A laterales, B zona trasera y C canal central' -%}
+    {%- assign nk_how_lead = 'Cada parte del almohadón cumple una función para que te sientes más cómodo.' -%}
+    {%- assign nk_how_image = 'product-media-cojin-ortopedico-real-05.jpg' -%}
+    {%- assign nk_how_alt = 'El almohadón gris sobre una silla: laterales elevados, zona trasera y ranura en U' -%}
     {%- assign nk_how = 'A::Laterales elevados::Envuelven la cadera y los muslos para un apoyo más estable.||B::Zona trasera de apoyo::Más alta, acompaña la espalda baja cuando te sentás.||C::Ranura en U y canal de aire::Deja libre la zona del coxis y favorece la ventilación.' -%}
 
     {%- assign nk_benefits_eyebrow = 'Detalles que se notan' -%}
@@ -93,21 +102,17 @@
     {%- assign nk_benefits_lead = 'Materiales y formas pensados para el uso de todos los días.' -%}
     {%- assign nk_benefits = 'foam::Espuma viscoelástica::Se adapta a tu forma y recupera la suya en 3 a 5 segundos.||slot::Ranura en U::Su recorte central deja libre la zona del coxis.||sides::Laterales elevados::Envuelven la cadera y los muslos para que no te deslices.||arc::Frente en arco::Acompaña la base de los muslos con una transición suave.||wind::Funda transpirable::Malla con canal central de ventilación para mantenerlo fresco.||zip::Funda con cierre::Se retira fácilmente para lavarla por separado.' -%}
 
-    {%- assign nk_video = 'cojin-ortopedico.mp4' -%}
-    {%- assign nk_video_poster = 'product-media-cojin-ortopedico-poster.jpg' -%}
-    {%- assign nk_video_lead = 'La funda, el núcleo de espuma y cómo se usa en la oficina y en el auto.' -%}
-    {%- assign nk_video_details = 'product-media-cojin-ortopedico-detalle-espuma.jpg::Mano presionando el núcleo de espuma viscoelástica::Núcleo de espuma viscoelástica||product-media-cojin-ortopedico-detalle-funda.jpg::Manos abriendo el cierre de la funda del cojín::Funda con cierre, fácil de lavar' -%}
 
-    {%- assign nk_compare_title = 'Un cojín común vs. <span class="nk-hl">Nekova</span>' -%}
-    {%- assign nk_compare_them = 'Cojín común' -%}
+    {%- assign nk_compare_title = 'Un almohadón común vs. <span class="nk-hl">Nekova</span>' -%}
+    {%- assign nk_compare_them = 'Almohadón común' -%}
     {%- assign nk_compare = 'Laterales elevados que envuelven la cadera::no||Ranura en U para la zona del coxis::no||Espuma viscoelástica de recuperación lenta::a veces||Canal central de ventilación::no||Funda transpirable con cierre::a veces' -%}
 
     {%- assign nk_specs_title = 'Todo lo que tenés que <span class="nk-hl">saber</span>' -%}
     {%- assign nk_specs_lead = 'Antes de comprar, verificá que el asiento de tu silla o de tu auto tenga al menos 48 × 38 cm.' -%}
     {%- assign nk_specs_image = 'product-media-cojin-ortopedico-03.jpg' -%}
-    {%- assign nk_specs_alt = 'El cojín en sus dos colores: gris y azul marino' -%}
+    {%- assign nk_specs_alt = 'El almohadón en sus dos colores: gris y azul marino' -%}
 
-    {%- capture nk_faq -%}¿Qué medidas tiene?::Mide 48 × 38 × 12 cm. Antes de comprar, verificá que el asiento de tu silla o de tu auto tenga al menos ese ancho y esa profundidad.||¿Cómo se limpia?::La funda tiene cierre: retirala y lavala por separado. Recomendamos no mojar el núcleo de espuma viscoelástica.||¿En qué colores está disponible?::En gris y en azul marino. Elegí el color antes de agregarlo al carrito.{%- endcapture -%}
+    {%- capture nk_faq -%}¿Las fotos y los videos son reales?::Las fotos de uso, los clips de "Así es de verdad" y los videos los grabamos nosotros, con el mismo almohadón que te enviamos. Las imágenes sobre fondo blanco muestran los dos colores tal como son. Las escenas de "Para cada momento" son ilustrativas (algunas creadas con IA y otras del fabricante), y así lo aclaramos.||¿Qué medidas tiene?::Mide 48 × 38 × 12 cm. Antes de comprar, verificá que el asiento de tu silla o de tu auto tenga al menos ese ancho y esa profundidad.||¿Cómo se limpia?::La funda tiene cierre: retirala y lavala por separado. Recomendamos no mojar el núcleo de espuma viscoelástica.||¿En qué colores está disponible?::En gris y en azul marino. Elegí el color antes de agregarlo al carrito.{%- endcapture -%}
     {%- assign nk_cta_title = 'Sentate más cómodo desde hoy' -%}
 
   {%- when 'tapones' -%}
@@ -623,11 +628,25 @@
           {%- if nk_assure_extra != blank -%}
             <li>{% render 'nekova-icon', icon: 'sizes' %}<span>{{ nk_assure_extra }}</span></li>
           {%- endif -%}
-          <li>{% render 'nekova-icon', icon: 'return' %}<span>{{ nk_returns_assure }}</span></li>
-          {%- assign free_shipping_threshold = settings.nekova_free_shipping_threshold | default: 0 -%}
-          {%- if free_shipping_threshold > 0 -%}
-            <li>{% render 'nekova-icon', icon: 'truck' %}<span><strong>Envío gratis</strong> en compras desde {{ free_shipping_threshold | times: 100 | money_without_trailing_zeros }}.</span></li>
+          {%- liquid
+            assign free_shipping_threshold = settings.nekova_free_shipping_threshold | default: 0
+            assign free_shipping_cents = free_shipping_threshold | times: 100
+            assign delivery_max = settings.nekova_delivery_max | default: 0
+            assign delivery_min = settings.nekova_delivery_min | default: 1
+            assign delivery_carrier = settings.nekova_delivery_carrier
+          -%}
+          {%- if delivery_max > 0 or free_shipping_threshold > 0 -%}
+            <li class="nk-assure-ship">{% render 'nekova-icon', icon: 'truck' %}<span>
+              {%- if free_shipping_threshold > 0 and current_price >= free_shipping_cents -%}<strong>Envío gratis</strong>{%- else -%}<strong>Envío</strong>{%- endif -%}
+              {%- if delivery_carrier != blank %} por {{ delivery_carrier | escape }}{% endif -%}
+              {%- if delivery_max > 0 %}: llega en {% if delivery_min < delivery_max %}{{ delivery_min }} a {% endif %}{{ delivery_max }} días hábiles{% endif -%}.
+              {%- if free_shipping_threshold > 0 and current_price < free_shipping_cents %} Gratis en compras desde {{ free_shipping_cents | money_without_trailing_zeros }}.{% endif -%}
+              {%- if delivery_max > 0 -%}
+                <small class="nk-dispatch" data-nk-dispatch data-cutoff="13" data-min="{{ delivery_min }}" data-max="{{ delivery_max }}" data-holidays="{{ settings.nekova_holidays | escape }}" hidden></small>
+              {%- endif -%}
+            </span></li>
           {%- endif -%}
+          <li>{% render 'nekova-icon', icon: 'return' %}<span>{{ nk_returns_assure }}</span></li>
           <li>{% render 'nekova-icon', icon: 'chat' %}<span><strong>Atención por WhatsApp</strong> antes y después de comprar.</span></li>
           {%- if section.settings.shipping_note != blank -%}
             <li>{% render 'nekova-icon', icon: 'truck' %}<span>{{ section.settings.shipping_note }}</span></li>
@@ -675,7 +694,7 @@
           <details>
             <summary>Envío y devoluciones</summary>
             <div class="nk-accordion-body">
-              <p>Las compras realizadas en días hábiles antes de las 13:00hs se despachan ese mismo día; si comprás después de ese horario, un fin de semana o un feriado, el día hábil siguiente. El costo y el plazo de envío se calculan según tu destino y los ves en el checkout antes de pagar.</p>
+              <p>Las compras realizadas en días hábiles antes de las 13:00hs se despachan ese mismo día; si comprás después de ese horario, un fin de semana o un feriado, el día hábil siguiente.{% if delivery_max > 0 %} Enviamos{% if delivery_carrier != blank %} por {{ delivery_carrier | escape }}{% endif %} a todo el país y suele llegar en {% if delivery_min < delivery_max %}{{ delivery_min }} a {% endif %}{{ delivery_max }} días hábiles desde el despacho. Te mandamos el número de seguimiento por email.{% endif %}{% if free_shipping_threshold > 0 %} Las compras desde {{ free_shipping_cents | money_without_trailing_zeros }} tienen envío gratis.{% endif %}</p>
               <p>{{ nk_returns_text }}</p>
             </div>
           </details>
@@ -684,8 +703,34 @@
     </div>
   </div>
 
+  {%- if nk_real != blank -%}
+    <section class="nk-section nk-section--panel" aria-labelledby="NkReal-{{ section.id }}">
+      <div class="nk-shell">
+        <div class="nk-head nk-head--split">
+          <div>
+            <p class="nk-eyebrow">Sin filtros</p>
+            <h2 id="NkReal-{{ section.id }}">Así es <span class="nk-hl">de verdad</span></h2>
+          </div>
+          <p class="nk-head-lead">Lo grabamos nosotros, en casa, con el mismo almohadón que te enviamos. Sin efectos ni modelos.</p>
+        </div>
+        <div class="nk-real">
+          {%- assign real_items = nk_real | split: '||' -%}
+          {%- for item in real_items -%}
+            {%- assign cells = item | split: '::' -%}
+            <figure>
+              <video muted loop playsinline preload="none" poster="{{ cells[1] | asset_url }}" aria-label="{{ cells[2] | escape }}" data-nk-loop>
+                <source src="{{ cells[0] | asset_url }}" type="video/mp4">
+              </video>
+              <figcaption><strong>{{ cells[2] }}</strong>{{ cells[3] }}</figcaption>
+            </figure>
+          {%- endfor -%}
+        </div>
+      </div>
+    </section>
+  {%- endif -%}
+
   {%- if nk_uses_title != blank -%}
-    <section class="nk-section nk-section--panel" aria-labelledby="NkUses-{{ section.id }}">
+    <section class="nk-section{% if nk_real == blank %} nk-section--panel{% endif %}" aria-labelledby="NkUses-{{ section.id }}">
       <div class="nk-shell">
         <div class="nk-head nk-head--split">
           <div>
@@ -704,6 +749,28 @@
             </figure>
           {%- endfor -%}
         </div>
+      </div>
+    </section>
+  {%- endif -%}
+
+  {%- if nk_moments != blank -%}
+    <section class="nk-section nk-section--panel" aria-labelledby="NkMoments-{{ section.id }}">
+      <div class="nk-shell">
+        <div class="nk-head nk-head--split">
+          <div>
+            <p class="nk-eyebrow">Para cada momento</p>
+            <h2 id="NkMoments-{{ section.id }}">Donde pases <span class="nk-hl">horas sentado</span></h2>
+          </div>
+          <p class="nk-head-lead">En la oficina, en la silla de ruedas, al volante, jugando o en la silla de casa: un apoyo cómodo para cada día.</p>
+        </div>
+        <ul class="nk-moments" role="list">
+          {%- assign moment_items = nk_moments | split: '||' -%}
+          {%- for item in moment_items -%}
+            {%- assign cells = item | split: '::' -%}
+            <li><img src="{{ cells[0] | asset_url }}" alt="{{ cells[1] }}" width="720" height="900" loading="lazy"><span>{{ cells[2] }}</span></li>
+          {%- endfor -%}
+        </ul>
+        <p class="nk-moments-note">Imágenes ilustrativas: algunas creadas con IA y otras del fabricante.</p>
       </div>
     </section>
   {%- endif -%}
@@ -778,6 +845,34 @@
     </section>
   {%- endif -%}
 
+  {%- if nk_reels != blank -%}
+    <section class="nk-section nk-section--soft" aria-labelledby="NkReels-{{ section.id }}">
+      <div class="nk-shell nk-split nk-split--reels">
+        <div>
+          <p class="nk-eyebrow">Miralo en video</p>
+          <h2 id="NkReels-{{ section.id }}">Te lo mostramos <span class="nk-hl">por dentro y por fuera</span></h2>
+          <p class="nk-head-lead">Videos nuestros, grabados con el producto real. Activá el sonido para escucharlos.</p>
+          {%- if settings.social_instagram_link != blank -%}
+            <a class="nk-reels-link" href="{{ settings.social_instagram_link }}" target="_blank" rel="noopener">Ver más videos en Instagram {% render 'nekova-icon', icon: 'arrow-right' %}</a>
+          {%- endif -%}
+        </div>
+        <div class="nk-reels">
+          {%- assign reel_items = nk_reels | split: '||' -%}
+          {%- for item in reel_items -%}
+            {%- assign cells = item | split: '::' -%}
+            <figure>
+              <video controls playsinline preload="none" poster="{{ cells[1] | asset_url }}" aria-label="Video: {{ cells[2] | escape }}">
+                <source src="{{ cells[0] | asset_url }}" type="video/mp4">
+                Tu navegador no puede reproducir este video.
+              </video>
+              <figcaption><strong>{{ cells[2] }}</strong>{{ cells[3] }}</figcaption>
+            </figure>
+          {%- endfor -%}
+        </div>
+      </div>
+    </section>
+  {%- endif -%}
+
   {%- if nk_compare_title != blank -%}
     <section class="nk-section" aria-labelledby="NkCompare-{{ section.id }}">
       <div class="nk-shell">
@@ -806,6 +901,57 @@
       </div>
     </section>
   {%- endif -%}
+
+  {%- liquid
+    assign trust_whatsapp_digits = settings.nekova_whatsapp | remove: ' ' | remove: '+' | remove: '-' | remove: '(' | remove: ')' | remove: '.'
+    assign trust_installments = settings.nekova_installments_count | default: 0
+    assign trust_installments_min = settings.nekova_installments_min | default: 0 | times: 100
+  -%}
+  <section class="nk-section nk-section--dark" aria-labelledby="NkTrust-{{ section.id }}">
+    <div class="nk-shell">
+      <div class="nk-head nk-head--split">
+        <div>
+          <p class="nk-eyebrow">Comprá tranquilo</p>
+          <h2 id="NkTrust-{{ section.id }}">Cómo es comprar en <span class="nk-hl">Nekova</span></h2>
+        </div>
+        <p class="nk-head-lead">Sin letra chica: así pagás, así te llega y así lo devolvés si no te convence.</p>
+      </div>
+      <ol class="nk-buysteps" role="list">
+        <li>
+          <span class="nk-buysteps-icon">{% render 'nekova-icon', icon: 'card' %}</span>
+          <strong>Pagás con Mercado Pago</strong>
+          <p>Tarjeta de crédito, débito o dinero en cuenta.{% if trust_installments > 0 %} Hasta {{ trust_installments }} cuotas sin interés{% if trust_installments_min > 0 %} desde {{ trust_installments_min | money_without_trailing_zeros }}{% endif %}.{% endif %} Nosotros no vemos los datos de tu tarjeta.</p>
+        </li>
+        <li>
+          <span class="nk-buysteps-icon">{% render 'nekova-icon', icon: 'shield' %}</span>
+          <strong>Lo despachamos rápido</strong>
+          <p>Si comprás un día hábil antes de las 13:00hs, sale ese mismo día. Si no, el día hábil siguiente.</p>
+        </li>
+        <li>
+          <span class="nk-buysteps-icon">{% render 'nekova-icon', icon: 'truck' %}</span>
+          <strong>{% if delivery_max > 0 %}Llega en {% if delivery_min < delivery_max %}{{ delivery_min }} a {% endif %}{{ delivery_max }} días hábiles{% else %}Te llega a tu casa{% endif %}</strong>
+          <p>{% if delivery_carrier != blank %}Por {{ delivery_carrier | escape }}, a todo el país,{% else %}A todo el país,{% endif %} con número de seguimiento.{% if free_shipping_threshold > 0 %} Envío gratis desde {{ free_shipping_cents | money_without_trailing_zeros }}.{% endif %}</p>
+        </li>
+        <li>
+          <span class="nk-buysteps-icon">{% render 'nekova-icon', icon: 'return' %}</span>
+          <strong>{{ nk_returns_short | capitalize }}</strong>
+          <p>{{ nk_returns_faq_a }}</p>
+        </li>
+      </ol>
+      <div class="nk-trust-contact">
+        <p><strong>¿Tenés una duda antes de comprar?</strong> Escribinos y te responde una persona del equipo, no un bot.</p>
+        <div class="nk-trust-actions">
+          {%- if settings.nekova_whatsapp != blank -%}
+            {%- capture trust_wa_text -%}Hola, tengo una consulta sobre {{ featured_product.title }}{%- endcapture -%}
+            <a class="nk-button nk-button--light" href="https://wa.me/{{ trust_whatsapp_digits }}?text={{ trust_wa_text | url_encode }}" target="_blank" rel="noopener">{% render 'nekova-icon', icon: 'chat' %}<span>Escribinos por WhatsApp</span></a>
+          {%- endif -%}
+          {%- if settings.social_instagram_link != blank -%}
+            <a class="nk-trust-ig" href="{{ settings.social_instagram_link }}" target="_blank" rel="noopener">Seguinos en Instagram {% render 'nekova-icon', icon: 'arrow-right' %}</a>
+          {%- endif -%}
+        </div>
+      </div>
+    </div>
+  </section>
 
   {%- if nk_specs_title != blank -%}
     <section class="nk-section nk-section--panel" aria-labelledby="NkSpecs-{{ section.id }}">
@@ -904,7 +1050,7 @@
             <details><summary>{{ cells[0] }}</summary><p>{{ cells[1] }}</p></details>
           {%- endfor -%}
         {%- endif -%}
-        <details><summary>¿Cuándo se despacha mi pedido?</summary><p>Las compras realizadas en días hábiles antes de las 13:00hs se despachan ese mismo día. Si comprás después de ese horario, un fin de semana o un feriado, tu pedido sale el día hábil siguiente. El plazo de entrega depende del destino y del operador logístico.</p></details>
+        <details><summary>¿Cuándo se despacha mi pedido?</summary><p>Las compras realizadas en días hábiles antes de las 13:00hs se despachan ese mismo día. Si comprás después de ese horario, un fin de semana o un feriado, tu pedido sale el día hábil siguiente.{% if delivery_max > 0 %} Después, {% if delivery_carrier != blank %}{{ delivery_carrier | escape }} {% endif %}suele entregarlo en {% if delivery_min < delivery_max %}{{ delivery_min }} a {% endif %}{{ delivery_max }} días hábiles, y te mandamos el número de seguimiento por email.{% endif %}</p></details>
         <details><summary>¿Cuánto cuesta el envío?</summary><p>{%- assign faq_free_shipping = settings.nekova_free_shipping_threshold | default: 0 -%}{%- if faq_free_shipping > 0 -%}Las compras desde {{ faq_free_shipping | times: 100 | money_without_trailing_zeros }} tienen envío gratis. {% endif -%}El costo y la estimación de entrega se calculan según tu destino y se muestran en el checkout, antes de confirmar la compra.</p></details>
         <details><summary>{{ nk_returns_faq_q }}</summary><p>{{ nk_returns_faq_a }}</p></details>
         <details><summary>¿Cómo me comunico con ustedes?</summary><p>
@@ -912,7 +1058,8 @@
           {%- assign faq_email = settings.nekova_email | default: shop.email -%}
           {%- if settings.nekova_whatsapp != blank -%}Por WhatsApp al <a href="https://wa.me/{{ faq_whatsapp_digits }}" target="_blank" rel="noopener">{{ settings.nekova_whatsapp | escape }}</a>{%- if faq_email != blank -%}, por email a <a href="mailto:{{ faq_email }}">{{ faq_email }}</a>{%- endif %} o desde la <a href="/pages/contact">página de contacto</a>. Te respondemos a la brevedad.{%- else -%}Escribinos desde la <a href="/pages/contact">página de contacto</a> y te respondemos a la brevedad.{%- endif -%}
         </p></details>
-        <details><summary>¿Qué medios de pago puedo usar?</summary><p>En el checkout vas a ver los medios de pago disponibles y las opciones de cuotas cuando correspondan.</p></details>
+        <details><summary>¿Qué medios de pago puedo usar?</summary><p>{% if settings.nekova_show_mercadopago %}Pagás con Mercado Pago: tarjeta de crédito, débito o dinero en cuenta.{% else %}En el checkout vas a ver los medios de pago disponibles.{% endif %}{% if trust_installments > 0 %} Hay hasta {{ trust_installments }} cuotas sin interés{% if trust_installments_min > 0 %} en compras desde {{ trust_installments_min | money_without_trailing_zeros }}{% endif %}.{% endif %}</p></details>
+        <details><summary>¿Es seguro comprar acá?</summary><p>Sí. El pago se procesa en el checkout de Shopify{% if settings.nekova_show_mercadopago %} y Mercado Pago{% endif %}: nosotros no vemos ni guardamos los datos de tu tarjeta. Te llega un email con la confirmación del pedido y, cuando sale, con el número de seguimiento. Además, tenés {{ nk_returns_short }}.</p></details>
       </div>
     </div>
   </section>
@@ -1056,6 +1203,9 @@
   .nk-assure { background: var(--nekova-accent-soft); border-radius: 1.2rem; display: grid; gap: 1rem; list-style: none; margin: 1.6rem 0 0; padding: 1.6rem 1.8rem; }
   .nk-assure li { align-items: flex-start; color: var(--nk-ink); display: flex; font-size: 1.4rem; gap: 1rem; line-height: 1.5; }
   .nk-assure svg { color: var(--nk-accent); flex: 0 0 auto; height: 2.2rem; margin-top: -.1rem; width: 2.2rem; }
+  .nk-assure-ship span { display: block; }
+  .nk-dispatch { color: var(--nk-ink); display: block; font-size: 1.35rem; font-weight: 700; margin-top: .4rem; }
+  .nk-dispatch b { color: var(--nk-accent); }
   .nk-checks { display: grid; gap: .9rem; list-style: none; margin: 2.4rem 0 0; padding: 0; }
   .nk-checks li { align-items: center; display: flex; font-size: 1.5rem; gap: 1rem; }
   .nk-checks svg { color: var(--nk-accent); }
@@ -1098,6 +1248,37 @@
 
   .nk-uses { display: grid; gap: 2rem; grid-template-columns: repeat(3, minmax(0, 1fr)); }
   .nk-uses figure { background: var(--nekova-surface); border-radius: var(--nekova-radius-lg); margin: 0; overflow: hidden; }
+  .nk-section:not(.nk-section--panel) .nk-uses figure { background: var(--nk-panel); }
+  .nk-moments { display: grid; gap: 2rem; grid-template-columns: repeat(3, minmax(0, 1fr)); list-style: none; margin: 0; padding: 0; }
+  .nk-moments li { border-radius: var(--nekova-radius-lg); margin: 0; overflow: hidden; position: relative; }
+  .nk-moments img { aspect-ratio: 4 / 5; display: block; height: auto; object-fit: cover; width: 100%; }
+  .nk-moments span { background: linear-gradient(transparent, rgba(0, 0, 0, .62)); bottom: 0; color: #fff; font-family: var(--nekova-font-heading); font-size: 2rem; font-weight: var(--font-heading-weight); left: 0; line-height: 1.25; padding: 4rem 1.6rem 1.6rem; position: absolute; right: 0; }
+  .nk-moments-note { color: var(--nk-muted); font-size: 1.25rem; margin: 1.6rem 0 0; }
+  .nk-real { display: grid; gap: 2rem; grid-template-columns: repeat(3, minmax(0, 1fr)); }
+  .nk-real figure { background: var(--nekova-surface); border-radius: var(--nekova-radius-lg); margin: 0; overflow: hidden; }
+  .nk-real video { aspect-ratio: 4 / 5; background: var(--nk-panel); display: block; height: auto; object-fit: cover; width: 100%; }
+  .nk-real figcaption, .nk-reels figcaption { color: var(--nk-muted); font-size: 1.45rem; line-height: 1.55; padding: 2rem 2.4rem 2.4rem; }
+  .nk-real strong, .nk-reels strong, .nk-buysteps strong { color: var(--nk-ink); display: block; font-family: var(--nekova-font-heading); font-size: 1.8rem; font-weight: var(--font-heading-weight); letter-spacing: -.01em; margin-bottom: .6rem; }
+  .nk-split--reels { align-items: center; grid-template-columns: minmax(0, .8fr) minmax(0, 1.2fr); }
+  .nk-reels { display: grid; gap: 2rem; grid-template-columns: 1fr 1fr; }
+  .nk-reels figure { background: var(--nekova-surface); border-radius: var(--nekova-radius-lg); box-shadow: var(--nekova-shadow); margin: 0; overflow: hidden; }
+  .nk-reels video { aspect-ratio: 9 / 16; background: var(--nekova-ink); display: block; height: auto; object-fit: cover; width: 100%; }
+  .nk-reels figcaption { padding: 1.6rem 1.8rem 2rem; }
+  .nk-reels-link, .nk-trust-ig { align-items: center; display: inline-flex; font-size: 1.5rem; font-weight: 800; gap: .6rem; margin-top: 2.4rem; text-decoration: none; }
+  .nk-reels-link svg, .nk-trust-ig svg { height: 1.8rem; width: 1.8rem; }
+  .nk-buysteps { counter-reset: nk-buysteps; display: grid; gap: 2rem; grid-template-columns: repeat(4, minmax(0, 1fr)); list-style: none; margin: 0; padding: 0; }
+  .nk-buysteps li { border: 1px solid var(--nk-line); border-radius: var(--nekova-radius-lg); padding: 2.8rem 2.4rem; position: relative; }
+  .nk-buysteps li::before { color: var(--nk-muted); content: "0" counter(nk-buysteps); counter-increment: nk-buysteps; font-size: 1.3rem; font-weight: 800; position: absolute; right: 2.4rem; top: 2.8rem; }
+  .nk-buysteps-icon { align-items: center; background: var(--nk-accent); border-radius: 1.2rem; color: var(--nekova-on-accent); display: inline-flex; height: 4.8rem; justify-content: center; margin-bottom: 2rem; width: 4.8rem; }
+  .nk-buysteps-icon svg { height: 2.4rem; width: 2.4rem; }
+  .nk-buysteps p { color: var(--nk-muted); font-size: 1.45rem; line-height: 1.6; margin: 0; }
+  .nk-trust-contact { align-items: center; border-top: 1px solid var(--nk-line); display: flex; flex-wrap: wrap; gap: 2.4rem; justify-content: space-between; margin-top: 4.8rem; padding-top: 4rem; }
+  .nk-trust-contact p { color: var(--nk-muted); font-size: 1.6rem; line-height: 1.6; margin: 0; max-width: 56rem; }
+  .nk-trust-contact p strong { color: var(--nk-ink); }
+  .nk-trust-actions { align-items: center; display: flex; flex-wrap: wrap; gap: 2.4rem; }
+  .nk-trust-actions .nk-button { gap: .8rem; }
+  .nk-trust-actions .nk-button svg { height: 2rem; width: 2rem; }
+  .nk-section--dark .nk-trust-ig { color: #8fa8ff; margin-top: 0; }
   .nk-uses img { aspect-ratio: 4 / 5; display: block; height: auto; object-fit: cover; width: 100%; }
   .nk-uses figcaption { color: var(--nk-muted); font-size: 1.45rem; line-height: 1.55; padding: 2.2rem 2.4rem 2.6rem; }
   .nk-uses strong, .nk-benefits strong, .nk-zones strong { color: var(--nk-ink); display: block; font-family: var(--nekova-font-heading); font-size: 1.9rem; font-weight: var(--font-heading-weight); margin-bottom: .4rem; }
@@ -1210,6 +1391,10 @@
     .nk-head--split, .nk-split, .nk-split--video, .nk-split--faq { gap: 3.2rem; grid-template-columns: 1fr; }
     .nk-split--faq > div:first-child { position: static; }
     .nk-uses { gap: 1.2rem; }
+    .nk-split--reels { grid-template-columns: 1fr; }
+    .nk-moments { gap: 1.2rem; }
+    .nk-buysteps { grid-template-columns: 1fr 1fr; }
+    .nk-real { gap: 1.2rem; }
     .nk-benefits { grid-template-columns: repeat(2, minmax(0, 1fr)); }
     .nk-how-media { margin: 0 auto; max-width: 52rem; width: 100%; }
     .nk-shell { padding: 0 2.4rem; }
@@ -1231,6 +1416,14 @@
     .nk-uses { display: flex; gap: 1.2rem; margin: 0 -1.6rem; overflow-x: auto; padding: 0 1.6rem .4rem; scroll-snap-type: x mandatory; }
     .nk-uses figure { flex: 0 0 78%; scroll-snap-align: start; }
     .nk-uses figcaption { padding: 1.6rem 1.8rem 2rem; }
+    .nk-moments { display: flex; gap: 1.2rem; margin: 0 -1.6rem; overflow-x: auto; padding: 0 1.6rem .4rem; scroll-snap-type: x mandatory; }
+    .nk-moments li { flex: 0 0 62%; scroll-snap-align: start; }
+    .nk-real, .nk-reels { display: flex; gap: 1.2rem; margin: 0 -1.6rem; overflow-x: auto; padding: 0 1.6rem .4rem; scroll-snap-type: x mandatory; }
+    .nk-real figure { flex: 0 0 78%; scroll-snap-align: start; }
+    .nk-reels figure { flex: 0 0 66%; scroll-snap-align: start; }
+    .nk-buysteps { grid-template-columns: 1fr; }
+    .nk-trust-actions, .nk-trust-actions .nk-button { width: 100%; }
+    .nk-trust-actions .nk-button { justify-content: center; }
     .nk-benefits { gap: 1.2rem; grid-template-columns: 1fr; }
     .nk-benefits li { align-items: flex-start; display: grid; gap: 0 1.6rem; grid-template-columns: 4.8rem 1fr; padding: 2rem; }
     .nk-benefit-icon { grid-row: span 2; height: 4.8rem; margin: 0; width: 4.8rem; }

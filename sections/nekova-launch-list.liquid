@@ -28,7 +28,7 @@
           {%- if section.settings.max_uses > 0 -%}
             <p class="nk-list-price-note">Con tu código, en las primeras {{ section.settings.max_uses }} compras de la lista.</p>
           {%- else -%}
-            <p class="nk-list-price-note">Ejemplo con el cojín. El código vale en toda la tienda, una vez por persona.</p>
+            <p class="nk-list-price-note">Ejemplo con el almohadón. El código vale en toda la tienda, una vez por persona.</p>
           {%- endif -%}
           <a class="nk-list-jump" href="#NkListForm">Quiero mi código</a>
         {%- endif -%}
@@ -45,7 +45,7 @@
         {%- if section.settings.image != blank -%}
           {{ section.settings.image | image_url: width: 900 | image_tag: loading: 'eager', alt: section.settings.image.alt, sizes: '(min-width: 990px) 480px, 100vw' }}
         {%- else -%}
-          <img src="{{ 'product-media-cojin-ortopedico-01.jpg' | asset_url }}" alt="Cojín ergonómico en U de Nekova" width="1200" height="1200" loading="eager">
+          <img src="{{ 'product-media-cojin-ortopedico-01.jpg' | asset_url }}" alt="Almohadón ergonómico en U de Nekova" width="1200" height="1200" loading="eager">
         {%- endif -%}
       </div>
 
@@ -160,13 +160,13 @@
       "type": "product",
       "id": "product",
       "label": "Producto (para mostrar el precio)",
-      "info": "Vacío = cojín ergonómico."
+      "info": "Vacío = almohadón ergonómico."
     },
     {
       "type": "image_picker",
       "id": "image",
       "label": "Imagen",
-      "info": "Vacío = foto del cojín."
+      "info": "Vacío = foto del almohadón."
     },
     {
       "type": "number",
@@ -210,13 +210,13 @@
       "type": "inline_richtext",
       "id": "heading",
       "label": "Título",
-      "default": "Tu cojín con 15% OFF, <em>antes que nadie</em>"
+      "default": "Tu almohadón con 15% OFF, <em>antes que nadie</em>"
     },
     {
       "type": "richtext",
       "id": "intro",
       "label": "Texto",
-      "default": "<p>Nuestro primer lote de cojines ergonómicos en U llega en pocos días y son pocas unidades. Anotate y recibí un código de descuento para usar el día del lanzamiento.</p>"
+      "default": "<p>Nuestro primer lote de almohadones ergonómicos en U llega en pocos días y son pocas unidades. Anotate y recibí un código de descuento para usar el día del lanzamiento.</p>"
     },
     {
       "type": "inline_richtext",
@@ -234,7 +234,7 @@
       "type": "richtext",
       "id": "conditions",
       "label": "Condiciones",
-      "default": "<p>15% de descuento sobre el precio del cojín ergonómico en U, con el código que enviamos por email a quienes se anotan en esta lista. Válido del 11/11/2026 al 18/11/2026 o hasta agotar 30 usos, lo que ocurra primero. Un uso por cliente; el código solo funciona con el email con el que te anotaste. No se combina con otras promociones. Sujeto a disponibilidad de stock. No incluye el costo de envío.</p>"
+      "default": "<p>15% de descuento sobre el precio del almohadón ergonómico en U, con el código que enviamos por email a quienes se anotan en esta lista. Válido del 11/11/2026 al 18/11/2026 o hasta agotar 30 usos, lo que ocurra primero. Un uso por cliente; el código solo funciona con el email con el que te anotaste. No se combina con otras promociones. Sujeto a disponibilidad de stock. No incluye el costo de envío.</p>"
     }
   ]
 }

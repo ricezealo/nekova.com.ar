@@ -109,7 +109,7 @@ const cushionImageFiles = [
 const cushionImages = cushionImageFiles.map((filename, index) => ({
   src: `/assets/product-media-${filename}`,
   url: `/assets/product-media-${filename}`,
-  alt: `Cojín ergonómico de doble capa, imagen ${index + 1}`,
+  alt: `Almohadón ergonómico de doble capa, imagen ${index + 1}`,
   width: 1200,
   height: 1200,
 }));
@@ -197,7 +197,7 @@ const cushionVariant = {
 const cushionProduct = {
   id: 5400,
   handle: 'cojin-ergonomico-doble-capa',
-  title: 'Cojín Ergonómico de Doble Capa',
+  title: 'Almohadón Ergonómico de Doble Capa',
   vendor: 'NEKOVA',
   price: 7200000,
   compare_at_price: 9000000,
@@ -257,7 +257,7 @@ const orthopedicImages = Array.from({ length: 12 }, (_, index) => {
   return {
     src: `/assets/product-media-cojin-ortopedico-${number}.jpg`,
     url: `/assets/product-media-cojin-ortopedico-${number}.jpg`,
-    alt: `Cojín ergonómico en U, imagen ${index + 1}`,
+    alt: `Almohadón ergonómico en U, imagen ${index + 1}`,
     width: 1200,
     height: 1200,
   };
@@ -283,7 +283,7 @@ const orthopedicVariants = ['Gris', 'Azul marino'].map((color, index) => ({
 const orthopedicProduct = {
   id: 5500,
   handle: 'cojin-ortopedico-u',
-  title: 'Cojín Ergonómico en U de Espuma Viscoelástica',
+  title: 'Almohadón Ergonómico en U de Espuma Viscoelástica',
   vendor: 'NEKOVA',
   price: 7900000,
   compare_at_price: null,
@@ -296,7 +296,7 @@ const orthopedicProduct = {
   options_with_values: [{ name: 'Color', position: 1, values: ['Gris', 'Azul marino'] }],
   variants: orthopedicVariants,
   selected_or_first_available_variant: orthopedicVariants[0],
-  description: '<p>Cojín de asiento de espuma viscoelástica de recuperación lenta, con ranura en U para la zona del coxis, laterales elevados y frente en arco. Funda de malla transpirable y extraíble. Medidas: 48 × 38 × 12 cm. Disponible en gris y azul marino.</p>',
+  description: '<p>Almohadón de asiento de espuma viscoelástica de recuperación lenta, con ranura en U para la zona del coxis, laterales elevados y frente en arco. Funda de malla transpirable y extraíble. Medidas: 48 × 38 × 12 cm. Disponible en gris y azul marino.</p>',
   url: '/products/cojin-ortopedico-u',
   type: 'Confort y descanso',
   has_only_default_variant: false,
@@ -455,7 +455,7 @@ const launchProducts = process.env.PREVIEW_ALL_PRODUCTS
   : [orthopedicProduct, insoleProduct, pillowProduct];
 const collection = { id: 1, handle: 'all', title: 'Todos los productos', description: '<p>Productos de ejemplo para la vista local.</p>', products: launchProducts, all_products_count: launchProducts.length, products_count: launchProducts.length, url: '/collections/all', image };
 const menuItems = [
-  { title: 'Cojín ergonómico', url: '/products/cojin-ortopedico-u', links: [] },
+  { title: 'Almohadón ergonómico', url: '/products/cojin-ortopedico-u', links: [] },
   { title: 'Plantillas', url: '/products/plantillas-multitalle', links: [] },
   { title: 'Almohada', url: '/products/almohada-nekova-somnia', links: [] },
   { title: 'Sobre Nekova', url: '/pages/sobre-nekova', links: [] },
