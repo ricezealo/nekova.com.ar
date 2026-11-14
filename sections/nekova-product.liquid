@@ -63,6 +63,8 @@
 {%- assign nk_assure_extra = '' -%}
 {%- assign nk_combo_handle = '' -%}
 {%- assign nk_tiers = '' -%}
+{%- comment -%} Warranty for factory defects (legal minimum in Argentina, applies to every product): never advertise less than 6 months. Empty = not shown. {%- endcomment -%}
+{%- assign nk_warranty = '6 meses' -%}
 {%- capture nk_returns_assure -%}<strong>Probalo tranquilo:</strong> si no te convence, tenés 10 días para devolverlo.{%- endcapture -%}
 {%- capture nk_returns_text -%}Tenés 10 días desde la compra para solicitar la devolución, con el producto completo y en perfecto estado. <a href="/pages/contact">Escribinos</a> para coordinarla.{%- endcapture -%}
 {%- assign nk_returns_faq_q = '¿Puedo devolverlo si no me convence?' -%}
@@ -82,7 +84,7 @@
     {%- assign nk_lead = 'Espuma viscoelástica, ranura en U y funda transpirable. Para la oficina, el auto o tu casa.' -%}
     {%- assign nk_checks = 'Espuma viscoelástica de recuperación lenta||Ranura en U que deja libre la zona del coxis||Funda transpirable y extraíble' -%}
     {%- capture nk_details -%}Un almohadón de asiento con forma ergonómica: los laterales elevados envuelven la cadera, el frente en arco acompaña la base de los muslos y la parte trasera, más alta, da apoyo a la espalda baja. La ranura en U deja libre la zona del coxis y el canal central favorece la circulación de aire.{%- endcapture -%}
-    {%- assign nk_specs = 'Medidas::48 × 38 × 12 cm||Relleno::Espuma viscoelástica de recuperación lenta||Recuperación::3 a 5 segundos||Diseño::Ranura en U, laterales elevados y frente en arco||Funda::Malla transpirable, extraíble con cierre||Colores::Gris y azul marino||Uso::Oficina, auto, hogar y viajes' -%}
+    {%- assign nk_specs = 'Medidas::48 × 38 × 12 cm||Peso máximo::Hasta 170 kg||Relleno::Espuma viscoelástica de recuperación lenta||Recuperación::3 a 5 segundos||Diseño::Ranura en U, laterales elevados y frente en arco||Funda::Malla transpirable, extraíble con cierre||Colores::Gris y azul marino||Uso::Oficina, auto, hogar y viajes' -%}
 
     {%- assign nk_uses_eyebrow = 'Para tu día a día' -%}
     {%- assign nk_uses_title = 'Pensado para las horas que pasás <span class="nk-hl">sentado</span>' -%}
@@ -112,7 +114,7 @@
     {%- assign nk_specs_image = 'product-media-cojin-ortopedico-03.jpg' -%}
     {%- assign nk_specs_alt = 'El almohadón en sus dos colores: gris y azul marino' -%}
 
-    {%- capture nk_faq -%}¿Las fotos y los videos son reales?::Las fotos de uso, los clips de "Así es de verdad" y los videos los grabamos nosotros, con el mismo almohadón que te enviamos. Las imágenes sobre fondo blanco muestran los dos colores tal como son. Las escenas de "Para cada momento" son ilustrativas (algunas creadas con IA y otras del fabricante), y así lo aclaramos.||¿Qué medidas tiene?::Mide 48 × 38 × 12 cm. Antes de comprar, verificá que el asiento de tu silla o de tu auto tenga al menos ese ancho y esa profundidad.||¿Cómo se limpia?::La funda tiene cierre: retirala y lavala por separado. Recomendamos no mojar el núcleo de espuma viscoelástica.||¿En qué colores está disponible?::En gris y en azul marino. Elegí el color antes de agregarlo al carrito.{%- endcapture -%}
+    {%- capture nk_faq -%}¿Las fotos y los videos son reales?::Las fotos de uso, los clips de "Así es de verdad" y los videos los grabamos nosotros, con el mismo almohadón que te enviamos. Las imágenes sobre fondo blanco muestran los dos colores tal como son. Las escenas de "Para cada momento" son ilustrativas (algunas creadas con IA y otras del fabricante), y así lo aclaramos.||¿Qué medidas tiene?::Mide 48 × 38 × 12 cm. Antes de comprar, verificá que el asiento de tu silla o de tu auto tenga al menos ese ancho y esa profundidad.||¿Cuánto peso soporta?::Está pensado para personas de hasta 170 kg.||¿Tiene garantía?::Sí: 6 meses de garantía por fallas de fábrica. Si notás una falla, escribinos por WhatsApp con una foto y lo resolvemos. Además, tenés 10 días desde la compra para probarlo y devolverlo si no te convence.||¿Cómo se limpia?::La funda tiene cierre: retirala y lavala por separado. Recomendamos no mojar el núcleo de espuma viscoelástica.||¿En qué colores está disponible?::En gris y en azul marino. Elegí el color antes de agregarlo al carrito.{%- endcapture -%}
     {%- assign nk_cta_title = 'Sentate más cómodo desde hoy' -%}
 
   {%- when 'tapones' -%}
@@ -364,7 +366,7 @@
                   {%- unless shop.enabled_payment_types contains 'maestro' -%}
                     <li>{{ 'maestro' | payment_type_svg_tag: class: 'icon icon--full-color' }}</li>
                   {%- endunless -%}
-                  <li class="nk-pay-chip">Mercado Pago</li>
+                  <li><svg class="icon icon--full-color" viewBox="0 0 38 24" width="38" height="24" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="pi-mercadopago"><title id="pi-mercadopago">Mercado Pago</title><rect x=".5" y=".5" width="37" height="23" rx="2.5" fill="#009EE3" stroke="#000" stroke-opacity=".07"/><ellipse cx="19" cy="12" rx="12.6" ry="8.2" fill="none" stroke="#fff" stroke-width="1.5"/><path d="M9.6 12.2l2.6-2.3c.6-.5 1.4-.6 2.1-.2l1.9 1.1c.6.3 1.3.3 1.8-.1l1-.8c.6-.5 1.5-.5 2.1 0l3.8 3.1M11.6 13.6l2.5 2.1c.4.3.9.3 1.2-.1M13.6 12.4l2.7 2.3c.4.3.9.3 1.2-.1M15.9 11.6l2.5 2.1c.4.3.9.3 1.2-.1l.4-.5M25.4 11.1l2.9-1.2" fill="none" stroke="#fff" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg></li>
                 {%- endif -%}
               </ul>
             {%- endif -%}
@@ -647,6 +649,9 @@
             </span></li>
           {%- endif -%}
           <li>{% render 'nekova-icon', icon: 'return' %}<span>{{ nk_returns_assure }}</span></li>
+          {%- if nk_warranty != blank -%}
+            <li>{% render 'nekova-icon', icon: 'shield' %}<span><strong>{{ nk_warranty }} de garantía</strong> por fallas de fábrica.</span></li>
+          {%- endif -%}
           <li>{% render 'nekova-icon', icon: 'chat' %}<span><strong>Atención por WhatsApp</strong> antes y después de comprar.</span></li>
           {%- if section.settings.shipping_note != blank -%}
             <li>{% render 'nekova-icon', icon: 'truck' %}<span>{{ section.settings.shipping_note }}</span></li>
@@ -696,6 +701,7 @@
             <div class="nk-accordion-body">
               <p>Las compras realizadas en días hábiles antes de las 13:00hs se despachan ese mismo día; si comprás después de ese horario, un fin de semana o un feriado, el día hábil siguiente.{% if delivery_max > 0 %} Enviamos{% if delivery_carrier != blank %} por {{ delivery_carrier | escape }}{% endif %} a todo el país y suele llegar en {% if delivery_min < delivery_max %}{{ delivery_min }} a {% endif %}{{ delivery_max }} días hábiles desde el despacho. Te mandamos el número de seguimiento por email.{% endif %}{% if free_shipping_threshold > 0 %} Las compras desde {{ free_shipping_cents | money_without_trailing_zeros }} tienen envío gratis.{% endif %}</p>
               <p>{{ nk_returns_text }}</p>
+              {%- if nk_warranty != blank -%}<p>Tiene {{ nk_warranty }} de garantía por fallas de fábrica: si notás una, <a href="/pages/contact">escribinos</a> con una foto y lo resolvemos.</p>{%- endif -%}
             </div>
           </details>
         </div>
@@ -935,7 +941,7 @@
         <li>
           <span class="nk-buysteps-icon">{% render 'nekova-icon', icon: 'return' %}</span>
           <strong>{{ nk_returns_short | capitalize }}</strong>
-          <p>{{ nk_returns_faq_a }}</p>
+          <p>{{ nk_returns_faq_a }}{% if nk_warranty != blank %} Y si tiene una falla de fábrica, tenés {{ nk_warranty }} de garantía.{% endif %}</p>
         </li>
       </ol>
       <div class="nk-trust-contact">
@@ -1053,6 +1059,9 @@
         <details><summary>¿Cuándo se despacha mi pedido?</summary><p>Las compras realizadas en días hábiles antes de las 13:00hs se despachan ese mismo día. Si comprás después de ese horario, un fin de semana o un feriado, tu pedido sale el día hábil siguiente.{% if delivery_max > 0 %} Después, {% if delivery_carrier != blank %}{{ delivery_carrier | escape }} {% endif %}suele entregarlo en {% if delivery_min < delivery_max %}{{ delivery_min }} a {% endif %}{{ delivery_max }} días hábiles, y te mandamos el número de seguimiento por email.{% endif %}</p></details>
         <details><summary>¿Cuánto cuesta el envío?</summary><p>{%- assign faq_free_shipping = settings.nekova_free_shipping_threshold | default: 0 -%}{%- if faq_free_shipping > 0 -%}Las compras desde {{ faq_free_shipping | times: 100 | money_without_trailing_zeros }} tienen envío gratis. {% endif -%}El costo y la estimación de entrega se calculan según tu destino y se muestran en el checkout, antes de confirmar la compra.</p></details>
         <details><summary>{{ nk_returns_faq_q }}</summary><p>{{ nk_returns_faq_a }}</p></details>
+        {%- if nk_warranty != blank -%}{%- unless nk_faq contains '¿Tiene garantía?' -%}
+          <details><summary>¿Tiene garantía?</summary><p>Sí: {{ nk_warranty }} de garantía por fallas de fábrica. Si notás una falla, escribinos por WhatsApp con una foto y lo resolvemos.</p></details>
+        {%- endunless -%}{%- endif -%}
         <details><summary>¿Cómo me comunico con ustedes?</summary><p>
           {%- assign faq_whatsapp_digits = settings.nekova_whatsapp | remove: ' ' | remove: '+' | remove: '-' | remove: '(' | remove: ')' | remove: '.' -%}
           {%- assign faq_email = settings.nekova_email | default: shop.email -%}
@@ -1074,7 +1083,7 @@
         {%- endif -%}
         <div>
           <h2>{{ nk_cta_title }}</h2>
-          <p><span class="nekova-promo-scope"><span>{{ current_price | money_without_trailing_zeros }}</span>{% render 'nekova-promo-price', product: featured_product, price: current_price %}</span> · Despacho en el día · {{ nk_returns_short }}</p>
+          <p><span class="nekova-promo-scope"><span>{{ current_price | money_without_trailing_zeros }}</span>{% render 'nekova-promo-price', product: featured_product, price: current_price %}</span> · Despacho en el día · {{ nk_returns_short }}{% if nk_warranty != blank %} · {{ nk_warranty }} de garantía{% endif %}</p>
         </div>
         <a class="nk-button nk-button--light" href="#NkBuy-{{ section.id }}">{% if featured_product.available %}Comprar ahora{% else %}Avisarme{% endif %}</a>
       </div>
