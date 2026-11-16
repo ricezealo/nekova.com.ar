@@ -323,7 +323,7 @@
         {%- assign transfer_percent = settings.nekova_transfer_percent | default: 0 -%}
         {%- if transfer_percent > 0 -%}
           {%- assign transfer_price = 100 | minus: transfer_percent | times: current_price | divided_by: 100 -%}
-          <p class="nk-transfer"><span><strong>{{ transfer_price | money_without_trailing_zeros }}</strong> con transferencia bancaria ({{ transfer_percent }}% OFF)</span></p>
+          <p class="nk-transfer"><span><strong>{{ transfer_price | money_without_trailing_zeros }}</strong> por transferencia ({{ transfer_percent }}% OFF extra)</span></p>
         {%- endif -%}
         {%- if nk_tiers != blank -%}
           <div class="nk-tiers" data-nk-tiers>
@@ -925,8 +925,9 @@
       <ol class="nk-buysteps" role="list">
         <li>
           <span class="nk-buysteps-icon">{% render 'nekova-icon', icon: 'card' %}</span>
-          <strong>Pagás con Mercado Pago</strong>
-          <p>Tarjeta de crédito, débito o dinero en cuenta.{% if trust_installments > 0 %} Hasta {{ trust_installments }} cuotas sin interés{% if trust_installments_min > 0 %} desde {{ trust_installments_min | money_without_trailing_zeros }}{% endif %}.{% endif %} Nosotros no vemos los datos de tu tarjeta.</p>
+          <strong>Pagás como prefieras</strong>
+          {%- assign trust_transfer = settings.nekova_transfer_percent | default: 0 -%}
+          <p>Con Mercado Pago: tarjeta de crédito, débito o dinero en cuenta.{% if trust_installments > 0 %} Hasta {{ trust_installments }} cuotas sin interés{% if trust_installments_min > 0 %} desde {{ trust_installments_min | money_without_trailing_zeros }}{% endif %}.{% endif %} Nosotros no vemos los datos de tu tarjeta.{% if trust_transfer > 0 %} <strong class="nk-buysteps-extra">O por transferencia, con {{ trust_transfer }}% OFF:</strong> elegís "Transferencia" en el checkout, te mandamos los datos por email y el descuento se aplica al confirmar tu pedido.{% endif %}</p>
         </li>
         <li>
           <span class="nk-buysteps-icon">{% render 'nekova-icon', icon: 'shield' %}</span>
@@ -1067,7 +1068,7 @@
           {%- assign faq_email = settings.nekova_email | default: shop.email -%}
           {%- if settings.nekova_whatsapp != blank -%}Por WhatsApp al <a href="https://wa.me/{{ faq_whatsapp_digits }}" target="_blank" rel="noopener">{{ settings.nekova_whatsapp | escape }}</a>{%- if faq_email != blank -%}, por email a <a href="mailto:{{ faq_email }}">{{ faq_email }}</a>{%- endif %} o desde la <a href="/pages/contact">página de contacto</a>. Te respondemos a la brevedad.{%- else -%}Escribinos desde la <a href="/pages/contact">página de contacto</a> y te respondemos a la brevedad.{%- endif -%}
         </p></details>
-        <details><summary>¿Qué medios de pago puedo usar?</summary><p>{% if settings.nekova_show_mercadopago %}Pagás con Mercado Pago: tarjeta de crédito, débito o dinero en cuenta.{% else %}En el checkout vas a ver los medios de pago disponibles.{% endif %}{% if trust_installments > 0 %} Hay hasta {{ trust_installments }} cuotas sin interés{% if trust_installments_min > 0 %} en compras desde {{ trust_installments_min | money_without_trailing_zeros }}{% endif %}.{% endif %}</p></details>
+        <details><summary>¿Qué medios de pago puedo usar?</summary><p>{% if settings.nekova_show_mercadopago %}Pagás con Mercado Pago: tarjeta de crédito, débito o dinero en cuenta.{% else %}En el checkout vas a ver los medios de pago disponibles.{% endif %}{% if trust_installments > 0 %} Hay hasta {{ trust_installments }} cuotas sin interés{% if trust_installments_min > 0 %} en compras desde {{ trust_installments_min | money_without_trailing_zeros }}{% endif %}.{% endif %}{% assign faq_transfer = settings.nekova_transfer_percent | default: 0 %}{% if faq_transfer > 0 %} También podés pagar por transferencia bancaria con {{ faq_transfer }}% OFF: elegís "Transferencia" en el checkout, te mandamos los datos por email y el descuento se aplica al confirmar tu pedido.{% endif %}</p></details>
         <details><summary>¿Es seguro comprar acá?</summary><p>Sí. El pago se procesa en el checkout de Shopify{% if settings.nekova_show_mercadopago %} y Mercado Pago{% endif %}: nosotros no vemos ni guardamos los datos de tu tarjeta. Te llega un email con la confirmación del pedido y, cuando sale, con el número de seguimiento. Además, tenés {{ nk_returns_short }}.</p></details>
       </div>
     </div>
@@ -1280,6 +1281,7 @@
   .nk-buysteps li::before { color: var(--nk-muted); content: "0" counter(nk-buysteps); counter-increment: nk-buysteps; font-size: 1.3rem; font-weight: 800; position: absolute; right: 2.4rem; top: 2.8rem; }
   .nk-buysteps-icon { align-items: center; background: var(--nk-accent); border-radius: 1.2rem; color: var(--nekova-on-accent); display: inline-flex; height: 4.8rem; justify-content: center; margin-bottom: 2rem; width: 4.8rem; }
   .nk-buysteps-icon svg { height: 2.4rem; width: 2.4rem; }
+  .nk-buysteps .nk-buysteps-extra { display: inline; font-family: inherit; font-size: inherit; letter-spacing: 0; margin: 0; }
   .nk-buysteps p { color: var(--nk-muted); font-size: 1.45rem; line-height: 1.6; margin: 0; }
   .nk-trust-contact { align-items: center; border-top: 1px solid var(--nk-line); display: flex; flex-wrap: wrap; gap: 2.4rem; justify-content: space-between; margin-top: 4.8rem; padding-top: 4rem; }
   .nk-trust-contact p { color: var(--nk-muted); font-size: 1.6rem; line-height: 1.6; margin: 0; max-width: 56rem; }

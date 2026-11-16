@@ -76,18 +76,18 @@
         "type": "number",
         "id": "nekova_installments_count",
         "label": "Cuotas sin interés (cantidad)",
-        "info": "Muestra \"Hasta N cuotas sin interés\" en cada producto. Vacío o 0: no se muestra. Tiene que coincidir con lo configurado en Mercado Pago."
+        "info": "Muestra «Hasta N cuotas sin interés» en cada producto. Vacío o 0: no se muestra. Tiene que coincidir con lo configurado en Mercado Pago."
       },
       {
         "type": "number",
         "id": "nekova_installments_min",
         "label": "Cuotas sin interés desde (ARS)",
-        "info": "Monto mínimo de compra. Si el producto cuesta menos, se aclara \"en compras desde $X\"."
+        "info": "Monto mínimo de compra. Si el producto cuesta menos, se aclara «en compras desde $X»."
       },
       {
         "type": "checkbox",
         "id": "nekova_show_mercadopago",
-        "label": "Mostrar Mercado Pago y Maestro en los medios de pago",
+        "label": "Mostrar Mercado Pago y Maestro",
         "info": "Shopify no los lista solos porque llegan por la app de Mercado Pago Checkout Pro.",
         "default": true
       },
