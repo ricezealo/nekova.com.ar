@@ -354,17 +354,7 @@
               <p class="nk-pay-note">{% render 'nekova-icon', icon: 'card' %}<span>{{ section.settings.payment_note }}</span></p>
             {%- endif -%}
             {%- if shop.enabled_payment_types.size > 0 -%}
-              <ul class="nk-pay-icons" role="list" aria-label="Medios de pago">
-                {%- for type in shop.enabled_payment_types -%}
-                  <li>{{ type | payment_type_svg_tag: class: 'icon icon--full-color' }}</li>
-                {%- endfor -%}
-                {%- if settings.nekova_show_mercadopago -%}
-                  {%- unless shop.enabled_payment_types contains 'maestro' -%}
-                    <li>{{ 'maestro' | payment_type_svg_tag: class: 'icon icon--full-color' }}</li>
-                  {%- endunless -%}
-                  <li><svg class="icon icon--full-color" viewBox="0 0 38 24" width="38" height="24" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="pi-mercadopago"><title id="pi-mercadopago">Mercado Pago</title><rect x=".5" y=".5" width="37" height="23" rx="2.5" fill="#009EE3" stroke="#000" stroke-opacity=".07"/><ellipse cx="19" cy="12" rx="12.6" ry="8.2" fill="none" stroke="#fff" stroke-width="1.5"/><path d="M9.6 12.2l2.6-2.3c.6-.5 1.4-.6 2.1-.2l1.9 1.1c.6.3 1.3.3 1.8-.1l1-.8c.6-.5 1.5-.5 2.1 0l3.8 3.1M11.6 13.6l2.5 2.1c.4.3.9.3 1.2-.1M13.6 12.4l2.7 2.3c.4.3.9.3 1.2-.1M15.9 11.6l2.5 2.1c.4.3.9.3 1.2-.1l.4-.5M25.4 11.1l2.9-1.2" fill="none" stroke="#fff" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg></li>
-                {%- endif -%}
-              </ul>
+              <p class="nk-pay-methods">Tarjeta de crédito, débito{% if settings.nekova_show_mercadopago %} o Mercado Pago{% endif %}</p>
             {%- endif -%}
           </div>
         {%- endif -%}
@@ -1136,9 +1126,9 @@
   .nk-tagline em { font-style: normal; }
   .nk-title { font-size: clamp(2.8rem, 3vw, 3.6rem); line-height: 1.15; margin: 0 0 1.2rem; }
   .nk-lead { color: var(--nk-muted); font-size: 1.6rem; line-height: 1.6; margin: 0 0 2rem; }
-  .nk-price { align-items: flex-start; display: flex; flex-direction: column; gap: .2rem; margin-bottom: 2.4rem; }
-  .nk-price-current { font-family: var(--nekova-font-heading); font-size: 3.2rem; font-weight: var(--font-heading-weight); }
-  .nk-price-was { color: var(--nk-muted); font-size: 1.6rem; }
+  .nk-price { align-items: flex-start; display: flex; flex-direction: column; gap: 0; margin-bottom: 2.4rem; }
+  .nk-price-current { font-family: var(--nekova-font-heading); font-size: 3.2rem; font-weight: var(--font-heading-weight); line-height: 1.15; }
+  .nk-price-was { color: var(--nk-muted); font-size: 1.6rem; line-height: 1.2; }
   .nk-price .nekova-promo-scope { align-items: baseline; display: inline-flex; flex-wrap: wrap; gap: .6rem 1.2rem; }
   .nk-price .nekova-promo-price__now { font-family: var(--nekova-font-heading); font-size: 3.2rem; font-weight: var(--font-heading-weight); }
   html.nekova-promo-on .nk-price .nekova-promo-scope:has(.nekova-promo-price) .nk-price-current { font-size: 1.8rem; }
@@ -1198,9 +1188,7 @@
   .nk-pay { align-items: center; display: flex; flex-wrap: wrap; gap: .8rem 1.6rem; margin: -1.2rem 0 2.4rem; }
   .nk-pay-note { align-items: center; color: var(--nk-ink); display: flex; font-size: 1.45rem; font-weight: 700; gap: .8rem; margin: 0; }
   .nk-pay-note svg { color: var(--nk-accent); height: 2.2rem; width: 2.2rem; }
-  .nk-pay-icons { display: flex; flex-wrap: wrap; gap: .6rem; list-style: none; margin: 0; padding: 0; }
-  .nk-pay-icons svg { display: block; height: 2.4rem; width: auto; }
-  .nk-pay-chip { align-items: center; background: var(--nekova-surface); border: 1px solid var(--nekova-line-strong); border-radius: .3rem; color: var(--nk-ink); display: flex; font-size: 1.2rem; font-weight: 800; height: 2.4rem; padding: 0 .8rem; white-space: nowrap; }
+  .nk-pay-methods { color: var(--nk-muted); flex-basis: 100%; font-size: 1.4rem; margin: -.4rem 0 0 3rem; }
   .nk-transfer { color: var(--nk-muted); font-size: 1.5rem; margin: -1.6rem 0 2.4rem; }
   .nk-transfer strong { color: var(--nk-accent); font-size: 1.7rem; font-weight: 800; }
   html.nekova-promo-on .nk-transfer { display: none; }
