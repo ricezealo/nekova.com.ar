@@ -351,6 +351,172 @@ document.querySelectorAll('[data-nk-tiers]').forEach((tiers) => {
   highlight();
 });
 
+// Pack builder (multi-option products with quantity tiers): from 2 units on, one row per unit with its own
+// options, so colors and sizes can be mixed; all rows go to the cart together and the tier discount applies there.
+document.querySelectorAll('[data-nk-pack]').forEach((pack) => {
+  if (pack.dataset.packInitialized === 'true') return;
+  pack.dataset.packInitialized = 'true';
+  const form = pack.closest('form');
+  const product = pack.closest('[data-premium-product]');
+  const picker = form?.querySelector('[data-nk-multi-picker]');
+  const tiers = product?.querySelector('[data-nk-tiers]');
+  if (!form || !picker || !tiers) return;
+  const variants = JSON.parse(picker.querySelector('[data-nk-variants]').textContent);
+  const groups = [...picker.querySelectorAll('[data-nk-option]')];
+  const options = groups.map((group) => ({
+    name: group.dataset.nkOptionName || '',
+    values: [...group.querySelectorAll('input[type="radio"]')].map((input) => input.value),
+  }));
+  const tierButtons = [...tiers.querySelectorAll('[data-nk-tier]')];
+  const tierList = tierButtons.map((button) => ({ qty: Number(button.dataset.nkTier), price: Number(button.dataset.nkTierPrice) }));
+  const rowsList = pack.querySelector('[data-nk-pack-rows]');
+  const countLabel = pack.querySelector('[data-nk-pack-count]');
+  const totalLabel = pack.querySelector('[data-nk-pack-total]');
+  const more = pack.querySelector('[data-nk-pack-more]');
+  const error = pack.querySelector('[data-nk-pack-error]');
+  const icon = pack.querySelector('[data-nk-pack-icon]')?.innerHTML || '×';
+  const qtyBox = form.querySelector('[data-nk-qty]');
+  const submit = form.querySelector('button[name="add"]');
+  const submitLabel = submit?.querySelector('span');
+  const submitText = submitLabel?.textContent;
+  const gallery = product.querySelector('[data-premium-gallery]');
+  const root = (window.Shopify && window.Shopify.routes && window.Shopify.routes.root) || '/';
+  const MIN = 2;
+  const MAX = 10;
+  const money = (cents) => `$${Math.round(cents / 100).toLocaleString('es-AR')}`;
+  let active = false;
+
+  const rows = () => [...rowsList.children];
+  const rowValues = (row) => [...row.querySelectorAll('select')].map((select) => select.value);
+  const rowVariant = (row) => {
+    const values = rowValues(row);
+    return variants.find((item) => item.options.every((value, index) => value === values[index]));
+  };
+  const current = () => groups.map((group) => group.querySelector('input:checked')?.value);
+
+  const refresh = () => {
+    const list = rows();
+    const count = list.length;
+    let ok = true;
+    list.forEach((row, index) => {
+      row.querySelector('strong').textContent = `Par ${index + 1}`;
+      const variant = rowVariant(row);
+      const available = Boolean(variant && variant.available);
+      row.classList.toggle('is-unavailable', !available);
+      row.querySelector('.nk-pack-row-status').hidden = available;
+      row.querySelector('.nk-pack-remove').hidden = count <= MIN;
+      if (!available) ok = false;
+    });
+    const tier = tierList.filter((item) => item.qty <= count).pop() || tierList[0];
+    countLabel.textContent = `${count} pares`;
+    totalLabel.textContent = tier ? `${money(tier.price * count)} (${money(tier.price)} c/u)` : '';
+    tierButtons.forEach((button) => button.setAttribute('aria-pressed', String(Number(button.dataset.nkTier) === tier?.qty)));
+    more.hidden = count >= MAX;
+    if (submit) {
+      submit.disabled = !ok;
+      if (submitLabel) submitLabel.textContent = ok ? `Agregar ${count} pares al carrito` : 'Revisá los pares sin stock';
+    }
+  };
+
+  const addRow = (values) => {
+    const row = document.createElement('li');
+    row.className = 'nk-pack-row';
+    row.innerHTML = '<strong></strong>';
+    options.forEach((option, index) => {
+      const select = document.createElement('select');
+      select.setAttribute('aria-label', option.name);
+      option.values.forEach((value) => select.add(new Option(value, value, false, value === values[index])));
+      row.append(select);
+    });
+    const removeButton = document.createElement('button');
+    removeButton.type = 'button';
+    removeButton.className = 'nk-pack-remove';
+    removeButton.setAttribute('aria-label', 'Quitar este par');
+    removeButton.innerHTML = icon;
+    removeButton.addEventListener('click', () => {
+      rowsList.removeChild(row);
+      error.hidden = true;
+      refresh();
+    });
+    const status = document.createElement('p');
+    status.className = 'nk-pack-row-status';
+    status.textContent = 'Esta combinación no tiene stock.';
+    status.hidden = true;
+    row.append(removeButton, status);
+    row.addEventListener('change', () => {
+      error.hidden = true;
+      const variant = rowVariant(row);
+      if (variant && variant.image && gallery) gallery.dispatchEvent(new CustomEvent('premium:show-image', { detail: { src: variant.image } }));
+      refresh();
+    });
+    rowsList.append(row);
+  };
+
+  const setCount = (count) => {
+    if (count < MIN) {
+      active = false;
+      pack.hidden = true;
+      picker.hidden = false;
+      if (qtyBox) qtyBox.hidden = false;
+      const qty = qtyBox?.querySelector('input');
+      if (qty) qty.value = 1;
+      tierButtons.forEach((button) => button.setAttribute('aria-pressed', String(Number(button.dataset.nkTier) === 1)));
+      if (submitLabel) submitLabel.textContent = submitText;
+      picker.dispatchEvent(new Event('change'));
+      return;
+    }
+    const base = current();
+    if (!active) rowsList.replaceChildren();
+    active = true;
+    pack.hidden = false;
+    picker.hidden = true;
+    if (qtyBox) qtyBox.hidden = true;
+    while (rows().length < count) addRow(rows().length ? rowValues(rows().at(-1)) : base);
+    while (rows().length > count) rowsList.removeChild(rows().at(-1));
+    error.hidden = true;
+    refresh();
+  };
+
+  // Capture phase: runs before the tiers handler, which would only change the quantity.
+  tierButtons.forEach((button) => button.addEventListener('click', (event) => {
+    event.stopImmediatePropagation();
+    setCount(Number(button.dataset.nkTier));
+  }, true));
+  more.addEventListener('click', () => {
+    addRow(rowValues(rows().at(-1)));
+    refresh();
+  });
+
+  form.addEventListener('submit', async (event) => {
+    if (!active) return;
+    event.preventDefault();
+    event.stopImmediatePropagation();
+    const items = [];
+    rows().forEach((row) => {
+      const variant = rowVariant(row);
+      if (!variant) return;
+      const item = items.find((entry) => entry.id === variant.id);
+      if (item) item.quantity += 1;
+      else items.push({ id: variant.id, quantity: 1 });
+    });
+    if (!items.length) return;
+    submit?.setAttribute('aria-busy', 'true');
+    error.hidden = true;
+    try {
+      const response = await fetch(`${root}cart/add.js`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
+        body: JSON.stringify({ items }),
+      });
+      if (!response.ok) throw new Error(String(response.status));
+      window.location.href = `${root}cart`;
+    } catch {
+      error.hidden = false;
+      submit?.removeAttribute('aria-busy');
+    }
+  }, true);
+});
+
 // Own-footage loops: play muted only while visible; with reduced motion they stay still and show controls.
 document.querySelectorAll('[data-nk-loop]').forEach((video) => {
   if (video.dataset.loopInitialized === 'true') return;

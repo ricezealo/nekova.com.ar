@@ -329,7 +329,7 @@
               {%- for tier in tier_rows -%}
                 {%- assign cells = tier | split: '::' -%}
                 {%- assign tier_cents = cells[2] | times: 100 -%}
-                <button type="button" class="nk-tier" data-nk-tier="{{ cells[0] }}" aria-pressed="{% if forloop.first %}true{% else %}false{% endif %}">
+                <button type="button" class="nk-tier" data-nk-tier="{{ cells[0] }}" data-nk-tier-price="{{ tier_cents }}" aria-pressed="{% if forloop.first %}true{% else %}false{% endif %}">
                   <strong>{{ cells[1] }}</strong>
                   <span>{{ tier_cents | money_without_trailing_zeros }}{% if cells[0] != '1' %} c/u{% endif %}</span>
                 </button>
@@ -392,7 +392,7 @@
                   {%- if option_handle == 'color' or option_handle == 'colour' or option_handle == 'colores' -%}
                     {%- assign option_is_color = true -%}
                   {%- endif -%}
-                  <fieldset class="nk-variants{% if option_is_color %} nk-variants--swatches{% endif %}" data-nk-option="{{ option_index }}">
+                  <fieldset class="nk-variants{% if option_is_color %} nk-variants--swatches{% endif %}" data-nk-option="{{ option_index }}" data-nk-option-name="{{ option.name | escape }}">
                     <legend>{{ option.name | escape }}: <strong data-nk-option-label>{{ selected_variant.options[option_index] | escape }}</strong></legend>
                     <div class="nk-variant-options">
                       {%- for value in option.values -%}
@@ -421,6 +421,15 @@
                 {%- endfor -%}
                 <p class="nk-multi-status" data-nk-multi-status role="status" hidden>Esta combinación no está disponible por ahora.</p>
               </div>
+              {%- if nk_tiers != blank -%}
+                <div class="nk-pack" data-nk-pack hidden>
+                  <p class="nk-pack-head"><strong data-nk-pack-count></strong><span data-nk-pack-total></span></p>
+                  <ol class="nk-pack-rows" data-nk-pack-rows></ol>
+                  <template data-nk-pack-icon>{% render 'nekova-icon', icon: 'close' %}</template>
+                  <button type="button" class="nk-pack-more" data-nk-pack-more>+ Sumar otro par</button>
+                  <p class="nk-pack-error" data-nk-pack-error role="alert" hidden>No hay stock suficiente de alguna combinación. Probá con otro color o talle.</p>
+                </div>
+              {%- endif -%}
             {%- elsif has_variant_choice -%}
               {%- assign variant_option_handle = variant_option_name | handleize -%}
               {%- assign is_color_option = false -%}
@@ -1368,6 +1377,24 @@
   .nk-tier[aria-pressed='true'] span { color: var(--nk-accent); }
   .nk-tier:focus-visible { outline: 2px solid var(--nk-accent); outline-offset: 2px; }
   .nk-tiers-note { color: var(--nk-muted); font-size: 1.3rem; margin: 1rem 0 0; }
+  .nk-pack { margin-bottom: 1.6rem; }
+  .nk-pack[hidden], .nk-pack [hidden], .nk-multi[hidden], .nk-qty[hidden] { display: none; }
+  .nk-pack-head { align-items: baseline; display: flex; flex-wrap: wrap; font-size: 1.5rem; gap: .4rem 1rem; justify-content: space-between; margin: 0 0 1rem; }
+  .nk-pack-head span { color: var(--nk-accent); font-weight: 800; }
+  .nk-pack-rows { display: grid; gap: .8rem; list-style: none; margin: 0; padding: 0; }
+  .nk-pack-row { align-items: center; border: 1px solid var(--nekova-line-strong); border-radius: 1.2rem; display: grid; gap: .8rem; grid-template-columns: 5.2rem 1fr 1fr 3.6rem; padding: .8rem 1rem; }
+  .nk-pack-row.is-unavailable { border-color: var(--nekova-warm); }
+  .nk-pack-row > strong { font-size: 1.35rem; }
+  .nk-pack-row select { background: var(--nekova-surface); border: 1px solid var(--nekova-line-strong); border-radius: 1rem; color: var(--nk-ink); font: inherit; font-size: 1.4rem; min-height: 4rem; min-width: 0; padding: 0 .8rem; }
+  .nk-pack-row select:focus-visible, .nk-pack-remove:focus-visible, .nk-pack-more:focus-visible { outline: 2px solid var(--nk-accent); outline-offset: 2px; }
+  .nk-pack-remove { align-items: center; background: none; border: 0; border-radius: 50%; color: var(--nk-muted); cursor: pointer; display: flex; height: 3.6rem; justify-content: center; padding: 0; width: 3.6rem; }
+  .nk-pack-remove:hover { background: var(--nekova-panel); color: var(--nk-ink); }
+  .nk-pack-remove svg { height: 1.8rem; width: 1.8rem; }
+  .nk-pack-row-status { color: var(--nekova-warm); font-size: 1.3rem; font-weight: 700; grid-column: 2 / -1; margin: 0; }
+  .nk-pack-more { background: none; border: 1px dashed var(--nekova-line-strong); border-radius: 1.2rem; color: var(--nk-accent); cursor: pointer; font: inherit; font-size: 1.4rem; font-weight: 800; margin-top: .8rem; min-height: 4.4rem; width: 100%; }
+  .nk-pack-more:hover { border-color: var(--nk-accent); }
+  .nk-pack-error { color: var(--nekova-warm); font-size: 1.4rem; font-weight: 700; margin: 1rem 0 0; }
+  @media screen and (max-width: 600px) { .nk-pack-row { grid-template-columns: 1fr 1fr 3.6rem; } .nk-pack-row > strong { grid-column: 1 / -1; } .nk-pack-row-status { grid-column: 1 / -1; } }
   .nk-cta-band { background: var(--nk-accent); color: var(--nekova-on-accent); }
   .nk-cta .nk-button { border-radius: 0; }
   .nk-cta { align-items: center; display: grid; gap: 3rem; grid-template-columns: 12rem 1fr auto; padding-bottom: 4.8rem; padding-top: 4.8rem; }
