@@ -46,13 +46,14 @@ for (const [name, content] of Object.entries(files)) {
   console.log(name);
 }
 
-// Social media: one profile picture for every network (white isotipo on accent, at half the width so it
-// survives the circular crop). The Facebook cover uses fonts and photos, so it lives in marca/redes/portada-facebook.html.
+// Social media: one profile picture for every network (white isotipo with "nekova" below, centered on accent,
+// small enough to survive the circular crop). The Facebook cover uses fonts and photos, so it lives in marca/redes/portada-facebook.html.
 const social = 'marca/redes';
 const place = (x, y, scale, body) => `<g transform="translate(${x} ${y}) scale(${scale}) translate(-7 -7)">${body}</g>`;
 const canvas = (width, height, body) => `<svg xmlns="http://www.w3.org/2000/svg" width="${width}" height="${height}" viewBox="0 0 ${width} ${height}"><rect width="${width}" height="${height}" fill="${ACCENT}"/>${body}</svg>\n`;
 const socialFiles = {
-  'nekova-perfil.svg': canvas(1080, 1080, place(270, 270, 10.8, mark(WHITE))),
+  'nekova-perfil.svg': canvas(1080, 1080, place(390, 296.67, 6, mark(WHITE))
+    + `<g transform="translate(-20 583.33) scale(3.3333)">${word(WHITE).replace('stroke-width="5.5"', 'stroke-width="6"')}</g>`),
 };
 mkdirSync(social, { recursive: true });
 for (const [name, content] of Object.entries(socialFiles)) {
