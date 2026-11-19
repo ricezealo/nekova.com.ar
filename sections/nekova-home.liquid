@@ -8,7 +8,7 @@
   square (for photos with their own background) instead of a packshot on the grey panel; "hero fill" does the same in the hero mosaic.
   Products not listed use their Shopify image, type and description (and no hero photo).
 {%- endcomment -%}
-{%- capture home_cards -%}cojin-ortopedico-u::product-media-cojin-ortopedico-01.jpg::product-media-cojin-ortopedico-real-01.jpg::Almohadón Ergonómico::Confort y apoyo::Para las horas que pasás sentado en la oficina, en casa o en el auto.::Espuma viscoelástica de recuperación lenta~Ranura en U que deja libre la zona del coxis~Funda transpirable y extraíble::::fill||tapones-auditivos-silicona::product-media-tapones-01.jpg::product-media-tapones-06.jpg::Tapones auditivos::Descanso y silencio::Para dormir, concentrarte o viajar con menos ruido alrededor.::Silicona suave y reutilizable~4 tamaños de puntas: XS, S, M y L~Estuche de bolsillo con aro::||plantillas-multitalle::product-media-plantillas-01.jpg::product-media-plantillas-00.jpg::Plantillas Confort::Confort al caminar::Espuma PU con talón en U y superficie transpirable. Multi-talle: se recortan a tu medida.::Espuma PU que vuelve a su forma~Dos rangos de talle, recortables~Negro, gris y naranja::||almohada-nekova-somnia::product-media-almohada-05.jpg::product-media-almohada-vida-02.jpg::Almohada Somnia::Descanso y apoyo::Para dormir de costado o boca arriba, con espuma que se adapta a tu forma.::Espuma viscoelástica~Contorno mariposa con hueco central~Funda extraíble y lavable::fill::fill{%- endcapture -%}
+{%- capture home_cards -%}cojin-ortopedico-u::product-media-cojin-ortopedico-01.jpg::product-media-cojin-ortopedico-real-01.jpg::Almohadón Ergonómico::Confort y apoyo::Para las horas que pasás sentado en la oficina, en casa o en el auto.::Espuma viscoelástica de recuperación lenta~Ranura en U que deja libre la zona del coxis~Funda transpirable y extraíble::::fill||tapones-auditivos-silicona::product-media-tapones-01.jpg::product-media-tapones-06.jpg::Tapones auditivos::Descanso y silencio::Para dormir, concentrarte o viajar con menos ruido alrededor.::Silicona suave y reutilizable~4 tamaños de puntas: XS, S, M y L~Estuche de bolsillo con aro::||plantillas-multitalle::product-media-plantillas-01.jpg::product-media-plantillas-hero.jpg::Plantillas Confort::Confort al caminar::Espuma PU con talón en U y superficie transpirable. Multi-talle: se recortan a tu medida.::Espuma PU que vuelve a su forma~Dos rangos de talle, recortables~Negro, gris y naranja::::fill||almohada-nekova-somnia::product-media-almohada-05.jpg::product-media-almohada-vida-02.jpg::Almohada Somnia::Descanso y apoyo::Para dormir de costado o boca arriba, con espuma que se adapta a tu forma.::Espuma viscoelástica~Contorno mariposa con hueco central~Funda extraíble y lavable::fill::fill{%- endcapture -%}
 {%- assign home_card_rows = home_cards | split: '||' -%}
 
 <section class="nk-home" aria-labelledby="NkHomeTitle-{{ section.id }}">
@@ -263,7 +263,10 @@
     .nk-home-hero h1 { font-size: clamp(3.4rem, 10vw, 4.2rem); }
     .nk-home-lead { font-size: 1.6rem; }
     .nk-home-actions .nk-home-button { width: 100%; }
-    .nk-home-hero-tag { bottom: 1rem; font-size: 1.25rem; left: 1rem; padding: .5rem 1rem; white-space: normal; }
+    .nk-home-hero-tag { bottom: 1rem; font-size: 1.25rem; left: 1rem; padding: .5rem 1rem; }
+    .nk-home-hero-mosaic { aspect-ratio: auto; gap: 1.2rem; grid-template-columns: 1fr 1fr; grid-template-rows: auto auto; }
+    .nk-home-hero-tile { aspect-ratio: 1; }
+    .nk-home-hero-tile--main { aspect-ratio: 4 / 3; grid-column: span 2; grid-row: auto; }
     .nk-home-band, .nk-home-dark { padding: 5.6rem 0; }
     .nk-home-head { margin-bottom: 3.2rem; }
     .nk-home-promise-list { grid-template-columns: 1fr; }
