@@ -3,12 +3,12 @@
 -%}
 
 {%- comment -%}
-  Content per product handle: "handle::block image::hero image::short name::category::short pitch::check~check~check::fill".
+  Content per product handle: "handle::block image::hero image::short name::category::short pitch::check~check~check::fill::hero fill".
   Hero and block use different photos so the product does not repeat. "fill" makes the block image cover its
-  square (for photos with their own background) instead of a packshot on the grey panel.
+  square (for photos with their own background) instead of a packshot on the grey panel; "hero fill" does the same in the hero mosaic.
   Products not listed use their Shopify image, type and description (and no hero photo).
 {%- endcomment -%}
-{%- capture home_cards -%}cojin-ortopedico-u::product-media-cojin-ortopedico-01.jpg::product-media-cojin-ortopedico-02.jpg::Almohadón ergonómico::Confort y apoyo::Para las horas que pasás sentado en la oficina, en casa o en el auto.::Espuma viscoelástica de recuperación lenta~Ranura en U que deja libre la zona del coxis~Funda transpirable y extraíble::||tapones-auditivos-silicona::product-media-tapones-01.jpg::product-media-tapones-06.jpg::Tapones auditivos::Descanso y silencio::Para dormir, concentrarte o viajar con menos ruido alrededor.::Silicona suave y reutilizable~4 tamaños de puntas: XS, S, M y L~Estuche de bolsillo con aro::||plantillas-multitalle::product-media-plantillas-00.jpg::product-media-plantillas-naranja.jpg::Plantillas::Confort al caminar::Espuma PU con talón en U y superficie transpirable. Multi-talle: se recortan a tu medida.::Espuma PU que vuelve a su forma~Dos rangos de talle, recortables~Negro, gris y naranja::||almohada-nekova-somnia::product-media-almohada-05.jpg::product-media-almohada-01.jpg::Almohada Nekova Somnia::Descanso y apoyo::Para dormir de costado o boca arriba, con espuma que se adapta a tu forma.::Espuma viscoelástica~Contorno mariposa con hueco central~Funda extraíble y lavable::fill{%- endcapture -%}
+{%- capture home_cards -%}cojin-ortopedico-u::product-media-cojin-ortopedico-01.jpg::product-media-cojin-ortopedico-real-01.jpg::Almohadón ergonómico::Confort y apoyo::Para las horas que pasás sentado en la oficina, en casa o en el auto.::Espuma viscoelástica de recuperación lenta~Ranura en U que deja libre la zona del coxis~Funda transpirable y extraíble::::fill||tapones-auditivos-silicona::product-media-tapones-01.jpg::product-media-tapones-06.jpg::Tapones auditivos::Descanso y silencio::Para dormir, concentrarte o viajar con menos ruido alrededor.::Silicona suave y reutilizable~4 tamaños de puntas: XS, S, M y L~Estuche de bolsillo con aro::||plantillas-multitalle::product-media-plantillas-01.jpg::product-media-plantillas-00.jpg::Plantillas::Confort al caminar::Espuma PU con talón en U y superficie transpirable. Multi-talle: se recortan a tu medida.::Espuma PU que vuelve a su forma~Dos rangos de talle, recortables~Negro, gris y naranja::||almohada-nekova-somnia::product-media-almohada-05.jpg::product-media-almohada-vida-02.jpg::Almohada Somnia::Descanso y apoyo::Para dormir de costado o boca arriba, con espuma que se adapta a tu forma.::Espuma viscoelástica~Contorno mariposa con hueco central~Funda extraíble y lavable::fill::fill{%- endcapture -%}
 {%- assign home_card_rows = home_cards | split: '||' -%}
 
 <section class="nk-home" aria-labelledby="NkHomeTitle-{{ section.id }}">
@@ -22,35 +22,33 @@
         <a class="nk-home-button nk-home-button--ghost" href="{{ routes.root_url }}pages/sobre-nekova">Conocé Nekova</a>
       </div>
     </div>
-    <div class="nk-home-hero-media" data-nk-hero-carousel>
-      <div class="nk-home-hero-track" data-nk-hero-track role="list" aria-label="Productos">
-      {%- for product_item in home_collection.products limit: section.settings.products_to_show -%}
+    <div class="nk-home-hero-media nk-home-hero-mosaic" role="list" aria-label="Productos">
+      {%- for product_item in home_collection.products limit: 3 -%}
         {%- liquid
           assign hero_image = ''
           assign hero_name = product_item.title
+          assign hero_fill = false
           for row in home_card_rows
             assign cells = row | split: '::'
             if cells[0] == product_item.handle
               assign hero_image = cells[2] | asset_url
               assign hero_name = cells[3]
+              if cells[8] == 'fill'
+                assign hero_fill = true
+              endif
             endif
           endfor
           if hero_image == blank and product_item.featured_image
-            assign hero_image = product_item.featured_image | image_url: width: 900
+            assign hero_image = product_item.featured_image | image_url: width: 1200
           endif
         -%}
         {%- if hero_image != blank -%}
-          <a class="nk-home-hero-tile" href="{{ product_item.url }}" role="listitem">
-            <img src="{{ hero_image }}" alt="{{ product_item.title | escape }}" width="1200" height="1200"{% if forloop.index < 3 %} fetchpriority="high"{% else %} loading="lazy"{% endif %}>
+          <a class="nk-home-hero-tile{% if forloop.first %} nk-home-hero-tile--main{% endif %}{% if hero_fill %} nk-home-hero-tile--fill{% endif %}" href="{{ product_item.url }}" role="listitem">
+            <img src="{{ hero_image }}" alt="{{ product_item.title | escape }}" width="1200" height="1200" fetchpriority="high">
             <span class="nk-home-hero-tag">{{ hero_name }} {% render 'nekova-icon', icon: 'arrow-right' %}</span>
           </a>
         {%- endif -%}
       {%- endfor -%}
-      </div>
-      <div class="nk-home-hero-nav" data-nk-hero-nav hidden>
-        <button type="button" class="nk-home-hero-arrow" data-nk-hero-prev aria-label="Ver productos anteriores">{% render 'nekova-icon', icon: 'arrow-left' %}</button>
-        <button type="button" class="nk-home-hero-arrow" data-nk-hero-next aria-label="Ver más productos">{% render 'nekova-icon', icon: 'arrow-right' %}</button>
-      </div>
     </div>
   </div>
 
@@ -157,55 +155,6 @@
   {%- endif -%}
 </section>
 
-<script>
-  document.querySelectorAll('[data-nk-hero-carousel]').forEach((carousel) => {
-    if (carousel.dataset.nkHeroInitialized) return;
-    carousel.dataset.nkHeroInitialized = 'true';
-    const track = carousel.querySelector('[data-nk-hero-track]');
-    const nav = carousel.querySelector('[data-nk-hero-nav]');
-    const prev = carousel.querySelector('[data-nk-hero-prev]');
-    const next = carousel.querySelector('[data-nk-hero-next]');
-    const behavior = window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth';
-    const step = () => {
-      const tile = track.querySelector('.nk-home-hero-tile');
-      return tile ? tile.getBoundingClientRect().width + parseFloat(getComputedStyle(track).columnGap || 0) : track.clientWidth;
-    };
-    const update = () => {
-      const overflow = track.scrollWidth - track.clientWidth > 2;
-      nav.hidden = !overflow;
-      prev.disabled = track.scrollLeft <= 2;
-      next.disabled = track.scrollLeft >= track.scrollWidth - track.clientWidth - 2;
-    };
-    prev.addEventListener('click', () => track.scrollBy({ left: -step(), behavior }));
-    next.addEventListener('click', () => track.scrollBy({ left: step(), behavior }));
-    track.addEventListener('scroll', update, { passive: true });
-    if ('ResizeObserver' in window) new ResizeObserver(update).observe(track);
-    window.addEventListener('resize', update);
-    window.addEventListener('load', update);
-    update();
-
-    if (behavior === 'auto') return;
-    let paused = false;
-    let visible = false;
-    const advance = () => {
-      if (paused || !visible || nav.hidden) return;
-      const atEnd = track.scrollLeft >= track.scrollWidth - track.clientWidth - 2;
-      track.scrollTo({ left: atEnd ? 0 : track.scrollLeft + step(), behavior });
-    };
-    setInterval(advance, 3500);
-    carousel.addEventListener('mouseenter', () => { paused = true; });
-    carousel.addEventListener('mouseleave', () => { paused = false; });
-    carousel.addEventListener('focusin', () => { paused = true; });
-    carousel.addEventListener('focusout', () => { paused = false; });
-    track.addEventListener('touchstart', () => { paused = true; }, { passive: true });
-    if ('IntersectionObserver' in window) {
-      new IntersectionObserver((entries) => { visible = entries[0].isIntersecting; }).observe(carousel);
-    } else {
-      visible = true;
-    }
-  });
-</script>
-
 {% style %}
   .nk-home { --nk-accent: var(--nekova-accent); background: var(--nekova-bg); color: var(--nekova-ink); font-family: var(--nekova-font-body); }
   .nk-home * { box-sizing: border-box; }
@@ -228,22 +177,13 @@
   .nk-home-lead { color: var(--nekova-muted); font-size: 1.8rem; line-height: 1.6; margin: 2.4rem 0 0; max-width: 52rem; }
   .nk-home-actions { display: flex; flex-wrap: wrap; gap: 1.2rem; margin-top: 3.2rem; }
 
-  .nk-home-hero-media { min-width: 0; }
-  .nk-home-hero-track { display: grid; gap: 1.6rem; grid-auto-columns: calc((100% - 1.6rem) / 2); grid-auto-flow: column; overflow-x: auto; overscroll-behavior-x: contain; scroll-behavior: smooth; scroll-snap-type: x mandatory; scrollbar-width: none; }
-  .nk-home-hero-track::-webkit-scrollbar { display: none; }
-  .nk-home-hero-tile { scroll-snap-align: start; }
-  .nk-home-hero-nav { display: flex; gap: 1rem; justify-content: flex-end; margin-top: 1.6rem; }
-  .nk-home-hero-nav[hidden] { display: none; }
-  .nk-home-hero-arrow { align-items: center; background: var(--nekova-surface); border: 1px solid var(--nekova-line-strong); border-radius: 50%; color: var(--nekova-ink); cursor: pointer; display: inline-flex; height: 4.4rem; justify-content: center; padding: 0; transition: border-color .2s, color .2s, opacity .2s; width: 4.4rem; }
-  .nk-home-hero-arrow:hover { border-color: var(--nk-accent); color: var(--nk-accent); }
-  .nk-home-hero-arrow:disabled { cursor: default; opacity: .35; }
-  .nk-home-hero-arrow:focus-visible { outline: 2px solid var(--nk-accent); outline-offset: 3px; }
-  .nk-home-hero-arrow svg { height: 2rem; width: 2rem; }
-  .nk-home-hero-tile { aspect-ratio: 4 / 5; background: var(--nekova-panel); border-radius: var(--nekova-radius-lg); display: block; overflow: hidden; position: relative; }
-  .nk-home-hero-tile:nth-child(even) { margin-top: 5rem; }
-  .nk-home-hero-tile img { display: block; height: 100%; mix-blend-mode: multiply; object-fit: contain; padding: 4% 4% 16%; transform: scale(1.12); transition: transform .4s; width: 100%; }
-  .nk-home-hero-tile:hover img { transform: scale(1.16); }
-  .nk-home-hero-tag { align-items: center; background: var(--nekova-surface); border-radius: var(--nekova-radius-pill); bottom: 1.6rem; color: var(--nekova-ink); display: inline-flex; font-size: 1.4rem; font-weight: 800; gap: .6rem; left: 1.6rem; padding: .8rem 1.4rem; position: absolute; transition: color .2s; }
+  .nk-home-hero-mosaic { aspect-ratio: 6 / 5; display: grid; gap: 1.6rem; grid-template-columns: 1.3fr 1fr; grid-template-rows: 1fr 1fr; min-width: 0; }
+  .nk-home-hero-tile { background: var(--nekova-panel); border-radius: var(--nekova-radius-lg); display: block; min-height: 0; overflow: hidden; position: relative; }
+  .nk-home-hero-tile--main { grid-row: span 2; }
+  .nk-home-hero-tile img { display: block; height: 100%; mix-blend-mode: multiply; object-fit: contain; padding: 8% 8% 22%; transition: transform .4s; width: 100%; }
+  .nk-home-hero-tile--fill img { mix-blend-mode: normal; object-fit: cover; padding: 0; }
+  .nk-home-hero-tile:hover img { transform: scale(1.04); }
+  .nk-home-hero-tag { white-space: nowrap; align-items: center; background: var(--nekova-surface); border-radius: var(--nekova-radius-pill); bottom: 1.6rem; color: var(--nekova-ink); display: inline-flex; font-size: 1.4rem; font-weight: 800; gap: .6rem; left: 1.6rem; padding: .8rem 1.4rem; position: absolute; transition: color .2s; }
   .nk-home-hero-tag svg { color: var(--nk-accent); height: 1.6rem; width: 1.6rem; }
   .nk-home-hero-tile:hover .nk-home-hero-tag { color: var(--nk-accent); }
   .nk-home .nk-home-feature-media--fill img { mix-blend-mode: normal; object-fit: cover; padding: 0; }
@@ -323,9 +263,7 @@
     .nk-home-hero h1 { font-size: clamp(3.4rem, 10vw, 4.2rem); }
     .nk-home-lead { font-size: 1.6rem; }
     .nk-home-actions .nk-home-button { width: 100%; }
-    .nk-home-hero-tile:nth-child(even) { margin-top: 3rem; }
-    .nk-home-hero-track { gap: 1.2rem; grid-auto-columns: calc((100% - 1.2rem) / 2); }
-    .nk-home-hero-tag { bottom: 1rem; font-size: 1.25rem; left: 1rem; padding: .5rem 1rem; }
+    .nk-home-hero-tag { bottom: 1rem; font-size: 1.25rem; left: 1rem; padding: .5rem 1rem; white-space: normal; }
     .nk-home-band, .nk-home-dark { padding: 5.6rem 0; }
     .nk-home-head { margin-bottom: 3.2rem; }
     .nk-home-promise-list { grid-template-columns: 1fr; }

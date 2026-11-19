@@ -455,9 +455,9 @@ const launchProducts = process.env.PREVIEW_ALL_PRODUCTS
   : [orthopedicProduct, insoleProduct, pillowProduct];
 const collection = { id: 1, handle: 'all', title: 'Todos los productos', description: '<p>Productos de ejemplo para la vista local.</p>', products: launchProducts, all_products_count: launchProducts.length, products_count: launchProducts.length, url: '/collections/all', image };
 const menuItems = [
-  { title: 'Almohadón ergonómico', url: '/products/cojin-ortopedico-u', links: [] },
-  { title: 'Plantillas', url: '/products/plantillas-multitalle', links: [] },
-  { title: 'Almohada', url: '/products/almohada-nekova-somnia', links: [] },
+  { title: 'Almohadón Ergonómico', url: '/products/cojin-ortopedico-u', links: [] },
+  { title: 'Plantillas Confort', url: '/products/plantillas-multitalle', links: [] },
+  { title: 'Almohada Somnia', url: '/products/almohada-nekova-somnia', links: [] },
   { title: 'Sobre Nekova', url: '/pages/sobre-nekova', links: [] },
   { title: 'Contacto', url: '/pages/contact', links: [] },
 ];
