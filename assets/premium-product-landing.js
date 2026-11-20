@@ -604,8 +604,7 @@ document.querySelectorAll('[data-nk-dispatch]').forEach((el) => {
   };
   const sameDay = isBusiness(today) && minutes < cutoff;
   const dispatch = sameDay ? today : addBusiness(today, 1);
-  const first = addBusiness(dispatch, Number(el.dataset.min) || 1);
-  const last = addBusiness(dispatch, Number(el.dataset.max) || 3);
+  // Only the dispatch day: the delivery window is shown as text ("2 a 5 días hábiles"), never as dates.
   const format = (date) => `${new Intl.DateTimeFormat('es-AR', { timeZone: 'UTC', weekday: 'long' }).format(date)} ${date.getUTCDate()}/${date.getUTCMonth() + 1}`;
   const tomorrow = new Date(today);
   tomorrow.setUTCDate(tomorrow.getUTCDate() + 1);
@@ -620,6 +619,6 @@ document.querySelectorAll('[data-nk-dispatch]').forEach((el) => {
   } else {
     when = `Pedilo hoy y sale el <b>${format(dispatch)}</b>.`;
   }
-  el.innerHTML = `${when} Llega aprox. entre el ${format(first)} y el ${format(last)}.`;
+  el.innerHTML = when;
   el.hidden = false;
 });

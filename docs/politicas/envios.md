@@ -3,7 +3,7 @@
 > Texto para pegar en Shopify → Configuración → Políticas → Política de envío.
 > Completá lo que está entre [corchetes] con los datos de tu logística.
 
-**Última actualización:** 19/10/2026
+**Última actualización:** 20/11/2026
 
 ## Despacho
 
@@ -15,10 +15,8 @@
 
 - El **costo del envío** se calcula según tu código postal y lo ves en el checkout **antes de pagar**.
 - **Envío gratis** en compras desde $55.000 a todo el país.
-- Operador logístico: [ANDREANI / CORREO ARGENTINO / OCA / ENVÍO PROPIO].
-- Plazos estimados de entrega, contados desde el despacho:
-  - CABA y GBA: [X a Y] días hábiles.
-  - Resto del país: [X a Y] días hábiles.
+- Enviamos por **Correo Argentino**, a todo el país, con número de seguimiento.
+- Plazo estimado de entrega: **2 a 5 días hábiles** desde el despacho.
 
 Los plazos dependen del operador logístico y pueden extenderse en fechas de alta demanda o por causas ajenas a Nekova.
 
