@@ -15,12 +15,18 @@
         "combo_heading": "Completá tu compra",
         "combo_note": "",
         "product": "",
-        "launch_heading": ""
+        "launch_heading": "",
+        "payment_note": "",
+        "shipping_note": ""
       }
     },
     "disclosures": {
       "type": "disclosures",
       "settings": {
+        "heading": "Divulgaciones",
+        "heading_size": "h2",
+        "open_by_default": false,
+        "color_scheme": "",
         "padding_top": 36,
         "padding_bottom": 0
       }
@@ -42,11 +48,32 @@
         "padding_top": 36,
         "padding_bottom": 28
       }
+    },
+    "1795138957fa3d0818": {
+      "type": "apps",
+      "blocks": {
+        "judge_me_reviews_review_widget_Tbwkip": {
+          "type": "shopify://apps/judge-me-reviews/blocks/review_widget/61ccd3b1-a9f2-4160-9fe9-4fec8413e5d8",
+          "settings": {
+            "review_data": "sample_data",
+            "max_width": 1200,
+            "show_shop_reviews": false,
+            "empty_state": "empty_widget"
+          }
+        }
+      },
+      "block_order": [
+        "judge_me_reviews_review_widget_Tbwkip"
+      ],
+      "settings": {
+        "include_margins": true
+      }
     }
   },
   "order": [
     "main",
     "disclosures",
-    "related-products"
+    "related-products",
+    "1795138957fa3d0818"
   ]
 }
