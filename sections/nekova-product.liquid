@@ -984,69 +984,6 @@
     </section>
   {%- endif -%}
 
-  {%- liquid
-    # Cross-sell: other products of the store catalog (collection "all").
-    assign other_products = ''
-    assign other_count = 0
-    for candidate in collections.all.products limit: 4
-      if candidate.id != featured_product.id
-        assign other_count = other_count | plus: 1
-      endif
-    endfor
-  -%}
-  {%- if other_count > 0 -%}
-    <section class="nk-section nk-section--panel" aria-labelledby="NkMore-{{ section.id }}">
-      <div class="nk-shell">
-        <div class="nk-head nk-head--split">
-          <div>
-            <p class="nk-eyebrow">Completá tu bienestar</p>
-            <h2 id="NkMore-{{ section.id }}">También te puede <span class="nk-hl">interesar</span></h2>
-          </div>
-          <p class="nk-head-lead">Productos pensados para que trabajes, viajes y descanses más cómodo.</p>
-        </div>
-        <ul class="nk-more" role="list">
-          {%- for candidate in collections.all.products limit: 4 -%}
-            {%- if candidate.id == featured_product.id -%}{%- continue -%}{%- endif -%}
-            {%- liquid
-              assign more_image = ''
-              case candidate.handle
-                when 'cojin-ortopedico-u'
-                  assign more_image = 'product-media-cojin-ortopedico-01.jpg' | asset_url
-                when 'tapones-auditivos-silicona'
-                  assign more_image = 'product-media-tapones-01.jpg' | asset_url
-              endcase
-              if more_image == blank and candidate.featured_image
-                assign more_image = candidate.featured_image | image_url: width: 900
-              endif
-            -%}
-            <li>
-              <a class="nk-more-card" href="{{ candidate.url }}">
-                {%- if more_image != blank -%}<span class="nk-more-media"><img src="{{ more_image }}" alt="" width="900" height="900" loading="lazy"></span>{%- endif -%}
-                <span class="nk-more-body">
-                  <strong>{{ candidate.title | escape }}</strong>
-                  <span class="nekova-promo-scope nk-more-price"><span>{{ candidate.price | money_without_trailing_zeros }}</span>{% render 'nekova-promo-price', product: candidate, price: candidate.price %}</span>
-                  <span class="nk-more-link">Ver producto {% render 'nekova-icon', icon: 'arrow-right' %}</span>
-                </span>
-              </a>
-            </li>
-          {%- endfor -%}
-        </ul>
-      </div>
-    </section>
-  {%- endif -%}
-
-  {%- if section.blocks.size > 0 -%}
-    {%- comment -%} Reviews app blocks (Judge.me: store reviews, hidden while there are none). The band hides itself when the app renders nothing. {%- endcomment -%}
-    <section class="nk-section nk-section--reviews" data-nk-reviews>
-      <div class="nk-shell" data-nk-reviews-inner>
-        {%- for block in section.blocks -%}
-          {% render block %}
-        {%- endfor -%}
-      </div>
-    </section>
-    {% render 'nekova-reviews-guard' %}
-  {%- endif -%}
-
   <section class="nk-section" id="preguntas-frecuentes" aria-labelledby="NkFaq-{{ section.id }}">
     <div class="nk-shell nk-split nk-split--faq">
       <div>
@@ -1078,6 +1015,18 @@
       </div>
     </div>
   </section>
+
+  {%- if section.blocks.size > 0 -%}
+    {%- comment -%} Reviews app blocks (Judge.me: store reviews, hidden while there are none). The band hides itself when the app renders nothing. {%- endcomment -%}
+    <section class="nk-section nk-section--panel nk-section--reviews" data-nk-reviews>
+      <div class="nk-shell" data-nk-reviews-inner>
+        {%- for block in section.blocks -%}
+          {% render block %}
+        {%- endfor -%}
+      </div>
+    </section>
+    {% render 'nekova-reviews-guard' %}
+  {%- endif -%}
 
   {%- if featured_product != blank -%}
     <div class="nk-cta-band">
