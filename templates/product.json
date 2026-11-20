@@ -18,7 +18,21 @@
         "launch_heading": "",
         "payment_note": "",
         "shipping_note": ""
-      }
+      },
+      "blocks": {
+        "judge_me_reviews": {
+          "type": "shopify://apps/judge-me-reviews/blocks/review_widget/61ccd3b1-a9f2-4160-9fe9-4fec8413e5d8",
+          "settings": {
+            "review_data": "sample_data",
+            "max_width": 1200,
+            "show_shop_reviews": true,
+            "empty_state": "hide_widget"
+          }
+        }
+      },
+      "block_order": [
+        "judge_me_reviews"
+      ]
     },
     "disclosures": {
       "type": "disclosures",
@@ -48,53 +62,11 @@
         "padding_top": 36,
         "padding_bottom": 28
       }
-    },
-    "1795138957fa3d0818": {
-      "type": "apps",
-      "blocks": {
-        "judge_me_reviews_review_widget_Tbwkip": {
-          "type": "shopify://apps/judge-me-reviews/blocks/review_widget/61ccd3b1-a9f2-4160-9fe9-4fec8413e5d8",
-          "settings": {
-            "review_data": "sample_data",
-            "max_width": 1200,
-            "show_shop_reviews": false,
-            "empty_state": "empty_widget"
-          }
-        }
-      },
-      "block_order": [
-        "judge_me_reviews_review_widget_Tbwkip"
-      ],
-      "settings": {
-        "include_margins": true
-      }
-    },
-    "17951396019ddc2f8a": {
-      "type": "apps",
-      "blocks": {
-        "judge_me_reviews_review_widget_YUwkg8": {
-          "type": "shopify://apps/judge-me-reviews/blocks/review_widget/61ccd3b1-a9f2-4160-9fe9-4fec8413e5d8",
-          "settings": {
-            "review_data": "sample_data",
-            "max_width": 1200,
-            "show_shop_reviews": false,
-            "empty_state": "hide_widget"
-          }
-        }
-      },
-      "block_order": [
-        "judge_me_reviews_review_widget_YUwkg8"
-      ],
-      "settings": {
-        "include_margins": true
-      }
     }
   },
   "order": [
     "main",
     "disclosures",
-    "related-products",
-    "1795138957fa3d0818",
-    "17951396019ddc2f8a"
+    "related-products"
   ]
 }

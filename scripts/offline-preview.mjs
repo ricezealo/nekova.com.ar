@@ -606,7 +606,8 @@ function normalizeLiquid(source) {
 }
 
 function sectionContext(id, definition, context) {
-  const blocks = Object.entries(definition.blocks || {}).map(([blockId, block]) => ({ ...block, id: blockId }));
+  // App blocks (Judge.me, etc.) only render on Shopify: the preview skips them.
+  const blocks = Object.entries(definition.blocks || {}).filter(([, block]) => !String(block.type).startsWith('shopify://apps/')).map(([blockId, block]) => ({ ...block, id: blockId }));
   const settings = { ...(definition.settings || {}) };
   if (typeof settings.collection === 'string') settings.collection = context.collections?.[settings.collection] || null;
   if (typeof settings.menu === 'string') settings.menu = context.menus?.[settings.menu] || context.linklists?.[settings.menu] || null;
@@ -623,7 +624,7 @@ function sectionContext(id, definition, context) {
     type: definition.type,
     settings,
     blocks,
-    block_order: definition.block_order || blocks.map((block) => block.id),
+    block_order: (definition.block_order || blocks.map((block) => block.id)).filter((blockId) => blocks.some((block) => block.id === blockId)),
     index: 1,
   };
   return section;
@@ -687,6 +688,7 @@ function templateFor(pathname) {
   if (pathname === '/pages/sobre-nekova') return ['page.about', { title: 'Sobre Nekova', content: '' }];
   if (pathname === '/pages/arrepentimiento') return ['page.arrepentimiento', { title: 'Botón de arrepentimiento', content: '' }];
   if (pathname === '/pages/lista-de-lanzamiento') return ['page.lista', { title: 'Lista de lanzamiento', content: '' }];
+  if (pathname === '/pages/opina') return ['page.opina', { title: 'Contanos tu experiencia', content: '' }];
   if (pathname.startsWith('/pages/')) return [pathname === '/pages/contact' ? 'page.contact' : 'page', { title: pathname.endsWith('/contact') ? 'Contacto' : 'Pagina de ejemplo', content: '<p>Contenido de pagina de ejemplo para la vista offline.</p>' }];
   if (pathname.startsWith('/blogs/')) return ['blog', { title: 'Novedades', articles: [] }];
   if (pathname.startsWith('/articles/')) return ['article', { title: 'Articulo de ejemplo', content: '<p>Contenido de articulo.</p>', image }];

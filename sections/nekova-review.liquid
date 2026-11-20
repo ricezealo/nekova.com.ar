@@ -1,0 +1,117 @@
+{%- comment -%}
+  Review landing (/pages/opina, template "opina"): the QR on the package card and the WhatsApp message point here.
+  Two ways to leave a store review: the Judge.me form (store review only) or telling us on WhatsApp
+  (for customers who prefer not to fill a form; the owner loads it in Judge.me with their permission).
+{%- endcomment -%}
+{%- liquid
+  assign whatsapp_digits = settings.nekova_whatsapp | remove: ' ' | remove: '+' | remove: '-' | remove: '(' | remove: ')' | remove: '.'
+  assign whatsapp_text = section.settings.whatsapp_message | default: 'Hola Nekova, les quiero contar cómo me fue con mi compra.'
+-%}
+<section class="nk-review" aria-labelledby="NkReviewTitle-{{ section.id }}">
+  <div class="nk-review-card">
+    <img class="nk-review-logo" src="{{ 'nekova-logo.svg' | asset_url }}" alt="Nekova" width="180" height="40">
+    {%- if section.settings.eyebrow != blank -%}<p class="nk-review-eyebrow">{{ section.settings.eyebrow }}</p>{%- endif -%}
+    <h1 id="NkReviewTitle-{{ section.id }}">{{ section.settings.heading }}</h1>
+    {%- if section.settings.text != blank -%}<div class="nk-review-text">{{ section.settings.text }}</div>{%- endif -%}
+    <div class="nk-review-actions">
+      {%- if section.settings.review_url != blank -%}
+        <a class="nk-review-button" href="{{ section.settings.review_url }}">
+          <span class="nk-review-stars" aria-hidden="true">★★★★★</span>{{ section.settings.button_label }}
+        </a>
+      {%- endif -%}
+      {%- if whatsapp_digits != blank -%}
+        <a class="nk-review-button nk-review-button--whatsapp" href="https://wa.me/{{ whatsapp_digits }}?text={{ whatsapp_text | url_encode }}" target="_blank" rel="noopener">
+          <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M20.2 11.7a8.1 8.1 0 0 1-12 7.1l-4.4 1.1 1.2-4.3a8.1 8.1 0 1 1 15.2-3.9Z" fill="none" stroke="currentColor" stroke-linejoin="round" stroke-width="1.7"/><path d="M8.4 7.7c-.3 0-.6.1-.8.4-.3.3-.9.9-.9 2.1s.9 2.4 1 2.6c.1.2 1.8 2.9 4.4 3.9 2.2.9 2.7.7 3.2.7.5-.1 1.6-.7 1.8-1.3.2-.6.2-1.1.1-1.2-.1-.1-.3-.2-.6-.4l-1.8-.9c-.2-.1-.4-.1-.6.2l-.8 1c-.2.2-.3.2-.6.1-.3-.1-1.2-.4-2.2-1.3-.8-.7-1.3-1.5-1.5-1.8-.2-.3 0-.4.1-.6l.4-.5c.1-.2.2-.3.3-.5.1-.2 0-.4 0-.5l-.8-1.8c-.2-.5-.4-.5-.7-.5Z" fill="currentColor"/></svg>
+          {{ section.settings.whatsapp_label }}
+        </a>
+      {%- endif -%}
+    </div>
+    {%- if section.settings.note != blank -%}<div class="nk-review-note">{{ section.settings.note }}</div>{%- endif -%}
+  </div>
+</section>
+
+{% style %}
+  .nk-review { background: var(--nekova-panel); padding: 6rem 2rem 8rem; }
+  .nk-review-card { background: var(--nekova-surface); border-radius: var(--nekova-radius-lg); margin: 0 auto; max-width: 58rem; padding: 5rem 4.4rem; text-align: center; }
+  .nk-review-logo { height: 3.6rem; width: auto; }
+  .nk-review-eyebrow { color: var(--nekova-accent); font-size: 1.4rem; font-weight: 800; letter-spacing: .16em; margin: 3.2rem 0 0; text-transform: uppercase; }
+  .nk-review h1 { font-family: var(--font-heading-family); font-size: clamp(3rem, 4vw, 4rem); font-weight: var(--font-heading-weight); letter-spacing: -.02em; line-height: 1.12; margin: 1.2rem 0 0; }
+  .nk-review h1 em { color: var(--nekova-accent); font-style: normal; }
+  .nk-review-text { color: var(--nekova-muted); font-size: 1.8rem; line-height: 1.55; margin-top: 1.8rem; }
+  .nk-review-text p { margin: 0; }
+  .nk-review-actions { display: grid; gap: 1.4rem; margin-top: 3.6rem; }
+  .nk-review-button { align-items: center; background: var(--nekova-accent); border-radius: 1.2rem; color: var(--nekova-on-accent); display: flex; flex-direction: column; font-size: 2rem; font-weight: 800; gap: .4rem; justify-content: center; min-height: 7.2rem; padding: 1.6rem 2.4rem; text-decoration: none; }
+  .nk-review-button:hover { background: var(--nekova-accent-strong); color: var(--nekova-on-accent); }
+  .nk-review-stars { font-size: 1.6rem; letter-spacing: .3rem; opacity: .9; }
+  .nk-review-button--whatsapp { background: var(--nekova-surface); border: 2px solid #0f7d70; color: #0f7d70; flex-direction: row; gap: 1rem; }
+  .nk-review-button--whatsapp:hover { background: #0f7d70; color: #fff; }
+  .nk-review-button--whatsapp svg { height: 2.6rem; width: 2.6rem; }
+  .nk-review-button:focus-visible { outline: 3px solid var(--nekova-accent); outline-offset: 3px; }
+  .nk-review-note { color: var(--nekova-muted); font-size: 1.4rem; line-height: 1.5; margin-top: 2.4rem; }
+  .nk-review-note p { margin: 0; }
+  @media screen and (max-width: 600px) {
+    .nk-review { padding: 2.4rem 1.6rem 6rem; }
+    .nk-review-card { padding: 3.6rem 2.2rem; }
+  }
+{% endstyle %}
+
+{% schema %}
+{
+  "name": "Nekova · opiná",
+  "class": "nekova-review-section",
+  "settings": [
+    {
+      "type": "text",
+      "id": "eyebrow",
+      "label": "Antetítulo",
+      "default": "¡Gracias por tu compra!"
+    },
+    {
+      "type": "inline_richtext",
+      "id": "heading",
+      "label": "Título",
+      "default": "¿Cómo fue tu experiencia con <em>Nekova</em>?"
+    },
+    {
+      "type": "richtext",
+      "id": "text",
+      "label": "Texto",
+      "default": "<p>Contanos qué te pareció la compra, el envío y la atención. Te lleva un minuto y nos ayuda muchísimo.</p>"
+    },
+    {
+      "type": "url",
+      "id": "review_url",
+      "label": "Link del formulario de reseña (Judge.me, solo tienda)"
+    },
+    {
+      "type": "text",
+      "id": "button_label",
+      "label": "Texto del botón de reseña",
+      "default": "Dejar mi reseña"
+    },
+    {
+      "type": "text",
+      "id": "whatsapp_label",
+      "label": "Texto del botón de WhatsApp",
+      "default": "Prefiero contarlo por WhatsApp"
+    },
+    {
+      "type": "text",
+      "id": "whatsapp_message",
+      "label": "Mensaje de WhatsApp",
+      "default": "Hola Nekova, les quiero contar cómo me fue con mi compra."
+    },
+    {
+      "type": "richtext",
+      "id": "note",
+      "label": "Nota al pie",
+      "default": "<p>Como agradecimiento, te enviamos un código de descuento para tu próxima compra.</p>"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Nekova · opiná"
+    }
+  ]
+}
+{% endschema %}

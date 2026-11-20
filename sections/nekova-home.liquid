@@ -116,6 +116,18 @@
     </div>
   </div>
 
+  {%- if section.blocks.size > 0 -%}
+    {%- comment -%} Reviews app blocks (Judge.me reviews carousel). The band hides itself while the app renders nothing. {%- endcomment -%}
+    <div class="nk-home-reviews" data-nk-reviews>
+      <div class="nk-home-shell" data-nk-reviews-inner>
+        {%- for block in section.blocks -%}
+          {% render block %}
+        {%- endfor -%}
+      </div>
+    </div>
+    {% render 'nekova-reviews-guard' %}
+  {%- endif -%}
+
   <div class="nk-home-dark">
     <div class="nk-home-shell nk-home-promise">
       <div>
@@ -222,6 +234,7 @@
   .nk-dot { border: 1px solid var(--nekova-line-strong); border-radius: 50%; display: block; height: 1.8rem; width: 1.8rem; }
 
 
+  .nk-home-reviews { background: var(--nekova-panel); padding: 8rem 0; }
   .nk-home-dark { background: var(--nekova-ink); color: #fff; padding: 9rem 0; }
   .nk-home .nk-home-dark h2 { color: #fff; font-size: clamp(3rem, 3.6vw, 4.6rem); margin-bottom: 2.4rem; }
   .nk-home-dark .nk-home-eyebrow, .nk-home-dark .nk-home-hl { color: #8fa8ff; }
@@ -281,6 +294,11 @@
 {% schema %}
 {
   "name": "Nekova · inicio",
+  "blocks": [
+    {
+      "type": "@app"
+    }
+  ],
   "class": "nekova-home-section",
   "settings": [
     {

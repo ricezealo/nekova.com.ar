@@ -1036,14 +1036,15 @@
   {%- endif -%}
 
   {%- if section.blocks.size > 0 -%}
-    <section class="nk-section">
-      <div class="nk-shell">
-        <div class="nk-head nk-head--center"><p class="nk-eyebrow">Opiniones</p><h2>Lo que dicen <span class="nk-hl">quienes lo usan</span></h2></div>
+    {%- comment -%} Reviews app blocks (Judge.me: store reviews, hidden while there are none). The band hides itself when the app renders nothing. {%- endcomment -%}
+    <section class="nk-section nk-section--reviews" data-nk-reviews>
+      <div class="nk-shell" data-nk-reviews-inner>
         {%- for block in section.blocks -%}
           {% render block %}
         {%- endfor -%}
       </div>
     </section>
+    {% render 'nekova-reviews-guard' %}
   {%- endif -%}
 
   <section class="nk-section" id="preguntas-frecuentes" aria-labelledby="NkFaq-{{ section.id }}">

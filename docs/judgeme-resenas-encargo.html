@@ -1,0 +1,187 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Judge.me: reseñas de Nekova</title>
+<link href="https://fonts.googleapis.com/css2?family=Nunito+Sans:wght@400;600;700;800&family=Poppins:wght@600&display=swap" rel="stylesheet">
+<style>
+  :root { --accent: #2f5bff; --accent-soft: #eaf0ff; --ink: #14161a; --muted: #5b6270; --panel: #f3f5f9; --line: rgba(20,22,26,.1); --warm: #c94430; --warm-soft: #fdeeea; --ok: #0f7d70; --ok-soft: #e4f5f2; }
+  * { box-sizing: border-box; }
+  body { margin: 0; background: var(--panel); color: var(--ink); font: 17px/1.65 'Nunito Sans', system-ui, sans-serif; }
+  .wrap { max-width: 860px; margin: 0 auto; padding: 48px 20px 80px; }
+  header { margin-bottom: 32px; }
+  .eyebrow { color: var(--accent); font-weight: 800; font-size: 13px; letter-spacing: .14em; text-transform: uppercase; display: flex; align-items: center; gap: 10px; }
+  .eyebrow::before { content: ''; width: 24px; height: 3px; background: currentColor; border-radius: 2px; }
+  h1 { font: 600 40px/1.15 Poppins, sans-serif; letter-spacing: -.02em; margin: 10px 0 12px; }
+  h1 em { font-style: normal; color: var(--accent); }
+  .lead { color: var(--muted); font-size: 19px; margin: 0; }
+  .summary { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 14px; margin: 28px 0 8px; }
+  .chip { background: #fff; border-radius: 16px; padding: 16px 18px; }
+  .chip b { display: block; font-size: 15px; }
+  .chip span { color: var(--muted); font-size: 14px; }
+  section { background: #fff; border-radius: 22px; padding: 28px 30px; margin-top: 18px; }
+  h2 { font: 600 23px/1.3 Poppins, sans-serif; letter-spacing: -.01em; margin: 0 0 14px; display: flex; align-items: center; gap: 14px; }
+  .n { flex: none; width: 36px; height: 36px; border-radius: 50%; background: var(--accent-soft); color: var(--accent); display: grid; place-items: center; font-size: 16px; }
+  .tag { margin-left: auto; font: 800 12px 'Nunito Sans'; letter-spacing: .06em; text-transform: uppercase; padding: 5px 10px; border-radius: 999px; background: var(--ok-soft); color: var(--ok); white-space: nowrap; }
+  .tag.paid { background: var(--warm-soft); color: var(--warm); }
+  ol, ul { padding-left: 22px; margin: 8px 0; }
+  li { margin: 6px 0; }
+  .path { display: inline-block; background: var(--panel); border-radius: 8px; padding: 1px 8px; font-weight: 700; font-size: 15px; }
+  .note { background: var(--accent-soft); border-radius: 14px; padding: 14px 18px; margin-top: 14px; font-size: 16px; }
+  .warn { background: var(--warm-soft); border-radius: 14px; padding: 14px 18px; margin-top: 14px; font-size: 16px; }
+  .quote { border-left: 4px solid var(--accent); background: var(--panel); border-radius: 0 14px 14px 0; padding: 16px 20px; margin: 10px 0 18px; }
+  .quote p { margin: 0 0 8px; } .quote p:last-child { margin: 0; }
+  .btn { display: inline-block; background: var(--accent); color: #fff; border-radius: 10px; padding: 6px 16px; font-weight: 700; font-size: 15px; }
+  h3 { font-size: 16px; margin: 18px 0 4px; color: var(--muted); text-transform: uppercase; letter-spacing: .08em; }
+  .next { background: var(--ink); color: #fff; }
+  .next h2 { color: #fff; } .next .n { background: rgba(255,255,255,.12); color: #fff; }
+  footer { color: var(--muted); font-size: 14px; margin-top: 30px; }
+  footer a { color: var(--accent); }
+  @media (max-width: 600px) { h1 { font-size: 30px; } section { padding: 22px 18px; } .tag { display: none; } }
+  @media print { body { background: #fff; } section { break-inside: avoid; border: 1px solid var(--line); } }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <div class="eyebrow">Guía de configuración</div>
+    <h1>Reseñas de la tienda con <em>Judge.me</em></h1>
+    <p class="lead">Que el cliente, después de probar el producto, deje una reseña general de Nekova: la compra, la atención y el envío. Se pide de dos formas: una tarjeta con QR en el paquete y un mail automático.</p>
+    <div class="summary">
+      <div class="chip"><b>⏱ Unos 30 minutos</b><span>para dejarlo andando</span></div>
+      <div class="chip"><b>✅ Plan gratis</b><span>QR, mail automático y moderación</span></div>
+      <div class="chip"><b>💳 Plan Awesome (pago)</b><span>recordatorios y textos personalizados</span></div>
+    </div>
+    <p class="note">Los menús están con sus nombres en inglés (Settings = Configuración). Si tu panel está en español, el orden es el mismo.</p>
+  </header>
+
+  <section>
+    <h2><span class="n">1</span>Idioma y formulario <span class="tag">Gratis</span></h2>
+    <ol>
+      <li><span class="path">Settings → General</span> (o "Language"): elegí <b>Español</b>.</li>
+      <li><span class="path">Settings → Collection flow → Review collection</span>, en "Where customer gets redirected when writing reviews from emails", elegí <b>External form</b>.</li>
+    </ol>
+    <p class="note">Es la opción que recomienda Judge.me: abre su formulario en una pestaña nueva y no hace falta instalar nada más en la tienda. Esta opción vale también para el QR y los links.</p>
+  </section>
+
+  <section>
+    <h2><span class="n">2</span>Aprobar antes de publicar <span class="tag">Gratis</span></h2>
+    <p>Buscá la opción de publicación automática ("Auto-publish") y dejala en <b>no publicar automáticamente</b>. Así cada reseña pasa por vos antes de verse, al menos al principio.</p>
+    <p class="warn"><b>Por qué:</b> un cliente puede escribir "me sacó el dolor de espalda" o "me corrigió la postura". Publicado en la tienda, es una promesa de salud que conviene evitar por la ANMAT. Esas reseñas se pueden agradecer en privado y no publicarlas.</p>
+  </section>
+
+  <section>
+    <h2><span class="n">3</span>El QR para la tarjeta <span class="tag">Gratis</span></h2>
+    <ol>
+      <li>Entrá a <span class="path">Settings → Request reviews → Links, QR codes and point of sale review collection</span>.</li>
+      <li>En <b>QR code styling → Colors</b>, elegí <b>Navy</b> (el más cercano al azul de Nekova) o <b>Black</b>.</li>
+      <li>Bajá hasta <b>Store review link</b> y tocá <b>Download PNG</b>.</li>
+      <li>Copiá también el <b>link</b> de esa misma sección.</li>
+    </ol>
+    <p class="note">👉 <b>Pasame el PNG y el link</b> y armo la tarjeta para imprimir.</p>
+    <p>Cualquiera que escanee el QR puede dejar una reseña, aunque no haya comprado. Judge.me pide confirmar el email y, si no lo confirman, la reseña no sale como "verificada".</p>
+  </section>
+
+  <section>
+    <h2><span class="n">4</span>Mail automático después del despacho <span class="tag">Gratis</span></h2>
+    <ol>
+      <li>Entrá a <span class="path">Settings → Request scheduling → Timing → Domestic orders</span>.</li>
+      <li>En <b>Order trigger</b>, elegí <b>Fulfilled</b>, que es cuando marcás el pedido como despachado.</li>
+      <li>En <b>Send review request after</b>, poné <b>10 días</b>: de 1 a 3 días hábiles de envío más unos días para probarlo.</li>
+      <li>Tocá <b>Save</b>.</li>
+      <li>Para que el mail pida la <b>reseña de la tienda</b> y no la del producto: Judge.me sumó en enero de 2026 una opción para elegir qué priorizan los mails. Buscala en Request scheduling o en Email templates y elegí <b>tienda</b>.</li>
+    </ol>
+    <p class="note"><b>Si en tu panel no aparece esa opción:</b> el mail pide primero la reseña del producto y después ofrece la de la tienda. Activalo en <span class="path">Settings → Widgets → Write a Review → Submission flow</span>, y sumá "Ask for a store review" en <span class="path">Settings → Email templates → Review confirmation → Email add-ons</span>.</p>
+  </section>
+
+  <section>
+    <h2><span class="n">5</span>Recordatorio si no la dejó <span class="tag paid">Plan pago</span></h2>
+    <p>Los recordatorios automáticos son del plan <b>Awesome</b>. Se configuran en <span class="path">Request scheduling</span>, dentro de un horario personalizado, con hasta 3 recordatorios. Los textos del pedido de reseña de la tienda también se personalizan solo con ese plan.</p>
+    <ul>
+      <li><b>Sugerencia:</b> empezá gratis con el QR y el mail. Si ves que muchos no responden, pasá al plan Awesome; revisá su precio en la página de planes antes de decidir.</li>
+      <li>Con Awesome, un recordatorio <b>7 días después</b> del primer mail.</li>
+    </ul>
+  </section>
+
+  <section>
+    <h2><span class="n">6</span>Probarlo</h2>
+    <ol>
+      <li>Hacé un pedido de prueba con tu email, marcalo como despachado y revisá en <b>Review requests</b> que el mail quede programado.</li>
+      <li>Escaneá el QR con el celular, dejá una reseña de prueba y comprobá que te llega para aprobar en <span class="path">Reviews → Store Reviews</span>.</li>
+      <li>Borrá la reseña de prueba.</li>
+    </ol>
+  </section>
+
+  <section>
+    <h2><span class="n">7</span>Textos sugeridos</h2>
+    <h3>Asunto del mail</h3>
+    <div class="quote"><p><b>¿Cómo fue tu experiencia con Nekova?</b></p></div>
+    <h3>Cuerpo del mail</h3>
+    <div class="quote">
+      <p>Hola {nombre}:</p>
+      <p>Ya pasaron unos días desde que te llegó tu pedido y queremos saber cómo te fue. ¿Qué te pareció la compra, el envío y la atención?</p>
+      <p>Tu opinión nos ayuda a mejorar y a que otras personas se animen a probar. Te lleva un minuto.</p>
+      <p><span class="btn">Dejar mi reseña</span></p>
+      <p>¡Gracias por elegirnos!<br>El equipo de Nekova</p>
+    </div>
+    <h3>Recordatorio (plan Awesome)</h3>
+    <div class="quote"><p>Hola {nombre}: si todavía no tuviste tiempo, nos encantaría leer tu opinión sobre tu compra en Nekova. Es un minuto y nos ayuda muchísimo.</p><p><span class="btn">Dejar mi reseña</span></p></div>
+    <h3>Tarjeta del paquete</h3>
+    <div class="quote"><p><b>¿Cómo fue tu experiencia con Nekova?</b></p><p>Escaneá el código y contanos. Nos ayuda a mejorar 💙</p></div>
+  </section>
+
+  <section>
+    <h2><span class="n">8</span>La página nekova.com.ar/pages/opina <span class="tag">Hacelo una vez</span></h2>
+    <p>Es la página a la que llevan el QR de la tarjeta y el mensaje de WhatsApp. Tiene dos botones: <b>Dejar mi reseña</b> (formulario de Judge.me) y <b>Prefiero contarlo por WhatsApp</b>, para quien no quiere completar formularios.</p>
+    <ol>
+      <li>Shopify → <span class="path">Tienda online → Páginas → Agregar página</span>.</li>
+      <li>Título: <b>Contanos tu experiencia</b>. El contenido dejalo vacío.</li>
+      <li>A la derecha, en <b>Plantilla</b>, elegí <b>opina</b>.</li>
+      <li>Guardá y revisá que la dirección quede como <b>/pages/opina</b>. Si quedó otra, editala abajo, en "Vista previa del motor de búsqueda".</li>
+      <li>Si querés que no aparezca en Google, ponela como <b>oculta</b> en la visibilidad. El link igual funciona.</li>
+    </ol>
+    <p class="warn"><b>Antes de imprimir las tarjetas,</b> creá la página y escaneá el QR: si la página no existe, el QR lleva a un error.</p>
+  </section>
+
+  <section>
+    <h2><span class="n">9</span>Mensajes de WhatsApp</h2>
+    <p>Guardalos como <b>respuestas rápidas</b> en WhatsApp Business (Herramientas para la empresa → Respuestas rápidas). Se mandan escribiendo <b>/</b> y el atajo.</p>
+    <h3>Atajo /opina · unos días después de la entrega</h3>
+    <div class="quote"><p>¡Hola {nombre}! ¿Cómo te está yendo con tu compra? 😊</p><p>Si tenés un minuto, nos ayudaría mucho que nos cuentes qué te pareció: nekova.com.ar/pages/opina</p><p>Y si te resulta más fácil, respondé este mensaje contándonos con tus palabras, con un texto o un audio. Como agradecimiento te regalamos un descuento para tu próxima compra. ¡Gracias por elegirnos! 💙</p></div>
+    <h3>Atajo /gracias · cuando ya dejó su opinión</h3>
+    <div class="quote"><p>¡Muchísimas gracias por tu opinión, {nombre}! 💙 Nos ayuda un montón.</p><p>Como te prometimos, este es tu código de <b>10% de descuento</b> para tu próxima compra en nekova.com.ar: <b>{CÓDIGO}</b></p><p>Lo ingresás al momento de pagar. Es de un solo uso. Cualquier cosa, escribinos por acá.</p></div>
+    <h3>Atajo /publicar · si te la contó por WhatsApp</h3>
+    <div class="quote"><p>¡Qué lindo leer esto, {nombre}! ¿Nos das permiso para publicar tu opinión en nuestra tienda, con tu nombre y la inicial de tu apellido? Si preferís que no, no hay problema y el descuento te lo mandamos igual 😊</p></div>
+    <p class="note"><b>Si te dio permiso,</b> cargá su opinión en Judge.me tal cual te la escribió, sin retocarla. Si te mandó un audio, pasalo a texto respetando sus palabras. Va con su nombre y la inicial del apellido. Si dice algo de salud ("me sacó el dolor"), no la publiques, pero agradecésela igual.</p>
+  </section>
+
+  <section>
+    <h2><span class="n">10</span>El código de descuento <span class="tag">Gratis</span></h2>
+    <ul>
+      <li><b>Configuración:</b> la tuya está bien: 10 %, todos los productos, un uso por cliente, sin combinar con otros descuentos y sin promocionarlo en los canales.</li>
+      <li><b>Qué no cubre:</b> un código complejo dificulta que lo adivinen, pero si alguien lo comparte, otras personas pueden usarlo una vez cada una.</li>
+      <li><b>Mejor opción si se empieza a compartir:</b> un código por persona. En Shopify → Descuentos, abrí el código, tocá <b>Duplicar</b>, cambiá el código por uno con su nombre, por ejemplo <b>GRACIAS-MARTA7</b>, y marcá <b>Limitar el número total de veces que se puede usar: 1</b>. Con pocas reseñas por semana te lleva un minuto cada una.</li>
+      <li><b>Fecha de vencimiento:</b> agregala, por ejemplo a 60 días. Da un motivo para volver a comprar pronto.</li>
+    </ul>
+  </section>
+
+  <section class="next">
+    <h2><span class="n">→</span>Después</h2>
+    <ul>
+      <li><b>Tarjeta:</b> con el PNG y el link del QR, armo la tarjeta para imprimir.</li>
+      <li><b>Reseñas en la tienda:</b> cuando haya 4 o 5 publicadas, armamos un carrusel en la home, cerca de "Comprá tranquilo". En la página de producto se suma el bloque de Judge.me desde el editor del tema: Personalizar → Producto → Agregar bloque.</li>
+    </ul>
+  </section>
+
+  <footer>
+    Fuentes:
+    <a href="https://judge.me/help/en/articles/9685536-collecting-reviews-using-a-qr-code">reseñas con QR</a> ·
+    <a href="https://judge.me/help/en/articles/8379844-automatic-review-request-emails">mails automáticos</a> ·
+    <a href="https://judge.me/help/en/articles/8384957-collecting-and-displaying-store-reviews">reseñas de la tienda</a> ·
+    <a href="https://judge.me/app/changelog">novedades</a> ·
+    <a href="https://judge.me/help/en/articles/11994357-collecting-reviews-using-a-review-link">link de reseñas</a>
+  </footer>
+</div>
+</body>
+</html>
