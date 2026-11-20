@@ -366,7 +366,22 @@ document.querySelectorAll('[data-nk-pack]').forEach((pack) => {
   const options = groups.map((group) => ({
     name: group.dataset.nkOptionName || '',
     values: [...group.querySelectorAll('input[type="radio"]')].map((input) => input.value),
+    // color option: same color as its swatch, so each row shows the color it has selected
+    colors: Object.fromEntries([...group.querySelectorAll('input[type="radio"]')].map((input) => [input.value, input.closest('label')?.querySelector('.nk-swatch')?.style.backgroundColor || ''])),
   }));
+  const paint = (row) => {
+    // other options (size): position of the chosen value, so the icon and tint grow with it
+    row.querySelectorAll('[data-nk-pack-step]').forEach((wrap) => {
+      const select = wrap.querySelector('select');
+      wrap.dataset.nkPackStep = String(select.selectedIndex);
+      wrap.style.setProperty('--nk-pack-step', String(select.selectedIndex / Math.max(1, select.options.length - 1)));
+    });
+    row.querySelectorAll('[data-nk-pack-color]').forEach((wrap) => {
+      const color = options[Number(wrap.dataset.nkPackColor)].colors[wrap.querySelector('select').value] || '';
+      wrap.style.setProperty('--nk-pack-color', color || 'transparent');
+      row.style.setProperty('--nk-pack-color', color || 'var(--nekova-line-strong)');
+    });
+  };
   const tierButtons = [...tiers.querySelectorAll('[data-nk-tier]')];
   const tierList = tierButtons.map((button) => ({ qty: Number(button.dataset.nkTier), price: Number(button.dataset.nkTierPrice) }));
   const rowsList = pack.querySelector('[data-nk-pack-rows]');
@@ -426,7 +441,22 @@ document.querySelectorAll('[data-nk-pack]').forEach((pack) => {
       const select = document.createElement('select');
       select.setAttribute('aria-label', option.name);
       option.values.forEach((value) => select.add(new Option(value, value, false, value === values[index])));
-      row.append(select);
+      if (Object.values(option.colors).some(Boolean)) {
+        const wrap = document.createElement('span');
+        wrap.className = 'nk-pack-color';
+        wrap.dataset.nkPackColor = String(index);
+        wrap.innerHTML = '<i aria-hidden="true"></i>';
+        wrap.append(select);
+        row.append(wrap);
+        row.classList.add('has-color');
+      } else {
+        const wrap = document.createElement('span');
+        wrap.className = 'nk-pack-step';
+        wrap.dataset.nkPackStep = '0';
+        wrap.innerHTML = '<svg viewBox="0 0 12 24" aria-hidden="true"><path d="M6 1c3 0 4.6 2.4 4.6 6 0 2.9-1.1 4.9-1.5 7.1-.4 2.2.7 4.6.7 8C9.8 23 8 24 6 24s-3.8-1-3.8-1.9c0-3.4 1-5.8.6-8C2.4 11.9 1.4 9.9 1.4 7 1.4 3.4 3 1 6 1Z" fill="currentColor"/></svg>';
+        wrap.append(select);
+        row.append(wrap);
+      }
     });
     const removeButton = document.createElement('button');
     removeButton.type = 'button';
@@ -445,11 +475,13 @@ document.querySelectorAll('[data-nk-pack]').forEach((pack) => {
     row.append(removeButton, status);
     row.addEventListener('change', () => {
       error.hidden = true;
+      paint(row);
       const variant = rowVariant(row);
       if (variant && variant.image && gallery) gallery.dispatchEvent(new CustomEvent('premium:show-image', { detail: { src: variant.image } }));
       refresh();
     });
     rowsList.append(row);
+    paint(row);
   };
 
   const setCount = (count) => {
@@ -486,6 +518,16 @@ document.querySelectorAll('[data-nk-pack]').forEach((pack) => {
     addRow(rowValues(rows().at(-1)));
     refresh();
   });
+  // The quantity stepper next to the button also opens the pack from 2 units on (its own handler runs first).
+  const qtyInput = qtyBox?.querySelector('input');
+  const fromQty = () => {
+    const value = Number(qtyInput?.value) || 1;
+    if (active || value < MIN) return;
+    setCount(Math.min(value, MAX));
+    rows().at(-1)?.querySelector('select')?.focus();
+  };
+  qtyBox?.querySelectorAll('[data-nk-qty-step]').forEach((button) => button.addEventListener('click', fromQty));
+  qtyInput?.addEventListener('change', fromQty);
 
   form.addEventListener('submit', async (event) => {
     if (!active) return;

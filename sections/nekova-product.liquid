@@ -1392,6 +1392,13 @@
   .nk-pack-head span { color: var(--nk-accent); font-weight: 800; }
   .nk-pack-rows { display: grid; gap: .8rem; list-style: none; margin: 0; padding: 0; }
   .nk-pack-row { align-items: center; border: 1px solid var(--nekova-line-strong); border-radius: 1.2rem; display: grid; gap: .8rem; grid-template-columns: 5.2rem 1fr 1fr 3.6rem; padding: .8rem 1rem; }
+  .nk-pack-row.has-color { border-left: .5rem solid var(--nk-pack-color); }
+  .nk-pack-color { display: block; min-width: 0; position: relative; }
+  .nk-pack-color i { background: var(--nk-pack-color); border-radius: 50%; box-shadow: inset 0 0 0 1px rgba(0, 0, 0, .18); height: 1.8rem; left: 1.1rem; pointer-events: none; position: absolute; top: 50%; transform: translateY(-50%); width: 1.8rem; }
+  .nk-pack-row .nk-pack-color select { padding-left: 3.8rem; width: 100%; }
+  .nk-pack-step { --nk-pack-step: 0; display: block; min-width: 0; position: relative; }
+  .nk-pack-step svg { color: var(--nk-accent); height: calc(1.4rem + 1.2rem * var(--nk-pack-step)); left: 1.4rem; pointer-events: none; position: absolute; top: 50%; transform: translate(-50%, -50%); width: auto; }
+  .nk-pack-row .nk-pack-step select { background: color-mix(in srgb, var(--nk-accent) calc(8% + 22% * var(--nk-pack-step)), var(--nekova-surface)); border-color: color-mix(in srgb, var(--nk-accent) calc(25% + 40% * var(--nk-pack-step)), var(--nekova-surface)); font-weight: 700; padding-left: 3rem; width: 100%; }
   .nk-pack-row.is-unavailable { border-color: var(--nekova-warm); }
   .nk-pack-row > strong { font-size: 1.35rem; }
   .nk-pack-row select { background: var(--nekova-surface); border: 1px solid var(--nekova-line-strong); border-radius: 1rem; color: var(--nk-ink); font: inherit; font-size: 1.4rem; min-height: 4rem; min-width: 0; padding: 0 .8rem; }
