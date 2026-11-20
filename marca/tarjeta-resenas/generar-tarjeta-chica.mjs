@@ -50,8 +50,7 @@ body { font-family: 'Nunito Sans', sans-serif; color: #000; }
 const front = `<div class="card front">
 <div><div class="logo">${logo}</div>
 <h1>¿Cómo fue tu experiencia con Nekova?</h1>
-<p>Contanos qué te pareció la compra, el envío y la atención. Podés hacerlo por WhatsApp.</p>
-<div class="gift">Te regalamos un descuento para tu próxima compra</div></div>
+<p>Contanos qué te pareció la compra, el envío y la atención. Te lleva un minuto.</p></div>
 <div class="qr">${qrSvg}<span>Escaneá y contanos</span><small>nekova.com.ar<br>/pages/opina</small></div>
 </div>`;
 const back = `<div class="card back"><div class="logo">${logo}</div><p>Tu bienestar, en los detalles.</p><small>nekova.com.ar · @nekova_ok</small></div>`;

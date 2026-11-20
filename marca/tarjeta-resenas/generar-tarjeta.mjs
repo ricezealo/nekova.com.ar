@@ -42,11 +42,10 @@ const card = `<div class="card">
 <img class="logo" src="${logo}" alt="nekova">
 <div class="thanks">¡Gracias por tu compra!</div>
 <h1>¿Cómo fue tu experiencia con <em>Nekova</em>?</h1>
-<p class="lead">Probalo unos días y contanos qué te pareció la compra, el envío y la atención. Podés dejar tu reseña o contárnoslo por WhatsApp.</p>
+<p class="lead">Probalo unos días y contanos qué te pareció la compra, el envío y la atención. Te lleva un minuto y nos ayuda a mejorar.</p>
 <div class="qrbox">${qrSvg}</div>
 <div class="scan"><span style="letter-spacing:.5mm">★★★★★</span> Escaneá y contanos</div>
 <div class="url">nekova.com.ar/pages/opina</div>
-<div class="gift">🎁 Te regalamos un descuento para tu próxima compra</div>
 <div class="foot">¿Necesitás ayuda? <b>WhatsApp +54 9 11 7812-4323</b><br>nekova.com.ar · @nekova_ok</div>
 </div>`;
 const page = (body, size) => `<!doctype html><html lang="es"><head><meta charset="utf-8"><link href="https://fonts.googleapis.com/css2?family=Nunito+Sans:wght@400;600;700;800&family=Poppins:wght@600&display=block" rel="stylesheet"><style>@page { size: ${size}; margin: 0; } html, body { -webkit-print-color-adjust: exact; print-color-adjust: exact; } ${CSS}</style></head><body>${body}</body></html>`;
