@@ -54,6 +54,7 @@
 {%- comment -%} Own footage: silent loops (file::poster::title::text) and reels with sound (file::poster::title::text). {%- endcomment -%}
 {%- assign nk_real = '' -%}
 {%- assign nk_reels = '' -%}
+{%- assign nk_real_lead = 'Lo grabamos nosotros, en casa, con el mismo almohadón que te enviamos. Sin efectos ni modelos.' -%}
 {%- assign nk_moments = '' -%}
 {%- assign nk_compare_title = '' -%}
 {%- assign nk_specs_title = '' -%}
@@ -165,12 +166,21 @@
     {%- assign nk_cta_title = 'Menos ruido, más descanso' -%}
 
   {%- when 'plantillas' -%}
-    {%- assign nk_gallery = 'product-media-plantillas-00.jpg,product-media-plantillas-01.jpg,product-media-plantillas-negro.jpg,product-media-plantillas-gris.jpg,product-media-plantillas-naranja.jpg,product-media-plantillas-05.jpg,product-media-plantillas-06.jpg,product-media-plantillas-07.jpg,product-media-plantillas-10.jpg' -%}
+    {%- comment -%} Product images (the three colors; orange only exists in these), then own photos (real-*: 19/11/2026, black and grey). {%- endcomment -%}
+    {%- assign nk_gallery = 'product-media-plantillas-00.jpg,product-media-plantillas-real-01.jpg,product-media-plantillas-negro.jpg,product-media-plantillas-gris.jpg,product-media-plantillas-naranja.jpg,product-media-plantillas-real-05.jpg,product-media-plantillas-real-04.jpg,product-media-plantillas-real-03.jpg,product-media-plantillas-real-06.jpg,product-media-plantillas-06.jpg,product-media-plantillas-07.jpg,product-media-plantillas-10.jpg' -%}
+    {%- capture nk_real -%}plantillas-real-flex.mp4::plantillas-real-flex-poster.jpg::Se doblan y vuelven a su forma::Flexibles para acompañar el movimiento del pie al caminar.||plantillas-real-base.mp4::plantillas-real-base-poster.jpg::Base de espuma perforada::Del lado de abajo, la espuma con zonas perforadas para que circule el aire.||plantillas-real-paneo.mp4::plantillas-real-paneo-poster.jpg::Los colores, en persona::Así se ven con luz natural, sin filtros ni retoques.{%- endcapture -%}
+    {%- assign nk_real_lead = 'Lo grabamos nosotros, con las mismas plantillas que te enviamos. Sin efectos ni modelos.' -%}
+    {%- capture nk_reels -%}plantillas-reel-por-dentro.mp4::plantillas-reel-por-dentro-poster.jpg::¿Qué tienen por dentro?::Capa textil, zonas perforadas, espuma y talón en U, parte por parte.||plantillas-reel-flexibles.mp4::plantillas-reel-flexibles-poster.jpg::Doblalas, retorcelas::Y mirá cómo vuelven a su forma.{%- endcapture -%}
+    {%- assign nk_uses_eyebrow = 'Miralas de cerca' -%}
+    {%- assign nk_uses_title = 'Hechas para <span class="nk-hl">tu día</span>' -%}
+    {%- assign nk_uses_lead = 'Estas fotos las sacamos nosotros, con las mismas plantillas que te llegan a tu casa.' -%}
+    {%- assign nk_uses_shape = 'portrait' -%}
+    {%- capture nk_uses -%}product-media-plantillas-real-uso-04.jpg::Plantilla negra en la mano, con la tela de arriba y el logo nekova a la vista::Tela suave arriba::Una capa textil de confort, la que toca tu pie.||product-media-plantillas-real-uso-05.jpg::Primer plano de la tela gris con el logo nekova en el talón::Terminación prolija::Tela con textura y el logo en el talón, en cada par.||product-media-plantillas-real-uso-03.jpg::Plantilla gris parada junto a otra acostada, con el logo nekova en el talón::Listas para tus zapatillas::Las recortás a tu número y las colocás en tu calzado de todos los días.{%- endcapture -%}
     {%- assign nk_gallery_alt = 'Plantillas de espuma PU multi-talle' -%}
     {%- assign nk_variant_images = 'negro=product-media-plantillas-negro.jpg;gris=product-media-plantillas-gris.jpg;naranja=product-media-plantillas-naranja.jpg' -%}
     {%- assign nk_tagline = 'Comodidad en cada paso.' -%}
     {%- assign nk_tiers = '1::1 par::17000||2::2 pares::15000||3::3 o más::12000' -%}
-    {%- capture nk_assure_extra -%}<strong>Multi-talle:</strong> dos rangos que se recortan a tu número.{%- endcapture -%}
+    {%- capture nk_assure_extra -%}<strong>Multi-talle:</strong> dos rangos que se recortan a tu número. Para que queden iguales, usá de molde la plantilla de tu calzado.{%- endcapture -%}
     {%- capture nk_returns_assure -%}<strong>10 días para devolverlas sin usar ni recortar.</strong> Una vez recortadas o usadas no se aceptan devoluciones.{%- endcapture -%}
     {%- capture nk_returns_text -%}Tenés 10 días desde la compra para devolverlas, siempre que estén sin usar, sin recortar y en su envase. Por higiene y porque se adaptan a tu talle, una vez recortadas o usadas no se aceptan devoluciones. Si llegan con una falla de fábrica, te las cambiamos. <a href="/pages/contact">Escribinos</a> para coordinarlo.{%- endcapture -%}
     {%- assign nk_returns_faq_q = '¿Puedo devolverlas?' -%}
@@ -186,7 +196,7 @@
     {%- assign nk_how_lead = 'Dos rangos que se recortan siguiendo la línea de tu número.' -%}
     {%- assign nk_how_image = 'product-media-plantillas-10.jpg' -%}
     {%- assign nk_how_alt = 'Guía de talles: rangos 35 al 40 y 41 al 46, recortables por la línea de cada número' -%}
-    {%- assign nk_how = '1::Elegí tu rango::35 al 40 o 41 al 46, según el número que calzás.||2::Buscá la línea de tu talle::Cada número tiene su contorno marcado en la plantilla.||3::Recortá y colocalas::Con una tijera, siguiendo la línea. Si tu calzado tiene plantilla, sacala primero.' -%}
+    {%- assign nk_how = '1::Elegí tu rango::35 al 40 o 41 al 46, según el número que calzás.||2::Buscá la línea de tu talle::Cada número tiene su contorno marcado en la plantilla.||3::Recortá y colocalas::Antes de cortar, apoyá encima la plantilla original de tu calzado y usala de molde: así quedan iguales. Las líneas de talle son una guía y pueden variar según la marca.' -%}
 
     {%- assign nk_benefits_eyebrow = 'Detalles que se notan' -%}
     {%- assign nk_benefits_title = 'Comodidad en cada <span class="nk-hl">paso</span>' -%}
@@ -202,7 +212,7 @@
     {%- assign nk_specs_image = 'product-media-plantillas-01.jpg' -%}
     {%- assign nk_specs_alt = 'Plantillas en negro, gris y naranja' -%}
 
-    {%- capture nk_faq -%}¿Qué talle elijo?::Si calzás del 35 al 40, elegí el rango 35 al 40; si calzás del 41 al 46, el 41 al 46. Después las recortás por la línea de tu número.||¿Cómo las recorto?::Cada plantilla tiene marcado el contorno de cada talle. Recortá con una tijera siguiendo la línea de tu número. Te recomendamos probarlas en el calzado antes de recortar todo el contorno.||¿Sirven para cualquier calzado?::Están pensadas para zapatillas y calzado de uso diario. Si tu calzado ya trae plantilla, sacala antes de colocarlas.||¿Hay descuento llevando más de un par?::Sí: 2 pares a $15.000 cada uno y 3 o más a $12.000 cada uno. Podés combinar colores y talles; el descuento se aplica solo en el carrito.||¿Cómo se limpian?::A mano, con agua tibia y jabón neutro. Dejalas secar a la sombra antes de volver a usarlas.{%- endcapture -%}
+    {%- capture nk_faq -%}¿Las fotos y los videos son reales?::Las fotos y los videos de las plantillas negras y grises los grabamos nosotros, con el mismo producto que te enviamos. La naranja todavía no la fotografiamos: se ve en las imágenes del producto sobre fondo blanco, con el mismo modelo y los mismos materiales.||¿Qué talle elijo?::Si calzás del 35 al 40, elegí el rango 35 al 40; si calzás del 41 al 46, el 41 al 46. Después las recortás usando de molde la plantilla de tu calzado (las líneas de talle son una guía).||¿Cómo las recorto?::Te recomendamos usar como molde la plantilla que trae tu calzado: apoyala encima, marcá el contorno y recortá con una tijera. Las líneas de cada talle sirven de guía, pero el tamaño de un mismo número cambia según la marca de zapatillas, así que con la plantilla original quedan iguales. Si no tenés la original, cortá un poco por fuera de la línea de tu número, probalas y ajustá de a poco.||¿Sirven para cualquier calzado?::Están pensadas para zapatillas y calzado de uso diario. Si tu calzado ya trae plantilla, sacala antes de colocarlas.||¿Hay descuento llevando más de un par?::Sí: 2 pares a $15.000 cada uno y 3 o más a $12.000 cada uno. Podés combinar colores y talles; el descuento se aplica solo en el carrito.||¿Cómo se limpian?::A mano, con agua tibia y jabón neutro. Dejalas secar a la sombra antes de volver a usarlas.||¿Puedo combinar colores y talles?::Sí. Desde 2 pares aparece "armá tu pack": elegís el color y el talle de cada par y los sumás al carrito juntos.{%- endcapture -%}
     {%- assign nk_video = 'plantillas.mp4' -%}
     {%- assign nk_video_shape = 'square' -%}
     {%- assign nk_video_poster = 'product-media-plantillas-poster.jpg' -%}
@@ -696,7 +706,6 @@
             <div class="nk-accordion-body">
               <p>Las compras realizadas en días hábiles antes de las 13:00hs se despachan ese mismo día; si comprás después de ese horario, un fin de semana o un feriado, el día hábil siguiente.{% if delivery_max > 0 %} Enviamos{% if delivery_carrier != blank %} por {{ delivery_carrier | escape }}{% endif %} a todo el país y suele llegar en {% if delivery_min < delivery_max %}{{ delivery_min }} a {% endif %}{{ delivery_max }} días hábiles desde el despacho. Te mandamos el número de seguimiento por email.{% endif %}{% if free_shipping_threshold > 0 %} Las compras desde {{ free_shipping_cents | money_without_trailing_zeros }} tienen envío gratis.{% endif %}</p>
               <p>{{ nk_returns_text }}</p>
-              {%- if nk_warranty != blank -%}<p>Tiene {{ nk_warranty }} de garantía por fallas de fábrica: si notás una, <a href="/pages/contact">escribinos</a> con una foto y lo resolvemos.</p>{%- endif -%}
             </div>
           </details>
         </div>
@@ -712,7 +721,7 @@
             <p class="nk-eyebrow">Sin filtros</p>
             <h2 id="NkReal-{{ section.id }}">Así es <span class="nk-hl">de verdad</span></h2>
           </div>
-          <p class="nk-head-lead">Lo grabamos nosotros, en casa, con el mismo almohadón que te enviamos. Sin efectos ni modelos.</p>
+          <p class="nk-head-lead">{{ nk_real_lead }}</p>
         </div>
         <div class="nk-real">
           {%- assign real_items = nk_real | split: '||' -%}
