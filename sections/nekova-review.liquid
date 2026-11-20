@@ -5,7 +5,7 @@
 {%- endcomment -%}
 {%- liquid
   assign whatsapp_digits = settings.nekova_whatsapp | remove: ' ' | remove: '+' | remove: '-' | remove: '(' | remove: ')' | remove: '.'
-  assign whatsapp_text = section.settings.whatsapp_message | default: 'Hola Nekova, les quiero contar cómo me fue con mi compra.'
+  assign whatsapp_text = section.settings.whatsapp_message | default: 'Hola Nekova, les quiero contar cómo fue mi experiencia con ustedes: la compra, el envío y la atención.'
 -%}
 <section class="nk-review" aria-labelledby="NkReviewTitle-{{ section.id }}">
   <div class="nk-review-card">
@@ -99,7 +99,7 @@
       "type": "text",
       "id": "whatsapp_message",
       "label": "Mensaje de WhatsApp",
-      "default": "Hola Nekova, les quiero contar cómo me fue con mi compra."
+      "default": "Hola Nekova, les quiero contar cómo fue mi experiencia con ustedes: la compra, el envío y la atención."
     },
     {
       "type": "richtext",
