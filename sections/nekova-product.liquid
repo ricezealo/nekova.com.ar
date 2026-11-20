@@ -940,8 +940,13 @@
         </li>
         <li>
           <span class="nk-buysteps-icon">{% render 'nekova-icon', icon: 'truck' %}</span>
-          <strong>{% if delivery_max > 0 %}Llega en {% if delivery_min < delivery_max %}{{ delivery_min }} a {% endif %}{{ delivery_max }} días hábiles{% else %}Te llega a tu casa{% endif %}</strong>
-          <p>{% if delivery_carrier != blank %}Por {{ delivery_carrier | escape }}, a todo el país,{% else %}A todo el país,{% endif %} con número de seguimiento.{% if free_shipping_threshold > 0 %} Envío gratis desde {{ free_shipping_cents | money_without_trailing_zeros }}.{% endif %}</p>
+          {%- if free_shipping_threshold > 0 -%}
+            <strong>Envío gratis</strong>
+            <p>En compras desde {{ free_shipping_cents | money_without_trailing_zeros }}. {% if delivery_carrier != blank %}Por {{ delivery_carrier | escape }}, a todo el país,{% else %}A todo el país,{% endif %} con número de seguimiento.{% if delivery_max > 0 %} Llega en {% if delivery_min < delivery_max %}{{ delivery_min }} a {% endif %}{{ delivery_max }} días hábiles.{% endif %}</p>
+          {%- else -%}
+            <strong>{% if delivery_max > 0 %}Llega en {% if delivery_min < delivery_max %}{{ delivery_min }} a {% endif %}{{ delivery_max }} días hábiles{% else %}Te llega a tu casa{% endif %}</strong>
+            <p>{% if delivery_carrier != blank %}Por {{ delivery_carrier | escape }}, a todo el país,{% else %}A todo el país,{% endif %} con número de seguimiento.</p>
+          {%- endif -%}
         </li>
         <li>
           <span class="nk-buysteps-icon">{% render 'nekova-icon', icon: 'return' %}</span>
