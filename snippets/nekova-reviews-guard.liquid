@@ -11,6 +11,8 @@
   .nk-reviews-empty { height: 0 !important; margin: 0 !important; overflow: hidden !important; padding: 0 !important; visibility: hidden; }
   [data-nk-reviews].nk-reviews-store-only .jdgm-tablist,
   [data-nk-reviews].nk-reviews-store-only .jdgm-tab-dropdown { display: none !important; }
+  /* Judge.me cuts the carousel title to one line ("Lo que dicen…"): let it wrap, same size as the theme's section titles. */
+  [data-nk-reviews] .jdgm-title { -webkit-line-clamp: unset !important; line-clamp: unset !important; display: block !important; overflow: visible !important; text-overflow: clip !important; white-space: normal !important; font-size: clamp(2.8rem, 3.4vw, 4.2rem) !important; letter-spacing: -.02em; line-height: 1.15 !important; }
 </style>
 <script>
   (() => {
