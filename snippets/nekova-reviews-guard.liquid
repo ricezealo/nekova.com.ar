@@ -1,11 +1,16 @@
 {%- comment -%}
-  Collapses a reviews band ([data-nk-reviews]) while the app inside renders nothing visible
-  (Judge.me loads asynchronously and hides its widget when there are no reviews).
-  Uses a zero-height class instead of `hidden` so the app content can still be measured,
-  and opens the band as soon as the app shows reviews. Not applied in the theme editor.
+  Reviews bands ([data-nk-reviews]):
+  - Collapses the band while the app inside renders nothing visible (Judge.me loads asynchronously).
+    Uses a zero-height class instead of `hidden` so the app content can still be measured,
+    and opens the band as soon as the app shows reviews.
+  - Nekova only collects STORE reviews: in the Judge.me widget it selects the "Reseñas de la tienda" tab
+    and hides the tab row (and the mobile dropdown), so the product-reviews tab never shows.
+  Not applied in the theme editor.
 {%- endcomment -%}
 <style>
   .nk-reviews-empty { height: 0 !important; margin: 0 !important; overflow: hidden !important; padding: 0 !important; visibility: hidden; }
+  [data-nk-reviews].nk-reviews-store-only .jdgm-tablist,
+  [data-nk-reviews].nk-reviews-store-only .jdgm-tab-dropdown { display: none !important; }
 </style>
 <script>
   (() => {
@@ -13,10 +18,20 @@
       band.dataset.nkReviewsReady = 'true';
       const inner = band.querySelector('[data-nk-reviews-inner]');
       if (!inner || (window.Shopify && window.Shopify.designMode)) return;
-      const check = () => band.classList.toggle('nk-reviews-empty', inner.offsetHeight < 80);
+      const storeOnly = () => {
+        const tabs = [...inner.querySelectorAll('button.jdgm-tab')];
+        if (tabs.length < 2) return;
+        const store = tabs.find((tab) => /tienda|store|shop/i.test(tab.textContent)) || tabs[tabs.length - 1];
+        if (store.getAttribute('aria-selected') !== 'true') store.click();
+        band.classList.add('nk-reviews-store-only');
+      };
+      const check = () => {
+        storeOnly();
+        band.classList.toggle('nk-reviews-empty', inner.offsetHeight < 80);
+      };
       check();
       [800, 2000, 4000, 8000].forEach((ms) => setTimeout(check, ms));
-      new MutationObserver(check).observe(inner, { attributes: true, childList: true, subtree: true });
+      new MutationObserver(check).observe(inner, { childList: true, subtree: true });
     });
   })();
 </script>
