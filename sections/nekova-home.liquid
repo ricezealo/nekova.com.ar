@@ -61,7 +61,7 @@
         </div>
         <p class="nk-home-head-lead">Cada uno, elegido por su diseño, sus materiales y su utilidad real en tu día a día.</p>
       </div>
-      <ul class="nk-home-features" role="list">
+      <ul class="nk-home-features" role="list" data-nk-reveal>
         {%- for product_item in home_collection.products limit: section.settings.products_to_show -%}
           {%- liquid
             assign card_image = ''
@@ -113,6 +113,22 @@
           </li>
         {%- endfor -%}
       </ul>
+      <script>
+        (() => {
+          // Product blocks slide in as they scroll into view, alternating right / left. Skipped with reduced motion and in the theme editor.
+          const list = document.currentScript.previousElementSibling;
+          if (!list || !('IntersectionObserver' in window) || window.matchMedia('(prefers-reduced-motion: reduce)').matches || (window.Shopify && window.Shopify.designMode)) return;
+          const items = [...list.children];
+          const observer = new IntersectionObserver((entries) => entries.forEach((entry) => {
+            if (!entry.isIntersecting) return;
+            entry.target.classList.add('is-visible');
+            observer.unobserve(entry.target);
+          }), { threshold: 0.18, rootMargin: '0px 0px -8% 0px' });
+          list.classList.add('nk-reveal-ready');
+          items.forEach((item) => observer.observe(item));
+          setTimeout(() => items.forEach((item) => item.classList.add('is-visible')), 6000);
+        })();
+      </script>
     </div>
   </div>
 
@@ -202,6 +218,15 @@
   .nk-home-hero h1 em { display: block; }
 
   .nk-home-features { display: grid; gap: 2.4rem; list-style: none; margin: 0; padding: 0; }
+  .nk-home-band { overflow-x: clip; }
+  .nk-reveal-ready .nk-home-feature { opacity: 0; transform: translateX(9rem); transition: opacity .8s ease, transform .9s cubic-bezier(.16, .84, .3, 1); }
+  .nk-reveal-ready .nk-home-feature:nth-child(even) { transform: translateX(-9rem); }
+  .nk-reveal-ready .nk-home-feature-media img { transform: scale(1.08); transition: transform 1.2s cubic-bezier(.16, .84, .3, 1); }
+  .nk-reveal-ready .nk-home-feature-body { opacity: 0; transform: translateY(1.6rem); transition: opacity .7s ease .25s, transform .8s cubic-bezier(.16, .84, .3, 1) .25s; }
+  .nk-reveal-ready .nk-home-feature.is-visible, .nk-reveal-ready .nk-home-feature.is-visible .nk-home-feature-body { opacity: 1; transform: none; }
+  .nk-reveal-ready .nk-home-feature.is-visible .nk-home-feature-media img { transform: none; }
+  .nk-reveal-ready .nk-home-feature.is-visible .nk-home-feature-media:hover img { transform: scale(1.03); transition-duration: .4s; }
+  @media screen and (max-width: 600px) { .nk-reveal-ready .nk-home-feature { transform: translateX(4rem); } .nk-reveal-ready .nk-home-feature:nth-child(even) { transform: translateX(-4rem); } }
   .nk-home-feature { align-items: center; background: var(--nekova-surface); border-radius: var(--nekova-radius-lg); display: grid; gap: 5rem; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); overflow: hidden; padding: 2.4rem 6rem 2.4rem 2.4rem; }
   .nk-home-feature:nth-child(even) { padding: 2.4rem 2.4rem 2.4rem 6rem; }
   .nk-home-feature:nth-child(even) .nk-home-feature-media { order: 2; }
